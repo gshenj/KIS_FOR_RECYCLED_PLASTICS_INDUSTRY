@@ -10,6 +10,8 @@ const REGION = {region:"地区", provinces: [
     {province: '上海市', cities: ['上海市']}
 ]}
 
+const UNITS = [{units:"千克"}, {units:"公斤"}, {units:"包"}]
+
 let roleSchema = new Schema({role:String})
 
 let  provinceSchema = new Schema({province:String, cities:[String]})
@@ -94,3 +96,4 @@ module.exports.RegionModel = RegionModel;
 module.exports.UserModel = UserModel;
 module.exports.RoleModel = RoleModel;
 module.exports.CustomerModel = CustomerModel;
+module.exports.UNITS = UNITS;

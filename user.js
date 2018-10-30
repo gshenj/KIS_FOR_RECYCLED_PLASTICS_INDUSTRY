@@ -52,7 +52,6 @@ function load_user_datagrid() {
             collapsible: false,
             data: [],
             width:700,
-            method: 'get',
             toolbar: toolbar
         })
     } else {

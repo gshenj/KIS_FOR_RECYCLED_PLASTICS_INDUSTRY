@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Auto Height for Layout - jQuery EasyUI Demo</title>
+    <title>KIS</title>
 
     <!-- -Works for both browser and electron with the same code-->
     <!-- -Fixes issues for ALL 3rd-party libraries (not just jQuery) without having to specify each one-->
@@ -393,16 +393,6 @@
             </table>
 
             <script type="text/javascript">
-                var dataSet = [
-                    {
-                        _id: '1234567司',
-                        name: '常州长明塑料配件有限公司',
-                        principal: '陈步郎',
-                        phone: '13813851111',
-                        city: '江苏省-常州市',
-                        address: '常州新北区小河庙边村'
-                    }]
-
                 /* Formatting function for row details - modify as you need */
                 function format(d) {
                     // `d` is the original data object for the row
@@ -421,92 +411,6 @@
                         '</tr>' +
                         '</table>';
                 }
-
-                $(document).ready(function () {
-                    //
-
-
-                });
-
-
-                /*   $(function () {
-                       $('#customer_grid').datagrid({
-                           view: detailview,
-                           fitColumns: true,
-                           rownumbers: true,
-                           fit: true,
-                           animate: true,
-                           collapsible: false,
-                           singleSelect: true,
-                           columns: [[
-                               {field: 'c_id', title: 'id', hidden:true,width: 10},
-                               {field: 'c_name', title: '客户', width: 180},
-                               {field: 'c_principal', title: '联系人', width: 50},
-                               {field: 'c_phone', title: '电话', width: 70},
-                               {field: 'c_region', title: '地区', width: 70},
-                               {field: 'c_address', title: '地址', width: 180}
-                           ]],
-                           data: [
-                               {
-                                   c_id: '1234567司',
-                                   c_name: '常州长明塑料配件有限公司',
-                                   c_principal: '陈步郎',
-                                   c_phone: '13813851111',
-                                   c_region: '江苏省-常州市',
-                                   c_address: '常州新北区小河庙边村'
-                               }
-                           ],
-                           detailFormatter: function (index, row) {
-                               return '<div style="padding:2px;position:relative;"><table class="ddv"></table></div>';
-                           },
-                           onExpandRow: function (index, row) {
-                               alert(row.c_id)
-                               var ddv = $(this).datagrid('getRowDetail', index).find('table.ddv');
-                               ddv.datagrid({
-                                   fitColumns: true,
-                                   border: false,
-                                   singleSelect: true,
-                                   foreignField: 'c_id',
-                                   columns: [[
-                                       {field: 'p_name', title: '产品名称', width: 180},
-                                       {field: 'p_modal', title: '型号', width: 50},
-                                       {field: 'p_units', title: '单位', width: 70},
-                                       {field: 'p_price', title: '单价', width: 70},
-                                       {field: 'p_memo', title: '描述', width: 180}
-                                   ]],
-                                   data: getCustomerProducts(row),
-                                   onResize: function () {
-                                       $('#dg').datagrid('fixDetailRowHeight', index);
-                                   },
-                                   onLoadSuccess: function () {
-                                       setTimeout(function () {
-                                           $('#dg').datagrid('fixDetailRowHeight', index);
-                                       }, 0);
-                                   }
-                               });
-                               $('#customer_grid').datagrid('fixDetailRowHeight', index);
-                           }
-                       });
-                   });
-   */
-
-                /*  function getCustomerProducts(row) {
-
-                      return [
-                          {p_name: '聚丙烯', p_modal: 'PP+EPDM=T20', p_units: '公斤', p_price: 8.5, p_memo: '常用保险杠料'}
-                      ]
-                  }
-
-                  function formatProgress(value) {
-                      if (value) {
-                          var s = '<div style="width:100%;border:1px solid #ccc">' +
-                              '<div style="width:' + value + '%;background:#cc0000;color:#fff">' + value + '%' + '</div>'
-                          '</div>';
-                          return s;
-                      } else {
-                          return '';
-                      }
-                  }*/
 
                 var editingId;
 

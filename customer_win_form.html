@@ -1,69 +1,59 @@
 <!--user window-->
+<script>
+
+    function showRegion() {
+        load_region_tree_data($('#customer_region'))
+    }
+
+    function getRegion(node) {
+        $('#customer_region').combotree('setText', node.text).combotree('setValue', node.text)
+    }
+</script>
+
 <div id="customer_win" class="easyui-window" title="用户信息"
      data-options="constrain:true, modal:true, minimizable:false,maximizable:false,collapsible:false, closed:true, border:'thin'"
-     style="width:400px;height:600px;padding:20px 30px; ">
+     style="width:660px;height:600px;padding:20px 30px; ">
 
-    <form id="ff" method="post" style="margin:0 auto; text-align: left; border:0px solid red;">
-        <div style="margin-bottom:20px">
-            客户名称：
-            <input class="easyui-textbox" id="customer_name" style="display:inline;width:250px;"
-                   data-options="required:true">
-            <input type="hidden" id="customer_id"/>
-        </div>
-
-        <div style="margin-bottom:20px">
-            所属区域：
-            <input class="easyui-combotree" style="display:inline;width:250px;" id="customer_region" data-options="data:[], onShowPanel:showRegion, onClick:getRegion" style="width:100%">
-
-        </div>
-
-        <script>
-
-function showRegion() {
-    load_region_tree_data($('#customer_region'))
-}
-
-function getRegion(node) {
-    $('#customer_region').combotree('setText', node.text).combotree('setValue', node.text)
-}
-        </script>
-
-        <div style="margin-bottom:20px">
-            联&nbsp;&nbsp;系&nbsp;&nbsp;人：
-            <input class="easyui-textbox" id="customer_principal" style="display:inline;width:250px;"
-                   data-options="required:true">
-        </div>
-
-
-        <div style="margin-bottom:20px">
-            电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：
-            <input class="easyui-textbox" id="customer_phone" style="display:inline;width:250px;"
-                   data-options="required:true">
-        </div>
-
-        <div style="margin-bottom:20px">
-            地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：
-            <input class="easyui-textbox" id="customer_address" style="display:inline;width:250px;"
-                   data-options="required:true">
-        </div>
-
-    </form>
-
-
-
-
-    <div>产品列表：</div>
-    <table class="easyui-datagrid">
-        <thead>
+    <table style="width:600px;">
         <tr>
-            <th data-options="field:'name'">name</th>
-            <th data-options="field:'modal'">modal</th>
-            <th data-options="field:'units'">units</th>
-            <th data-options="field:'price'">Price</th>
-            <th data-options="field:'memo'">memo</th>
+            <td> 客户名称：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="customer_name" style="display:inline;width:250px;"
+                       data-options="required:true">
+                <input type="hidden" id="customer_id"/></td>
+            <td>联&nbsp;&nbsp;系&nbsp;&nbsp;人：</td>
+            <td>
+                <input class="easyui-textbox" id="customer_principal" style="display:inline;width:150px;"
+                       data-options="required:true">
+            </td>
         </tr>
-        </thead>
-
+        <tr>
+            <td>所属地区：</td>
+            <td>
+                <input class="easyui-combotree" id="customer_region"
+                       data-options="data:[], onShowPanel:showRegion, onClick:getRegion"
+                       style="display:inline;width:250px">
+            </td>
+            <td>
+                电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：
+            </td>
+            <td>
+                <input class="easyui-textbox" id="customer_phone" style="display:inline;width:150px;"
+                       data-options="required:true">
+            </td>
+        </tr>
+        <tr>
+            <td>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：</td>
+            <td colspan="3">
+                <input class="easyui-textbox" id="customer_address" style="display:inline;width:504px;"
+                       data-options="required:true"></td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <table id="product_grid" title="产品列表" style="width:580px;height:300px"></table>
+            </td>
+        </tr>
     </table>
 
 
