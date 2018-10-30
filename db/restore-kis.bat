@@ -1,0 +1,1 @@
+"C:\Program Files\MongoDB\Server\4.0\bin\mongorestore.exe" -d kis --drop C:\Users\jinsh\WebstormProjects\KIS_FOR_RECYCLED_PLASTICS_INDUSTRY\db\kis.bak\kis

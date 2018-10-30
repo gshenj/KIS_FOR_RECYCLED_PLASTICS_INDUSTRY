@@ -90,7 +90,11 @@
 
 
     <style type="text/css">
-        *, body {
+        * {
+            padding:0;
+            margin:0
+        }
+        body {
             text-align: center;
             padding: 0;
             margin: 0;
@@ -392,25 +396,8 @@
 
             <script type="text/javascript">
                 /* Formatting function for row details - modify as you need */
-                function format(d) {
-                    // `d` is the original data object for the row
-                    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
-                        '<tr>' +
-                        '<td>Full name:</td>' +
-                        '<td>' + d.name + '</td>' +
-                        '</tr>' +
-                        '<tr>' +
-                        '<td>Extension number:</td>' +
-                        '<td>' + d.extn + '</td>' +
-                        '</tr>' +
-                        '<tr>' +
-                        '<td>Extra info:</td>' +
-                        '<td>And any further details here (images etc)...</td>' +
-                        '</tr>' +
-                        '</table>';
-                }
 
-                var editingId;
+              /*  var editingId;
 
                 function edit() {
                     if (editingId != undefined) {
@@ -448,15 +435,16 @@
                         $('#tg').treegrid('cancelEdit', editingId);
                         editingId = undefined;
                     }
-                }
+                }*/
             </script>
         </div>
 
 
-        <div title="地区管理" style="padding: 4px 4px; ">    <!--border:1px solid #95B8E7-->
-            <div class="easyui-panel" title="使用功能按钮对地区进行添加、修改、删除操作。请点击保存使操作生效。" data-options="fit:true"
+        <div title="地区管理" style="padding: 4px 4px; border:none;">    <!--border:1px solid #95B8E7-->
+            <div class="easyui-panel" title="使用功能按钮对地区进行添加、修改、删除操作。请点击保存使操作生效。"
+                 data-options="fit:true"
                  style="background:#fafafa; padding:0px; ">
-                <div style="height:30px;border-bottom:1px solid #ddd;padding:1px 2px; margin:0px; background-color: #efefef">
+                <div style="text-align:left; height:30px;border-bottom:1px solid #ddd;padding:1px 2px; margin:0px; background-color: #efefef">
                     <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'"
                        onclick="show_region_form('edit')">编辑</a>
                     <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'"
@@ -465,7 +453,7 @@
                        onclick="show_region_form('delete')">删除</a>
                 </div>
 
-                <ul id="region_tree" style="background-color:#fff;" data-options=""></ul>
+                <ul id="region_tree" style="background-color:#fff;" ></ul>
             </div>
         </div>
         <div title="用户管理" style="padding:4px 4px; ">

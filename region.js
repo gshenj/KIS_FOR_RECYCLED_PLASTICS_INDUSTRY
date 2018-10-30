@@ -214,7 +214,7 @@ function load_region_tree() {
  */
 function $load_region_tree(d) {
     if (REGION_TREE == null) {
-        REGION_TREE = $('#region_tree').tree({fit: true, data: d, animate: true})
+        REGION_TREE = $('#region_tree').tree({fit:true, data: d, animate: true})
         console.log('Init tree data.')
     } else {
         REGION_TREE.tree('loadData', d)

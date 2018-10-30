@@ -120,6 +120,26 @@ function load_customer_grid(callback) {
     })
 }
 
+
+function format(d) {
+    // `d` is the original data object for the row
+    let products = d.products;
+
+    console.log("sub table"+products)
+    let html = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'
+    html += '<tr><th>品名</th><th>型号</th><th>单位</th><th>价格</th><th>描述</th>';
+    for (let i=0; i<products.length; i++) {
+        let p = products[i];
+        html += "<tr><td>"+p.name+"</td><td>"+p.modal+"</td><td>"+p.units+"</td><td>"+p.price+"</td><td>"+p.memo+"</td></tr>"
+    }
+    html += '</table>'
+    return html
+
+}
+
+
+
+//let CURRENT_CUSTOMER_PRODUCT = []
 function show_customer_win_form(type, row_data) {
     CUSTOMER_OPERATOR_TYPE = type
     if (type == 'add') {
@@ -173,7 +193,7 @@ function customer_operator() {
         customerModel.principal = $('#customer_principal').textbox('getValue')
         customerModel.phone = $('#customer_phone').textbox('getValue')
         customerModel.address = $('#customer_address').textbox('getValue')
-        customerModel.products = []
+        customerModel.products = PRODUCT_GRID.datagrid('getData').rows
         console.log(JSON.stringify(customerModel))
         customerModel.save(function (err) {
             if (err) return handleError(err)
@@ -194,6 +214,11 @@ function customer_operator() {
         })
 
     } else if (CUSTOMER_OPERATOR_TYPE == 'edit') {
+        if (!accept()){
+            alert('产品数据输入有误！')
+            return;
+        }
+
         let id = $('#customer_id').val()
         mongoose.CustomerModel.findById(id, function (err, customer) {
             if (err) {
@@ -206,7 +231,9 @@ function customer_operator() {
             customer.principal = $('#customer_principal').textbox('getValue')
             customer.phone = $('#customer_phone').textbox('getValue')
             customer.address = $('#customer_address').textbox('getValue')
-            customer.save(function (err) {
+            customer.products = PRODUCT_GRID.datagrid('getData').rows
+            console.log("Edit new :"+JSON.stringify(customer))
+            customer.save({validateBeforeSave: false}, function (err) {    //{validateBeforeSave: false}很重要
                 if (err) return handleError(err)
                 else {
                     show_messager('操作成功： 修改已保存！')
@@ -305,13 +332,14 @@ function load_product_grid(row_data) {
 
 
     PRODUCT_GRID.datagrid('loadData', new_data)
+    reject();
 }
 
 
 let editIndex = undefined;
 
 function endEditing() {
-    if (editIndex == undefined) {
+    if (typeof(editIndex) == 'undefined') {
         return true
     }
     if (PRODUCT_GRID.datagrid('validateRow', editIndex)) {
@@ -370,7 +398,9 @@ function removeit() {
 function accept() {
     if (endEditing()) {
         PRODUCT_GRID.datagrid('acceptChanges');
+        return true;
     }
+    return false;
 }
 
 function reject() {

@@ -1,0 +1,2 @@
+1. 去掉customer下product添加时自动生成的_id字段       ok
+
