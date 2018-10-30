@@ -90,7 +90,7 @@
 
 
     <style type="text/css">
-        body {
+        *, body {
             text-align: center;
             padding: 0;
             margin: 0;
@@ -241,20 +241,18 @@
 
 
 </head>
-<body class="easyui-layout">
-<div data-options="region:'north', border:false" style="height:80px; overflow-y: hidden;overflow-x: hidden">
-    <div style="height:76px; margin:0 auto;  width:998px; border:1px solid  #95B8E7; ">
+<body class="easyui-layout" data-options="fit:true, border:false">
+<div data-options="region:'north', border:false" style="height:70px; background-color:#6b9cde ;overflow-y: hidden;overflow-x: hidden">
+    <div style="height:66px; margin:0 auto;  width:998px;  ">
         <div style="text-align: left; margin:0 0; overflow:no-display">
             <div style="float:left; margin-top:50px;">你好，JIM（系统管理员），今天是2018年10月12日。</div>
             <div style="float:left; margin-left:20px; margin-top:50px;">退出登录</div>
         </div>
     </div>
-
-
 </div>
-<div data-options="region:'center', border:false" style="height:100px;overflow-y: hidden;overflow-x: hidden">
+<div data-options="region:'center', border:false" style="overflow-y: hidden;overflow-x: hidden">
     <div id="mainTab" style="width:1000px; margin:0 auto; height:100%;" class="easyui-tabs"
-         data-options="justified: false, tabPosition: 'left', headerWidth: 150, tabHeight: 30,onSelect:on_main_tab_select, onUnselect:on_main_tab_unselect ">
+         data-options="fit:true, border:false, tabPosition: 'left', headerWidth: 150, tabHeight: 30, onSelect:on_main_tab_select, onUnselect:on_main_tab_unselect ">
         <div title="新开销售单" style="padding:4px 4px; border:none;">
             <form id="ff" method="post" enctype="multipart/form-data">
 
@@ -510,10 +508,15 @@
     </script>
 </div>
 
-<div data-options="region:'south', border:false" style="text-align: center">
-    <div style="width:998px; border:1px solid #95B8E7; margin:0 auto;background-color:#95B8cc">
+<!--<div data-options="region:'south', border:false" style="text-align: center; background-color:#6b9cde ;">
+    <div style="width:998px; margin:0 auto;">
         Copyright&copy; <span>苏州元斌塑胶科技有限公司</span>
     </div>
+</div>-->
+
+<div style="width:200px; height:200px; position: fixed; bottom:-145px; left:-25px; font-size:12px;">
+   <div> Copyright&copy; 版权所有</div>
+    <div>苏州元斌塑胶科技有限公司</div>
 </div>
 
 

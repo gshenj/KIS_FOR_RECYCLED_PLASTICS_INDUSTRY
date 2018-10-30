@@ -1,0 +1,1 @@
+D:\ProgramFiles\MongoDB\Server\4.0\bin\mongodump -d kis -o C:\Users\JIN\WebstormProjects\KIS_FOR_RECYCLED_PLASTICS_INDUSTRY\db\kis.bak

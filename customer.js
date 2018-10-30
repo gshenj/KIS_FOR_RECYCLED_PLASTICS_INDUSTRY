@@ -2,8 +2,9 @@ mongoose = require("./scripts/db")
 
 
 let CUSTOMER_GRID = null
+
 function load_customer_grid() {
-   load_customer_grid(null)
+    load_customer_grid(null)
 
 }
 
@@ -14,7 +15,7 @@ function load_customer_grid(callback) {
 
         CUSTOMER_GRID = $('#customer_grid').DataTable({
             data: [],
-            pageLength:15,
+            pageLength: 15,
             /*paging:false,
             "scrollY": "500px",
             "scrollCollapse": true,
@@ -54,11 +55,6 @@ function load_customer_grid(callback) {
                         }
 
                         show_customer_win_form('delete', row_data)
-                    }
-                }, {
-                    text: '产品管理',
-                    action: function (e, dt, node, config) {
-                        dt.ajax.reload();
                     }
                 },
                 'excel'
@@ -110,63 +106,65 @@ function load_customer_grid(callback) {
         });
 
 
-
-
-
     } else {
         console.log("Reload user datagrid.")
     }
 
 
-
-
-
     mongoose.CustomerModel.find({}, function (err, users) {
         CUSTOMER_GRID.clear().rows.add(users).draw()
-      //  CUSTOMER_GRID.clear().rows.add(users).invalidate().draw()
+        //  CUSTOMER_GRID.clear().rows.add(users).invalidate().draw()
 
         if (callback != null)
-        callback()
+            callback()
     })
-
-
-
 }
 
 function show_customer_win_form(type, row_data) {
-   CUSTOMER_OPERATOR_TYPE = type
+    CUSTOMER_OPERATOR_TYPE = type
+    if (type == 'add') {
+        $('#customer_name').textbox("setValue", '').textbox("readonly", false)
+        $('#customer_region').combotree('setValue').combotree('readonly', false)
+        $('#customer_principal').textbox('setValue', '').textbox("readonly", false)
+        $('#customer_phone').textbox('setValue', '').textbox("readonly", false)
+        $('#customer_address').textbox('setValue', '').textbox("readonly", false)
+        $('#btn_customer_operator').linkbutton({text: '确定保存'})
 
-    if (type=='add') {
-        $('#customer_name').textbox("setValue",'')
-        $('#customer_region').combotree('setValue')
-        $('#customer_principal').textbox('setValue', '')
-        $('#customer_phone').textbox('setValue', '')
-        $('#customer_address').textbox('setValue','')
+    } else if (type == 'edit') {
 
-    } else if (type=='edit') {
+        $('#customer_id').val(row_data._id);
+        $('#customer_name').textbox("setValue", row_data.name).textbox("readonly", false)
+        $('#customer_region').combotree('setValue', row_data.city).combotree('setText', row_data.city).combotree('readonly', false)
+        $('#customer_principal').textbox('setValue', row_data.principal).textbox("readonly", false)
+        $('#customer_phone').textbox('setValue', row_data.phone).textbox("readonly", false)
+        $('#customer_address').textbox('setValue', row_data.address).textbox("readonly", false)
+        $('#btn_customer_operator').linkbutton({text: '保存修改'})
 
-       $('#customer_id').val(row_data._id);
-        $('#customer_name').textbox("setValue",row_data.name)
-        $('#customer_region').combotree('setValue', row_data.city).combotree('setText', row_data.city)
-        $('#customer_principal').textbox('setValue', row_data.principal)
-        $('#customer_phone').textbox('setValue', row_data.phone)
-        $('#customer_address').textbox('setValue',row_data.address)
+    } else if (type == 'delete') {
 
+        $('#customer_id').val(row_data._id);
+        $('#customer_name').textbox("setValue", row_data.name).textbox("readonly", true)
+        $('#customer_region').combotree('setValue', row_data.city).combotree('setText', row_data.city).combotree('readonly', true)
+        $('#customer_principal').textbox('setValue', row_data.principal).textbox("readonly", true)
+        $('#customer_phone').textbox('setValue', row_data.phone).textbox("readonly", true)
+        $('#customer_address').textbox('setValue', row_data.address).textbox("readonly", true)
+        $('#btn_customer_operator').linkbutton({text: '确定删除'})
     }
 
 
-   $('#customer_win').window('open').window('center')//.window('refresh')
+    $('#customer_win').window('open').window('center')
 
     load_product_grid(row_data);
 
 }
 
-function close_customer_win_form(){
+function close_customer_win_form() {
     $('#customer_win').window('close')
 }
 
 
 let CUSTOMER_OPERATOR_TYPE = ''
+
 function customer_operator() {
     if (CUSTOMER_OPERATOR_TYPE == 'add') {
         let customerModel = new mongoose.CustomerModel()
@@ -183,8 +181,8 @@ function customer_operator() {
                 show_messager('操作成功： 客户已添加！')
 
 
-                load_customer_grid(function(){
-                    CUSTOMER_GRID.rows(function ( idx, data, node ) {
+                load_customer_grid(function () {
+                    CUSTOMER_GRID.rows(function (idx, data, node) {
                         return data.name === customerModel.name ?
                             true : false;
                     }).select()
@@ -195,7 +193,7 @@ function customer_operator() {
             }
         })
 
-    } else if (CUSTOMER_OPERATOR_TYPE == 'edit'){
+    } else if (CUSTOMER_OPERATOR_TYPE == 'edit') {
         let id = $('#customer_id').val()
         mongoose.CustomerModel.findById(id, function (err, customer) {
             if (err) {
@@ -212,8 +210,8 @@ function customer_operator() {
                 if (err) return handleError(err)
                 else {
                     show_messager('操作成功： 修改已保存！')
-                    load_customer_grid(function(){
-                        CUSTOMER_GRID.rows(function ( idx, data, node ) {
+                    load_customer_grid(function () {
+                        CUSTOMER_GRID.rows(function (idx, data, node) {
                             return data.name === customer.name ?
                                 true : false;
                         }).select()
@@ -240,8 +238,6 @@ function customer_operator() {
 }
 
 
-
-
 ///////////////////////////////////////////产品数据表格////////////////////////////////////////////
 let PRODUCT_GRID = null;
 
@@ -254,52 +250,55 @@ let product_grid_toolbar = [{
     text: '删除',
     iconCls: 'icon-remove',
     handler: removeit
-},{
+}, {
     text: '应用',
     iconCls: 'icon-save',
     handler: accept
-},  {
+}, {
     text: '撤销',
     iconCls: 'icon-undo',
     handler: reject
 }]
 
 let product_grid_columns = [[
-    {field:'name', title:'品名',width:140,align:'center', editor:'textbox'},
-    {field:'modal',title:'型号',width:140,align:'center', editor:'textbox'},
-    {field:'units',title:'单位',width:80,align:'center',
-        formatter:function(value,row){
+    {field: 'name', title: '品名', width: 140, align: 'center', editor: 'textbox'},
+    {field: 'modal', title: '型号', width: 140, align: 'center', editor: 'textbox'},
+    {
+        field: 'units', title: '单位', width: 80, align: 'center',
+        formatter: function (value, row) {
             return row.units;
         },
-        editor:{
-            type:'combobox',
-            options:{
-                textField:'units',
-                valueField:'units',
-                data:mongoose.UNITS
+        editor: {
+            type: 'combobox',
+            options: {
+                textField: 'units',
+                valueField: 'units',
+                data: mongoose.UNITS
             }
-        }},
-    {field:'price',title:'价格',width:60,align:'center',editor:{type:'numberbox',options:{precision:2}}},
-    {field:'memo',title:'描述',width:140,editor:'textbox'}
+        }
+    },
+    {field: 'price', title: '价格', width: 60, align: 'center', editor: {type: 'numberbox', options: {precision: 2}}},
+    {field: 'memo', title: '描述', width: 140, editor: 'textbox'}
 ]]
 
 function load_product_grid(row_data) {
-    console.log("loadData "+ JSON.stringify(row_data))
+    console.log("loadData " + JSON.stringify(row_data))
     let new_data = [];
-    if (row_data==null || typeof (row_data) == 'undefined') {
+    if (row_data == null || typeof (row_data) == 'undefined') {
         ;
     } else {
         new_data = row_data.products
     }
 
     if (PRODUCT_GRID == null) {
-        PRODUCT_GRID = $('#product_grid').datagrid({singleSelect: true,
-            width:580,
-                toolbar: product_grid_toolbar,
-                data: [],
-                columns:product_grid_columns,
-                onClickCell: onClickCell,
-                onEndEdit: onEndEdit
+        PRODUCT_GRID = $('#product_grid').datagrid({
+            singleSelect: true,
+            width: 580,
+            toolbar: product_grid_toolbar,
+            data: [],
+            columns: product_grid_columns,
+            onClickCell: onClickCell,
+            onEndEdit: onEndEdit
         })
         console.log("Init product grid.")
     }
@@ -310,9 +309,12 @@ function load_product_grid(row_data) {
 
 
 let editIndex = undefined;
-function endEditing(){
-    if (editIndex == undefined){return true}
-    if (PRODUCT_GRID.datagrid('validateRow', editIndex)){
+
+function endEditing() {
+    if (editIndex == undefined) {
+        return true
+    }
+    if (PRODUCT_GRID.datagrid('validateRow', editIndex)) {
         PRODUCT_GRID.datagrid('endEdit', editIndex);
         editIndex = undefined;
         return true;
@@ -320,55 +322,64 @@ function endEditing(){
         return false;
     }
 }
-function onClickCell(index, field){
-    if (editIndex != index){
-        if (endEditing()){
+
+function onClickCell(index, field) {
+    if (editIndex != index) {
+        if (endEditing()) {
             PRODUCT_GRID.datagrid('selectRow', index)
                 .datagrid('beginEdit', index);
-            var ed = PRODUCT_GRID.datagrid('getEditor', {index:index,field:field});
-            if (ed){
+            var ed = PRODUCT_GRID.datagrid('getEditor', {index: index, field: field});
+            if (ed) {
                 ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
             }
             editIndex = index;
         } else {
-            setTimeout(function(){
+            setTimeout(function () {
                 PRODUCT_GRID.datagrid('selectRow', editIndex);
-            },0);
+            }, 0);
         }
     }
 }
-function onEndEdit(index, row){
+
+function onEndEdit(index, row) {
     var ed = $(this).datagrid('getEditor', {
         index: index,
         field: 'name'
     });
     row.name = $(ed.target).combobox('getText');
 }
-function append(){
-    if (endEditing()){
-        PRODUCT_GRID.datagrid('appendRow',{status:'P'});
-        editIndex = PRODUCT_GRID.datagrid('getRows').length-1;
+
+function append() {
+    if (endEditing()) {
+        PRODUCT_GRID.datagrid('appendRow', {status: 'P'});
+        editIndex = PRODUCT_GRID.datagrid('getRows').length - 1;
         PRODUCT_GRID.datagrid('selectRow', editIndex)
             .datagrid('beginEdit', editIndex);
     }
 }
-function removeit(){
-    if (editIndex == undefined){return}
+
+function removeit() {
+    if (editIndex == undefined) {
+        return
+    }
     PRODUCT_GRID.datagrid('cancelEdit', editIndex)
         .datagrid('deleteRow', editIndex);
     editIndex = undefined;
 }
-function accept(){
-    if (endEditing()){
+
+function accept() {
+    if (endEditing()) {
         PRODUCT_GRID.datagrid('acceptChanges');
     }
 }
-function reject(){
+
+function reject() {
     PRODUCT_GRID.datagrid('rejectChanges');
     editIndex = undefined;
 }
-function getChanges(){
+
+function getChanges() {
     var rows = PRODUCT_GRID.datagrid('getChanges');
-    alert(rows.length+' rows are changed!');
+    alert(rows.length + ' rows are changed!');
 }
 
