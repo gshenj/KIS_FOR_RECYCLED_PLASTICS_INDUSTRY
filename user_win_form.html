@@ -1,0 +1,29 @@
+<!--user window-->
+<div id="w" class="easyui-window" title="用户信息"
+     data-options="constrain:true, modal:true, minimizable:false,maximizable:false,collapsible:false, closed:true, border:'thin'"
+     style="width:400px;height:300px;padding:20px 30px; ">
+
+    <form id="fff" method="post" style="margin:0 auto; text-align: left; border:0px solid red;">
+        <div style="margin-bottom:20px">
+            用户名：
+            <input class="easyui-textbox" id="user_name" style="display:inline;width:270px;"
+                   data-options="required:true">
+            <input type="hidden" id="uid"/>
+        </div>
+
+        <div style="margin-bottom:20px">
+            角&nbsp;&nbsp;&nbsp;&nbsp;色：
+            <select class="easyui-combobox" id="user_role"
+                    data-options="valueField: 'role',textField: 'role'"
+                    style="width:270px; display:inline;"></select>
+        </div>
+        <div style="margin-bottom:20px">状&nbsp;&nbsp;&nbsp;&nbsp;态：
+            <input id="checkbox_user_disabled" class="easyui-switchbutton" data-options="onText:'禁用', offText:'可用'"
+                   name="disabled">
+        </div>
+    </form>
+    <div style="text-align:right; padding:0px 0px; margin:10px 10px 0px 0px">
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="width:120, height:30"
+           id="btn_sys_user_operator" onclick="sys_user_operator()"></a>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+#准备数据库mongodb4.0
+#开发主机安装node.js和npm并且添加到path
+#westrom创建空项目工程，cmd 切换到工程目录下
+npm init
+npm install --save-dev electron
+npm install --save-dev mongodb
+npm install --save-dev mongoose
+
+
+#调试webstrom工程,see Run_configuration.png

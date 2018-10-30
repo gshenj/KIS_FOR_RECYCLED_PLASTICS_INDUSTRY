@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Auto Height for Layout - jQuery EasyUI Demo</title>
+
+    <!-- -Works for both browser and electron with the same code-->
+    <!-- -Fixes issues for ALL 3rd-party libraries (not just jQuery) without having to specify each one-->
+    <!-- -Script Build / Pack Friendly (i.e. Grunt / Gulp all scripts into vendor.js)-->
+    <!-- -Does NOT require node-integration to be false-->
+    <!-- Insert this line above script imports  -->
+    <script>if (typeof module === 'object') {
+        window.module = module;
+        module = undefined;
+    }</script>
+    <!-- normal script imports etc  -->
+    <script src="./scripts/jquery-3.3.1.js"></script>
+    <!-- Insert this line after script imports -->
+    <script>if (window.module) module = window.module;</script>
+
+
+    <link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/color.css">
+    <link rel="stylesheet" type="text/css" href="./scripts/DataTables/datatables.css">
+
+    <script type="text/javascript" src="./scripts/jquery-easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="./scripts/jquery-easyui/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="./scripts/DataTables/datatables.js"></script>
+
+    <script type="text/javascript" src="region.js"></script>
+    <script type="text/javascript" src="user.js"></script>
+    <script type="text/javascript" src="customer.js"></script>
+
+    <script>
+        function showPanel() {
+            alert('show panel')
+            $('#cg').combogrid('grid').datagrid('loadData', [{id: '1', code: '江苏', name: '苏轴', addr: "坤华"}])
+        }
+
+
+        function on_main_tab_select(title, idx) {
+            //console.log("选择 " + title + ",index" + idx)
+            if (title == '新开销售单') {
+
+            } else if (title == '客户管理') {
+
+                load_customer_grid();
+            } else if (title == '地区管理') {
+                load_region_tree()
+            } else if (title == '用户管理') {
+                load_user_datagrid()
+            } else {
+
+            }
+        }
+
+        function on_main_tab_unselect(title, idx) {
+            console.log("Unselect " + title + ",index" + idx)
+
+        }
+
+        function show_messager(msg) {
+            $.messager.show({
+                //title:'My Title',
+                width: 400,
+                height: 40,
+                msg: msg,
+                showType: 'fade',
+                style: {
+                    right: '',
+                    top: document.body.scrollTop + document.documentElement.scrollTop,
+                    bottom: ''
+                },
+                border: false,
+                noheader: true,
+                bodyCls: 'msg_body_cls',
+                cls: 'msg_cls'
+            });
+        }
+
+        function handleError(err) {
+            if (err) {
+                console.warn(err)
+
+            }
+        }
+
+    </script>
+
+
+    <style type="text/css">
+        body {
+            text-align: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        .bill_table {
+            border-collapse: collapse;
+            border: 1px solid gray;
+            width: 810px;
+            margin-top: 0pt;
+            table-layout: fixed;
+
+        }
+
+        .bill_table td {
+            padding: 10px 0px;
+            vertical-align: middle;
+        }
+
+        .bill_customer_table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #aaa;
+        }
+
+        .bill_customer_table td {
+            text-align: left;
+            padding: 4px 0.5% 4px 0.5%;
+            height: 32px;
+            vertical-align: middle;
+            border: 1px solid #aaa;
+            /*background-color:#eee;*/
+        }
+
+        .bill_product_table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #aaa;
+        }
+
+        .bill_product_table th {
+            text-align: center;
+            border: 1px solid #aaa;
+            padding: 20px auto;
+            height: 40px;
+        }
+
+        .bill_product_table td {
+            text-align: left;
+            padding: 4px 0.5% 4px 0.5%;
+            height: 32px;
+            vertical-align: middle;
+            border: 1px solid #aaa;
+            /*background-color:#eee;*/
+        }
+
+        .bill_user_table {
+            border-collapse: collapse;
+            border: 1px solid #aaa;
+            width: 100%;
+        }
+
+        .bill_user_table td {
+            text-align: left;
+            padding: 4px 0.5% 4px 0.5%;
+            height: 32px;
+            vertical-align: middle;
+            border: 1px solid #aaa;
+        }
+
+        .customer_combobox {
+            width: 304px;
+        }
+
+        .customer_address {
+            width: 300px;
+        }
+
+        .sale_date {
+            width: 120px;
+        }
+
+        .principal {
+            width: 120px;
+        }
+
+        .telephone {
+            width: 120px;
+        }
+
+        .product_name {
+            width: 250px;
+        }
+
+        .product_units {
+            width: 60px;
+        }
+
+        .product_price {
+            width: 70px;
+        }
+
+        .product_num {
+            width: 80px;
+        }
+
+        .product_sum {
+            width: 90px;
+        }
+
+        .product_memo {
+            width: 180px;
+        }
+
+        .messager-body {
+            padding: 10px 10px 10px 10px;
+            overflow: auto;
+        }
+
+        /*.panel .window .messager-window{ background-color: #329bf6;	!* 背景色 *! border-radius:5px;	!* 四角圆弧 *! border-color: #329bf6;	!* 边框色 *! padding:0; padding-top: 5px; }*/
+        /*.messager-window .panel-header .panel-title{ color:#fff;	!* 标题文字颜色 *! }*/
+
+        .mgs_cls {
+            border: none;
+        }
+
+        .msg_body_cls {
+            background-color: #fffa90;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+            font-family: 楷体;
+        }
+
+        td.details-control {
+            background: url('images/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+
+        tr.shown td.details-control {
+            background: url('images/details_close.png') no-repeat center center;
+        }
+
+        div.toolbar1 {
+            display: inline;
+        }
+    </style>
+
+
+</head>
+<body class="easyui-layout">
+<div data-options="region:'north', border:false" style="height:80px; overflow-y: hidden;overflow-x: hidden">
+    <div style="height:76px; margin:0 auto;  width:998px; border:1px solid  #95B8E7; ">
+        <div style="text-align: left; margin:0 0; overflow:no-display">
+            <div style="float:left; margin-top:50px;">你好，JIM（系统管理员），今天是2018年10月12日。</div>
+            <div style="float:left; margin-left:20px; margin-top:50px;">退出登录</div>
+        </div>
+    </div>
+
+
+</div>
+<div data-options="region:'center', border:false" style="height:100px;overflow-y: hidden;overflow-x: hidden">
+    <div id="mainTab" style="width:1000px; margin:0 auto; height:100%;" class="easyui-tabs"
+         data-options="justified: false, tabPosition: 'left', headerWidth: 150, tabHeight: 30,onSelect:on_main_tab_select, onUnselect:on_main_tab_unselect ">
+        <div title="新开销售单" style="padding:4px 4px; border:none;">
+            <form id="ff" method="post" enctype="multipart/form-data">
+
+                <table class="bill_table" style="border:0px solid red;">
+                    <tr>
+                        <td style="text-align: center; padding:10px;"><span
+                                style="font-size:26px;">苏州元斌塑胶科技有限公司 销售单</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="bill_customer_table">
+                                <tr>
+                                    <td>客户名称：<select id="cg" class="easyui-combogrid customer_combobox" name="dept"
+
+                                                     data-options="
+                                                panelWidth:450,
+                                                value:'006',
+                                                idField:'id',
+                                                textField:'addr',
+                                                onShowPanel:showPanel,
+                                                data:[],
+                                                columns:[[
+                                                     {field:'id',title:'ID',hidden:true,width:60},
+
+                                                    {field:'code',title:'省份',width:60},
+                                                    {field:'name',title:'城市',width:100},
+                                                    {field:'addr',title:'名称',width:120}
+                                                ]]
+                                            "></select></td>
+                                    <td>送货日期：<input class="easyui-datebox sale_date" labelPosition="top"
+                                    >
+
+                                    </td>
+                                    <td>销售单号：<span id="sale_No" style="font-weight:bold;">20181012001</span></td>
+                                </tr>
+                                <tr>
+                                    <td>送货地址：<input name="email" class="customer_address easyui-textbox"></input></td>
+                                    <td>联&nbsp;&nbsp;系&nbsp;&nbsp;人：<input name="n"
+                                                                           class="principal easyui-textbox"></input>
+                                    </td>
+                                    <td>联系电话：<input class="telephone easyui-textbox"></input></td>
+                                </tr>
+                            </table>
+                        </td>
+                    <tr>
+                        <td>
+                            <table class="bill_product_table">
+                                <tr>
+                                    <th>品名规格</th>
+                                    <th>单位</th>
+                                    <th>数量</th>
+                                    <th>单价</th>
+                                    <th>金额</th>
+                                    <th>备注</th>
+                                </tr>
+                                <tr>
+                                    <td class=""><select class="product_name easyui-combobox " name="state">
+                                        <option value="AL">Alabama</option>
+                                    </select></td>
+                                    <td class=""><input class="product_units easyui-textbox"></input></td>
+                                    <td class=""><input class="product_num easyui-textbox"></input></td>
+                                    <td class=""><input class="product_price easyui-textbox"></input></td>
+                                    <td class=""><input class="product_sum easyui-textbox"></input></td>
+                                    <td class=""><input class="product_memo easyui-textbox"></input></td>
+                                </tr>
+
+                                <tr>
+                                    <td class=""><select class="product_name easyui-combobox " name="state">
+                                        <option value="AL">Alabama</option>
+                                    </select></td>
+                                    <td class=""><input class="product_units easyui-textbox"></input></td>
+                                    <td class=""><input class="product_num easyui-textbox"></input></td>
+                                    <td class=""><input class="product_price easyui-textbox"></input></td>
+                                    <td class=""><input class="product_sum easyui-textbox"></input></td>
+                                    <td class=""><input class="product_memo easyui-textbox"></input></td>
+                                </tr>
+                                <tr>
+                                    <td class=""><select class="product_name easyui-combobox " name="state">
+                                        <option value="AL">Alabama</option>
+                                    </select></td>
+                                    <td class=""><input class="product_units easyui-textbox"></input></td>
+                                    <td class=""><input class="product_num easyui-textbox"></input></td>
+                                    <td class=""><input class="product_price easyui-textbox"></input></td>
+                                    <td class=""><input class="product_sum easyui-textbox"></input></td>
+                                    <td class=""><input class="product_memo easyui-textbox"></input></td>
+                                </tr>
+                                <tr>
+                                    <td class=""><select class="product_name easyui-combobox " name="state">
+                                        <option value="AL">Alabama</option>
+                                    </select></td>
+                                    <td class=""><input class="product_units easyui-textbox"></input></td>
+                                    <td class=""><input class="product_num easyui-textbox"></input></td>
+                                    <td class=""><input class="product_price easyui-textbox"></input></td>
+                                    <td class=""><input class="product_sum easyui-textbox"></input></td>
+                                    <td class=""><input class="product_memo easyui-textbox"></input></td>
+                                </tr>
+
+
+                                <tr>
+                                    <td colspan="6" style="text-align: right;font-weight: bold;">合计金额：
+                                        <span id="product_total_sum" style="margin-right: 20%;"></span>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="bill_user_table">
+                                <td>制单人：<input class="f1 easyui-textbox"></input></td>
+                                <td>送货司机：<select class="easyui-combobox" name="state1"
+                                                 style="width:150px;"></select></td>
+                                <td>签收人：<input class="f1 easyui-textbox" disabled></input></td>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="text-align: right; padding:20px">
+                            <a href="#" style="width:100px;" class="easyui-linkbutton"
+                               data-options="iconCls:'icon-save'">保存</a>
+                        </td>
+                    </tr>
+
+                </table>
+            </form>
+            <div style="padding:30px; text-align: right">
+            </div>
+        </div>
+        <div title="销售单查询" style="padding:4px 4px;  border:none;"></div>
+        <div title="客户管理" style="padding:4px 4px; border:none;">
+            <!--<table id="customer_grid"></table>-->
+            <table id="customer_grid" class="display" style="width:100%">
+            </table>
+
+            <script type="text/javascript">
+                var dataSet = [
+                    {
+                        _id: '1234567司',
+                        name: '常州长明塑料配件有限公司',
+                        principal: '陈步郎',
+                        phone: '13813851111',
+                        city: '江苏省-常州市',
+                        address: '常州新北区小河庙边村'
+                    }]
+
+                /* Formatting function for row details - modify as you need */
+                function format(d) {
+                    // `d` is the original data object for the row
+                    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+                        '<tr>' +
+                        '<td>Full name:</td>' +
+                        '<td>' + d.name + '</td>' +
+                        '</tr>' +
+                        '<tr>' +
+                        '<td>Extension number:</td>' +
+                        '<td>' + d.extn + '</td>' +
+                        '</tr>' +
+                        '<tr>' +
+                        '<td>Extra info:</td>' +
+                        '<td>And any further details here (images etc)...</td>' +
+                        '</tr>' +
+                        '</table>';
+                }
+
+                $(document).ready(function () {
+                    //
+
+
+                });
+
+
+                /*   $(function () {
+                       $('#customer_grid').datagrid({
+                           view: detailview,
+                           fitColumns: true,
+                           rownumbers: true,
+                           fit: true,
+                           animate: true,
+                           collapsible: false,
+                           singleSelect: true,
+                           columns: [[
+                               {field: 'c_id', title: 'id', hidden:true,width: 10},
+                               {field: 'c_name', title: '客户', width: 180},
+                               {field: 'c_principal', title: '联系人', width: 50},
+                               {field: 'c_phone', title: '电话', width: 70},
+                               {field: 'c_region', title: '地区', width: 70},
+                               {field: 'c_address', title: '地址', width: 180}
+                           ]],
+                           data: [
+                               {
+                                   c_id: '1234567司',
+                                   c_name: '常州长明塑料配件有限公司',
+                                   c_principal: '陈步郎',
+                                   c_phone: '13813851111',
+                                   c_region: '江苏省-常州市',
+                                   c_address: '常州新北区小河庙边村'
+                               }
+                           ],
+                           detailFormatter: function (index, row) {
+                               return '<div style="padding:2px;position:relative;"><table class="ddv"></table></div>';
+                           },
+                           onExpandRow: function (index, row) {
+                               alert(row.c_id)
+                               var ddv = $(this).datagrid('getRowDetail', index).find('table.ddv');
+                               ddv.datagrid({
+                                   fitColumns: true,
+                                   border: false,
+                                   singleSelect: true,
+                                   foreignField: 'c_id',
+                                   columns: [[
+                                       {field: 'p_name', title: '产品名称', width: 180},
+                                       {field: 'p_modal', title: '型号', width: 50},
+                                       {field: 'p_units', title: '单位', width: 70},
+                                       {field: 'p_price', title: '单价', width: 70},
+                                       {field: 'p_memo', title: '描述', width: 180}
+                                   ]],
+                                   data: getCustomerProducts(row),
+                                   onResize: function () {
+                                       $('#dg').datagrid('fixDetailRowHeight', index);
+                                   },
+                                   onLoadSuccess: function () {
+                                       setTimeout(function () {
+                                           $('#dg').datagrid('fixDetailRowHeight', index);
+                                       }, 0);
+                                   }
+                               });
+                               $('#customer_grid').datagrid('fixDetailRowHeight', index);
+                           }
+                       });
+                   });
+   */
+
+                /*  function getCustomerProducts(row) {
+
+                      return [
+                          {p_name: '聚丙烯', p_modal: 'PP+EPDM=T20', p_units: '公斤', p_price: 8.5, p_memo: '常用保险杠料'}
+                      ]
+                  }
+
+                  function formatProgress(value) {
+                      if (value) {
+                          var s = '<div style="width:100%;border:1px solid #ccc">' +
+                              '<div style="width:' + value + '%;background:#cc0000;color:#fff">' + value + '%' + '</div>'
+                          '</div>';
+                          return s;
+                      } else {
+                          return '';
+                      }
+                  }*/
+
+                var editingId;
+
+                function edit() {
+                    if (editingId != undefined) {
+                        $('#tg').treegrid('select', editingId);
+                        return;
+                    }
+                    var row = $('#tg').treegrid('getSelected');
+                    if (row) {
+                        editingId = row.id
+                        $('#tg').treegrid('beginEdit', editingId);
+                    }
+                }
+
+                function save() {
+                    if (editingId != undefined) {
+                        var t = $('#tg');
+                        t.treegrid('endEdit', editingId);
+                        editingId = undefined;
+                        var persons = 0;
+                        var rows = t.treegrid('getChildren');
+                        for (var i = 0; i < rows.length; i++) {
+                            var p = parseInt(rows[i].persons);
+                            if (!isNaN(p)) {
+                                persons += p;
+                            }
+                        }
+                        var frow = t.treegrid('getFooterRows')[0];
+                        frow.persons = persons;
+                        t.treegrid('reloadFooter');
+                    }
+                }
+
+                function cancel() {
+                    if (editingId != undefined) {
+                        $('#tg').treegrid('cancelEdit', editingId);
+                        editingId = undefined;
+                    }
+                }
+            </script>
+        </div>
+
+
+        <div title="地区管理" style="padding: 4px 4px; ">    <!--border:1px solid #95B8E7-->
+            <div class="easyui-panel" title="使用功能按钮对地区进行添加、修改、删除操作。请点击保存使操作生效。" data-options="fit:true"
+                 style="background:#fafafa; padding:0px; ">
+                <div style="height:30px;border-bottom:1px solid #ddd;padding:1px 2px; margin:0px; background-color: #efefef">
+                    <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit'"
+                       onclick="show_region_form('edit')">编辑</a>
+                    <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'"
+                       onclick="show_region_form('add')">新增</a>
+                    <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'"
+                       onclick="show_region_form('delete')">删除</a>
+                </div>
+
+                <ul id="region_tree" style="background-color:#fff;" data-options=""></ul>
+            </div>
+        </div>
+        <div title="用户管理" style="padding:4px 4px; ">
+            <table id="sys_user_datagrid" title="系统用户—使用功能按钮对系统用户进行添加、修改、删除操作。" data-options="rownumbers: true">
+                <thead>
+                <tr>
+                    <th data-options="field:'_id',width:100,hidden:true">ID</th>
+                    <th data-options="field:'name',width:100">用户名</th>
+                    <th data-options="field:'role',width:100">角色</th>
+                    <th data-options="field:'disabled', width:80,align:'right',formatter: function(value,row,index){
+				if (row.disabled){
+					return '<span style=\'color:red\'>禁用</span>';
+				} else {
+					return '可用';
+				}
+			}">状态
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div title="我的信息" style="padding:4px">
+            <div id="ttt" class="easyui-tabs" data-options="fit:true" style="height:300px;">
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <div id="customer_win_page"></div>
+    <div id="region_win_page"></div>
+    <div id="user_win_page"></div>
+    <script>
+        $("#customer_win_page").load("customer_win_form.html");
+        $("#region_win_page").load("region_win_form.html");
+        $("#user_win_page").load("user_win_form.html");
+    </script>
+</div>
+
+<div data-options="region:'south', border:false" style="text-align: center">
+    <div style="width:998px; border:1px solid #95B8E7; margin:0 auto;background-color:#95B8cc">
+        Copyright&copy; <span>苏州元斌塑胶科技有限公司</span>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    $(function () {
+        init();
+
+        load_user_datagrid()
+    });
+
+    function addItem() {
+        $('#cc').layout('panel', 'center').append('<p>More Panel Content.</p>');
+        setHeight();
+
+
+    }
+
+    function removeItem() {
+        $('#cc').layout('panel', 'center').find('p:last').remove();
+        setHeight();
+    }
+
+    function setHeight() {
+        var c = $('#cc');
+        var p = c.layout('panel', 'center');    // get the center panel
+        var oldHeight = p.panel('panel').outerHeight();
+        p.panel('resize', {height: 'auto'});
+        var newHeight = p.panel('panel').outerHeight();
+        c.layout('resize', {
+            height: (c.height() + newHeight - oldHeight)
+        });
+    }
+
+
+</script>
+
+
+</body>
+</html>
