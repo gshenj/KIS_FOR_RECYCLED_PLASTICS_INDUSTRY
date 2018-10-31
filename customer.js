@@ -144,7 +144,7 @@ function show_customer_win_form(type, row_data) {
     CUSTOMER_OPERATOR_TYPE = type
     if (type == 'add') {
         $('#customer_name').textbox("setValue", '').textbox("readonly", false)
-        $('#customer_region').combotree('setValue').combotree('readonly', false)
+        $('#customer_region').combotree('setValue', {text:"", id:""}).combotree('readonly', false)
         $('#customer_principal').textbox('setValue', '').textbox("readonly", false)
         $('#customer_phone').textbox('setValue', '').textbox("readonly", false)
         $('#customer_address').textbox('setValue', '').textbox("readonly", false)
@@ -154,7 +154,7 @@ function show_customer_win_form(type, row_data) {
 
         $('#customer_id').val(row_data._id);
         $('#customer_name').textbox("setValue", row_data.name).textbox("readonly", false)
-        $('#customer_region').combotree('setValue', row_data.city).combotree('setText', row_data.city).combotree('readonly', false)
+        $('#customer_region').combotree('setValue', {text:row_data.city, id:row_data.city}).combotree('readonly', false)
         $('#customer_principal').textbox('setValue', row_data.principal).textbox("readonly", false)
         $('#customer_phone').textbox('setValue', row_data.phone).textbox("readonly", false)
         $('#customer_address').textbox('setValue', row_data.address).textbox("readonly", false)
@@ -164,7 +164,7 @@ function show_customer_win_form(type, row_data) {
 
         $('#customer_id').val(row_data._id);
         $('#customer_name').textbox("setValue", row_data.name).textbox("readonly", true)
-        $('#customer_region').combotree('setValue', row_data.city).combotree('setText', row_data.city).combotree('readonly', true)
+        $('#customer_region').combotree('setValue', {text:row_data.city, id:row_data.city}).combotree('setText', row_data.city).combotree('readonly', true)
         $('#customer_principal').textbox('setValue', row_data.principal).textbox("readonly", true)
         $('#customer_phone').textbox('setValue', row_data.phone).textbox("readonly", true)
         $('#customer_address').textbox('setValue', row_data.address).textbox("readonly", true)
@@ -187,27 +187,35 @@ let CUSTOMER_OPERATOR_TYPE = ''
 
 function customer_operator() {
     if (CUSTOMER_OPERATOR_TYPE == 'add') {
+
+        if (!accept()){
+            alert('产品数据输入有误！')
+            return;
+        }
+
         let customerModel = new mongoose.CustomerModel()
         customerModel.name = $('#customer_name').textbox("getValue")
         customerModel.city = $('#customer_region').combotree('getValue')
+        let tree = $('#customer_region').combotree('tree');
+        let cityNode = tree.tree('getSelected')
+        let provinceNode = tree.tree('getParent', cityNode.target)
+        customerModel.province = provinceNode.text
+
         customerModel.principal = $('#customer_principal').textbox('getValue')
         customerModel.phone = $('#customer_phone').textbox('getValue')
         customerModel.address = $('#customer_address').textbox('getValue')
         customerModel.products = PRODUCT_GRID.datagrid('getData').rows
-        console.log(JSON.stringify(customerModel))
-        customerModel.save(function (err) {
+        console.log("新增客户：" + JSON.stringify(customerModel))
+        customerModel.save({validateBeforeSave: false}, function (err) {
             if (err) return handleError(err)
             else {
                 show_messager('操作成功： 客户已添加！')
-
-
                 load_customer_grid(function () {
                     CUSTOMER_GRID.rows(function (idx, data, node) {
                         return data.name === customerModel.name ?
                             true : false;
                     }).select()
                 })
-
 
                 close_customer_win_form()
             }
@@ -232,7 +240,7 @@ function customer_operator() {
             customer.phone = $('#customer_phone').textbox('getValue')
             customer.address = $('#customer_address').textbox('getValue')
             customer.products = PRODUCT_GRID.datagrid('getData').rows
-            console.log("Edit new :"+JSON.stringify(customer))
+            console.log("编辑后客户信息："+JSON.stringify(customer))
             customer.save({validateBeforeSave: false}, function (err) {    //{validateBeforeSave: false}很重要
                 if (err) return handleError(err)
                 else {

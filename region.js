@@ -140,13 +140,13 @@ function model_to_tree(model) {
         let cities = provinces[i].cities;
         let cityChildren = [];
         for (let j = 0; j < cities.length; j++) {
-            cityChildren.push({text: cities[j]});
+            cityChildren.push({text: cities[j], id:cities[j], type:'city'});
         }
-        let v = {text: provinces[i].province, children: cityChildren};
+        let v = {text: provinces[i].province, id:provinces[i].province, type:'province', children: cityChildren};
         provinceChildren.push(v)
     }
 
-    let treeData = [{text: model.region, children: provinceChildren}];
+    let treeData = [{text: model.region, children: provinceChildren, type:'country'}];
     return treeData;
 
 }

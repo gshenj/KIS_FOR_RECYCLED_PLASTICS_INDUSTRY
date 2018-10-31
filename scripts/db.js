@@ -21,7 +21,7 @@ var userSchema = new Schema({role:String, name:String, disabled:Boolean, passwor
 
 
 var product = {name:String, modal:String, price:Number, units:String, memo:String };
-var productSchema = new Schema(product/*,{_id:false}*/);          //product不生成_id字段
+var productSchema = new Schema(product,{_id:false});          //product不生成_id字段
 
 var customer ={
     name:String,
