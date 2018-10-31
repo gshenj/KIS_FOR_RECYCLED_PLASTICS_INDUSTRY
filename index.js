@@ -25,11 +25,12 @@ app.on('ready', function() {
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 1200,
    height: 800,
-      autoHideMenuBar:true
+      autoHideMenuBar:true,
+      frame:false
   });
 
   // and load the index.html of the app.
-  mainWindow.loadURL('file://' + __dirname + '/index.html');
+  mainWindow.loadURL('file://' + __dirname + '/index1.html');
 
   // Open the devtools.
   //mainWindow.webContents.openDevTools();
