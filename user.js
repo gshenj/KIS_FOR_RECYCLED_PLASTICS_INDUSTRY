@@ -1,5 +1,5 @@
 mongoose = require("./scripts/db")
-USER_GRID = null;
+let USER_GRID = null;
 let INIT_PASS = "123";
 let SYS_USER_OPERATOR = '';
 

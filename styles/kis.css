@@ -1,0 +1,141 @@
+.bill_table {
+    border-collapse: collapse;
+    border: 0px solid gray;
+    width: 810px;
+    margin-top: 0pt;
+    table-layout: fixed;
+
+}
+
+.bill_table td {
+    padding: 10px 0px;
+    vertical-align: middle;
+}
+
+.bill_customer_table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #aaa;
+}
+
+.bill_customer_table td {
+    text-align: left;
+    padding: 4px 0.5% 4px 0.5%;
+    height: 32px;
+    vertical-align: middle;
+    border: 1px solid #aaa;
+    /*background-color:#eee;*/
+}
+
+.bill_product_table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #aaa;
+}
+
+.bill_product_table th {
+    text-align: center;
+    border: 1px solid #aaa;
+    padding: 20px auto;
+    height: 40px;
+}
+
+.bill_product_table td {
+    text-align: left;
+    padding: 4px 0.5% 4px 0.5%;
+    height: 32px;
+    vertical-align: middle;
+    border: 1px solid #aaa;
+    /*background-color:#eee;*/
+}
+
+.bill_user_table {
+    border-collapse: collapse;
+    border: 1px solid #aaa;
+    width: 100%;
+}
+
+.bill_user_table td {
+    text-align: left;
+    padding: 4px 0.5% 4px 0.5%;
+    height: 32px;
+    vertical-align: middle;
+    border: 1px solid #aaa;
+}
+
+.customer_combobox {
+    width: 304px;
+}
+
+.customer_address {
+    width: 300px;
+}
+
+.sale_date {
+    width: 120px;
+}
+
+.principal {
+    width: 120px;
+}
+
+.telephone {
+    width: 120px;
+}
+
+.product_name {
+    width: 250px;
+}
+
+.product_units {
+    width: 60px;
+}
+
+.product_price {
+    width: 70px;
+}
+
+.product_num {
+    width: 80px;
+}
+
+.product_sum {
+    width: 90px;
+}
+
+.product_memo {
+    width: 180px;
+}
+
+.messager-body {
+    padding: 10px 10px 10px 10px;
+    overflow: auto;
+}
+
+/*.panel .window .messager-window{ background-color: #329bf6;	!* 背景色 *! border-radius:5px;	!* 四角圆弧 *! border-color: #329bf6;	!* 边框色 *! padding:0; padding-top: 5px; }*/
+/*.messager-window .panel-header .panel-title{ color:#fff;	!* 标题文字颜色 *! }*/
+
+.mgs_cls {
+    border: none;
+}
+
+.msg_body_cls {
+    background-color: #fffa90;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    font-family: 楷体;
+}
+
+td.details-control {
+    background: url('images/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+
+tr.shown td.details-control {
+    background: url('images/details_close.png') no-repeat center center;
+}
+
+div.toolbar1 {
+    display: inline;
+}
