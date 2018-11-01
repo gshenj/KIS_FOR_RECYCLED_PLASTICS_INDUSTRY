@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>苏州元斌塑胶科技有限公司 KIS v1.0.0 </title>
     <script>if (typeof module === 'object') {
         window.module = module;
         module = undefined;
@@ -24,54 +24,165 @@
     <script type="text/javascript" src="./scripts/DataTables/datatables.js"></script>
 
 
+    <script type="text/javascript" src="./user.js"></script>
+
+
     <style type="text/css">
         * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
             margin:0;
             padding:0;
         }
+
+
+
     </style>
+
+    <script>
+        function show_customer_manage(src){
+           // $(src).linkbutton('disable')
+            $('.OPT_PANEL').panel('close')
+
+        }
+
+        function show_user_manage(src) {
+            $('.OPT_PANEL').panel('open')
+            load_user_datagrid()
+            //$('.sys_user_manage').hide()
+           // $('#sys_user_manage').layout('doLayout');
+            //$('#main_content').attr('src', 'sys_user.html')
+           // const webview = document.querySelector('webview')
+            //webview.loadURL('file://' + __dirname + '/sys_user.html')
+        }
+    </script>
 </head>
-<body style="-webkit-app-region: drag">
+<body class="easyui-layout" data-options="border:false" style="-webkit-app-region: drag; padding:0; margin:0;overflow-y: hidden;overflow-x: hidden">
 
-    <div class="easyui-panel" style="padding:0px; background-color: #efefef; width:100%; height:24px;" data-options="border:false">
-        <a href="#" class="easyui-linkbutton" data-options="plain:true" style="height:24px;-webkit-app-region: no-drag">Home</a>
-        <a href="#" class="easyui-menubutton" data-options="menu:'#mm1',showEvent:'click',  iconCls:'icon-edit'" style="height:24px;-webkit-app-region: no-drag">Edit</a>
+<div data-options="region:'north',split:false, border:false" style="height:100px;width:100%; margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
 
+    <div id="tt" class="easyui-tabs" data-options="tools:'#tab-tools', border:false" style="width:100%;height:100px; padding:0; margin:0;">
+        <div title="送货单管理" data-options="iconCls:'icon-reload'" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+	padding:4px; -webkit-user-select: none; ">
+            <a class="easyui-linkbutton"  style="-webkit-user-select: none;"
+               data-options="plain:true, iconCls:'icon-large-smartart', iconAlign:'top'">单据填开</a>
+            <a class="easyui-linkbutton" style="-webkit-user-select: none;"
+               data-options="plain:true, iconCls:'icon-large-clipart', iconAlign:'top'">单据查询</a>
+            <a class="easyui-linkbutton" style="-webkit-user-select: none;"
+               data-options="plain:true, iconCls:'icon-large-chart', iconAlign:'top'">统计报表</a>
+            <a class="easyui-linkbutton" style="float:right; -webkit-user-select: none;"
+               data-options="plain:true,iconCls:'icon-large-clipart',  iconAlign:'top'">&nbsp;&nbsp;&nbsp;&nbsp;关闭&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+        <div title="资料管理" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+	padding:4px;">
+            <a class="easyui-linkbutton" onclick="show_customer_manage(this)"
+               data-options="plain:true, iconCls:'icon-large-smartart', size:'large',iconAlign:'top'">客户管理</a>
 
+            <a class="easyui-linkbutton" onclick="$('#main_content').attr('src', 'index2.html')"
+               data-options="plain:true, iconCls:'icon-large-smartart', size:'large',iconAlign:'top'">产品管理</a>
+
+            <a class="easyui-linkbutton"
+               data-options="plain:true, iconCls:'icon-large-smartart', size:'large',iconAlign:'top'">其他资料</a>
+
+            <a class="easyui-linkbutton" style="float:right;"
+               data-options="plain:true,iconCls:'icon-large-clipart',  size:'large',iconAlign:'top'">&nbsp;&nbsp;&nbsp;&nbsp;关闭&nbsp;&nbsp;&nbsp;&nbsp;</a>
+
+        </div>
+        <div title="系统设置" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+	padding:4px;">
+            <a class="easyui-linkbutton"  onclick="show_user_manage()"
+               data-options="plain:true, iconCls:'icon-large-smartart', size:'large',iconAlign:'top'">用户管理</a>
+            <a class="easyui-linkbutton" style="float:right;"
+               data-options="plain:true,iconCls:'icon-large-clipart',  size:'large',iconAlign:'top'">&nbsp;&nbsp;&nbsp;&nbsp;关闭&nbsp;&nbsp;&nbsp;&nbsp;</a>
+
+        </div>
+        <div title="用户设置" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+	padding:4px;">
+            <a class="easyui-linkbutton"
+               data-options="plain:true, iconCls:'icon-large-smartart', size:'large',iconAlign:'top'">用户管理</a>
+            <a class="easyui-linkbutton" style="float:right;"
+               data-options="plain:true,iconCls:'icon-large-clipart',  size:'large',iconAlign:'top'">&nbsp;&nbsp;&nbsp;&nbsp;关闭&nbsp;&nbsp;&nbsp;&nbsp;</a>
+
+        </div>
     </div>
-    <div id="mm1" style="width:150px;">
-        <div data-options="iconCls:'icon-undo'">Undo</div>
-        <div data-options="iconCls:'icon-redo'">Redo</div>
-        <div class="menu-sep"></div>
-        <div>Cut</div>
-        <div>Copy</div>
-        <div>Paste</div>
-        <div class="menu-sep"></div>
-        <div>
-            <span>Toolbar</span>
-            <div>
-                <div>Address</div>
-                <div>Link</div>
-                <div>Navigation Toolbar</div>
-                <div>Bookmark Toolbar</div>
-                <div class="menu-sep"></div>
-                <div>New Toolbar...</div>
+    <div id="tab-tools" style="border:none;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'"
+           onclick="addPanel()"></a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'"
+           onclick="removePanel()"></a>
+    </div>
+
+
+</div>
+<!--<div data-options="region:'south',split:true" style="height:100px;"></div>-->
+<!--<div data-options="region:'west',split:true" style="width:100px;"></div>-->
+<div data-options="region:'center', border:false" style="margin:0;padding:0px;background:#eee;overflow-y: hidden;overflow-x: hidden">
+    <!--<iframe id="main_content" src="index.html" style="border:none; width:100%; height:100%;"></iframe>-->
+
+
+    <div id="user_manage_panel" class="easyui-panel OPT_PANEL" style="width:100%; height:100%; "
+         data-options="iconCls:'icon-save',closable:true, fit:true, closed:true" >
+        <div class="easyui-layout" id="sys_user_manage" data-options="fit:true">
+            <div data-options="region:'west'" style="width:180px; padding:4px;">
+                <ul class="easyui-tree" data-options="lines:true">
+                    <li>
+                        <span>系统角色</span>
+                        <ul>
+                            <li><span><a href="#">管理员</a></span></li>
+                            <li><span><a href="#">操作员</a></span></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div data-options="region:'center'" style="padding:4px;">
+                <table id="sys_user_datagrid"  data-options="rownumbers: true">
+                    <thead>
+                    <tr>
+                        <th data-options="field:'_id',width:100,hidden:true">ID</th>
+                        <th data-options="field:'name',width:100">用户名</th>
+                        <th data-options="field:'role',width:100">角色</th>
+                        <th data-options="field:'disabled', width:80,align:'right',formatter: function(value,row,index){
+				if (row.disabled){
+					return '<span style=\'color:red\'>禁用</span>';
+				} else {
+					return '可用';
+				}
+			}">状态
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
             </div>
         </div>
-        <div data-options="iconCls:'icon-remove'">Delete</div>
-        <div>Select All</div>
+
     </div>
 
 
-    <div style="text-align:left; height:50px;border-bottom:1px solid #ddd;padding:1px 2px; margin:0px; width:100%; background-color: #efefef">
-        <a href="#" class="easyui-linkbutton" data-options="plain:true, height:50, iconCls:'icon-edit'"
-           onclick="show_region_form('edit')">编辑</a>
-        <a href="#" class="easyui-linkbutton" data-options="plain:true,height:50,iconCls:'icon-add'"
-           onclick="show_region_form('add')">新增</a>
-        <a href="#" class="easyui-linkbutton" data-options="plain:true,height:50, iconCls:'icon-remove'"
-           onclick="show_region_form('delete')">删除</a>
-    </div>
+</div>
 
 
+<script type="text/javascript">
+    var index = 0;
+
+    function addPanel() {
+        index++;
+        $('#tt').tabs('add', {
+            title: 'Tab' + index,
+            content: '<div style="padding:10px">Content' + index + '</div>',
+            closable: true
+        });
+    }
+
+    function removePanel() {
+        var tab = $('#tt').tabs('getSelected');
+        if (tab) {
+            var index = $('#tt').tabs('getTabIndex', tab);
+            $('#tt').tabs('close', index);
+        }
+    }
+</script>
 </body>
 </html>
