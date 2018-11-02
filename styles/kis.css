@@ -128,14 +128,20 @@
 }
 
 td.details-control {
-    background: url('images/details_open.png') no-repeat center center;
+    background: url('../images/details_open.png') no-repeat center center;
     cursor: pointer;
 }
 
 tr.shown td.details-control {
-    background: url('images/details_close.png') no-repeat center center;
+    background: url('../images/details_close.png') no-repeat center center;
 }
 
 div.toolbar1 {
     display: inline;
+}
+
+
+
+.icon-lorry{
+    background:url('../images/3d_lorry.png') no-repeat center center;
 }

@@ -23,8 +23,8 @@ var session = {};
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 950,
-   height: 700,
+  mainWindow = new BrowserWindow({width: 1000,
+   height: 750,
       autoHideMenuBar:true//,
       //frame:false
   });

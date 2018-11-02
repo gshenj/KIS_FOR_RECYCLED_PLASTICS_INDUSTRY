@@ -7,6 +7,9 @@
         window.module = module;
         module = undefined;
     }
+
+
+    let DOCUMENT_TITLE = document.title;
     </script>
     <!-- normal script imports etc  -->
     <script src="./scripts/jquery-3.3.1.js"></script>
@@ -47,45 +50,68 @@
     <script>
 
 
-        function show_order_input() {
+        function set_tool_butoon_status(click_src) {
+            $('.tool_button').linkbutton('enable')
+            $(click_src).linkbutton('disable')
+            document.title = DOCUMENT_TITLE + '　──　'+$(click_src).linkbutton('options').text +''
+        }
+
+        function show_order_input(src) {
             hide_others()
             $('#order_input_panel').panel('open').panel('resize')
             $('#main_layout').layout('resize')
             // load_customer_grid();
-            $('#order_input_toolbar').show()
+           // $('#order_input_toolbar').show()
+
+            set_tool_butoon_status(src)
+
         }
 
-        function show_orders_list() {
+        function show_orders_list(src) {
             hide_others()
             $('#orders_grid_panel').panel('open').panel('resize')
             $('#main_layout').layout('resize')
             // load_customer_grid();
+
+            set_tool_butoon_status(src)
+
         }
 
-        function show_customer_manage() {
+
+        function show_orders_chart(src) {
+
+            set_tool_butoon_status(src)
+        }
+
+        function show_customer_manage(src) {
             hide_others()
             $('#customer_manage_panel').panel('open').panel('resize')
             $('#main_layout').layout('resize')
             load_customer_grid();
+            set_tool_butoon_status(src)
         }
 
-        function show_product_manage() {
+        function show_product_manage(src) {
             hide_others()
             $('#product_manage_panel').panel('open').panel('resize')
             $('#main_layout').layout('resize')
             //load_customer_grid();
+            set_tool_butoon_status(src)
         }
 
-        function show_user_manage() {
+        function show_user_manage(src) {
             hide_others()
             $('#user_manage_panel').panel('open').panel('resize')
             $('#main_layout').layout('resize')
             load_user_datagrid()
+            set_tool_butoon_status(src)
         }
+
+
 
         function hide_others() {
             $('.opt_panel').panel('close')
-            $('.page_toolbar').hide()
+           // $('.page_toolbar').hide()
         }
     </script>
 </head>
@@ -93,21 +119,21 @@
       style="-webkit-app-region: drag; padding:0; margin:0;overflow-y: hidden;overflow-x: hidden">
 
 <div data-options="region:'north',split:false, border:false"
-     style="height:100px;width:100%; margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
+     style="height:106px;width:100%; margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
 
     <div id="tt" class="easyui-tabs" data-options="tools:'#tab-tools', border:false"
-         style="width:100%;height:100px; padding:0; margin:0;">
-        <div title="送货单管理" data-options="iconCls:'icon-reload'" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+         style="width:100%;height:106px; padding:0; margin:0;">
+        <div title="送货单管理" data-options="iconCls:'icon-reload', border:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:4px;  -webkit-user-select: none; ">
-            <div style="float:left; width:60%; padding:6px 0 0 0">
-                        <a class="easyui-linkbutton" style="-webkit-user-select: none;" onclick="show_order_input()"
-                           data-options="plain:true, iconCls:'icon-large-smartart', iconAlign:'top'">单据填开</a>
-                        <a class="easyui-linkbutton" style="-webkit-user-select: none;" onclick="show_orders_list()"
+            <div style="float:left; width:60%; padding:0px;">
+                        <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;" onclick="show_order_input(this)"
+                           data-options="plain:true, iconCls:'icon-large-smartart', size:'large', iconAlign:'top'">单据填开</a>
+                        <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;" onclick="show_orders_list(this)"
                            data-options="plain:true, iconCls:'icon-large-clipart', iconAlign:'top'">单据查询</a>
-                        <a class="easyui-linkbutton" style="-webkit-user-select: none;"
+                        <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;" onclick="show_orders_chart(this)"
                            data-options="plain:true, iconCls:'icon-large-chart', iconAlign:'top'">统计报表</a>
             </div>
-            <div id="order_input_toolbar" class="page_toolbar" style="display:none; float:right; padding:2px; border:1px solid #bbb; text-align:right;margin-top:22px;">
+<!--            <div id="order_input_toolbar" class="page_toolbar" style="display:none; float:right; padding:2px; border:1px solid #bbb; text-align:right;margin-top:28px; margin-right:40px;">
                 <a class="easyui-linkbutton" style=""
                    data-options="plain:true,iconCls:'icon-undo',iconAlign:'left'">重填</a>
 
@@ -117,28 +143,29 @@
                 <a class="easyui-linkbutton" style=""
                    data-options="plain:true,iconCls:'icon-remove',iconAlign:'left'">减行</a>
 
-                 <a class="easyui-linkbutton" style=""
-                           data-options="plain:true,iconCls:'icon-print',iconAlign:'left'">打印</a>
-            </div>
+                <a class="easyui-linkbutton" style=""
+                   data-options="plain:true,iconCls:'icon-print',iconAlign:'left'">打印</a>
+            </div>-->
         </div>
         <div title="资料管理" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:4px;">
-            <a class="easyui-linkbutton" onclick="show_customer_manage()"
+            <div style="float:left; width:60%; padding:0px;">
+            <a class="easyui-linkbutton tool_button" onclick="show_customer_manage(this)"
                data-options="plain:true, iconCls:'icon-large-smartart',iconAlign:'top'">客户管理</a>
 
-            <a class="easyui-linkbutton" onclick="show_product_manage()"
+            <a class="easyui-linkbutton tool_button" onclick="show_product_manage(this)"
                data-options="plain:true, iconCls:'icon-large-smartart', iconAlign:'top'">产品管理</a>
 
-            <a class="easyui-linkbutton"
-               data-options="plain:true, iconCls:'icon-large-smartart',iconAlign:'top'">司机管理</a>
-
+            <a class="easyui-linkbutton tool_button"
+               data-options="plain:true, iconCls:'icon-lorry',size:'large',iconAlign:'top'">司机管理</a>
+            </div>
 
         </div>
         <div title="系统设置" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:4px;">
-            <a class="easyui-linkbutton" onclick="show_user_manage()"
+            <a class="easyui-linkbutton tool_button" onclick="show_user_manage(this)"
                data-options="plain:true, iconCls:'icon-large-smartart',iconAlign:'top'">用户管理</a>
-            <a class="easyui-linkbutton"
+            <a class="easyui-linkbutton tool_button"
                data-options="plain:true, iconCls:'icon-large-smartart', iconAlign:'top'">系统参数</a>
         </div>
         <div title="我的账户" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
@@ -163,9 +190,34 @@
     <!--新开送货单-->
     <div id="order_input_panel" class="easyui-panel opt_panel"
          style="width:100%; height:100%; padding:0px 0px; background-color:#999; text-align:center; "
-         data-options="fit:true,closed:true">
-        <div style="padding:20px 20px; border:0px dashed gray; width:810px; background-color:#fff; margin:20px auto;">
-            <table class="bill_table">
+         data-options="fit:true,closed:true, border:false">
+
+
+
+        <div style="padding:0px 0px; border:0px solid red; width:850px;  margin:10px auto;  text-align:right;">
+            <div id="order_input_toolbar" style=" height:40px; line-height:40px; margin:0px auto 1px; background-color:#eee; padding:0px 10px; border:0px solid #bbb;  float:right;">
+                <span style="">
+                <a class="easyui-linkbutton" style=""
+                   data-options="plain:true,iconCls:'icon-undo',iconAlign:'left'">重填</a>
+
+                <a class="easyui-linkbutton" style=""
+                   data-options="plain:true,iconCls:'icon-add',iconAlign:'left'">增行</a>
+
+                <a class="easyui-linkbutton" style=""
+                   data-options="plain:true,iconCls:'icon-remove',iconAlign:'left'">减行</a>
+
+                <a class="easyui-linkbutton" style=""
+                   data-options="plain:true,iconCls:'icon-print',iconAlign:'left'">打印</a>
+                    </span>
+                <div style="clear:both; height:1px; line-height:1px"></div>
+            </div>
+
+        </div>
+
+        <div style="padding:20px 20px; border:0px dashed gray; width:810px; background-color:#fff; margin:0px auto ; clear:both;">
+
+
+            <table class="bill_table" >
                 <tr>
                     <td style="text-align: center; padding:10px;"><span
                             style="font-size:26px;">苏州元斌塑胶科技有限公司 销售单</span>
