@@ -48,38 +48,44 @@
 
 
         function show_order_input() {
-            $('.opt_panel').panel('close')
+            hide_others()
             $('#order_input_panel').panel('open').panel('resize')
             $('#main_layout').layout('resize')
-           // load_customer_grid();
+            // load_customer_grid();
+            $('#order_input_toolbar').show()
         }
 
         function show_orders_list() {
-            $('.opt_panel').panel('close')
+            hide_others()
             $('#orders_grid_panel').panel('open').panel('resize')
             $('#main_layout').layout('resize')
-           // load_customer_grid();
+            // load_customer_grid();
         }
 
         function show_customer_manage() {
-            $('.opt_panel').panel('close')
+            hide_others()
             $('#customer_manage_panel').panel('open').panel('resize')
             $('#main_layout').layout('resize')
             load_customer_grid();
         }
 
         function show_product_manage() {
-            $('.opt_panel').panel('close')
+            hide_others()
             $('#product_manage_panel').panel('open').panel('resize')
             $('#main_layout').layout('resize')
             //load_customer_grid();
         }
 
         function show_user_manage() {
-            $('.opt_panel').panel('close')
+            hide_others()
             $('#user_manage_panel').panel('open').panel('resize')
             $('#main_layout').layout('resize')
             load_user_datagrid()
+        }
+
+        function hide_others() {
+            $('.opt_panel').panel('close')
+            $('.page_toolbar').hide()
         }
     </script>
 </head>
@@ -92,42 +98,53 @@
     <div id="tt" class="easyui-tabs" data-options="tools:'#tab-tools', border:false"
          style="width:100%;height:100px; padding:0; margin:0;">
         <div title="送货单管理" data-options="iconCls:'icon-reload'" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
-	padding:4px; -webkit-user-select: none; ">
-            <a class="easyui-linkbutton" style="-webkit-user-select: none;"  onclick="show_order_input()"
-               data-options="plain:true, iconCls:'icon-large-smartart', iconAlign:'top'">单据填开</a>
-            <a class="easyui-linkbutton" style="-webkit-user-select: none;" onclick="show_orders_list()"
-               data-options="plain:true, iconCls:'icon-large-clipart', iconAlign:'top'">单据查询</a>
-            <a class="easyui-linkbutton" style="-webkit-user-select: none;"
-               data-options="plain:true, iconCls:'icon-large-chart', iconAlign:'top'">统计报表</a>
+	padding:4px;  -webkit-user-select: none; ">
+            <div style="float:left; width:60%; padding:6px 0 0 0">
+                        <a class="easyui-linkbutton" style="-webkit-user-select: none;" onclick="show_order_input()"
+                           data-options="plain:true, iconCls:'icon-large-smartart', iconAlign:'top'">单据填开</a>
+                        <a class="easyui-linkbutton" style="-webkit-user-select: none;" onclick="show_orders_list()"
+                           data-options="plain:true, iconCls:'icon-large-clipart', iconAlign:'top'">单据查询</a>
+                        <a class="easyui-linkbutton" style="-webkit-user-select: none;"
+                           data-options="plain:true, iconCls:'icon-large-chart', iconAlign:'top'">统计报表</a>
+            </div>
+            <div id="order_input_toolbar" class="page_toolbar" style="display:none; float:right; padding:2px; border:1px solid #bbb; text-align:right;margin-top:22px;">
+                <a class="easyui-linkbutton" style=""
+                   data-options="plain:true,iconCls:'icon-undo',iconAlign:'left'">重填</a>
 
+                <a class="easyui-linkbutton" style=""
+                   data-options="plain:true,iconCls:'icon-add',iconAlign:'left'">增行</a>
+
+                <a class="easyui-linkbutton" style=""
+                   data-options="plain:true,iconCls:'icon-remove',iconAlign:'left'">减行</a>
+
+                 <a class="easyui-linkbutton" style=""
+                           data-options="plain:true,iconCls:'icon-print',iconAlign:'left'">打印</a>
+            </div>
         </div>
         <div title="资料管理" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:4px;">
             <a class="easyui-linkbutton" onclick="show_customer_manage()"
-               data-options="plain:true, iconCls:'icon-large-smartart', size:'large',iconAlign:'top'">客户管理</a>
+               data-options="plain:true, iconCls:'icon-large-smartart',iconAlign:'top'">客户管理</a>
 
             <a class="easyui-linkbutton" onclick="show_product_manage()"
-               data-options="plain:true, iconCls:'icon-large-smartart', size:'large',iconAlign:'top'">产品管理</a>
+               data-options="plain:true, iconCls:'icon-large-smartart', iconAlign:'top'">产品管理</a>
 
             <a class="easyui-linkbutton"
-               data-options="plain:true, iconCls:'icon-large-smartart', size:'large',iconAlign:'top'">其他资料</a>
+               data-options="plain:true, iconCls:'icon-large-smartart',iconAlign:'top'">司机管理</a>
 
 
         </div>
         <div title="系统设置" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:4px;">
             <a class="easyui-linkbutton" onclick="show_user_manage()"
-               data-options="plain:true, iconCls:'icon-large-smartart', size:'large',iconAlign:'top'">用户管理</a>
-            <a class="easyui-linkbutton" style="float:right;"
-               data-options="plain:true,iconCls:'icon-large-clipart',  size:'large',iconAlign:'top'">&nbsp;&nbsp;&nbsp;&nbsp;关闭&nbsp;&nbsp;&nbsp;&nbsp;</a>
-
+               data-options="plain:true, iconCls:'icon-large-smartart',iconAlign:'top'">用户管理</a>
+            <a class="easyui-linkbutton"
+               data-options="plain:true, iconCls:'icon-large-smartart', iconAlign:'top'">系统参数</a>
         </div>
-        <div title="用户设置" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+        <div title="我的账户" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:4px;">
             <a class="easyui-linkbutton"
-               data-options="plain:true, iconCls:'icon-large-smartart', size:'large',iconAlign:'top'">用户管理</a>
-            <a class="easyui-linkbutton" style="float:right;"
-               data-options="plain:true,iconCls:'icon-large-clipart',  size:'large',iconAlign:'top'">&nbsp;&nbsp;&nbsp;&nbsp;关闭&nbsp;&nbsp;&nbsp;&nbsp;</a>
+               data-options="plain:true, iconCls:'icon-large-smartart',iconAlign:'top'">密码重置</a>
 
         </div>
     </div>
@@ -144,21 +161,23 @@
      style="margin:0;padding:0px;background:#eee;overflow-y: hidden;overflow-x: hidden">
 
     <!--新开送货单-->
-   <div id="order_input_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; padding:4px 50px; "
+    <div id="order_input_panel" class="easyui-panel opt_panel"
+         style="width:100%; height:100%; padding:0px 0px; background-color:#999; text-align:center; "
          data-options="fit:true,closed:true">
-         <table class="bill_table">
-            <tr>
-                <td style="text-align: center; padding:10px;"><span
-                        style="font-size:26px;">苏州元斌塑胶科技有限公司 销售单</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <table class="bill_customer_table">
-                        <tr>
-                            <td>客户名称：<select id="cg" class="easyui-combogrid customer_combobox" name="dept"
+        <div style="padding:20px 20px; border:0px dashed gray; width:810px; background-color:#fff; margin:20px auto;">
+            <table class="bill_table">
+                <tr>
+                    <td style="text-align: center; padding:10px;"><span
+                            style="font-size:26px;">苏州元斌塑胶科技有限公司 销售单</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table class="bill_customer_table">
+                            <tr>
+                                <td>客户名称：<select id="cg" class="easyui-combogrid customer_combobox" name="dept"
 
-                                             data-options="
+                                                 data-options="
                                                 panelWidth:450,
                                                 value:'006',
                                                 idField:'id',
@@ -173,100 +192,101 @@
                                                     {field:'addr',title:'名称',width:120}
                                                 ]]
                                             "></select>
-                            </td>
-                            <td>送货日期：<input class="easyui-datebox sale_date" labelPosition="top" /></td>
-                            <td>销售单号：<span id="sale_No" style="font-weight:bold;">20181012001</span></td>
-                        </tr>
-                        <tr>
-                            <td>送货地址：<input name="email" class="customer_address easyui-textbox" /></td>
-                            <td>联&nbsp;&nbsp;系&nbsp;&nbsp;人：<input name="n"
-                                                                   class="principal easyui-textbox" />
-                            </td>
-                            <td>联系电话：<input class="telephone easyui-textbox" /></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <table class="bill_product_table">
-                        <tr>
-                            <th>品名规格</th>
-                            <th>单位</th>
-                            <th>数量</th>
-                            <th>单价</th>
-                            <th>金额</th>
-                            <th>备注</th>
-                        </tr>
-                        <tr>
-                            <td class=""><select class="product_name easyui-combobox " name="state">
-                                <option value="AL">Alabama</option>
-                            </select></td>
-                            <td class=""><input class="product_units easyui-textbox" /></td>
-                            <td class=""><input class="product_num easyui-textbox" /></td>
-                            <td class=""><input class="product_price easyui-textbox" /></td>
-                            <td class=""><input class="product_sum easyui-textbox" /></td>
-                            <td class=""><input class="product_memo easyui-textbox" /></td>
-                        </tr>
-                        <tr>
-                            <td class=""><select class="product_name easyui-combobox " name="state">
-                                <option value="AL">Alabama</option>
-                            </select></td>
-                            <td class=""><input class="product_units easyui-textbox" /></td>
-                            <td class=""><input class="product_num easyui-textbox" /></td>
-                            <td class=""><input class="product_price easyui-textbox" /></td>
-                            <td class=""><input class="product_sum easyui-textbox" /></td>
-                            <td class=""><input class="product_memo easyui-textbox" /></td>
-                        </tr>
-                        <tr>
-                            <td class=""><select class="product_name easyui-combobox " name="state">
-                                <option value="AL">Alabama</option>
-                            </select></td>
-                            <td class=""><input class="product_units easyui-textbox" /></td>
-                            <td class=""><input class="product_num easyui-textbox" /></td>
-                            <td class=""><input class="product_price easyui-textbox" /></td>
-                            <td class=""><input class="product_sum easyui-textbox" /></td>
-                            <td class=""><input class="product_memo easyui-textbox" /></td>
-                        </tr>
-                        <tr>
-                            <td class=""><select class="product_name easyui-combobox " name="state">
-                                <option value="AL">Alabama</option>
-                            </select></td>
-                            <td class=""><input class="product_units easyui-textbox" /></td>
-                            <td class=""><input class="product_num easyui-textbox" /></td>
-                            <td class=""><input class="product_price easyui-textbox" /></td>
-                            <td class=""><input class="product_sum easyui-textbox" /></td>
-                            <td class=""><input class="product_memo easyui-textbox" /></td>
-                        </tr>
+                                </td>
+                                <td>送货日期：<input class="easyui-datebox sale_date" labelPosition="top"/></td>
+                                <td>销售单号：<span id="sale_No" style="font-weight:bold;">20181012001</span></td>
+                            </tr>
+                            <tr>
+                                <td>送货地址：<input name="email" class="customer_address easyui-textbox"/></td>
+                                <td>联&nbsp;&nbsp;系&nbsp;&nbsp;人：<input name="n"
+                                                                       class="principal easyui-textbox"/>
+                                </td>
+                                <td>联系电话：<input class="telephone easyui-textbox"/></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table class="bill_product_table">
+                            <tr>
+                                <th>品名规格</th>
+                                <th>单位</th>
+                                <th>数量</th>
+                                <th>单价</th>
+                                <th>金额</th>
+                                <th>备注</th>
+                            </tr>
+                            <tr>
+                                <td class=""><select class="product_name easyui-combobox " name="state">
+                                    <option value="AL">Alabama</option>
+                                </select></td>
+                                <td class=""><input class="product_units easyui-textbox"/></td>
+                                <td class=""><input class="product_num easyui-textbox"/></td>
+                                <td class=""><input class="product_price easyui-textbox"/></td>
+                                <td class=""><input class="product_sum easyui-textbox"/></td>
+                                <td class=""><input class="product_memo easyui-textbox"/></td>
+                            </tr>
+                            <tr>
+                                <td class=""><select class="product_name easyui-combobox " name="state">
+                                    <option value="AL">Alabama</option>
+                                </select></td>
+                                <td class=""><input class="product_units easyui-textbox"/></td>
+                                <td class=""><input class="product_num easyui-textbox"/></td>
+                                <td class=""><input class="product_price easyui-textbox"/></td>
+                                <td class=""><input class="product_sum easyui-textbox"/></td>
+                                <td class=""><input class="product_memo easyui-textbox"/></td>
+                            </tr>
+                            <tr>
+                                <td class=""><select class="product_name easyui-combobox " name="state">
+                                    <option value="AL">Alabama</option>
+                                </select></td>
+                                <td class=""><input class="product_units easyui-textbox"/></td>
+                                <td class=""><input class="product_num easyui-textbox"/></td>
+                                <td class=""><input class="product_price easyui-textbox"/></td>
+                                <td class=""><input class="product_sum easyui-textbox"/></td>
+                                <td class=""><input class="product_memo easyui-textbox"/></td>
+                            </tr>
+                            <tr>
+                                <td class=""><select class="product_name easyui-combobox " name="state">
+                                    <option value="AL">Alabama</option>
+                                </select></td>
+                                <td class=""><input class="product_units easyui-textbox"/></td>
+                                <td class=""><input class="product_num easyui-textbox"/></td>
+                                <td class=""><input class="product_price easyui-textbox"/></td>
+                                <td class=""><input class="product_sum easyui-textbox"/></td>
+                                <td class=""><input class="product_memo easyui-textbox"/></td>
+                            </tr>
 
-                        <tr>
-                            <td colspan="6" style="text-align: right;font-weight: bold;">合计金额：
-                                <span id="product_total_sum" style="margin-right: 20%;"></span>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td colspan="6" style="text-align: right;font-weight: bold;">合计金额：
+                                    <span id="product_total_sum" style="margin-right: 20%;"></span>
+                                </td>
+                            </tr>
 
-                    </table>
+                        </table>
 
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <table class="bill_user_table">
-                        <td>制单人：<input class="f1 easyui-textbox"></input></td>
-                        <td>送货司机：<select class="easyui-combobox" name="state1"
-                                         style="width:150px;"></select></td>
-                        <td>签收人：<input class="f1 easyui-textbox" disabled></input></td>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align: right; padding:20px">
-                    <a href="#" style="width:100px;" class="easyui-linkbutton"
-                       data-options="iconCls:'icon-save'">保存</a>
-                </td>
-            </tr>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table class="bill_user_table">
+                            <td>制单人：<input class="f1 easyui-textbox"></input></td>
+                            <td>送货司机：<select class="easyui-combobox" name="state1"
+                                             style="width:150px;"></select></td>
+                            <td>签收人：<input class="f1 easyui-textbox" disabled></input></td>
+                        </table>
+                    </td>
+                </tr>
+              <!--  <tr>
+                    <td style="text-align: right; padding:20px">
+                        <a href="#" style="width:100px;" class="easyui-linkbutton"
+                           data-options="iconCls:'icon-save'">保存</a>
+                    </td>
+                </tr>-->
 
-        </table>
+            </table>
+        </div>
     </div>
 
 

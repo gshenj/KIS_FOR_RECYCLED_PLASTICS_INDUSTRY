@@ -1,6 +1,6 @@
 .bill_table {
     border-collapse: collapse;
-    border: 0px solid gray;
+    border: 0px dashed gray;
     width: 810px;
     margin-top: 0pt;
     table-layout: fixed;
