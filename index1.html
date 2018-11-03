@@ -116,17 +116,34 @@
 
 
         function onOpenUserManagePanel() {
-            console.log("onOpenUserManage")
+            // 加载角色树
             mongoose.getSysRoleTreeData(function (data) {
                 console.log("RoleTreeData: " + JSON.stringify(data))
                 $('#role_tree').tree('loadData', data)
             })
+
+            // loadSysUsers(role)
+        }
+
+        function loadSysUsers(role) {
+            let params = {}
+            if (role != null) {
+                params.role = role
+            }
+            mongoose.UserModel.find(params, function(users){
+                let d = users_to_grid(users)
+                $('#sys_user_datagrid').datagrid('loadData', d)
+            })
         }
 
         function onOpenCustomerManagePanel() {
+            // 加载分类树
             loadClassifications(function (data) {
                 $('#classification_tree').tree('loadData', data)
             })
+
+            // 加载客户列表
+            // loadCustomers(classification)
         }
 
         function save1() {
@@ -487,7 +504,7 @@ onContextMenu: function(e,node){
                 </ul>
             </div>
             <div data-options="region:'center'" style="padding:4px;">
-                <table id="sys_user_datagrid" data-options="rownumbers: true">
+                <table id="sys_user_datagrid" class="easyui-datagrid" data-options="rownumbers: true">
                     <thead>
                     <tr>
                         <th data-options="field:'_id',width:100,hidden:true">ID</th>
