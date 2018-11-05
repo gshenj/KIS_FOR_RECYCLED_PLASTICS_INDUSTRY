@@ -208,6 +208,109 @@ function load_region_tree() {
     })
 }
 
+function loadClassifications(callback) {
+    mongoose.ClassificationModel.findOne({}, function (err, classificationsion) {
+        console.log(JSON.stringify(classificationsion))
+        let arr = classificationsion.classifications     //{classifications:[{name:"江苏",children:[]}]}
+        let data = {text:"客户编码"}
+        let children = []
+        for (let i=0; i<arr.length; i++) {
+            children.push(classificationsionToTree(arr[i]))
+        }
+        data.children = children
+
+        //let d = classificationsModelToTreeData(classificationsion)
+        callback([data])
+    })
+}
+
+function saveClassifications(tree, callback) {
+    let treeRoot = tree.tree('getRoot')
+    let children = treeRoot.children;   //{text:"客户编码", children:[{text:"江苏",children:[]}]}
+    let model = {classifications:[]}
+    for (let i=0; i<children.length; i++) {
+        model.classifications.push(treeToClassification(children[i]))
+    }
+
+    mongoose.ClassificationModel.updateOne({}, model, function (err, doc) {
+        handleError(err)
+        // 成功后调用
+        callback()
+       /* loadClassifications(function(data){
+            tree.tree("loadData", data)
+        })*/
+    })
+    // save data to db
+}
+
+
+
+function treeToClassification(obj) {
+    if (typeof(obj.text)== 'undefined') {
+        //console.log("obj is :"+obj+ ", obj.text is undefined")
+        return null
+    }
+
+    if (typeof(obj.children)!='undefined' && obj.children.length>0) {
+        let children = obj.children
+        console.log("children is"+JSON.stringify(children))
+        let treeChildren = []
+        for (let i = 0; i<children.length; i++) {
+            //let child = {"text": children[i].name}  //
+            //console.log("will revers "+JSON.stringify(children[i]))
+
+            let childChildren = treeToClassification(children[i]);
+            //console.log("revers result "+JSON.stringify(childChildren))
+
+            if (childChildren == null) {
+                // break;
+                //treeChildren.push(childChildren)
+            } else {
+                //child.children = childChildren;
+                treeChildren.push(childChildren)
+            }
+        }
+        return {name:obj.text, children:treeChildren}
+
+    } else {
+        return {name: obj.text};
+    }
+}
+
+function classificationsionToTree(obj) {
+
+    if (typeof(obj.name)== 'undefined') {
+        //console.log("obj is :"+obj+ ", obj.name is undefined")
+        return null
+    }
+
+    if (typeof(obj.children)!='undefined' && obj.children.length>0) {
+        let children = obj.children
+        //console.log("children is"+JSON.stringify(children))
+        let treeChildren = []
+        for (let i = 0; i<children.length; i++) {
+            //let child = {"text": children[i].name}  //
+           // console.log("will revers "+JSON.stringify(children[i]))
+
+            let childChildren = classificationsionToTree(children[i]);
+           // console.log("revers result "+JSON.stringify(childChildren))
+
+            if (childChildren == null) {
+               // break;
+                //treeChildren.push(childChildren)
+            } else {
+                //child.children = childChildren;
+                treeChildren.push(childChildren)
+            }
+        }
+        return {text:obj.name, children:treeChildren}
+
+    } else {
+        //console.log("ONly objname:"+obj.name)
+        return {text: obj.name};
+    }
+}
+
 /**
  * 从数据库加载地区树结构
  * @param d

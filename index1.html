@@ -31,6 +31,7 @@
     <script type="text/javascript" src="./user.js"></script>
     <script type="text/javascript" src="./customer.js"></script>
     <script type="text/javascript" src="./region.js"></script>
+    <script type="text/javascript" src="./scripts/utils.js"></script>
 
 
     <style type="text/css">
@@ -53,7 +54,7 @@
         function set_tool_butoon_status(click_src) {
             $('.tool_button').linkbutton('enable')
             $(click_src).linkbutton('disable')
-            document.title = DOCUMENT_TITLE + '　──　'+$(click_src).linkbutton('options').text +''
+            document.title = DOCUMENT_TITLE + '　──　' + $(click_src).linkbutton('options').text + ''
         }
 
         function show_order_input(src) {
@@ -61,7 +62,7 @@
             $('#order_input_panel').panel('open').panel('resize')
             $('#main_layout').layout('resize')
             // load_customer_grid();
-           // $('#order_input_toolbar').show()
+            // $('#order_input_toolbar').show()
 
             set_tool_butoon_status(src)
 
@@ -108,10 +109,47 @@
         }
 
 
-
         function hide_others() {
             $('.opt_panel').panel('close')
-           // $('.page_toolbar').hide()
+            // $('.page_toolbar').hide()
+        }
+
+
+        function onOpenUserManagePanel() {
+            // 加载角色树
+            mongoose.getSysRoleTreeData(function (data) {
+                console.log("RoleTreeData: " + JSON.stringify(data))
+                $('#role_tree').tree('loadData', data)
+            })
+
+            // loadSysUsers(role)
+        }
+
+        function loadSysUsers(role) {
+            let params = {}
+            if (role != null) {
+                params.role = role
+            }
+            mongoose.UserModel.find(params, function(users){
+                let d = users_to_grid(users)
+                $('#sys_user_datagrid').datagrid('loadData', d)
+            })
+        }
+
+        function onOpenCustomerManagePanel() {
+            // 加载分类树
+            loadClassifications(function (data) {
+                $('#classification_tree').tree('loadData', data)
+            })
+
+            // 加载客户列表
+            // loadCustomers(classification)
+        }
+
+        function save1() {
+            saveClassifications($('#classification_tree').tree(), function(){
+                alert('save ok')
+            })
         }
     </script>
 </head>
@@ -126,38 +164,41 @@
         <div title="送货单管理" data-options="iconCls:'icon-reload', border:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:4px;  -webkit-user-select: none; ">
             <div style="float:left; width:60%; padding:0px;">
-                        <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;" onclick="show_order_input(this)"
-                           data-options="plain:true, iconCls:'icon-large-smartart', size:'large', iconAlign:'top'">单据填开</a>
-                        <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;" onclick="show_orders_list(this)"
-                           data-options="plain:true, iconCls:'icon-large-clipart', iconAlign:'top'">单据查询</a>
-                        <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;" onclick="show_orders_chart(this)"
-                           data-options="plain:true, iconCls:'icon-large-chart', iconAlign:'top'">统计报表</a>
+                <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
+                   onclick="show_order_input(this)"
+                   data-options="plain:true, iconCls:'icon-large-smartart', size:'large', iconAlign:'top'">单据填开</a>
+                <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
+                   onclick="show_orders_list(this)"
+                   data-options="plain:true, iconCls:'icon-large-clipart', iconAlign:'top'">单据查询</a>
+                <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
+                   onclick="show_orders_chart(this)"
+                   data-options="plain:true, iconCls:'icon-large-chart', iconAlign:'top'">统计报表</a>
             </div>
-<!--            <div id="order_input_toolbar" class="page_toolbar" style="display:none; float:right; padding:2px; border:1px solid #bbb; text-align:right;margin-top:28px; margin-right:40px;">
-                <a class="easyui-linkbutton" style=""
-                   data-options="plain:true,iconCls:'icon-undo',iconAlign:'left'">重填</a>
+            <!--            <div id="order_input_toolbar" class="page_toolbar" style="display:none; float:right; padding:2px; border:1px solid #bbb; text-align:right;margin-top:28px; margin-right:40px;">
+                            <a class="easyui-linkbutton" style=""
+                               data-options="plain:true,iconCls:'icon-undo',iconAlign:'left'">重填</a>
 
-                <a class="easyui-linkbutton" style=""
-                   data-options="plain:true,iconCls:'icon-add',iconAlign:'left'">增行</a>
+                            <a class="easyui-linkbutton" style=""
+                               data-options="plain:true,iconCls:'icon-add',iconAlign:'left'">增行</a>
 
-                <a class="easyui-linkbutton" style=""
-                   data-options="plain:true,iconCls:'icon-remove',iconAlign:'left'">减行</a>
+                            <a class="easyui-linkbutton" style=""
+                               data-options="plain:true,iconCls:'icon-remove',iconAlign:'left'">减行</a>
 
-                <a class="easyui-linkbutton" style=""
-                   data-options="plain:true,iconCls:'icon-print',iconAlign:'left'">打印</a>
-            </div>-->
+                            <a class="easyui-linkbutton" style=""
+                               data-options="plain:true,iconCls:'icon-print',iconAlign:'left'">打印</a>
+                        </div>-->
         </div>
         <div title="资料管理" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:4px;">
             <div style="float:left; width:60%; padding:0px;">
-            <a class="easyui-linkbutton tool_button" onclick="show_customer_manage(this)"
-               data-options="plain:true, iconCls:'icon-large-smartart',iconAlign:'top'">客户管理</a>
+                <a class="easyui-linkbutton tool_button" onclick="show_customer_manage(this)"
+                   data-options="plain:true, iconCls:'icon-large-smartart',iconAlign:'top'">客户管理</a>
 
-            <a class="easyui-linkbutton tool_button" onclick="show_product_manage(this)"
-               data-options="plain:true, iconCls:'icon-large-smartart', iconAlign:'top'">产品管理</a>
+                <a class="easyui-linkbutton tool_button" onclick="show_product_manage(this)"
+                   data-options="plain:true, iconCls:'icon-large-smartart', iconAlign:'top'">产品管理</a>
 
-            <a class="easyui-linkbutton tool_button"
-               data-options="plain:true, iconCls:'icon-lorry',size:'large',iconAlign:'top'">司机管理</a>
+                <a class="easyui-linkbutton tool_button"
+                   data-options="plain:true, iconCls:'icon-lorry',size:'large',iconAlign:'top'">司机管理</a>
             </div>
 
         </div>
@@ -193,9 +234,9 @@
          data-options="fit:true,closed:true, border:false, onOpen:function(){alert('open')}">
 
 
-
         <div style="padding:0px 0px; border:0px solid red; width:850px;  margin:10px auto;  text-align:right;">
-            <div id="order_input_toolbar" style=" height:40px; line-height:40px; margin:0px auto 1px; background-color:#eee; padding:0px 10px; border:0px solid #bbb;  float:right;">
+            <div id="order_input_toolbar"
+                 style=" height:40px; line-height:40px; margin:0px auto 1px; background-color:#eee; padding:0px 10px; border:0px solid #bbb;  float:right;">
                 <span style="">
                 <a class="easyui-linkbutton" style=""
                    data-options="plain:true,iconCls:'icon-undo',iconAlign:'left'">重填</a>
@@ -217,7 +258,7 @@
         <div style="padding:20px 20px; border:0px dashed gray; width:810px; background-color:#fff; margin:0px auto ; clear:both;">
 
 
-            <table class="bill_table" >
+            <table class="bill_table">
                 <tr>
                     <td style="text-align: center; padding:10px;"><span
                             style="font-size:26px;">苏州元斌塑胶科技有限公司 销售单</span>
@@ -330,12 +371,12 @@
                         </table>
                     </td>
                 </tr>
-              <!--  <tr>
-                    <td style="text-align: right; padding:20px">
-                        <a href="#" style="width:100px;" class="easyui-linkbutton"
-                           data-options="iconCls:'icon-save'">保存</a>
-                    </td>
-                </tr>-->
+                <!--  <tr>
+                      <td style="text-align: right; padding:20px">
+                          <a href="#" style="width:100px;" class="easyui-linkbutton"
+                             data-options="iconCls:'icon-save'">保存</a>
+                      </td>
+                  </tr>-->
 
             </table>
         </div>
@@ -368,19 +409,62 @@
 
     <!--客户管理-->
     <div id="customer_manage_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
-         data-options="fit:true, closed:true">
+         data-options="fit:true, closed:true, onOpen:onOpenCustomerManagePanel">
+        <button onclick="save1()" >save</button>
         <div class="easyui-layout" data-options="fit:true">
             <div data-options="region:'west'" style="width:180px; padding:4px;">
-                <ul class="easyui-tree" data-options="lines:true">
-                    <li>
-                        <span>区域</span>
-                        <ul>
-                            <li><span><a href="#">管理员</a></span></li>
-                            <li><span><a href="#">操作员</a></span></li>
-                        </ul>
-                    </li>
+                <ul id="classification_tree" class="easyui-tree" data-options="lines:true,
+                onClick: function(node){
+                    $(this).tree('beginEdit',node.target);},
+onContextMenu: function(e,node){
+                    e.preventDefault();
+                    $(this).tree('select',node.target);
+                    $('#mm').menu('show',{
+                        left: e.pageX,
+                        top: e.pageY
+                    });
+                }
+">
+
                 </ul>
+
+                <div id="mm" class="easyui-menu" style="width:120px;">
+                    <div onclick="append()" data-options="iconCls:'icon-add'">Append</div>
+                    <div onclick="removeit()" data-options="iconCls:'icon-remove'">Remove</div>
+                    <div class="menu-sep"></div>
+                    <div onclick="expand()">Expand</div>
+                    <div onclick="collapse()">Collapse</div>
+                </div>
+
+                <script type="text/javascript">
+                    function append(){
+                        var t = $('#classification_tree');
+                        var node = t.tree('getSelected');
+                        t.tree('append', {
+                            parent: (node?node.target:null),
+                            data: [{
+                                text: 'new item1'
+                            },{
+                                text: 'new item2'
+                            }]
+                        });
+                    }
+                    function removeit(){
+                        var node = $('#classification_tree').tree('getSelected');
+                        $('#classification_tree').tree('remove', node.target);
+                    }
+                    function collapse(){
+                        var node = $('#classification_tree').tree('getSelected');
+                        $('#classification_tree').tree('collapse',node.target);
+                    }
+                    function expand(){
+                        var node = $('#classification_tree').tree('getSelected');
+                        $('#classification_tree').tree('expand',node.target);
+                    }
+                </script>
             </div>
+
+
             <div data-options="region:'center'" style="padding:4px;">
 
                 <table id="customer_grid" class="display" style="width:100%">
@@ -412,21 +496,15 @@
 
     <!--登录用户管理-->
     <div id="user_manage_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
-         data-options="fit:true, closed:true">
+         data-options="fit:true, closed:true, onOpen:onOpenUserManagePanel">
         <div class="easyui-layout" data-options="fit:true">
             <div data-options="region:'west'" style="width:180px; padding:4px;">
-                <ul class="easyui-tree" data-options="lines:true">
-                    <li>
-                        <span>系统角色</span>
-                        <ul>
-                            <li><span><a href="#">管理员</a></span></li>
-                            <li><span><a href="#">操作员</a></span></li>
-                        </ul>
-                    </li>
+                <ul id="role_tree" class="easyui-tree" data-options="lines:true">
+
                 </ul>
             </div>
             <div data-options="region:'center'" style="padding:4px;">
-                <table id="sys_user_datagrid" data-options="rownumbers: true">
+                <table id="sys_user_datagrid" class="easyui-datagrid" data-options="rownumbers: true">
                     <thead>
                     <tr>
                         <th data-options="field:'_id',width:100,hidden:true">ID</th>
