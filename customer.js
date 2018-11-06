@@ -41,8 +41,9 @@ function loadCustomersWhenClassificationNodeSelected(node){
         console.log("Select classification node is a leaf.")
         params.classification = node.text;
     } else {
-        let children = t.tree('getChildren', node.target)
         let arr = [node.text]
+        let children = t.tree('getChildren', node.target)
+            // children包含所有子节点
         for (let i=0; i<children.length; i++) {
             arr.push(children[i].text)
         }
@@ -52,6 +53,30 @@ function loadCustomersWhenClassificationNodeSelected(node){
     console.log("Classification params is "+JSON.stringify(params))
     loadCustomerGrid(params)
 }
+
+/*
+function reversClassification01(node, t, arr){
+    arr.push(node.text)
+
+    if (t.tree('isLeaf', node.target)){
+        console.log("Select classification node is a leaf "+node.text)
+        return;
+    }
+
+    let children = t.tree('getChildren', node.target)
+    console.log(children.length)
+    for (let i=0; i<children.length; i++) {
+        let child = children[i]
+        reversClassification01(child, t, arr)
+        /!*arr.push(child.text)
+        if (t.tree('isLeaf', child.target)) {
+            continue
+        } else {
+
+        }*!/
+    }
+}
+*/
 
 function loadCustomerGrid(params) {
     if (CUSTOMER_GRID == null) {
