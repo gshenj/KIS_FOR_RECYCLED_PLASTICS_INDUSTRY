@@ -32,7 +32,7 @@ var customer ={
     address:String,
     phone:String,
     province:String,
-    city:String,
+    classification:String,
     principal:String,
     products:[productSchema]
 }

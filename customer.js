@@ -1,9 +1,176 @@
 mongoose = require("./scripts/db")
-
-
 let CUSTOMER_GRID = null
+let toolbar_for_customer = [
+    {
+        text: '添加',
+        iconCls: 'icon-add',
+        handler: function () {
+            // show_sys_user_form('add')
+            newCustomer()
+        }
+    }, {
+        text: '编辑',
+        iconCls: 'icon-edit',
+        handler: function () {
+            editCustomer()
+        }
+    }, {
+        text: '删除',
+        iconCls: 'icon-remove',
+        handler: function () {
+            destroyCustomer()
+            // show_sys_user_form('delete')
+        }
+    }, {
+        text: '导出到EXCEL',
+        iconCls: 'icon-lock',
+        handler: function () {
+            CUSTOMER_GRID.datagrid('toExcel','客户列表.xls');
+            // show_sys_user_form('reset_pass')
+        }
+    }]
 
-function load_customer_grid() {
+function loadCustomersWhenClassificationNodeSelected(node){
+    let t = $('#classification_tree')
+    let rootNode = t.tree('getRoot')
+
+    let params = {}
+    if (node == null || node == rootNode) {
+
+    } else if (t.tree('isLeaf', node.target)){
+        console.log("Select classification node is a leaf.")
+        params.classification = node.text;
+    } else {
+        let children = t.tree('getChildren', node.target)
+        let arr = [node.text]
+        for (let i=0; i<children.length; i++) {
+            arr.push(children[i].text)
+        }
+        params.classification = {$in: arr}
+    }
+
+    console.log("Classification params is "+JSON.stringify(params))
+    loadCustomerGrid(params)
+}
+
+function loadCustomerGrid(params) {
+    if (CUSTOMER_GRID == null) {
+        console.log("First time load customer grid.")
+        CUSTOMER_GRID = $('#grid_for_customer').datagrid({
+            fit: true,
+            singleSelect: true,
+            collapsible: false,
+            data: [],
+            border:false,
+            rownumbers:true,
+            title:'<span style="font-weight: bold">客户列表</span>',
+            width:700,
+            height:500,
+            toolbar: toolbar_for_customer,
+            columns:[[
+                {title: "客户名称", field: 'name', width:250},
+                {title: "联系人", field: "principal",width:100},
+                {title: "联系电话", field: 'phone',width:100},
+                {title: "客户编码", field: 'classification',width:100},
+                {title: "联系地址", field: 'address',width:250}
+            ]]
+        })
+    }
+
+    if (params == null) {
+        params = {}
+    }
+    mongoose.CustomerModel.find(params, function (err, docs) {
+        CUSTOMER_GRID.datagrid('loadData', docs)
+    })
+}
+
+
+let opt_type_for_customer;
+function newCustomer(){
+    $('#dlg_for_customer').dialog('open').dialog('center').dialog('setTitle','添加客户');
+    $('#fm_for_customer').form('clear');
+    let node = $('#classification_tree').tree('getSelected')
+    if (node != null) {
+        let rootNode = $('#classification_tree').tree('getRoot')
+        if (node != rootNode)
+            $('#customer_classification').combobox('setText',node.text)
+    }
+    opt_type_for_customer = 'new'
+}
+function editCustomer(){
+    var row = CUSTOMER_GRID.datagrid('getSelected');
+    if (row){
+        $('#dlg_for_customer').dialog('open').dialog('center').dialog('setTitle','修改客户');
+        console.log("ROw"+JSON.stringify(row))
+        $('#fm_for_customer').form('load',row);
+
+        // url = 'update_user.php?id='+row.id;
+        opt_type_for_customer = 'edit'
+    }
+}
+
+//todo
+function saveCustomer() {
+
+    let name = $('#name_textbox').textbox('getValue')
+    let classification = $('#role_combobox').combobox('getText')
+    let principal = $('#customer_principal').combobox('getText')
+    let phone = $('#disabled_checkbox').checkbox('options').checked
+    let address = $('#disabled_checkbox').checkbox('options').checked
+
+
+    let customer = {name: name, role: role, disabled: disabled}
+    console.log("New user is: " + JSON.stringify(user))
+    if (url == 'new') {
+        addCustomer(user, function () {
+            $('#dlg_for_customer').dialog('close');
+            loadSysUsers(null)
+        })
+
+    } else if (url == 'edit') {
+        let customer_id = $('#customer_id').val();
+        customer._id = customer_id;
+        updateCustomer(user, function () {
+            $('#dlg_for_customer').dialog('close');
+            loadSysUsers(null)
+        })
+    }
+}
+
+function destroyCustomer(){
+    var row = CUSTOMER_GRID.datagrid('getSelected');
+    if (row){
+        $.messager.confirm('确定','是否确定删除选中的用户?',function(r){
+            if (r){
+                deleteUser({_id:row._id},function(){
+                    $('#dlg_for_customer').dialog('close');
+                    loadSysUsers(null)
+                })
+
+            }
+        });
+    }
+}
+
+
+
+
+
+/*
+
+
+
+
+
+
+
+
+
+
+
+
+    function load_customer_grid() {
     load_customer_grid(null)
 
 }
@@ -16,10 +183,10 @@ function load_customer_grid(callback) {
         CUSTOMER_GRID = $('#customer_grid').DataTable({
             data: [],
             pageLength: 15,
-            /*paging:false,
+            /!*paging:false,
             "scrollY": "500px",
             "scrollCollapse": true,
-            fixedHeader: true,*/
+            fixedHeader: true,*!/
             select: true,
             dom: 'Bfrtip',
             buttons: [
@@ -422,4 +589,5 @@ function getChanges() {
     alert(rows.length + ' rows are changed!');
 }
 
+*/
 

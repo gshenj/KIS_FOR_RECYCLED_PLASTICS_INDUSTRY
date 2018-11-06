@@ -5,208 +5,181 @@ let SYS_USER_OPERATOR = '';
 
 let ROLE = []
 
-function users_to_grid(users) {
+SYS_USER_GRID = null;
 
-    /* for (let i in users) {
-         console.log(users[i].name)
+var toolbar01 = [
+    {
+        text: '添加',
+        iconCls: 'icon-add',
+        handler: function () {
+            // show_sys_user_form('add')
+            newUser()
+        }
+    }, {
+        text: '编辑',
+        iconCls: 'icon-edit',
+        handler: function () {
+            editUser()
+        }
+    }, {
+        text: '删除',
+        iconCls: 'icon-remove',
+        handler: function () {
+            destroyUser()
+            // show_sys_user_form('delete')
+        }
+    }, {
+        text: '重置密码',
+        iconCls: 'icon-lock',
+        handler: function () {
+            resetPassword()
+            // show_sys_user_form('reset_pass')
+        }
+    }]
 
-     }*/
 
-    console.log("Users:" + JSON.stringify(users))
-    return users;
+function loadSysUsers(node_selected) {
+    let node = $('#role_tree').tree('getSelected')
+    console.log('Call loadSysUsers')
+
+
+    let params = {}
+    let tree = $('#role_tree').tree()
+    let rootNode = tree.tree('getRoot')
+    if (node == null || rootNode == node) {
+        console.log("Load all users")
+    } else {
+
+        let role = node.text
+        console.log("Load users of " + role)
+        params.role = role
+    }
+
+    console.log("params:" + JSON.stringify(params))
+    loadSysUserGrid(params)
+    /* mongoose.UserModel.find(params, function (err, users) {
+         let d = users_to_grid(users)
+         console.log(JSON.stringify(d))
+         $('#sys_user_datagrid').datagrid('loadData', d)
+     })*/
 }
 
-/*
-
-var toolbar = [{
-    text: '编辑',
-    iconCls: 'icon-edit',
-    handler: function () {
-        show_sys_user_form('edit')
-    }
-}, {
-    text: '添加',
-    iconCls: 'icon-add',
-    handler: function () {
-        show_sys_user_form('add')
-    }
-}, {
-    text: '删除',
-    iconCls: 'icon-remove',
-    handler: function () {
-        show_sys_user_form('delete')
-    }
-}, {
-    text: '重置密码',
-    iconCls: 'icon-lock',
-    handler: function () {
-        show_sys_user_form('reset_pass')
-    }
-}]
 
 
-function load_user_datagrid() {
-    if (USER_GRID == null) {
-        console.log("First time load user datagrid.")
-        // style="width:700px;height:250px"
-        USER_GRID = $('#sys_user_datagrid').datagrid({
+function loadSysUserGrid(params) {
+    if (SYS_USER_GRID == null) {
+        // first time
+        console.log("first time load sys user grid.")
+        SYS_USER_GRID = $('#sys_user_datagrid').datagrid({
             fit: true,
             singleSelect: true,
             collapsible: false,
             data: [],
+            border:false,
+            rownumbers:true,
+            title:'<span style="font-weight: bold">系统用户列表</span>',
             width:700,
-            toolbar: toolbar
+            height:500,
+            toolbar: toolbar01,
+            columns:[[
+                {field:'name',title:'用户名',width:100},
+                {field:'role',title:'角色',width:100},
+                {field:'disabled',title:'状态',width:100,align:'right', formatter: function(value,row,index){
+                        if (row.disabled){
+                            return "<span style='color:red'>禁用</span>";
+                        } else {
+                            return "启用";
+                        }
+                    }}
+            ]]
         })
-    } else {
-        console.log("Reload user datagrid.")
     }
-    mongoose.UserModel.find({}, function (err, users) {
-        let d = users_to_grid(users)
-        USER_GRID.datagrid('loadData', d)
+
+    mongoose.UserModel.find(params, function (err, users) {
+        //console.log("Load users: " +JSON.stringify(users))
+        SYS_USER_GRID.datagrid('loadData', users)
     })
 }
 
 
-function show_sys_user_form(type) {
-    SYS_USER_OPERATOR = type;
-    $('#user_name').textbox('readonly', false)
-    $('#user_role').combobox('readonly', false)
-    $('#checkbox_user_disabled').switchbutton('enable')
+var url;
+function newUser(){
+    $('#dlg').dialog('open').dialog('center').dialog('setTitle','New User');
+    $('#fm').form('clear');
+    // url = 'save_user.php';
+    url = 'new'
+}
+function editUser(){
+    var row = $('#sys_user_datagrid').datagrid('getSelected');
+    if (row){
+        $('#dlg').dialog('open').dialog('center').dialog('setTitle','Edit User');
+        console.log("ROw"+JSON.stringify(row))
+        $('#fm').form('load',row);
+        if (row.disabled) {
+            $('#disabled_checkbox').checkbox('check')
+        } else {
+            $('#disabled_checkbox').checkbox('uncheck')
+        }
+        // url = 'update_user.php?id='+row.id;
+        url = 'edit'
+    }
+}
 
-    if (type == 'add') {
-        $('#user_name').textbox('setText', '')
-        $('#user_name').textbox('setValue', '')
-        $('#user_role').combobox('loadData', mongoose.ROLE_SELECT_DATA)
-        $('#checkbox_user_disabled').switchbutton('uncheck')
-        $('#btn_sys_user_operator').linkbutton({text: '确定添加'})
-        $('#w').window('setTitle', "添加用户")
-        $('#w').window('open')
-        $('#w').window('center')
+function saveUser(){
 
-    } else if (type == 'edit' || type == 'delete' || type == 'reset_pass') {
-        let row = USER_GRID.datagrid('getSelected')
-        mongoose.UserModel.findById(row._id, function (err, user) {
-            $('#user_name').textbox('setText', user.name)
-            $('#user_name').textbox('setValue', user.name)
-            console.log(mongoose.ROLE_SELECT_DATA)
-            $('#user_role').combobox('loadData', mongoose.ROLE_SELECT_DATA)
-            $('#user_role').combobox('setValue', user.role)
-            if (user.disabled) {
-                $('#checkbox_user_disabled').switchbutton('check')
-            } else {
-                $('#checkbox_user_disabled').switchbutton('uncheck')
-            }
+    let name = $('#name_textbox').textbox('getValue')
+    let role = $('#role_combobox').combobox('getText')
+    let disabled = $('#disabled_checkbox').checkbox('options').checked
 
-            $('#uid').val(user._id);
 
-            if (type == 'edit') {
-                $('#w').window('setTitle', "编辑用户")
-                $('#btn_sys_user_operator').linkbutton({text: '确定修改'})    // 添加
-            } else if (type == 'delete') {
-                $('#w').window('setTitle', "删除用户")
-                $('#btn_sys_user_operator').linkbutton({text: '确定删除'})    // 添加
-                $('#user_name').textbox('readonly', true)
-                $('#user_role').combobox('readonly', true)
-                $('#checkbox_user_disabled').switchbutton('disable')
-            } else {
-                $('#w').window('setTitle', "重置密码")
-                $('#btn_sys_user_operator').linkbutton({text: '重置密码'})    // 添加
-                $('#user_name').textbox('readonly', true)
-                $('#user_role').combobox('readonly', true)
-                $('#checkbox_user_disabled').switchbutton('disable')
-            }
 
-            $('#w').window('open')
-            $('#w').window('center')
+    let user = {name: name, role: role, disabled:disabled}
+    console.log("New user is: "+JSON.stringify(user))
+    if (url == 'new') {
+        addUser(user, function() {
+            $('#dlg').dialog('close');
+            loadSysUsers(null)
+        })
+
+    } else if (url == 'edit') {
+        let user_id = $('#user_id').val();
+        user._id = user_id;
+        updateUser(user, function(){
+            $('#dlg').dialog('close');
+            loadSysUsers(null)
         })
     }
-
-
 }
+function destroyUser(){
+    var row = $('#sys_user_datagrid').datagrid('getSelected');
+    if (row){
+        $.messager.confirm('确定','是否确定删除选中的用户?',function(r){
+            if (r){
 
+                deleteUser({_id:row._id},function(){
+                    $('#dlg').dialog('close');
+                    loadSysUsers(null)
+                })
 
-function close_user_win_and_reload() {
-    $('#w').window('close');
-    load_user_datagrid();
-}
-
-function sys_user_operator() {
-
-    if (SYS_USER_OPERATOR == 'delete') {
-        let uid = $('#uid').val();
-        mongoose.UserModel.findByIdAndDelete(uid, function (err, user) {
-            if (err) {
-                alert(err)
-            } else {
-                console.log("Delete sys user " + user)
-                show_messager("操作成功：用户已删除！");
-                close_user_win_and_reload();
             }
-        })
-
-    } else if (SYS_USER_OPERATOR == 'reset_pass') {
-        let uid = $('#uid').val();
-        mongoose.UserModel.findById(uid, function (err, user) {
-            if (err) {
-                alert(err)
-                return;
-            }
-            user.password = INIT_PASS
-            user.save(function (err, u) {
-                if (err)
-                    alert(err)
-                else {
-                    show_messager('操作成功：密码已重置！');
-                    close_user_win_and_reload();
-                }
-            })
-        })
-
-    } else if (SYS_USER_OPERATOR == 'add') {
-
-        let userModel = new mongoose.UserModel()
-        userModel.name = $('#user_name').textbox("getValue")
-        userModel.role = $('#user_role').combobox('getValue')
-        userModel.disabled = $('#checkbox_user_disabled').switchbutton('options').checked
-        userModel.password = INIT_PASS
-        userModel.save(function (err) {
-            if (err) return handleError(err)
-            else {
-                show_messager('操作成功： 用户已添加！')
-                close_user_win_and_reload()
-            }
-        })
-
-    } else if (SYS_USER_OPERATOR == 'edit') {
-        let uid = $('#uid').val()
-        mongoose.UserModel.findById(uid, function (err, user) {
-            if (err) {
-                alert(err)
-                return
-            }
-            console.log(user)
-            user.name = $('#user_name').textbox("getValue")
-            user.role = $('#user_role').combobox('getValue')
-            user.disabled = $('#checkbox_user_disabled').switchbutton('options').checked
-            user.save(function (err, u) {
-                if (err)
-                    alert(err)
-                else {
-                    show_messager('操作成功：用户信息已保存！');
-                    close_user_win_and_reload();
-                }
-            });
-        })
+        });
     }
-
-
 }
 
+function resetPassword() {
+    var row = $('#sys_user_datagrid').datagrid('getSelected');
+    if (row){
+        $.messager.confirm('确定','是否确定重置选中的用户的登录密码?',function(r){
+            if (r){
+                resetUserPassword({_id:row._id},function(){
+                    $('#dlg').dialog('close');
+                    loadSysUsers(null)
+                })
 
-function close_user_form() {
-    $('#w').window('close')
-}*/
-
+            }
+        });
+    }
+}
 
 
 function addUser(user, callback) {
@@ -219,20 +192,6 @@ function addUser(user, callback) {
             callback()
         }
     });
-
-   /* let userModel = new mongoose.UserModel()
-    userModel.name = user.name
-    userModel.role = user.role
-    userModel.disabled = user.disabled
-    userModel.password = INIT_PASS
-    userModel.save(function (err) {
-        if (err) return handleError(err)
-        else {
-            callback()
-            // show_messager('操作成功： 用户已添加！')
-            // close_user_win_and_reload()
-        }
-    })*/
 }
 
 function deleteUser(user, callback) {
@@ -266,13 +225,5 @@ function updateUser(user, callback) {
             callback()
         });
     });
-
-
-   /* mongoose.UserModel.findByIdAndUpdate(user._id, user, function(err, doc){
-        if (err) return handleError(err);
-        else {
-            callback()
-        }
-    })*/
 }
 
