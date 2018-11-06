@@ -5,7 +5,7 @@ let REGION_OPERATOR = ''
 
 function init() {
 
-    $('#mainTab').tabs('select', 0)
+   // $('#mainTab').tabs('select', 0)
 
     mongoose.loadSysRoles();
 
@@ -192,14 +192,15 @@ function region_tree_save() {
 }
 
 
-function load_region_tree_data(tree) {
+/*function load_region_tree_data(tree) {
     mongoose.RegionModel.findOne({}, function (err, region) {
         let d = model_to_tree(region)
         //console.log(d)
         tree.combotree('loadData', d)
     })
-}
+}*/
 
+/*
 function load_region_tree() {
     mongoose.RegionModel.findOne({}, function (err, region) {
         let d = model_to_tree(region)
@@ -207,19 +208,25 @@ function load_region_tree() {
         $load_region_tree(d);
     })
 }
+*/
 
 function loadClassifications(callback) {
-    mongoose.ClassificationModel.findOne({}, function (err, classificationsion) {
-        console.log(JSON.stringify(classificationsion))
-        let arr = classificationsion.classifications     //{classifications:[{name:"江苏",children:[]}]}
-        let data = {text:"客户编码"}
+
+    let data = {text:"客户编码"}
+    mongoose.ClassificationModel.findOne({}, function (err, classification) {
+
+        if (classification == null) {
+            console.log("classification is null")
+            callback([data]);
+            return;
+        }
+
+        let arr = classification.classifications     //{classifications:[{name:"江苏",children:[]}]}
         let children = []
         for (let i=0; i<arr.length; i++) {
-            children.push(classificationsionToTree(arr[i]))
+            children.push(classificationToTree(arr[i]))
         }
         data.children = children
-
-        //let d = classificationsModelToTreeData(classificationsion)
         callback([data])
     })
 }
@@ -236,9 +243,6 @@ function saveClassifications(tree, callback) {
         handleError(err)
         // 成功后调用
         callback()
-       /* loadClassifications(function(data){
-            tree.tree("loadData", data)
-        })*/
     })
     // save data to db
 }
@@ -277,36 +281,26 @@ function treeToClassification(obj) {
     }
 }
 
-function classificationsionToTree(obj) {
+function classificationToTree(obj) {
 
     if (typeof(obj.name)== 'undefined') {
-        //console.log("obj is :"+obj+ ", obj.name is undefined")
         return null
     }
 
     if (typeof(obj.children)!='undefined' && obj.children.length>0) {
         let children = obj.children
-        //console.log("children is"+JSON.stringify(children))
         let treeChildren = []
         for (let i = 0; i<children.length; i++) {
-            //let child = {"text": children[i].name}  //
-           // console.log("will revers "+JSON.stringify(children[i]))
-
-            let childChildren = classificationsionToTree(children[i]);
-           // console.log("revers result "+JSON.stringify(childChildren))
-
-            if (childChildren == null) {
-               // break;
-                //treeChildren.push(childChildren)
+            let childChildren = classificationToTree(children[i]);
+            if (Object.keys(childChildren).length == 0) {
+                // 对象为空
             } else {
-                //child.children = childChildren;
                 treeChildren.push(childChildren)
             }
         }
         return {text:obj.name, children:treeChildren}
 
     } else {
-        //console.log("ONly objname:"+obj.name)
         return {text: obj.name};
     }
 }
@@ -315,6 +309,7 @@ function classificationsionToTree(obj) {
  * 从数据库加载地区树结构
  * @param d
  */
+/*
 function $load_region_tree(d) {
     if (REGION_TREE == null) {
         REGION_TREE = $('#region_tree').tree({fit:true, data: d, animate: true})
@@ -323,4 +318,4 @@ function $load_region_tree(d) {
         REGION_TREE.tree('loadData', d)
         console.log("Reload tree data.")
     }
-}
+}*/

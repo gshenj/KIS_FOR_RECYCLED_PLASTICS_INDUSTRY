@@ -7,13 +7,16 @@ let ROLE = []
 
 function users_to_grid(users) {
 
-   /* for (let i in users) {
-        console.log(users[i].name)
+    /* for (let i in users) {
+         console.log(users[i].name)
 
-    }*/
+     }*/
+
+    console.log("Users:" + JSON.stringify(users))
     return users;
 }
 
+/*
 
 var toolbar = [{
     text: '编辑',
@@ -202,4 +205,74 @@ function sys_user_operator() {
 
 function close_user_form() {
     $('#w').window('close')
+}*/
+
+
+
+function addUser(user, callback) {
+
+    //添加用户的初始密码
+    user.password = INIT_PASS;
+    mongoose.UserModel.create(user, function (err, doc) {
+        if (err) return handleError(err);
+        else {
+            callback()
+        }
+    });
+
+   /* let userModel = new mongoose.UserModel()
+    userModel.name = user.name
+    userModel.role = user.role
+    userModel.disabled = user.disabled
+    userModel.password = INIT_PASS
+    userModel.save(function (err) {
+        if (err) return handleError(err)
+        else {
+            callback()
+            // show_messager('操作成功： 用户已添加！')
+            // close_user_win_and_reload()
+        }
+    })*/
 }
+
+function deleteUser(user, callback) {
+    mongoose.UserModel.findByIdAndDelete(user._id, function(err, doc){
+        if (err) return handleError(err);
+        callback()
+    })
+}
+
+
+function resetUserPassword(user, callback) {
+    mongoose.UserModel.findById(user._id, function(err, doc){
+        if (err) return handleError(err);
+        doc.password = INIT_PASS
+        doc.save(function(err, d) {
+            callback()
+        })
+
+    })
+}
+
+function updateUser(user, callback) {
+
+    mongoose.UserModel.findById(user._id, function (err, doc) {
+        if (err) return handleError(err);
+        doc.name = user.name;
+        doc.role = user.role
+        doc.disabled = user.disabled
+
+        doc.save(function(err, d){
+            callback()
+        });
+    });
+
+
+   /* mongoose.UserModel.findByIdAndUpdate(user._id, user, function(err, doc){
+        if (err) return handleError(err);
+        else {
+            callback()
+        }
+    })*/
+}
+

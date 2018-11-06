@@ -344,6 +344,7 @@ function load_product_grid(row_data) {
 }
 
 
+
 let editIndex = undefined;
 
 function endEditing() {
@@ -420,4 +421,5 @@ function getChanges() {
     var rows = PRODUCT_GRID.datagrid('getChanges');
     alert(rows.length + ' rows are changed!');
 }
+
 

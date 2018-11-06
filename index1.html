@@ -28,6 +28,7 @@
     <script type="text/javascript" src="./scripts/DataTables/datatables.js"></script>
 
 
+    <script type="text/javascript" src="./scripts/DatagridEditor.js"></script>
     <script type="text/javascript" src="./user.js"></script>
     <script type="text/javascript" src="./customer.js"></script>
     <script type="text/javascript" src="./region.js"></script>
@@ -88,7 +89,7 @@
             hide_others()
             $('#customer_manage_panel').panel('open').panel('resize')
             $('#main_layout').layout('resize')
-            load_customer_grid();
+            //load_customer_grid();
             set_tool_butoon_status(src)
         }
 
@@ -104,7 +105,7 @@
             hide_others()
             $('#user_manage_panel').panel('open').panel('resize')
             $('#main_layout').layout('resize')
-            load_user_datagrid()
+            // load_user_datagrid()
             set_tool_butoon_status(src)
         }
 
@@ -118,23 +119,36 @@
         function onOpenUserManagePanel() {
             // 加载角色树
             mongoose.getSysRoleTreeData(function (data) {
-                console.log("RoleTreeData: " + JSON.stringify(data))
-                $('#role_tree').tree('loadData', data)
+                let tree = $('#role_tree').tree('loadData', data)
+                loadSysUsers(tree.tree("getRoot"))
             })
-
-            // loadSysUsers(role)
         }
 
-        function loadSysUsers(role) {
+
+        function loadSysUsers(node_selected) {
+            let node = $('#role_tree').tree('getSelected')
+            console.log('Call loadSysUsers')
             let params = {}
-            if (role != null) {
+            let tree = $('#role_tree').tree()
+            let rootNode = tree.tree('getRoot')
+            if (node == null || rootNode == node) {
+                console.log("Load all users")
+            } else {
+
+                let role = node.text
+                console.log("Load users of " + role)
                 params.role = role
             }
-            mongoose.UserModel.find(params, function(users){
+
+            console.log("params:" + JSON.stringify(params))
+            loadSysUserGrid(params)
+           /* mongoose.UserModel.find(params, function (err, users) {
                 let d = users_to_grid(users)
+                console.log(JSON.stringify(d))
                 $('#sys_user_datagrid').datagrid('loadData', d)
-            })
+            })*/
         }
+
 
         function onOpenCustomerManagePanel() {
             // 加载分类树
@@ -147,7 +161,7 @@
         }
 
         function save1() {
-            saveClassifications($('#classification_tree').tree(), function(){
+            saveClassifications($('#classification_tree').tree(), function () {
                 alert('save ok')
             })
         }
@@ -174,19 +188,6 @@
                    onclick="show_orders_chart(this)"
                    data-options="plain:true, iconCls:'icon-large-chart', iconAlign:'top'">统计报表</a>
             </div>
-            <!--            <div id="order_input_toolbar" class="page_toolbar" style="display:none; float:right; padding:2px; border:1px solid #bbb; text-align:right;margin-top:28px; margin-right:40px;">
-                            <a class="easyui-linkbutton" style=""
-                               data-options="plain:true,iconCls:'icon-undo',iconAlign:'left'">重填</a>
-
-                            <a class="easyui-linkbutton" style=""
-                               data-options="plain:true,iconCls:'icon-add',iconAlign:'left'">增行</a>
-
-                            <a class="easyui-linkbutton" style=""
-                               data-options="plain:true,iconCls:'icon-remove',iconAlign:'left'">减行</a>
-
-                            <a class="easyui-linkbutton" style=""
-                               data-options="plain:true,iconCls:'icon-print',iconAlign:'left'">打印</a>
-                        </div>-->
         </div>
         <div title="资料管理" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:4px;">
@@ -229,7 +230,7 @@
      style="margin:0;padding:0px;background:#eee;overflow-y: hidden;overflow-x: hidden">
 
     <!--新开送货单-->
-    <div id="order_input_panel" class="easyui-panel opt_panel"　
+    <div id="order_input_panel" class="easyui-panel opt_panel" 　
          style="width:100%; height:100%; padding:0px 0px; background-color:#999; text-align:center; "
          data-options="fit:true,closed:true, border:false, onOpen:function(){alert('open')}">
 
@@ -410,7 +411,7 @@
     <!--客户管理-->
     <div id="customer_manage_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
          data-options="fit:true, closed:true, onOpen:onOpenCustomerManagePanel">
-        <button onclick="save1()" >save</button>
+        <button onclick="save1()">save</button>
         <div class="easyui-layout" data-options="fit:true">
             <div data-options="region:'west'" style="width:180px; padding:4px;">
                 <ul id="classification_tree" class="easyui-tree" data-options="lines:true,
@@ -437,29 +438,32 @@ onContextMenu: function(e,node){
                 </div>
 
                 <script type="text/javascript">
-                    function append(){
+                    function append() {
                         var t = $('#classification_tree');
                         var node = t.tree('getSelected');
                         t.tree('append', {
-                            parent: (node?node.target:null),
+                            parent: (node ? node.target : null),
                             data: [{
                                 text: 'new item1'
-                            },{
+                            }, {
                                 text: 'new item2'
                             }]
                         });
                     }
-                    function removeit(){
+
+                    function removeit() {
                         var node = $('#classification_tree').tree('getSelected');
                         $('#classification_tree').tree('remove', node.target);
                     }
-                    function collapse(){
+
+                    function collapse() {
                         var node = $('#classification_tree').tree('getSelected');
-                        $('#classification_tree').tree('collapse',node.target);
+                        $('#classification_tree').tree('collapse', node.target);
                     }
-                    function expand(){
+
+                    function expand() {
                         var node = $('#classification_tree').tree('getSelected');
-                        $('#classification_tree').tree('expand',node.target);
+                        $('#classification_tree').tree('expand', node.target);
                     }
                 </script>
             </div>
@@ -494,33 +498,422 @@ onContextMenu: function(e,node){
 
     </div>
 
+    <script type="text/javascript">
+
+/*
+
+        let editIndex = undefined;
+
+        function endEditing() {
+            if (typeof(editIndex) == 'undefined') {
+                return true
+            }
+            if (PRODUCT_GRID.datagrid('validateRow', editIndex)) {
+                PRODUCT_GRID.datagrid('endEdit', editIndex);
+                editIndex = undefined;
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function onClickCell(index, field) {
+            if (editIndex != index) {
+                if (endEditing()) {
+                    PRODUCT_GRID.datagrid('selectRow', index)
+                        .datagrid('beginEdit', index);
+                    var ed = PRODUCT_GRID.datagrid('getEditor', {index: index, field: field});
+                    if (ed) {
+                        ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+                    }
+                    editIndex = index;
+                } else {
+                    setTimeout(function () {
+                        PRODUCT_GRID.datagrid('selectRow', editIndex);
+                    }, 0);
+                }
+            }
+        }
+
+        function onEndEdit(index, row) {
+            var ed = $(this).datagrid('getEditor', {
+                index: index,
+                field: 'name'
+            });
+            row.name = $(ed.target).combobox('getText');
+        }
+
+        function append() {
+            if (endEditing()) {
+                PRODUCT_GRID.datagrid('appendRow', {status: 'P'});
+                editIndex = PRODUCT_GRID.datagrid('getRows').length - 1;
+                PRODUCT_GRID.datagrid('selectRow', editIndex)
+                    .datagrid('beginEdit', editIndex);
+            }
+        }
+
+        function removeit() {
+            if (editIndex == undefined) {
+                return
+            }
+            PRODUCT_GRID.datagrid('cancelEdit', editIndex)
+                .datagrid('deleteRow', editIndex);
+            editIndex = undefined;
+        }
+
+        function accept() {
+            if (endEditing()) {
+                PRODUCT_GRID.datagrid('acceptChanges');
+                return true;
+            }
+            return false;
+        }
+
+        function reject() {
+            PRODUCT_GRID.datagrid('rejectChanges');
+            editIndex = undefined;
+        }
+
+        function getChanges() {
+            var rows = PRODUCT_GRID.datagrid('getChanges');
+            alert(rows.length + ' rows are changed!');
+        }
+
+*/
+
+
+
+
+
+
+
+
+
+        var editIndex1 = undefined;
+       /* function endEditing(){
+            if (editIndex1 == undefined){return true}
+            if ($('#sys_user_datagrid').datagrid('validateRow', editIndex1)){
+                $('#sys_user_datagrid').datagrid('endEdit', editIndex1);
+                editIndex1 = undefined;
+                return true;
+            } else {
+                return false;
+            }
+        }
+        function onClickCell1(index, field){
+            if (editIndex1 != index){
+                if (endEditing()){
+                    $('#sys_user_datagrid').datagrid('selectRow', index)
+                        .datagrid('beginEdit', index);
+                    var ed = $('#sys_user_datagrid').datagrid('getEditor', {index:index,field:field});
+                    if (ed){
+                        ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+                    }
+                    editIndex1 = index;
+                } else {
+                    setTimeout(function(){
+                        $('#sys_user_datagrid').datagrid('selectRow', editIndex1);
+                    },0);
+                }
+            }
+        }
+        function onEndEdit1(index, row){
+            var ed = $(this).datagrid('getEditor', {
+                index: index,
+                field: 'role'
+            });
+            row.productname = $(ed.target).combobox('getText');
+        } */
+
+function endEditing() {
+    if (typeof(editIndex) == 'undefined') {
+        return true
+    }
+    if (PRODUCT_GRID.datagrid('validateRow', editIndex)) {
+        PRODUCT_GRID.datagrid('endEdit', editIndex);
+        editIndex = undefined;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+        function append1(){
+                $('#sys_user_datagrid').datagrid('appendRow',{});
+                editIndex1 = $('#sys_user_datagrid').datagrid('getRows').length-1;
+                $('#sys_user_datagrid').datagrid('selectRow', editIndex1)
+                    .datagrid('beginEdit', editIndex1);
+       //     $('.user_grid_btn').linkbutton('disable')
+         //   $('#btn_accept').linkbutton('enable')
+          //  $('#btn_reject').linkbutton('enable')
+        }
+
+        function removeit1(){
+            let selRow =  $('#sys_user_datagrid').datagrid('getSelected')
+            if (selRow == null) {
+                alert('请选择')
+            } else {
+                //删数据库， 回调中
+                editIndex1 = $('#sys_user_datagrid').datagrid('getRowIndex', selRow)
+                $('#sys_user_datagrid').datagrid('deleteRow', editIndex1);
+                editIndex1 = undefined;
+            }
+
+        }
+
+        function accept1(){
+
+            $('#sys_user_datagrid').datagrid('acceptChanges');
+
+           /* if (typeof(editIndex1) != 'undefined'){
+                $('#sys_user_datagrid').datagrid('acceptChanges');
+
+            } else {
+                // do nothing
+            }*/
+
+        }
+        function reject1(){
+            $('#sys_user_datagrid').datagrid('rejectChanges');
+            editIndex1 = undefined;
+           // $('.user_grid_btn').linkbutton('enable')
+            //$('#btn_accept').linkbutton('disable')
+
+        }
+        function getChanges1(){
+            var rows = $('#sys_user_datagrid').datagrid('getChanges');
+            console.log(JSON.stringify(rows));
+        }
+
+
+
+        function edit1(src) {
+           let selRow =  $('#sys_user_datagrid').datagrid('getSelected')
+               if (selRow == null) {
+                   alert('请选择')
+               } else {
+                   editIndex1 = $('#sys_user_datagrid').datagrid('getRowIndex', selRow)
+                   $('#sys_user_datagrid').datagrid('beginEdit', editIndex1)
+                //   $('.user_grid_btn').linkbutton('enable')
+
+                  // $('#btn_edit').linkbutton('disable')
+                   //$('#btn_append').linkbutton('disable')
+                   //$('#btn_delete').linkbutton('disable')
+
+               }
+
+        }
+
+    </script>
+
     <!--登录用户管理-->
     <div id="user_manage_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
-         data-options="fit:true, closed:true, onOpen:onOpenUserManagePanel">
-        <div class="easyui-layout" data-options="fit:true">
+         data-options="fit:true, border:false, closed:true, onOpen:onOpenUserManagePanel">
+        <div class="easyui-layout" data-options="fit:true, border:false">
             <div data-options="region:'west'" style="width:180px; padding:4px;">
-                <ul id="role_tree" class="easyui-tree" data-options="lines:true">
+                <ul id="role_tree" class="easyui-tree" data-options="lines:true,onSelect:loadSysUsers">
 
                 </ul>
             </div>
-            <div data-options="region:'center'" style="padding:4px;">
-                <table id="sys_user_datagrid" class="easyui-datagrid" data-options="rownumbers: true">
-                    <thead>
-                    <tr>
-                        <th data-options="field:'_id',width:100,hidden:true">ID</th>
-                        <th data-options="field:'name',width:100">用户名</th>
-                        <th data-options="field:'role',width:100">角色</th>
-                        <th data-options="field:'disabled', width:80,align:'right',formatter: function(value,row,index){
-				if (row.disabled){
-					return '<span style=\'color:red\'>禁用</span>';
-				} else {
-					return '可用';
-				}
-			}">状态
-                        </th>
-                    </tr>
-                    </thead>
-                </table>
+            <div data-options="region:'center'" style="padding:0px;">
+                <table id="sys_user_datagrid"></table>
+                <div id="dlg" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
+                    <form id="fm" method="post" novalidate style="margin:0;padding:20px 50px">
+                        <div style="margin-bottom:10px">
+                            <input name="name" id="name_textbox" class="easyui-textbox" required="true" label="用&nbsp;&nbsp;户&nbsp;&nbsp;名:" labelAlign="right" style="width:100%">
+                            <input name="_id" id="user_id" type="hidden"/>
+                        </div>
+                        <div style="margin-bottom:10px">
+                            <input name="role" id="role_combobox" class="easyui-combobox" required="true" label="角&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色:" labelAlign="right" style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+
+                            <input id="disabled_checkbox" class="easyui-checkbox" name="disabled" labelAlign="right" label="禁&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用:">
+
+                        </div>
+                    </form>
+                </div>
+                <div id="dlg-buttons">
+                    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser()" style="width:90px">Save</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
+                </div>
+
+                <script type="text/javascript">
+
+                    SYS_USER_GRID = null;
+
+                    var toolbar01 = [
+                        {
+                            text: '添加',
+                            iconCls: 'icon-add',
+                            handler: function () {
+                                // show_sys_user_form('add')
+                                newUser()
+                            }
+                        }, {
+                        text: '编辑',
+                        iconCls: 'icon-edit',
+                        handler: function () {
+                            editUser()
+                        }
+                    }, {
+                        text: '删除',
+                        iconCls: 'icon-remove',
+                        handler: function () {
+                            destroyUser()
+                            // show_sys_user_form('delete')
+                        }
+                    }, {
+                        text: '重置密码',
+                        iconCls: 'icon-lock',
+                        handler: function () {
+                            resetPassword()
+                            // show_sys_user_form('reset_pass')
+                        }
+                    }]
+
+
+
+                    function loadSysUserGrid(params) {
+                        if (SYS_USER_GRID == null) {
+                            // first time
+                            console.log("first time load sys user grid.")
+                            SYS_USER_GRID = $('#sys_user_datagrid').datagrid({
+                                fit: true,
+                                singleSelect: true,
+                                collapsible: false,
+                                data: [],
+                                border:false,
+                                width:700,
+                                height:500,
+                                toolbar: toolbar01,
+                                columns:[[
+                                    {field:'name',title:'用户名',width:100},
+                                    {field:'role',title:'角色',width:100},
+                                    {field:'disabled',title:'状态',width:100,align:'right', formatter: function(value,row,index){
+                                            if (row.disabled){
+                                                return "<span style='color:red'>禁用</span>";
+                                            } else {
+                                                return "启用";
+                                            }
+                                        }}
+                                ]]
+                            })
+                        }
+
+                        mongoose.UserModel.find(params, function (err, users) {
+                            //console.log("Load users: " +JSON.stringify(users))
+                            SYS_USER_GRID.datagrid('loadData', users)
+                        })
+                    }
+
+
+                    var url;
+                    function newUser(){
+                        $('#dlg').dialog('open').dialog('center').dialog('setTitle','New User');
+                        $('#fm').form('clear');
+                       // url = 'save_user.php';
+                        url = 'new'
+                    }
+                    function editUser(){
+                        var row = $('#sys_user_datagrid').datagrid('getSelected');
+                        if (row){
+                            $('#dlg').dialog('open').dialog('center').dialog('setTitle','Edit User');
+                            console.log("ROw"+JSON.stringify(row))
+                            $('#fm').form('load',row);
+                            if (row.disabled) {
+                                $('#disabled_checkbox').checkbox('check')
+                            } else {
+                                $('#disabled_checkbox').checkbox('uncheck')
+                            }
+                           // url = 'update_user.php?id='+row.id;
+                            url = 'edit'
+                        }
+                    }
+
+                    function saveUser(){
+
+                        let name = $('#name_textbox').textbox('getValue')
+                        let role = $('#role_combobox').combobox('getText')
+                        let disabled = $('#disabled_checkbox').checkbox('options').checked
+
+
+
+                        let user = {name: name, role: role, disabled:disabled}
+                        console.log("New user is: "+JSON.stringify(user))
+                        if (url == 'new') {
+                            addUser(user, function() {
+                                $('#dlg').dialog('close');
+                                loadSysUsers(null)
+                            })
+
+                        } else if (url == 'edit') {
+                            let user_id = $('#user_id').val();
+                            user._id = user_id;
+                            updateUser(user, function(){
+                                $('#dlg').dialog('close');
+                                loadSysUsers(null)
+                            })
+                        }
+
+
+
+/*
+                        $('#fm').form('submit',{
+                            url: url,
+                            onSubmit: function(){
+
+                                let isDisabled = $('#disabled_switchbtn').swithbutton('checked')
+
+
+                                return $(this).form('validate');
+                            },
+                            success: function(result){
+                                var result = eval('('+result+')');
+                                if (result.errorMsg){
+                                    $.messager.show({
+                                        title: 'Error',
+                                        msg: result.errorMsg
+                                    });
+                                } else {
+                                    $('#sys_user_datagrid').dialog('close');        // close the dialog
+                                    $('#dg').datagrid('reload');    // reload the user data
+                                }
+                            }
+                        });*/
+                    }
+                    function destroyUser(){
+                        var row = $('#sys_user_datagrid').datagrid('getSelected');
+                        if (row){
+                            $.messager.confirm('确定','是否确定删除选中的用户?',function(r){
+                                if (r){
+
+                                    deleteUser({_id:row._id},function(){
+                                        $('#dlg').dialog('close');
+                                        loadSysUsers(null)
+                                    })
+
+                                }
+                            });
+                        }
+                    }
+
+                    function resetPassword() {
+                        var row = $('#sys_user_datagrid').datagrid('getSelected');
+                        if (row){
+                            $.messager.confirm('确定','是否确定重置选中的用户的登录密码?',function(r){
+                                if (r){
+                                    resetUserPassword({_id:row._id},function(){
+                                        $('#dlg').dialog('close');
+                                        loadSysUsers(null)
+                                    })
+
+                                }
+                            });
+                        }
+                    }
+
+                </script>
             </div>
         </div>
 
@@ -528,28 +921,6 @@ onContextMenu: function(e,node){
 
 
 </div>
-
-
-<script type="text/javascript">
-    var index = 0;
-
-    function addPanel() {
-        index++;
-        $('#tt').tabs('add', {
-            title: 'Tab' + index,
-            content: '<div style="padding:10px">Content' + index + '</div>',
-            closable: true
-        });
-    }
-
-    function removePanel() {
-        var tab = $('#tt').tabs('getSelected');
-        if (tab) {
-            var index = $('#tt').tabs('getTabIndex', tab);
-            $('#tt').tabs('close', index);
-        }
-    }
-</script>
 
 
 </body>

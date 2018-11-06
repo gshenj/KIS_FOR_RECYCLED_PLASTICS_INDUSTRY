@@ -1,0 +1,140 @@
+<table id="sys_user_datagrid">
+</table>
+<!--<div id="toolbar">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">New User</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">Edit User</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyUser()">Remove User</a>
+</div>-->
+
+<div id="dlg" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
+    <form id="fm" method="post" novalidate style="margin:0;padding:20px 50px">
+        <h3>User Information</h3>
+        <div style="margin-bottom:10px">
+            <input name="name" class="easyui-textbox" required="true" label="用户名:" style="width:100%">
+        </div>
+        <div style="margin-bottom:10px">
+            <input name="role" class="easyui-combobox" required="true" label="角色:" style="width:100%">
+        </div>
+        <div style="margin-bottom:10px">
+            <input name="disabled" class="easyui-textbox" required="true" label="禁止:" style="width:100%">
+        </div>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser()" style="width:90px">Save</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
+</div>
+
+<script type="text/javascript">
+
+    SYS_USER_GRID = null;
+
+    var toolbar = [{
+        text: '编辑',
+        iconCls: 'icon-edit',
+        handler: function () {
+            show_sys_user_form('edit')
+        }
+    }, {
+        text: '添加',
+        iconCls: 'icon-add',
+        handler: function () {
+           // show_sys_user_form('add')
+        }
+    }, {
+        text: '删除',
+        iconCls: 'icon-remove',
+        handler: function () {
+           // show_sys_user_form('delete')
+        }
+    }, {
+        text: '重置密码',
+        iconCls: 'icon-lock',
+        handler: function () {
+           // show_sys_user_form('reset_pass')
+        }
+    }]
+
+
+
+    function loadSysUserGrid(params) {
+        if (SYS_USER_GRID == null) {
+            // first time
+            console.log("first time load sys user grid.")
+            SYS_USER_GRID = $('#sys_user_datagrid').datagrid({
+                fit: true,
+                singleSelect: true,
+                collapsible: false,
+                data: [],
+                width:700,
+                height:500,
+                toolbar: toolbar,
+                columns:[[
+                    {field:'name',title:'用户名',width:100},
+                    {field:'role',title:'角色',width:100},
+                    {field:'disabled',title:'状态',width:100,align:'right'}
+                ]]
+            })
+        }
+
+        mongoose.UserModel.find(params, function (err, users) {
+            console.log("Load users: " +JSON.stringify(users))
+            SYS_USER_GRID.datagrid('loadData', users)
+        })
+    }
+
+
+    var url;
+    function newUser(){
+        $('#sys_user_datagrid').dialog('open').dialog('center').dialog('setTitle','New User');
+        $('#fm').form('clear');
+        url = 'save_user.php';
+    }
+    function editUser(){
+        var row = $('#dg').datagrid('getSelected');
+        if (row){
+            $('#sys_user_datagrid').dialog('open').dialog('center').dialog('setTitle','Edit User');
+            $('#fm').form('load',row);
+            url = 'update_user.php?id='+row.id;
+        }
+    }
+    function saveUser(){
+        $('#fm').form('submit',{
+            url: url,
+            onSubmit: function(){
+                return $(this).form('validate');
+            },
+            success: function(result){
+                var result = eval('('+result+')');
+                if (result.errorMsg){
+                    $.messager.show({
+                        title: 'Error',
+                        msg: result.errorMsg
+                    });
+                } else {
+                    $('#sys_user_datagrid').dialog('close');        // close the dialog
+                    $('#dg').datagrid('reload');    // reload the user data
+                }
+            }
+        });
+    }
+    function destroyUser(){
+        var row = $('#sys_user_datagrid').datagrid('getSelected');
+        if (row){
+            $.messager.confirm('Confirm','Are you sure you want to destroy this user?',function(r){
+                if (r){
+                    $.post('destroy_user.php',{id:row.id},function(result){
+                        if (result.success){
+                            $('#sys_user_datagrid').datagrid('reload');    // reload the user data
+                        } else {
+                            $.messager.show({    // show error message
+                                title: 'Error',
+                                msg: result.errorMsg
+                            });
+                        }
+                    },'json');
+                }
+            });
+        }
+    }
+</script>
