@@ -28,7 +28,7 @@
     <script type="text/javascript" src="./scripts/DataTables/datatables.js"></script>
 
 
-    <script type="text/javascript" src="./scripts/DatagridEditor.js"></script>
+    <!--<script type="text/javascript" src="./scripts/DatagridEditor.js"></script>-->
     <script type="text/javascript" src="./user.js"></script>
     <script type="text/javascript" src="./customer.js"></script>
     <script type="text/javascript" src="./region.js"></script>
@@ -62,7 +62,7 @@
             hide_others()
             $('#order_input_panel').panel('open').panel('resize')
             $('#main_layout').layout('resize')
-            // load_customer_grid();
+             load_customer_grid();
             // $('#order_input_toolbar').show()
 
             set_tool_butoon_status(src)
@@ -89,7 +89,7 @@
             hide_others()
             $('#customer_manage_panel').panel('open').panel('resize')
             $('#main_layout').layout('resize')
-            //load_customer_grid();
+           // load_customer_grid();
             set_tool_butoon_status(src)
         }
 
@@ -157,7 +157,8 @@
             })
 
             // 加载客户列表
-            // loadCustomers(classification)
+            console.log("Load customers")
+            load_customer_grid(null)
         }
 
         function save1() {
@@ -410,13 +411,12 @@
 
     <!--客户管理-->
     <div id="customer_manage_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
-         data-options="fit:true, closed:true, onOpen:onOpenCustomerManagePanel">
+         data-options="fit:true, closed:true, border:false, onOpen:onOpenCustomerManagePanel">
         <button onclick="save1()">save</button>
         <div class="easyui-layout" data-options="fit:true">
             <div data-options="region:'west'" style="width:180px; padding:4px;">
-                <ul id="classification_tree" class="easyui-tree" data-options="lines:true,
-                onClick: function(node){
-                    $(this).tree('beginEdit',node.target);},
+                <ul id="classification_tree" class="easyui-tree" data-options="lines:true,onSelect:loadCustomers,
+
 onContextMenu: function(e,node){
                     e.preventDefault();
                     $(this).tree('select',node.target);
@@ -438,6 +438,15 @@ onContextMenu: function(e,node){
                 </div>
 
                 <script type="text/javascript">
+
+                    function loadCustomers(node){
+
+                    }
+
+
+
+
+
                     function append() {
                         var t = $('#classification_tree');
                         var node = t.tree('getSelected');
@@ -497,214 +506,6 @@ onContextMenu: function(e,node){
         </div>
 
     </div>
-
-    <script type="text/javascript">
-
-/*
-
-        let editIndex = undefined;
-
-        function endEditing() {
-            if (typeof(editIndex) == 'undefined') {
-                return true
-            }
-            if (PRODUCT_GRID.datagrid('validateRow', editIndex)) {
-                PRODUCT_GRID.datagrid('endEdit', editIndex);
-                editIndex = undefined;
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        function onClickCell(index, field) {
-            if (editIndex != index) {
-                if (endEditing()) {
-                    PRODUCT_GRID.datagrid('selectRow', index)
-                        .datagrid('beginEdit', index);
-                    var ed = PRODUCT_GRID.datagrid('getEditor', {index: index, field: field});
-                    if (ed) {
-                        ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
-                    }
-                    editIndex = index;
-                } else {
-                    setTimeout(function () {
-                        PRODUCT_GRID.datagrid('selectRow', editIndex);
-                    }, 0);
-                }
-            }
-        }
-
-        function onEndEdit(index, row) {
-            var ed = $(this).datagrid('getEditor', {
-                index: index,
-                field: 'name'
-            });
-            row.name = $(ed.target).combobox('getText');
-        }
-
-        function append() {
-            if (endEditing()) {
-                PRODUCT_GRID.datagrid('appendRow', {status: 'P'});
-                editIndex = PRODUCT_GRID.datagrid('getRows').length - 1;
-                PRODUCT_GRID.datagrid('selectRow', editIndex)
-                    .datagrid('beginEdit', editIndex);
-            }
-        }
-
-        function removeit() {
-            if (editIndex == undefined) {
-                return
-            }
-            PRODUCT_GRID.datagrid('cancelEdit', editIndex)
-                .datagrid('deleteRow', editIndex);
-            editIndex = undefined;
-        }
-
-        function accept() {
-            if (endEditing()) {
-                PRODUCT_GRID.datagrid('acceptChanges');
-                return true;
-            }
-            return false;
-        }
-
-        function reject() {
-            PRODUCT_GRID.datagrid('rejectChanges');
-            editIndex = undefined;
-        }
-
-        function getChanges() {
-            var rows = PRODUCT_GRID.datagrid('getChanges');
-            alert(rows.length + ' rows are changed!');
-        }
-
-*/
-
-
-
-
-
-
-
-
-
-        var editIndex1 = undefined;
-       /* function endEditing(){
-            if (editIndex1 == undefined){return true}
-            if ($('#sys_user_datagrid').datagrid('validateRow', editIndex1)){
-                $('#sys_user_datagrid').datagrid('endEdit', editIndex1);
-                editIndex1 = undefined;
-                return true;
-            } else {
-                return false;
-            }
-        }
-        function onClickCell1(index, field){
-            if (editIndex1 != index){
-                if (endEditing()){
-                    $('#sys_user_datagrid').datagrid('selectRow', index)
-                        .datagrid('beginEdit', index);
-                    var ed = $('#sys_user_datagrid').datagrid('getEditor', {index:index,field:field});
-                    if (ed){
-                        ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
-                    }
-                    editIndex1 = index;
-                } else {
-                    setTimeout(function(){
-                        $('#sys_user_datagrid').datagrid('selectRow', editIndex1);
-                    },0);
-                }
-            }
-        }
-        function onEndEdit1(index, row){
-            var ed = $(this).datagrid('getEditor', {
-                index: index,
-                field: 'role'
-            });
-            row.productname = $(ed.target).combobox('getText');
-        } */
-
-function endEditing() {
-    if (typeof(editIndex) == 'undefined') {
-        return true
-    }
-    if (PRODUCT_GRID.datagrid('validateRow', editIndex)) {
-        PRODUCT_GRID.datagrid('endEdit', editIndex);
-        editIndex = undefined;
-        return true;
-    } else {
-        return false;
-    }
-}
-
-        function append1(){
-                $('#sys_user_datagrid').datagrid('appendRow',{});
-                editIndex1 = $('#sys_user_datagrid').datagrid('getRows').length-1;
-                $('#sys_user_datagrid').datagrid('selectRow', editIndex1)
-                    .datagrid('beginEdit', editIndex1);
-       //     $('.user_grid_btn').linkbutton('disable')
-         //   $('#btn_accept').linkbutton('enable')
-          //  $('#btn_reject').linkbutton('enable')
-        }
-
-        function removeit1(){
-            let selRow =  $('#sys_user_datagrid').datagrid('getSelected')
-            if (selRow == null) {
-                alert('请选择')
-            } else {
-                //删数据库， 回调中
-                editIndex1 = $('#sys_user_datagrid').datagrid('getRowIndex', selRow)
-                $('#sys_user_datagrid').datagrid('deleteRow', editIndex1);
-                editIndex1 = undefined;
-            }
-
-        }
-
-        function accept1(){
-
-            $('#sys_user_datagrid').datagrid('acceptChanges');
-
-           /* if (typeof(editIndex1) != 'undefined'){
-                $('#sys_user_datagrid').datagrid('acceptChanges');
-
-            } else {
-                // do nothing
-            }*/
-
-        }
-        function reject1(){
-            $('#sys_user_datagrid').datagrid('rejectChanges');
-            editIndex1 = undefined;
-           // $('.user_grid_btn').linkbutton('enable')
-            //$('#btn_accept').linkbutton('disable')
-
-        }
-        function getChanges1(){
-            var rows = $('#sys_user_datagrid').datagrid('getChanges');
-            console.log(JSON.stringify(rows));
-        }
-
-
-
-        function edit1(src) {
-           let selRow =  $('#sys_user_datagrid').datagrid('getSelected')
-               if (selRow == null) {
-                   alert('请选择')
-               } else {
-                   editIndex1 = $('#sys_user_datagrid').datagrid('getRowIndex', selRow)
-                   $('#sys_user_datagrid').datagrid('beginEdit', editIndex1)
-                //   $('.user_grid_btn').linkbutton('enable')
-
-                  // $('#btn_edit').linkbutton('disable')
-                   //$('#btn_append').linkbutton('disable')
-                   //$('#btn_delete').linkbutton('disable')
-
-               }
-
-        }
-
-    </script>
 
     <!--登录用户管理-->
     <div id="user_manage_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
