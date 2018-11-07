@@ -5,6 +5,8 @@ let SYS_USER_OPERATOR = '';
 
 let ROLE = []
 
+var url;
+
 SYS_USER_GRID = null;
 
 var toolbar01 = [
@@ -102,7 +104,6 @@ function loadSysUserGrid(params) {
 }
 
 
-var url;
 function newUser(){
     $('#dlg').dialog('open').dialog('center').dialog('setTitle','New User');
     $('#fm').form('clear');

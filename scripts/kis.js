@@ -8,7 +8,7 @@ function show_order_input(src) {
     hide_others()
     $('#order_input_panel').panel('open').panel('resize')
     $('#main_layout').layout('resize')
-    load_customer_grid();
+    //load_customer_grid();
     // $('#order_input_toolbar').show()
 
     set_tool_butoon_status(src)

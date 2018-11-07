@@ -1,37 +1,16 @@
 mongoose = require("./scripts/db")
-let CUSTOMER_GRID = null
-let toolbar_for_customer = [
-    {
-        text: '添加',
-        iconCls: 'icon-add',
-        handler: function () {
-            // show_sys_user_form('add')
-            newCustomer()
-        }
-    }, {
-        text: '编辑',
-        iconCls: 'icon-edit',
-        handler: function () {
-            editCustomer()
-        }
-    }, {
-        text: '删除',
-        iconCls: 'icon-remove',
-        handler: function () {
-            destroyCustomer()
-            // show_sys_user_form('delete')
-        }
-    }, {
-        text: '导出到EXCEL',
-        iconCls: 'icon-lock',
-        handler: function () {
-            CUSTOMER_GRID.datagrid('toExcel','客户列表.xls');
-            // show_sys_user_form('reset_pass')
-        }
-    }]
+mongoose.set('useFindAndModify', false)
 
-function loadCustomersWhenClassificationNodeSelected(node){
+
+let CUSTOMER_GRID = null
+
+function loadCustomerGrid(node) {
+
     let t = $('#classification_tree')
+    if (node == null) {
+        node = t.tree('getSelected')
+    }
+
     let rootNode = t.tree('getRoot')
 
     let params = {}
@@ -43,7 +22,7 @@ function loadCustomersWhenClassificationNodeSelected(node){
     } else {
         let arr = [node.text]
         let children = t.tree('getChildren', node.target)
-            // children包含所有子节点
+        // children包含所有子节点
         for (let i=0; i<children.length; i++) {
             arr.push(children[i].text)
         }
@@ -51,34 +30,8 @@ function loadCustomersWhenClassificationNodeSelected(node){
     }
 
     console.log("Classification params is "+JSON.stringify(params))
-    loadCustomerGrid(params)
-}
 
-/*
-function reversClassification01(node, t, arr){
-    arr.push(node.text)
 
-    if (t.tree('isLeaf', node.target)){
-        console.log("Select classification node is a leaf "+node.text)
-        return;
-    }
-
-    let children = t.tree('getChildren', node.target)
-    console.log(children.length)
-    for (let i=0; i<children.length; i++) {
-        let child = children[i]
-        reversClassification01(child, t, arr)
-        /!*arr.push(child.text)
-        if (t.tree('isLeaf', child.target)) {
-            continue
-        } else {
-
-        }*!/
-    }
-}
-*/
-
-function loadCustomerGrid(params) {
     if (CUSTOMER_GRID == null) {
         console.log("First time load customer grid.")
         CUSTOMER_GRID = $('#grid_for_customer').datagrid({
@@ -91,7 +44,35 @@ function loadCustomerGrid(params) {
             title:'<span style="font-weight: bold">客户列表</span>',
             width:700,
             height:500,
-            toolbar: toolbar_for_customer,
+            toolbar: [
+                {
+                    text: '添加',
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        // show_sys_user_form('add')
+                        newCustomer()
+                    }
+                }, {
+                    text: '编辑',
+                    iconCls: 'icon-edit',
+                    handler: function () {
+                        editCustomer()
+                    }
+                }, {
+                    text: '删除',
+                    iconCls: 'icon-remove',
+                    handler: function () {
+                        destroyCustomer()
+                        // show_sys_user_form('delete')
+                    }
+                }, {
+                    text: '导出到EXCEL',
+                    iconCls: 'icon-lock',
+                    handler: function () {
+                        CUSTOMER_GRID.datagrid('toExcel','客户列表.xls');
+                        // show_sys_user_form('reset_pass')
+                    }
+                }],
             columns:[[
                 {title: "客户名称", field: 'name', width:250},
                 {title: "联系人", field: "principal",width:100},
@@ -118,8 +99,9 @@ function newCustomer(){
     let node = $('#classification_tree').tree('getSelected')
     if (node != null) {
         let rootNode = $('#classification_tree').tree('getRoot')
-        if (node != rootNode)
-            $('#customer_classification').combobox('setText',node.text)
+        if (node != rootNode) {
+            $('#customer_classification').combotree('setValue', {id:node.text, text:node.text})
+        }
     }
     opt_type_for_customer = 'new'
 }
@@ -138,27 +120,29 @@ function editCustomer(){
 //todo
 function saveCustomer() {
 
-    let name = $('#name_textbox').textbox('getValue')
-    let classification = $('#role_combobox').combobox('getText')
-    let principal = $('#customer_principal').combobox('getText')
-    let phone = $('#disabled_checkbox').checkbox('options').checked
-    let address = $('#disabled_checkbox').checkbox('options').checked
+    let name = $('#customer_name').textbox('getValue')
+    let classification = $('#customer_classification').combotree('getValue')
+    let principal = $('#customer_principal').textbox('getValue')
+    let phone = $('#customer_phone').textbox('getValue')
+    let address = $('#customer_address').textbox('getValue')
 
 
-    let customer = {name: name, role: role, disabled: disabled}
-    console.log("New user is: " + JSON.stringify(user))
-    if (url == 'new') {
-        addCustomer(user, function () {
+    let customer = {name: name, classification: classification , principal: principal, phone:phone, address:address}
+
+    if (opt_type_for_customer == 'new') {
+        console.log("New customer is: " + JSON.stringify(customer))
+        mongoose.CustomerModel.create(customer, function () {
             $('#dlg_for_customer').dialog('close');
-            loadSysUsers(null)
+            loadCustomerGrid(null)
         })
 
-    } else if (url == 'edit') {
+    } else if (opt_type_for_customer == 'edit') {
         let customer_id = $('#customer_id').val();
         customer._id = customer_id;
-        updateCustomer(user, function () {
+        console.log("Edit customer is: " + JSON.stringify(customer))
+        mongoose.CustomerModel.findByIdAndUpdate(customer._id, customer, function () {
             $('#dlg_for_customer').dialog('close');
-            loadSysUsers(null)
+            loadCustomerGrid(null)
         })
     }
 }
@@ -168,9 +152,9 @@ function destroyCustomer(){
     if (row){
         $.messager.confirm('确定','是否确定删除选中的用户?',function(r){
             if (r){
-                deleteUser({_id:row._id},function(){
+                mongoose.CustomerModel.findByIdAndDelete(row._id, function(){
                     $('#dlg_for_customer').dialog('close');
-                    loadSysUsers(null)
+                    loadCustomerGrid(null)
                 })
 
             }
@@ -179,8 +163,26 @@ function destroyCustomer(){
 }
 
 
+function showClassificationCombotree(){
+    loadClassifications(function (data) {
+        $('#customer_classification').combotree('loadData', data)
+    });
+}
 
 
+function beforeSelectClassificationCombotree(node){
+    console.log(JSON.stringify(node));
+    if (typeof(node.id) == 'undefined') {
+
+        console.log("选中编码分类根节点")
+        //$.messager.alert({title:"警告", msg:"请选择城市", zIndex:1000000})
+        // $('#customer_region').combo('showPanel')
+        return false;
+    }
+
+    return true
+
+}
 
 /*
 
