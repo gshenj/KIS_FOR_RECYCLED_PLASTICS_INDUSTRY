@@ -24,7 +24,7 @@ let classificationSchema = new Schema({classifications:Schema.Types.Mixed})// {c
 var userSchema = new Schema({role:String, name:String, disabled:Boolean, password:String});
 
 
-var product = {name:String, modal:String, price:Number, units:String, memo:String };
+var product = {name:String, modal:String, price:String, units:String, memo:String };
 var productSchema = new Schema(product,{_id:false});          //product不生成_id字段
 
 var customer ={

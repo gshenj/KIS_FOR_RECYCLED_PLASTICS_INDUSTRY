@@ -3,8 +3,12 @@ mongoose.set('useFindAndModify', false)
 
 
 let CUSTOMER_GRID = null
+let enable_customer_filter = false
+
+let editIndex = undefined;
 
 function loadCustomerGrid(node) {
+
 
     let t = $('#classification_tree')
     if (node == null) {
@@ -40,11 +44,15 @@ function loadCustomerGrid(node) {
             collapsible: false,
             data: [],
             border:false,
+            remoteSort:false,
+            multiSort:true,
+            showFilterBar:false,
             rownumbers:true,
             title:'<span style="font-weight: bold">客户列表</span>',
             width:700,
             height:500,
-            toolbar: [
+            toolbar: '#customer_grid_toolbar',
+            /*[
                 {
                     text: '添加',
                     iconCls: 'icon-add',
@@ -72,15 +80,29 @@ function loadCustomerGrid(node) {
                         CUSTOMER_GRID.datagrid('toExcel','客户列表.xls');
                         // show_sys_user_form('reset_pass')
                     }
-                }],
+                }, {
+                    text: '查找',
+                    iconCls: 'icon-lock',
+                    handler: function () {
+                        if(!enable_customer_filter) {
+                            CUSTOMER_GRID.datagrid('enableFilter');
+                            enable_customer_filter = true
+                        } else {
+                            CUSTOMER_GRID.datagrid('disableFilter');
+                            enable_customer_filter = false
+                        }
+
+                    }
+                }],*/
             columns:[[
-                {title: "客户名称", field: 'name', width:250},
+                {title: "客户编码", field: 'classification',width:100, sortable: true,sortOrder: 'asc'},
+                {title: "客户名称", field: 'name', width:250, sortable:true, sortOrder: 'asc'},
                 {title: "联系人", field: "principal",width:100},
                 {title: "联系电话", field: 'phone',width:100},
-                {title: "客户编码", field: 'classification',width:100},
                 {title: "联系地址", field: 'address',width:250}
             ]]
         })
+        enable_customer_filter = false;
     }
 
     if (params == null) {
@@ -88,6 +110,7 @@ function loadCustomerGrid(node) {
     }
     mongoose.CustomerModel.find(params, function (err, docs) {
         CUSTOMER_GRID.datagrid('loadData', docs)
+        CUSTOMER_GRID.datagrid('enableFilter', {filterMatchingType:'any'})
     })
 }
 
@@ -103,6 +126,9 @@ function newCustomer(){
             $('#customer_classification').combotree('setValue', {id:node.text, text:node.text})
         }
     }
+
+    load_product_grid(null)
+
     opt_type_for_customer = 'new'
 }
 function editCustomer(){
@@ -112,6 +138,8 @@ function editCustomer(){
         console.log("ROw"+JSON.stringify(row))
         $('#fm_for_customer').form('load',row);
 
+        // 加载客户产品表格
+        load_product_grid(row)
         // url = 'update_user.php?id='+row.id;
         opt_type_for_customer = 'edit'
     }
@@ -126,21 +154,27 @@ function saveCustomer() {
     let phone = $('#customer_phone').textbox('getValue')
     let address = $('#customer_address').textbox('getValue')
 
+   // let products = PRODUCT_GRID.datagrid('getData').rows
 
     let customer = {name: name, classification: classification , principal: principal, phone:phone, address:address}
 
     if (opt_type_for_customer == 'new') {
+        customer.products = []
         console.log("New customer is: " + JSON.stringify(customer))
         mongoose.CustomerModel.create(customer, function () {
+
             $('#dlg_for_customer').dialog('close');
             loadCustomerGrid(null)
+
         })
 
     } else if (opt_type_for_customer == 'edit') {
-        let customer_id = $('#customer_id').val();
-        customer._id = customer_id;
+        let customerId = $('#customer_id').val();
+        //customer._id = customer_id;
         console.log("Edit customer is: " + JSON.stringify(customer))
-        mongoose.CustomerModel.findByIdAndUpdate(customer._id, customer, function () {
+        // customer不能包含products字段，否则会更新.update是局部字段更新的.
+        mongoose.CustomerModel.findByIdAndUpdate(customerId, customer, function () {
+
             $('#dlg_for_customer').dialog('close');
             loadCustomerGrid(null)
         })
@@ -184,286 +218,54 @@ function beforeSelectClassificationCombotree(node){
 
 }
 
-/*
 
 
-
-
-
-
-
-
-
-
-
-
-    function load_customer_grid() {
-    load_customer_grid(null)
-
+function exportExcel() {
+    CUSTOMER_GRID.datagrid('toExcel','客户列表.xls');
 }
 
-function load_customer_grid(callback) {
-
-    if (CUSTOMER_GRID == null) {
-        console.log("First time load customer datagrid.")
-
-        CUSTOMER_GRID = $('#customer_grid').DataTable({
-            data: [],
-            pageLength: 15,
-            /!*paging:false,
-            "scrollY": "500px",
-            "scrollCollapse": true,
-            fixedHeader: true,*!/
-            select: true,
-            dom: 'Bfrtip',
-            buttons: [
-                {
-                    text: '编辑',
-                    action: function (e, dt, node, config) {
-                        let row_data = dt.row('.selected').data();
-                        console.log(row_data)
-                        if (typeof(row_data) == 'undefined') {
-                            alert('请选择客户')
-                            return
-                        }
-
-                        show_customer_win_form('edit', row_data)
-                        // open edit customer winform.
-                        //console.log( JSON.stringify( dt.row('.selected').data()))
-                    }
-                },
-                {
-                    text: '新增',
-                    action: function (e, dt, node, config) {
-                        show_customer_win_form('add', null)
-                    }
-                },
-                {
-                    text: '删除',
-                    action: function (e, dt, node, config) {
-                        let row_data = dt.row('.selected').data();
-                        console.log(row_data)
-                        if (typeof(row_data) == 'undefined') {
-                            alert('请选择客户')
-                            return
-                        }
-
-                        show_customer_win_form('delete', row_data)
-                    }
-                },
-                'excel'
-            ],
-            columns: [
-                {
-                    "className": 'details-control',
-                    "orderable": false,
-                    "data": null,
-                    "defaultContent": ''
-                },
-                {title: "客户", data: 'name'},
-                {title: "联系人", data: "principal"},
-                {title: "电话", data: 'phone'},
-                {title: "地区", data: 'city'},
-                {title: "地址", data: 'address'}
-            ],
-            "order": [[1, 'asc']]
-        });
 
 
-        $("div.toolbar1").html('<b>Custom tool bar! Text/images etc.</b>');
 
-        // Add event listener for opening and closing details
-        $('#customer_grid tbody').on('click', 'td.details-control', function () {
-            var tr = $(this).closest('tr');
-            var row = CUSTOMER_GRID.row(tr);
+let timer
+function onSearch(src) {
+    let e=arguments.callee.caller.arguments[0]||window.event
 
-            if (row.child.isShown()) {
-                // This row is already open - close it
-                row.child.hide();
-                tr.removeClass('shown');
-            }
-            else {
-                // Open this row
-                row.child(format(row.data())).show();
-                tr.addClass('shown');
-            }
-        });
-
-        $('#customer_grid tbody').on('click', 'tr', function () {
-            if ($(this).hasClass('selected')) {
-                $(this).removeClass('selected');
-            }
-            else {
-                CUSTOMER_GRID.$('tr.selected').removeClass('selected');
-                $(this).addClass('selected');
-            }
-        });
-
-
-    } else {
-        console.log("Reload user datagrid.")
+    if (timer) {
+        clearTimeout(timer);
     }
-
-
-    mongoose.CustomerModel.find({}, function (err, users) {
-        CUSTOMER_GRID.clear().rows.add(users).draw()
-        //  CUSTOMER_GRID.clear().rows.add(users).invalidate().draw()
-
-        if (callback != null)
-            callback()
-    })
-}
-
-
-function format(d) {
-    // `d` is the original data object for the row
-    let products = d.products;
-
-    console.log("sub table"+products)
-    let html = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'
-    html += '<tr><th>品名</th><th>型号</th><th>单位</th><th>价格</th><th>描述</th>';
-    for (let i=0; i<products.length; i++) {
-        let p = products[i];
-        html += "<tr><td>"+p.name+"</td><td>"+p.modal+"</td><td>"+p.units+"</td><td>"+p.price+"</td><td>"+p.memo+"</td></tr>"
+    if (e.keyCode == 13) {
+        doSearch(src)
+    } else if (400) {
+        timer = setTimeout(function () {
+            doSearch(src)
+        }, 400);
     }
-    html += '</table>'
-    return html
-
 }
 
-
-
-//let CURRENT_CUSTOMER_PRODUCT = []
-function show_customer_win_form(type, row_data) {
-    CUSTOMER_OPERATOR_TYPE = type
-    if (type == 'add') {
-        $('#customer_name').textbox("setValue", '').textbox("readonly", false)
-        $('#customer_region').combotree('setValue', {text:"", id:""}).combotree('readonly', false)
-        $('#customer_principal').textbox('setValue', '').textbox("readonly", false)
-        $('#customer_phone').textbox('setValue', '').textbox("readonly", false)
-        $('#customer_address').textbox('setValue', '').textbox("readonly", false)
-        $('#btn_customer_operator').linkbutton({text: '确定保存'})
-
-    } else if (type == 'edit') {
-
-        $('#customer_id').val(row_data._id);
-        $('#customer_name').textbox("setValue", row_data.name).textbox("readonly", false)
-        $('#customer_region').combotree('setValue', {text:row_data.city, id:row_data.city}).combotree('readonly', false)
-        $('#customer_principal').textbox('setValue', row_data.principal).textbox("readonly", false)
-        $('#customer_phone').textbox('setValue', row_data.phone).textbox("readonly", false)
-        $('#customer_address').textbox('setValue', row_data.address).textbox("readonly", false)
-        $('#btn_customer_operator').linkbutton({text: '保存修改'})
-
-    } else if (type == 'delete') {
-
-        $('#customer_id').val(row_data._id);
-        $('#customer_name').textbox("setValue", row_data.name).textbox("readonly", true)
-        $('#customer_region').combotree('setValue', {text:row_data.city, id:row_data.city}).combotree('setText', row_data.city).combotree('readonly', true)
-        $('#customer_principal').textbox('setValue', row_data.principal).textbox("readonly", true)
-        $('#customer_phone').textbox('setValue', row_data.phone).textbox("readonly", true)
-        $('#customer_address').textbox('setValue', row_data.address).textbox("readonly", true)
-        $('#btn_customer_operator').linkbutton({text: '确定删除'})
-    }
-
-
-    $('#customer_win').window('open').window('center')
-
-    load_product_grid(row_data);
-
-}
-
-function close_customer_win_form() {
-    $('#customer_win').window('close')
-}
-
-
-let CUSTOMER_OPERATOR_TYPE = ''
-
-function customer_operator() {
-    if (CUSTOMER_OPERATOR_TYPE == 'add') {
-
-        if (!accept()){
-            alert('产品数据输入有误！')
-            return;
-        }
-
-        let customerModel = new mongoose.CustomerModel()
-        customerModel.name = $('#customer_name').textbox("getValue")
-        customerModel.city = $('#customer_region').combotree('getValue')
-        let tree = $('#customer_region').combotree('tree');
-        let cityNode = tree.tree('getSelected')
-        let provinceNode = tree.tree('getParent', cityNode.target)
-        customerModel.province = provinceNode.text
-
-        customerModel.principal = $('#customer_principal').textbox('getValue')
-        customerModel.phone = $('#customer_phone').textbox('getValue')
-        customerModel.address = $('#customer_address').textbox('getValue')
-        customerModel.products = PRODUCT_GRID.datagrid('getData').rows
-        console.log("新增客户：" + JSON.stringify(customerModel))
-        customerModel.save({validateBeforeSave: false}, function (err) {
-            if (err) return handleError(err)
-            else {
-                show_messager('操作成功： 客户已添加！')
-                load_customer_grid(function () {
-                    CUSTOMER_GRID.rows(function (idx, data, node) {
-                        return data.name === customerModel.name ?
-                            true : false;
-                    }).select()
-                })
-
-                close_customer_win_form()
-            }
-        })
-
-    } else if (CUSTOMER_OPERATOR_TYPE == 'edit') {
-        if (!accept()){
-            alert('产品数据输入有误！')
-            return;
-        }
-
-        let id = $('#customer_id').val()
-        mongoose.CustomerModel.findById(id, function (err, customer) {
-            if (err) {
-                alert(err)
-                return
-            }
-            console.log(customer)
-            customer.name = $('#customer_name').textbox("getValue")
-            customer.city = $('#customer_region').combotree('getValue')
-            customer.principal = $('#customer_principal').textbox('getValue')
-            customer.phone = $('#customer_phone').textbox('getValue')
-            customer.address = $('#customer_address').textbox('getValue')
-            customer.products = PRODUCT_GRID.datagrid('getData').rows
-            console.log("编辑后客户信息："+JSON.stringify(customer))
-            customer.save({validateBeforeSave: false}, function (err) {    //{validateBeforeSave: false}很重要
-                if (err) return handleError(err)
-                else {
-                    show_messager('操作成功： 修改已保存！')
-                    load_customer_grid(function () {
-                        CUSTOMER_GRID.rows(function (idx, data, node) {
-                            return data.name === customer.name ?
-                                true : false;
-                        }).select()
-                    })
-                    close_customer_win_form()
-                }
-            })
-        });
-
-    } else if (CUSTOMER_OPERATOR_TYPE == 'delete') {
-
-        let id = $('#customer_id').val();
-        mongoose.CustomerModel.findByIdAndDelete(id, function (err, user) {
-            if (err) {
-                alert(err)
-            } else {
-                console.log("Delete sys user " + user)
-                show_messager("操作成功：用户已删除！");
-                load_customer_grid()
-                close_customer_win_form()
-            }
-        })
-    }
+function doSearch(input) {
+    let searchText = input.value
+    CUSTOMER_GRID.datagrid('removeFilterRule').datagrid('addFilterRule', {
+        field: 'name',
+        op: 'contains',
+        value: searchText
+    }).datagrid('addFilterRule', {
+        field: 'classification',
+        op: 'contains',
+        value: searchText
+    }).datagrid('addFilterRule', {
+        field: 'principal',
+        op: 'contains',
+        value: searchText
+    }).datagrid('addFilterRule', {
+        field: 'phone',
+        op: 'contains',
+        value: searchText
+    }).datagrid('addFilterRule', {
+        field: 'address',
+        op: 'contains',
+        value: searchText
+    }).datagrid('doFilter')
 }
 
 
@@ -487,6 +289,10 @@ let product_grid_toolbar = [{
     text: '撤销',
     iconCls: 'icon-undo',
     handler: reject
+}, {
+    text: 'getchanges',
+    iconCls: 'icon-undo',
+    handler:getChanges
 }]
 
 let product_grid_columns = [[
@@ -510,36 +316,39 @@ let product_grid_columns = [[
     {field: 'memo', title: '描述', width: 140, editor: 'textbox'}
 ]]
 
+
 function load_product_grid(row_data) {
-    console.log("loadData " + JSON.stringify(row_data))
-    let new_data = [];
+    let new_data
     if (row_data == null || typeof (row_data) == 'undefined') {
-        ;
+        new_data = [];
     } else {
         new_data = row_data.products
     }
 
+
+    editIndex = undefined
+
+
     if (PRODUCT_GRID == null) {
-        PRODUCT_GRID = $('#product_grid').datagrid({
+        PRODUCT_GRID = $('#customer_product_grid').datagrid({
             singleSelect: true,
             width: 580,
             toolbar: product_grid_toolbar,
-            data: [],
+            data: new_data,
             columns: product_grid_columns,
             onClickCell: onClickCell,
             onEndEdit: onEndEdit
         })
         console.log("Init product grid.")
+    } else {
+
+        PRODUCT_GRID.datagrid('loadData', new_data)
+        reject();
     }
-
-
-    PRODUCT_GRID.datagrid('loadData', new_data)
-    reject();
 }
 
 
 
-let editIndex = undefined;
 
 function endEditing() {
     if (typeof(editIndex) == 'undefined') {
@@ -554,7 +363,9 @@ function endEditing() {
     }
 }
 
-function onClickCell(index, field) {
+function onClickCell(index, field, value) {
+
+    console.log("onClickCell")
     if (editIndex != index) {
         if (endEditing()) {
             PRODUCT_GRID.datagrid('selectRow', index)
@@ -572,17 +383,15 @@ function onClickCell(index, field) {
     }
 }
 
-function onEndEdit(index, row) {
-    var ed = $(this).datagrid('getEditor', {
-        index: index,
-        field: 'name'
-    });
-    row.name = $(ed.target).combobox('getText');
+function onEndEdit(index, row, changes) {
+    console.log('onEndEdit...')
+    console.log(JSON.stringify(row))
+
 }
 
 function append() {
     if (endEditing()) {
-        PRODUCT_GRID.datagrid('appendRow', {status: 'P'});
+        PRODUCT_GRID.datagrid('appendRow', {});
         editIndex = PRODUCT_GRID.datagrid('getRows').length - 1;
         PRODUCT_GRID.datagrid('selectRow', editIndex)
             .datagrid('beginEdit', editIndex);
@@ -601,6 +410,8 @@ function removeit() {
 function accept() {
     if (endEditing()) {
         PRODUCT_GRID.datagrid('acceptChanges');
+
+        console.log("After accept "+ JSON.stringify(PRODUCT_GRID.datagrid('getRows')));
         return true;
     }
     return false;
@@ -609,6 +420,7 @@ function accept() {
 function reject() {
     PRODUCT_GRID.datagrid('rejectChanges');
     editIndex = undefined;
+    console.log("reject...")
 }
 
 function getChanges() {
@@ -616,5 +428,9 @@ function getChanges() {
     alert(rows.length + ' rows are changed!');
 }
 
-*/
+
+function onDlgForCustomerClose(){
+    //PRODUCT_GRID.datagrid('destroy')
+    //PRODUCT_GRID = null;
+}
 
