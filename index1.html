@@ -14,20 +14,24 @@
     <!-- normal script imports etc  -->
     <script src="./scripts/jquery-3.3.1.js"></script>
     <!-- Insert this line after script imports -->
-    <script>if (window.module) module = window.module;</script>
+    <script>
+        if (window.module)
+            module = window.module;
+
+    </script>
 
 
     <link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/color.css">
     <link rel="stylesheet" type="text/css" href="./scripts/DataTables/datatables.css">
-    <link rel="stylesheet" type="text/css" href="./scripts/bootstrap4/css/bootstrap.css">
+    <!--<link rel="stylesheet" type="text/css" href="./scripts/bootstrap4/css/bootstrap.css">-->
     <link rel="stylesheet" type="text/css" href="./styles/kis.css">
 
     <script type="text/javascript" src="./scripts/jquery-easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="./scripts/jquery-easyui/datagrid-detailview.js"></script>
     <script type="text/javascript" src="./scripts/DataTables/datatables.js"></script>
-    <script type="text/javascript" src="./scripts/bootstrap4/js/bootstrap.js"></script>
+    <!--<script type="text/javascript" src="./scripts/bootstrap4/js/bootstrap.js"></script>-->
 
 
     <!--<script type="text/javascript" src="./scripts/DatagridEditor.js"></script>-->
@@ -53,14 +57,57 @@
             padding: 0;
         }
 
-        .radio_label{
+        .radio_label {
             font-weight: bold;
-            border:1px solid black;
-            width:100%;
+            border: 0px solid black;
+            width: 100%;
         }
 
     </style>
 
+    <script>
+
+
+        $.extend($.fn.textbox.methods, {
+            addClearBtn: function (jq, iconCls) {
+                return jq.each(function () {
+                    var t = $(this);
+                    var opts = t.textbox('options');
+                    opts.icons = opts.icons || [];
+                    opts.icons.unshift({
+                        iconCls: iconCls,
+                        handler: function (e) {
+                            console.log("Before clear:" + $(e.data.target).textbox('getText') + "-" + $(e.data.target).textbox('getValue'))
+                            $(e.data.target).textbox('clear').textbox('setText', '')//.textbox('textbox').focus();
+                            $(this).css('visibility', 'hidden');
+                            console.log("After clear:" + $(e.data.target).textbox('getText') + "-" + $(e.data.target).textbox('getValue'))
+
+                        }
+                    });
+                    t.textbox();
+                    if (!t.textbox('getText')) {
+                        t.textbox('getIcon', 0).css('visibility', 'hidden');
+                    }
+                    t.textbox('textbox').bind('keyup', function () {
+                        var icon = t.textbox('getIcon', 0);
+                        if ($(this).val()) {
+                            icon.css('visibility', 'visible');
+                        } else {
+                            icon.css('visibility', 'hidden');
+                        }
+                    });
+                });
+            }
+        });
+
+        $(function () {
+            $('#customer_choose_for_product_manage').textbox().textbox('addClearBtn', 'icon-clear');
+            $('#customer_choose_for_product_manage').textbox('textbox').bind('focus', function (e) {
+                console.log('focus')
+                $('#dlg_for_customer_choose').dialog('open').dialog('center')
+            });
+        });
+    </script>
 
 </head>
 <body class="easyui-layout" id="main_layout" data-options="border:false"
@@ -335,7 +382,7 @@
                     <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="destroyCustomer()">删除</a>
                     <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="exportExcel()">导出到excel</a>
                     <span style="margin-left:100px">检索：<input type="text" id="customer_search_text" style="width:200px"
-                                                              onkeyup="onSearch(this)"></span>
+                                                              onkeyup="onSearch(this, CUSTOMER_GRID)"></span>
                 </div>
 
                 <div id="dlg_for_customer" class="easyui-dialog" style="width:500px"
@@ -349,8 +396,14 @@
                         </div>
                         <div style="margin-bottom:10px">
 
+                            <input name="index_code" id="customer_index_code"
+                                   class="easyui-textbox"
+                                   label="客户简码：" labelAlign="right" style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+
                             <input name="classification" id="customer_classification"
-                                   class="easyui-combotree" id="customer_region"
+                                   class="easyui-combotree"
                                    data-options="data:[], editable:false, required:true, lines:true, onShowPanel:showClassificationCombotree, onBeforeSelect:beforeSelectClassificationCombotree"
                                    label="编码分类：" labelAlign="right" style="width:100%">
                         </div>
@@ -395,71 +448,36 @@
     <!--产品管理-->
     <div id="product_manage_panel" class="easyui-panel opt_panel" 　
          style="width:800px; height:100%; padding:0px 4px; text-align:center; "
-         data-options="fit:true, closed:true, border:true, onOpen:function(){}">
+         data-options="fit:true, closed:true, border:true, onOpen:onOpenProductManagePanel">
 
         <div class="easyui-layout" data-options="fit:true, border:false">
             <div data-options="region:'west'" style="width:300px; padding:4px;">
 
+                <div style="color:red; margin-top:10px; width:100%;">
+                    说明：未选择客户，则为管理通用产品信息。
+                </div>
+                <input id="customer_choose_for_product_manage" class="easyui-textbox"
+                       data-options="buttonText:'选择客户',prompt:'选择客户'" style="width:100%;height:32px;">
 
 
-                <form id="">
-                    <div style="margin-top:20px">
-                        <input class="easyui-radiobutton"  name="fruit" value="Apple" labelPosition="after" labelWidth="150" label="<span class='radio_label'>客户产品管理</span>">
-                    </div>
-
-                    <input class="easyui-textbox" data-options="buttonText:'选择客户',prompt:'选择客户'" style="width:80%;height:32px;">
-
-
-                    <div style="margin-top:60px">
-                        <input class="easyui-radiobutton" name="fruit" value="Orange" width="200" labelPosition="after" labelWidth="150" label="<span class='radio_label'>通用产品管理</span>">
-                    </div>
-
-                </form>
-
-
+                <div id="selected_customer_info" style="width:100%; height:300px;"></div>
 
             </div>
-
-
-
-
-
             <div data-options="region:'center'" style="padding:0px;">
-
-                    <div class="easyui-panel" data-options="height:300, title:'客户定制产品管理',collapsible:true,  width:800">
-
-
-                                <table id="product_for_customer" class="easyui-datagrid"
-                                       data-options="fit:true,singleSelect:true,data:[]" style="width:100%">
-                                    <thead>
-                                    <tr>
-                                        <th data-options="field: 'name', title: '品名', width: 140, align: 'center'"></th>
-                                        <th data-options="field: 'modal', title: '型号', width: 140, align: 'center'"></th>
-                                        <th data-options=" field: 'units', title: '单位', width: 80, align: 'center'"></th>
-                                        <th data-options="field: 'price', title: '价格', width: 60, align: 'center'"></th>
-                                        <th data-options="field: 'memo', title: '描述', width: 140,"></th>
-                                    </tr>
-                                    </thead>
-                                </table>
-                        </div>
-
-                        <div  class="easyui-panel" data-options="width:800, fit:true, collapsible:true, title:'通用产品管理'">
-
-                                <table id="product_for_global" class="easyui-datagrid" style="width:100%"
-                                       data-options="fit:true,singleSelect:true,data:[]">
-                                    <thead>
-                                    <tr>
-                                        <th data-options="field: 'name', title: '品名', width: 140, align: 'center'"></th>
-                                        <th data-options="field: 'modal', title: '型号', width: 140, align: 'center'"></th>
-                                        <th data-options=" field: 'units', title: '单位', width: 80, align: 'center'"></th>
-                                        <th data-options="field: 'price', title: '价格', width: 60, align: 'center'"></th>
-                                        <th data-options="field: 'memo', title: '描述', width: 140,"></th>
-                                    </tr>
-                                    </thead>
-                                </table>
-
-                        </div>
-
+                <div id="product_grid_panel" class="easyui-panel" data-options="fit:true, title:'客户定制产品管理',width:800">
+                    <table id="product_grid" class="easyui-datagrid"
+                           data-options="fit:true,singleSelect:true,data:[]" style="width:100%">
+                        <thead>
+                        <tr>
+                            <th data-options="field: 'name', title: '品名', width: 140, align: 'center'"></th>
+                            <th data-options="field: 'modal', title: '型号', width: 140, align: 'center'"></th>
+                            <th data-options=" field: 'units', title: '单位', width: 80, align: 'center'"></th>
+                            <th data-options="field: 'price', title: '价格', width: 60, align: 'center'"></th>
+                            <th data-options="field: 'memo', title: '描述', width: 140,"></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -507,6 +525,121 @@
         </div>
     </div>
 
+</div>
+
+
+<div id="dlg_for_customer_choose" title="选择客户" class="easyui-dialog" style="width:900px; height:550px;"
+     data-options="onOpen:onOpenCustomerChooseDlg, resizable:true, closed:true, modal:true, border:'thin', buttons:'#dlg_buttons_for_classification01'">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'west'" style="width:180px; padding:4px;">
+            <ul id="classification_tree01" class="easyui-tree" data-options="lines:true,onSelect:loadCustomerGrid01,
+                      ">
+            </ul>
+        </div>
+        <div data-options="region:'center'" style="padding:0px;">
+            <table id="grid_for_customer01" style="width:100%">
+            </table>
+        </div>
+    </div>
+
+    <script>
+
+        let CUSTOMER_GRID01 = null;
+
+        function loadCustomerGrid01(node) {
+
+            let t = $('#classification_tree01')
+            if (node == null) {
+                node = t.tree('getSelected')
+            }
+
+            let rootNode = t.tree('getRoot')
+
+            let params = {}
+            if (node == null || node == rootNode) {
+
+            } else if (t.tree('isLeaf', node.target)) {
+                console.log("Select classification node is a leaf.")
+                params.classification = node.text;
+            } else {
+                let arr = [node.text]
+                let children = t.tree('getChildren', node.target)
+                // children包含所有子节点
+                for (let i = 0; i < children.length; i++) {
+                    arr.push(children[i].text)
+                }
+                params.classification = {$in: arr}
+            }
+
+            console.log("Classification params is " + JSON.stringify(params))
+
+
+            if (CUSTOMER_GRID01 == null) {
+                CUSTOMER_GRID01 = $('#grid_for_customer01').datagrid({
+                    fit: true,
+                    singleSelect: true,
+                    collapsible: false,
+                    data: [],
+                    border: false,
+                    remoteSort: false,
+                    multiSort: true,
+                    showFilterBar: false,
+                    rownumbers: true,
+                    title: '<span style="font-weight: bold">客户列表</span>',
+                    width: 720,
+                    toolbar: '#customer_grid_toolbar01',
+                    columns: [[
+                        {title: "客户编码", field: 'classification', width: 80, sortable: true, sortOrder: 'asc'},
+                        {title: "客户名称", field: 'name', width: 200, sortable: true, sortOrder: 'asc'},
+                        {title: "客户简码", field: 'index_code', width:80, sortable:true, sortOrder: 'asc'},
+                        {title: "联系人", field: "principal", width: 80},
+                        {title: "联系电话", field: 'phone', width: 100},
+                        {title: "联系地址", field: 'address', width: 220}
+                    ]]
+                })
+                enable_customer_filter = false;
+            }
+
+            if (params == null) {
+                params = {}
+            }
+            mongoose.CustomerModel.find(params, function (err, docs) {
+                CUSTOMER_GRID01.datagrid('loadData', docs)
+                CUSTOMER_GRID01.datagrid('enableFilter', {filterMatchingType: 'any'})
+            })
+        }
+
+        function onOpenCustomerChooseDlg() {
+
+            console.log("openCustomerChooseDlg")
+            // 加载分类树
+            loadClassifications(function (data) {
+                $('#classification_tree01').tree('loadData', data)
+            })
+
+            // 加载客户列表
+            loadCustomerGrid01(null)
+        }
+
+        function chooseCustomer(callback) {
+            $('#dlg_for_customer_choose').dialog('close')
+            let row = CUSTOMER_GRID01.datagrid('getSelected')
+            $('#customer_choose_for_product_manage').textbox("setValue", row._id).textbox("setText",row.name)
+            $('#customer_choose_for_product_manage').textbox('textbox').keyup()
+           // callback()
+        }
+    </script>
+</div>
+<div id="customer_grid_toolbar01" style="padding:2px 5px;">
+  <span style="margin-left:0px">检索：<input type="text" id="customer_search_text01" style="width:200px"
+                                            onkeyup="onSearch(this, CUSTOMER_GRID01)"></span>
+</div>
+
+<div id="dlg_buttons_for_classification01">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok"
+       onclick="chooseCustomer()" style="width:90px">确定选择</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#dlg_for_customer_choose').dialog('close')" style="width:90px">取消</a>
 </div>
 
 

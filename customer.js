@@ -49,54 +49,12 @@ function loadCustomerGrid(node) {
             showFilterBar:false,
             rownumbers:true,
             title:'<span style="font-weight: bold">客户列表</span>',
-            width:700,
-            height:500,
+            width:720,
             toolbar: '#customer_grid_toolbar',
-            /*[
-                {
-                    text: '添加',
-                    iconCls: 'icon-add',
-                    handler: function () {
-                        // show_sys_user_form('add')
-                        newCustomer()
-                    }
-                }, {
-                    text: '编辑',
-                    iconCls: 'icon-edit',
-                    handler: function () {
-                        editCustomer()
-                    }
-                }, {
-                    text: '删除',
-                    iconCls: 'icon-remove',
-                    handler: function () {
-                        destroyCustomer()
-                        // show_sys_user_form('delete')
-                    }
-                }, {
-                    text: '导出到EXCEL',
-                    iconCls: 'icon-lock',
-                    handler: function () {
-                        CUSTOMER_GRID.datagrid('toExcel','客户列表.xls');
-                        // show_sys_user_form('reset_pass')
-                    }
-                }, {
-                    text: '查找',
-                    iconCls: 'icon-lock',
-                    handler: function () {
-                        if(!enable_customer_filter) {
-                            CUSTOMER_GRID.datagrid('enableFilter');
-                            enable_customer_filter = true
-                        } else {
-                            CUSTOMER_GRID.datagrid('disableFilter');
-                            enable_customer_filter = false
-                        }
-
-                    }
-                }],*/
             columns:[[
                 {title: "客户编码", field: 'classification',width:100, sortable: true,sortOrder: 'asc'},
                 {title: "客户名称", field: 'name', width:250, sortable:true, sortOrder: 'asc'},
+                {title: "客户简码", field: 'index_code', width:80, sortable:true, sortOrder: 'asc'},
                 {title: "联系人", field: "principal",width:100},
                 {title: "联系电话", field: 'phone',width:100},
                 {title: "联系地址", field: 'address',width:250}
@@ -153,13 +111,14 @@ function saveCustomer() {
     let principal = $('#customer_principal').textbox('getValue')
     let phone = $('#customer_phone').textbox('getValue')
     let address = $('#customer_address').textbox('getValue')
-
+    let index_code = $('#customer_index_code').textbox('getValue')
    // let products = PRODUCT_GRID.datagrid('getData').rows
 
-    let customer = {name: name, classification: classification , principal: principal, phone:phone, address:address}
+    let customer = {name: name, classification: classification ,
+        index_code:index_code, principal: principal, phone:phone, address:address}
 
     if (opt_type_for_customer == 'new') {
-        customer.products = []
+        //customer.products = []
         console.log("New customer is: " + JSON.stringify(customer))
         mongoose.CustomerModel.create(customer, function () {
 
@@ -228,24 +187,28 @@ function exportExcel() {
 
 
 let timer
-function onSearch(src) {
+function onSearch(src, datagrid) {
     let e=arguments.callee.caller.arguments[0]||window.event
 
     if (timer) {
         clearTimeout(timer);
     }
     if (e.keyCode == 13) {
-        doSearch(src)
+        doSearch(src, datagrid)
     } else if (400) {
         timer = setTimeout(function () {
-            doSearch(src)
+            doSearch(src, datagrid)
         }, 400);
     }
 }
 
-function doSearch(input) {
+function doSearch(input, datagrid) {
     let searchText = input.value
-    CUSTOMER_GRID.datagrid('removeFilterRule').datagrid('addFilterRule', {
+    datagrid.datagrid('removeFilterRule').datagrid('addFilterRule', {
+        field: 'index_code',
+        op: 'contains',
+        value: searchText
+    },{
         field: 'name',
         op: 'contains',
         value: searchText

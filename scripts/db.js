@@ -24,17 +24,18 @@ let classificationSchema = new Schema({classifications:Schema.Types.Mixed})// {c
 var userSchema = new Schema({role:String, name:String, disabled:Boolean, password:String});
 
 
-var product = {name:String, modal:String, price:String, units:String, memo:String };
-var productSchema = new Schema(product,{_id:false});          //product不生成_id字段
+var product = {name:String, modal:String, price:String, units:String, memo:String,
+customer:{ type: Schema.Types.ObjectId, ref: 'CustomerModel' }};
+var productSchema = new Schema(product);          //product不生成_id字段
 
 var customer ={
     name:String,
-    address:String,
-    phone:String,
-    province:String,
-    classification:String,
+    index_code:String,
     principal:String,
-    products:[productSchema]
+    phone:String,
+    address:String,
+    classification:String,
+    products:[{ type: Schema.Types.ObjectId, ref: 'ProductModel' }]
 }
 
 
@@ -73,6 +74,7 @@ RoleModel = mongoose.model('role', roleSchema, 'roles');
 RegionModel = mongoose.model('region', regionSchema, 'regions');
 UserModel = mongoose.model('user'/*ming zi er yi*/, userSchema,'users');
 CustomerModel = mongoose.model('customer'/*ming zi er yi*/, customerSchema,'customers');
+ProductModel = mongoose.model('product'/*ming zi er yi*/, productSchema,'products');
 OrderModel = mongoose.model('order'/*ming zi er yi*/, orderSchema,'orders');
 classificationModel = mongoose.model("classification", classificationSchema, "classifications")
 
@@ -114,4 +116,5 @@ module.exports.ClassificationModel = classificationModel;
 module.exports.UserModel = UserModel;
 module.exports.RoleModel = RoleModel;
 module.exports.CustomerModel = CustomerModel;
+module.exports.ProductModel = ProductModel;
 module.exports.UNITS = UNITS;
