@@ -53,6 +53,11 @@
             padding: 0;
         }
 
+        .radio_label{
+            font-weight: bold;
+            border:1px solid black;
+            width:100%;
+        }
 
     </style>
 
@@ -394,20 +399,31 @@
 
         <div class="easyui-layout" data-options="fit:true, border:false">
             <div data-options="region:'west'" style="width:300px; padding:4px;">
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-secondary active">
-                        <input type="radio" name="options" id="option1" autocomplete="off" checked> 客户定制产品管理
-                    </label>
 
-                    <label class="btn btn-secondary">
-                        <input type="radio" name="options" id="option3" autocomplete="off"> 通用产品管理
-                    </label>
-                </div>
 
-                <input class="easyui-switchbutton" data-options="width:200, onText:'客户产品管理',offText:'通用产品管理'">
-                <div style="margin-top:30px;">请选择客户：<input type="text"/></div>
+
+                <form id="">
+                    <div style="margin-top:20px">
+                        <input class="easyui-radiobutton"  name="fruit" value="Apple" labelPosition="after" labelWidth="150" label="<span class='radio_label'>客户产品管理</span>">
+                    </div>
+
+                    <input class="easyui-textbox" data-options="buttonText:'选择客户',prompt:'选择客户'" style="width:80%;height:32px;">
+
+
+                    <div style="margin-top:60px">
+                        <input class="easyui-radiobutton" name="fruit" value="Orange" width="200" labelPosition="after" labelWidth="150" label="<span class='radio_label'>通用产品管理</span>">
+                    </div>
+
+                </form>
+
+
 
             </div>
+
+
+
+
+
             <div data-options="region:'center'" style="padding:0px;">
 
                     <div class="easyui-panel" data-options="height:300, title:'客户定制产品管理',collapsible:true,  width:800">
