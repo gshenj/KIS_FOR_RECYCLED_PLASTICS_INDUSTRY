@@ -25,10 +25,13 @@ app.on('ready', function() {
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 1000,
    height: 750,
+      show:false,
+      backgroundColor:'#2e2c29',
       autoHideMenuBar:true//,
       //frame:false
   });
 
+ // mainWindow.once('ready-to-show',()=>{mainWindow.show()})
   // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/index1.html');
 

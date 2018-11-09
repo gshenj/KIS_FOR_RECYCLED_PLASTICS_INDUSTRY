@@ -29,8 +29,8 @@
     <link rel="stylesheet" type="text/css" href="./styles/kis.css">
 
     <script type="text/javascript" src="./scripts/jquery-easyui/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="./scripts/jquery-easyui/datagrid-detailview.js"></script>
-    <script type="text/javascript" src="./scripts/DataTables/datatables.js"></script>
+    <!--<script type="text/javascript" src="./scripts/jquery-easyui/datagrid-detailview.js"></script>-->
+    <!--<script type="text/javascript" src="./scripts/DataTables/datatables.js"></script>-->
     <!--<script type="text/javascript" src="./scripts/bootstrap4/js/bootstrap.js"></script>-->
 
 
@@ -38,6 +38,7 @@
     <script type="text/javascript" src="./scripts/kis.js"></script>
     <script type="text/javascript" src="./user.js"></script>
     <script type="text/javascript" src="./customer.js"></script>
+    <script type="text/javascript" src="./scripts/product.js"></script>
     <script type="text/javascript" src="scripts/classification.js"></script>
     <script type="text/javascript" src="./scripts/utils.js"></script>
 
@@ -70,42 +71,61 @@
 
         $.extend($.fn.textbox.methods, {
             addClearBtn: function (jq, iconCls) {
-                return jq.each(function () {
-                    var t = $(this);
-                    var opts = t.textbox('options');
-                    opts.icons = opts.icons || [];
-                    opts.icons.unshift({
-                        iconCls: iconCls,
-                        handler: function (e) {
-                            console.log("Before clear:" + $(e.data.target).textbox('getText') + "-" + $(e.data.target).textbox('getValue'))
-                            $(e.data.target).textbox('clear').textbox('setText', '')//.textbox('textbox').focus();
-                            $(this).css('visibility', 'hidden');
-                            console.log("After clear:" + $(e.data.target).textbox('getText') + "-" + $(e.data.target).textbox('getValue'))
+                return jq.each(
+                    function () {
+                        var t = $(this);
+                        console.log("t======" + JSON.stringify(t))
+                        var opts = t.textbox('options');
+                        opts.icons = []//opts.icons || [];  fixed
+                        opts.icons.unshift({
+                            iconCls: iconCls,
+                            handler: function (e) {
+                                console.log("Before clear:" + $(e.data.target).textbox('getText') + "-" + $(e.data.target).textbox('getValue'))
+                                $(e.data.target).textbox('clear').textbox('setText', '')//.textbox('textbox').focus();
+                                $(this).css('visibility', 'hidden');
+                                console.log("After clear:" + $(e.data.target).textbox('getText') + "-" + $(e.data.target).textbox('getValue'))
 
+                                if (customer_choose_dlg_type == 'list_products') {
+                                    loadProducts()
+                                } else if (customer_choose_dlg_type == 'new_order') {
+                                    // 清空客户内容，产品内容
+                                    $('#new_order_customer_phone').textbox('setValue', '')
+                                    $('#new_order_customer_principal').textbox('setValue', '')
+                                    $('#new_order_customer_address').textbox('setValue', '')
+
+                                }
+                            }
+                        });
+                        t.textbox();
+                        if (!t.textbox('getText')) {
+                            t.textbox('getIcon', 0).css('visibility', 'hidden');
                         }
-                    });
-                    t.textbox();
-                    if (!t.textbox('getText')) {
-                        t.textbox('getIcon', 0).css('visibility', 'hidden');
+                        t.textbox('textbox').bind('keyup', function () {
+                            var icon = t.textbox('getIcon', 0);
+                            if ($(this).val()) {
+                                icon.css('visibility', 'visible');
+                            } else {
+                                icon.css('visibility', 'hidden');
+                            }
+                        });
                     }
-                    t.textbox('textbox').bind('keyup', function () {
-                        var icon = t.textbox('getIcon', 0);
-                        if ($(this).val()) {
-                            icon.css('visibility', 'visible');
-                        } else {
-                            icon.css('visibility', 'hidden');
-                        }
-                    });
-                });
+                );
             }
         });
 
         $(function () {
-            $('#customer_choose_for_product_manage').textbox().textbox('addClearBtn', 'icon-clear');
+            $('#customer_choose_for_product_manage').textbox('addClearBtn', 'icon-clear');
             $('#customer_choose_for_product_manage').textbox('textbox').bind('focus', function (e) {
-                console.log('focus')
+                customer_choose_dlg_type = 'list_products'
                 $('#dlg_for_customer_choose').dialog('open').dialog('center')
             });
+            $('#new_order_customer_name').textbox('addClearBtn', 'icon-clear');
+            $('#new_order_customer_name').textbox('textbox').bind('focus', function (e) {
+                customer_choose_dlg_type = 'new_order'
+                $('#dlg_for_customer_choose').dialog('open').dialog('center')
+            });
+
+
         });
     </script>
 
@@ -116,9 +136,10 @@
 <div data-options="region:'north',split:false, border:false"
      style="height:106px;width:100%; margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
 
-    <div id="tt" class="easyui-tabs" data-options="tools:'#tab-tools', border:false"
+    <div id="tt" class="easyui-tabs" data-options="border:false"
          style="width:100%;height:106px; padding:0; margin:0;">
-        <div title="送货单管理" data-options="iconCls:'icon-reload', border:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+
+        <div title="送货单管理" data-options="border:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:4px;  -webkit-user-select: none; ">
             <div style="float:left; width:60%; padding:0px;">
                 <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
@@ -132,6 +153,7 @@
                    data-options="plain:true, iconCls:'icon-large-chart', iconAlign:'top'">统计报表</a>
             </div>
         </div>
+
         <div title="资料管理" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:4px;">
             <div style="float:left; width:60%; padding:0px;">
@@ -144,8 +166,8 @@
                 <a class="easyui-linkbutton tool_button"
                    data-options="plain:true, iconCls:'icon-lorry',size:'large',iconAlign:'top'">司机管理</a>
             </div>
-
         </div>
+
         <div title="系统设置" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:4px;">
             <a class="easyui-linkbutton tool_button" onclick="show_user_manage(this)"
@@ -153,19 +175,19 @@
             <a class="easyui-linkbutton tool_button"
                data-options="plain:true, iconCls:'icon-large-smartart', iconAlign:'top'">系统参数</a>
         </div>
+
         <div title="我的账户" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:4px;">
             <a class="easyui-linkbutton"
                data-options="plain:true, iconCls:'icon-large-smartart',iconAlign:'top'">密码重置</a>
-
         </div>
     </div>
-    <div id="tab-tools" style="border:none;">
-        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'"
-           onclick="addPanel()"></a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'"
-           onclick="removePanel()"></a>
-    </div>
+    <!--    <div id="tab-tools" style="border:none;">
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'"
+               onclick="addPanel()"></a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'"
+               onclick="removePanel()"></a>
+        </div>-->
 </div>
 
 
@@ -175,7 +197,7 @@
     <!--新开送货单-->
     <div id="order_input_panel" class="easyui-panel opt_panel" 　
          style="width:100%; height:100%; padding:0px 0px; background-color:#999; text-align:center; "
-         data-options="fit:true,closed:true, border:false, onOpen:function(){alert('open')}">
+         data-options="fit:true,closed:true, border:false, onOpen:function(){}">
 
         <div style="padding:0px 0px; border:0px solid red; width:850px;  margin:10px auto;  text-align:right;">
             <div id="order_input_toolbar"
@@ -208,33 +230,18 @@
                     <td>
                         <table class="bill_customer_table">
                             <tr>
-                                <td>客户名称：<select id="cg" class="easyui-combogrid customer_combobox" name="dept"
-
-                                                 data-options="
-                                                panelWidth:450,
-                                                value:'006',
-                                                idField:'id',
-                                                textField:'addr',
-                                                onShowPanel:function(){},
-                                                data:[],
-                                                columns:[[
-                                                     {field:'id',title:'ID',hidden:true,width:60},
-
-                                                    {field:'code',title:'省份',width:60},
-                                                    {field:'name',title:'城市',width:100},
-                                                    {field:'addr',title:'名称',width:120}
-                                                ]]
-                                            "></select>
+                                <td>客户名称：<input id="new_order_customer_name" class="easyui-textbox customer_name"
+                                            />
                                 </td>
-                                <td>送货日期：<input class="easyui-datebox sale_date" labelPosition="top"/></td>
-                                <td>销售单号：<span id="sale_No" style="font-weight:bold;">20181012001</span></td>
+                                <td>送货日期：<input id="new_order_sale_date" class="easyui-datebox sale_date" labelPosition="top"/></td>
+                                <td>销售单号：<span id="new_order_sale_No" style="font-weight:bold;">20181012001</span></td>
                             </tr>
                             <tr>
-                                <td>送货地址：<input name="email" class="customer_address easyui-textbox"/></td>
-                                <td>联&nbsp;&nbsp;系&nbsp;&nbsp;人：<input name="n"
+                                <td>送货地址：<input id="new_order_customer_address" class="customer_address easyui-textbox"/></td>
+                                <td>联&nbsp;&nbsp;系&nbsp;&nbsp;人：<input id="new_order_customer_principal"
                                                                        class="principal easyui-textbox"/>
                                 </td>
-                                <td>联系电话：<input class="telephone easyui-textbox"/></td>
+                                <td>联系电话：<input id="new_order_customer_phone" class="telephone easyui-textbox"/></td>
                             </tr>
                         </table>
                     </td>
@@ -464,20 +471,7 @@
 
             </div>
             <div data-options="region:'center'" style="padding:0px;">
-                <div id="product_grid_panel" class="easyui-panel" data-options="fit:true, title:'客户定制产品管理',width:800">
-                    <table id="product_grid" class="easyui-datagrid"
-                           data-options="fit:true,singleSelect:true,data:[]" style="width:100%">
-                        <thead>
-                        <tr>
-                            <th data-options="field: 'name', title: '品名', width: 140, align: 'center'"></th>
-                            <th data-options="field: 'modal', title: '型号', width: 140, align: 'center'"></th>
-                            <th data-options=" field: 'units', title: '单位', width: 80, align: 'center'"></th>
-                            <th data-options="field: 'price', title: '价格', width: 60, align: 'center'"></th>
-                            <th data-options="field: 'memo', title: '描述', width: 140,"></th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
+                <table id="product_grid" style="width:100%"></table>
             </div>
         </div>
     </div>
@@ -591,7 +585,7 @@
                     columns: [[
                         {title: "客户编码", field: 'classification', width: 80, sortable: true, sortOrder: 'asc'},
                         {title: "客户名称", field: 'name', width: 200, sortable: true, sortOrder: 'asc'},
-                        {title: "客户简码", field: 'index_code', width:80, sortable:true, sortOrder: 'asc'},
+                        {title: "客户简码", field: 'index_code', width: 80, sortable: true, sortOrder: 'asc'},
                         {title: "联系人", field: "principal", width: 80},
                         {title: "联系电话", field: 'phone', width: 100},
                         {title: "联系地址", field: 'address', width: 220}
@@ -621,18 +615,54 @@
             loadCustomerGrid01(null)
         }
 
+
+        let customer_choose_dlg_type = null;
+
         function chooseCustomer(callback) {
             $('#dlg_for_customer_choose').dialog('close')
             let row = CUSTOMER_GRID01.datagrid('getSelected')
-            $('#customer_choose_for_product_manage').textbox("setValue", row._id).textbox("setText",row.name)
-            $('#customer_choose_for_product_manage').textbox('textbox').keyup()
-           // callback()
+            if (row) {
+
+                if (customer_choose_dlg_type == 'list_products') {
+                    $('#customer_choose_for_product_manage').textbox("setValue", row._id).textbox("setText", row.name)
+                    $('#customer_choose_for_product_manage').textbox('textbox').keyup()
+                    loadProducts()
+
+                } else if (customer_choose_dlg_type == 'new_order') {
+                    $('#new_order_customer_name').textbox("setValue", row._id).textbox("setText", row.name)
+                    $('#new_order_customer_name').textbox('textbox').keyup()
+
+                    // fill new order
+                    $('#new_order_customer_phone').textbox('setValue', row.phone)
+                    $('#new_order_customer_principal').textbox('setValue', row.principal)
+                    $('#new_order_customer_address').textbox('setValue', row.address)
+
+
+                }
+            }
+        }
+
+        function loadProducts() {
+            let title = '客户产品管理'
+            let customer_id = $('#customer_choose_for_product_manage').textbox("getValue")
+            let customer_name = $('#customer_choose_for_product_manage').textbox("getText")
+            if (customer_id == '') {
+                customer_id = null
+                title = '通用产品管理'
+            } else {
+                customer_id = new mongoose.Types.ObjectId(customer_id)//,new mongoose.ObjectId(customer_id)
+                title = '客户产品管理 - ' + customer_name
+            }
+            console.log('Selected customer ID is: ' + JSON.stringify(customer_id))
+
+            load_product_grid(customer_id, title)
+
         }
     </script>
 </div>
 <div id="customer_grid_toolbar01" style="padding:2px 5px;">
   <span style="margin-left:0px">检索：<input type="text" id="customer_search_text01" style="width:200px"
-                                            onkeyup="onSearch(this, CUSTOMER_GRID01)"></span>
+                                          onkeyup="onSearch(this, CUSTOMER_GRID01)"></span>
 </div>
 
 <div id="dlg_buttons_for_classification01">
@@ -643,5 +673,12 @@
 </div>
 
 
+<script>
+    $(document).ready(function () {
+        require('electron').remote.getCurrentWindow().show()
+
+    })
+
+</script>
 </body>
 </html>

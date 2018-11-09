@@ -95,23 +95,3 @@ function onOpenProductManagePanel() {
     // 加载产品列表
     loadProducts()
 }
-function loadProducts(){
-    // customerId
-    var customerId = $('#customer_choose_for_product_manage').textbox('getValue')
-    if (customerId) {
-        // load customer products
-        mongoose.ProductModel.find({'customer':customerId}, function(err, docs){
-            $('#product_grid').datagrid("loadData", docs)
-        })
-        $('#product_grid_panel').panel('setTitle', '客户产品管理')
-    } else {
-        // load global products
-        mongoose.ProductModel.find({'customer':null}, function(err, docs){
-            $('#product_grid').datagrid("loadData", docs)
-        })
-        $('#product_grid_panel').panel('setTitle', '通用产品管理')
-
-    }
-
-
-}
