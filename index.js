@@ -25,7 +25,7 @@ app.on('ready', function() {
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 1000,
    height: 750,
-      show:false,
+     // show:false,
       backgroundColor:'#2e2c29',
       autoHideMenuBar:true//,
       //frame:false

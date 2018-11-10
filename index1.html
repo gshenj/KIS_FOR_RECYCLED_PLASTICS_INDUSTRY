@@ -41,6 +41,7 @@
     <script type="text/javascript" src="./scripts/product.js"></script>
     <script type="text/javascript" src="scripts/classification.js"></script>
     <script type="text/javascript" src="./scripts/utils.js"></script>
+    <script type="text/javascript" src="./scripts/loading.js"></script>
 
 
     <script type="text/javascript" src="./scripts/jquery-easyui/plugins/datagrid-export/datagrid-export.js"></script>
@@ -203,13 +204,13 @@
             <div id="order_input_toolbar"
                  style=" height:40px; line-height:40px; margin:0px auto 1px; background-color:#eee; padding:0px 10px; border:0px solid #bbb;  float:right;">
                 <span style="">
-                <a class="easyui-linkbutton" style=""
+                <a class="easyui-linkbutton" style="" onclick="resetOrder()"
                    data-options="plain:true,iconCls:'icon-undo',iconAlign:'left'">重填</a>
 
-                <a class="easyui-linkbutton" style=""
+                <a class="easyui-linkbutton" style="" onclick="addOrderRow()"
                    data-options="plain:true,iconCls:'icon-add',iconAlign:'left'">增行</a>
 
-                <a class="easyui-linkbutton" style=""
+                <a class="easyui-linkbutton" style="" onclick="deleteOrderRow()"
                    data-options="plain:true,iconCls:'icon-remove',iconAlign:'left'">减行</a>
 
                 <a class="easyui-linkbutton" style=""
@@ -219,8 +220,243 @@
             </div>
         </div>
 
+        <script>
+
+            function resetOrder(){
+                $('#new_order_form').form('clear')
+                deleteAllRows()
+                 //$('#order_products_grid').datagrid('loadData',)
+                //$('#order_products_grid').datagrid('rejectChanges')
+                //editIndex = undefined;
+                addOrderRow()
+            }
+
+            function endEditing() {
+                if (typeof(editIndex) == 'undefined') {
+                    return true
+                }
+                if ($('#order_products_grid').datagrid('validateRow', editIndex)) {
+                    $('#order_products_grid').datagrid('endEdit', editIndex);
+                    editIndex = undefined;
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+
+            function deleteOrderRow() {
+
+                removeit()
+                /*let selectedRow = $('#order_products_grid').datagrid('getSelected');
+                if (selectedRow) {
+                    // 删除当前选中行
+                    let selectedIndex = $('#order_products_grid').datagrid('getRowIndex', selectedRow);
+                    $('#order_products_grid').datagrid('cancelEdit', selectedIndex)
+                        .datagrid('deleteRow', selectedIndex);
+                    if (selectedIndex > 0) {
+                        // 如果当前删除行不是首行，那么选中上一行
+                        onClickCell(selectedIndex - 1, "product_name", '')
+
+                    } else {
+                        // 删除的行是首行
+                        let rows = $('#order_products_grid').datagrid('getRows');
+                        if (rows.length == 0) {
+                            // 删除后已经没有行了
+                            editIndex = undefined
+                        } else {
+                            // 删除后还有行，那么选中剩下的首行
+                            onClickCell(0, "product_name", '')
+                        }
+                    }
+                }*/
+            }
+
+
+            function addOrderRow() {
+                if (endEditing()) {
+                    let rows = $('#order_products_grid').datagrid('getRows');
+                    if (rows.length == 0 || rows.length == 1) {
+                        // 如果当面没有行，或者只有1行，那么追加一行
+                        $('#order_products_grid').datagrid('appendRow', {});
+                        editIndex = $('#order_products_grid').datagrid('getRows').length - 1;
+
+                    } else {
+                        let selectedRow = $('#order_products_grid').datagrid('getSelected');
+                        if (selectedRow) {
+                            console.log(JSON.stringify(selectedRow))
+                            let selectedIndex = $('#order_products_grid').datagrid('getRowIndex', selectedRow);
+                            if (selectedIndex == (rows.length - 1)) {
+                                // 不管多少行，如果当前选中最后一行，添加最后一行
+                                $('#order_products_grid').datagrid('appendRow', {});
+                                editIndex = $('#order_products_grid').datagrid('getRows').length - 1;
+                            } else {
+                                // 否则在选中行之前插入一行
+                                console.log("selectedINdex" + selectedIndex)
+                                $('#order_products_grid').datagrid("insertRow", {index: selectedIndex, row: {}})
+                                editIndex = selectedIndex;
+                            }
+
+                        } else {
+                            //如果当前没有选中任何一行，那么在尾部添加一行，正常不会执行到这里
+                            $('#order_products_grid').datagrid('appendRow', {});
+                            editIndex = $('#order_products_grid').datagrid('getRows').length - 1;
+                        }
+                    }
+
+                    // editIndex = $('#order_products_grid').datagrid('getRows').length - 1;
+
+                    $('#order_products_grid').datagrid('selectRow', editIndex)
+                        .datagrid('beginEdit', editIndex);
+                }
+            }
+
+            function removeit() {
+                if (editIndex == undefined) {
+                    return
+                }
+                $('#order_products_grid').datagrid('cancelEdit', editIndex)
+                    .datagrid('deleteRow', editIndex);
+                editIndex = undefined;
+            }
+
+            function deleteAllRows(){
+                let rows = $('#order_products_grid').datagrid('getRows')
+                for (let i=rows.length; i>0;) {
+                    i--;
+                    $('#order_products_grid').datagrid('cancelEdit', i).datagrid('deleteRow', i)
+                }
+                editIndex = undefined
+            }
+
+            function onClickCell(index, field, value) {
+
+                console.log("onClickCell")
+                if (editIndex != index) {
+                    if (endEditing()) {
+                        $('#order_products_grid').datagrid('selectRow', index)
+                            .datagrid('beginEdit', index);
+                        var ed = $('#order_products_grid').datagrid('getEditor', {index: index, field: field});
+                        if (ed) {
+                            ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+                        }
+                        editIndex = index;
+                    } else {
+                        setTimeout(function () {
+                            $('#order_products_grid').datagrid('selectRow', editIndex);
+                        }, 0);
+                    }
+                }
+            }
+
+
+        </script>
         <div style="padding:20px 20px; border:0px dashed gray; width:810px; background-color:#fff; margin:0px auto ; clear:both;">
-            <table class="bill_table">
+            <div style="width:100%">
+                <form id="new_order_form">
+                <div style="text-align: center; padding:10px;"><span
+                        style="font-size:26px;margin:0 auto;">苏州元斌塑胶科技有限公司 销售单</span></div>
+                <table class="bill_customer_table">
+                    <tr>
+                        <td>客户名称：<input id="new_order_customer_name" class="easyui-textbox customer_name"
+                        />
+                        </td>
+                        <td>送货日期：<input id="new_order_sale_date" class="easyui-datebox sale_date" labelPosition="top"/>
+                        </td>
+                        <td>销售单号：<span id="new_order_sale_No" style="font-weight:bold;">20181012001</span></td>
+                    </tr>
+                    <tr>
+                        <td>送货地址：<input id="new_order_customer_address" class="customer_address easyui-textbox"/></td>
+                        <td>联&nbsp;&nbsp;系&nbsp;&nbsp;人：<input id="new_order_customer_principal"
+                                                               class="principal easyui-textbox"/>
+                        </td>
+                        <td>联系电话：<input id="new_order_customer_phone" class="telephone easyui-textbox"/></td>
+                    </tr>
+                </table>
+
+                <table id="order_products_grid" class="easyui-datagrid" style="maring-top:20px;"
+                       data-options="height:202,data:[],singleSelect:true,
+onClickCell: onClickCell,style:{marginTop:20},onLoadSuccess:addOrderRow
+">
+                    <thead>
+                    <tr>
+                        <th data-options="field:'product_name', halign:'center',width:248,editor:{
+                            type:'combobox',
+                            options:{
+                                singleSelect:true,
+                                valueField:'productid',
+                                textField:'productname',
+                                method:'get',
+                                url:'products.json'
+                            }
+                        }">品名规格
+                        </th>
+                        <th data-options="field:'product_units', halign:'center', width:80">单位</th>
+                        <th data-options="field:'product_num', halign:'center', width:100">数量</th>
+                        <th data-options="field:'product_price', halign:'center', width:80">单价</th>
+                        <th data-options="field:'product_sum', halign:'center', width:100">金额</th>
+                        <th data-options="field:'product_memo', halign:'center', width:200">备注</th>
+                    </tr>
+                    </thead>
+                    <!--     <tr>
+                             <td class=""><select class="product_name easyui-combobox " name="state">
+                                 <option value="AL">Alabama</option>
+                             </select></td>
+                             <td class=""><input class="product_units easyui-textbox"/></td>
+                             <td class=""><input class="product_num easyui-textbox"/></td>
+                             <td class=""><input class="product_price easyui-textbox"/></td>
+                             <td class=""><input class="product_sum easyui-textbox"/></td>
+                             <td class=""><input class="product_memo easyui-textbox"/></td>
+                         </tr>
+                         <tr>
+                             <td class=""><select class="product_name easyui-combobox " name="state">
+                                 <option value="AL">Alabama</option>
+                             </select></td>
+                             <td class=""><input class="product_units easyui-textbox"/></td>
+                             <td class=""><input class="product_num easyui-textbox"/></td>
+                             <td class=""><input class="product_price easyui-textbox"/></td>
+                             <td class=""><input class="product_sum easyui-textbox"/></td>
+                             <td class=""><input class="product_memo easyui-textbox"/></td>
+                         </tr>
+                         <tr>
+                             <td class=""><select class="product_name easyui-combobox " name="state">
+                                 <option value="AL">Alabama</option>
+                             </select></td>
+                             <td class=""><input class="product_units easyui-textbox"/></td>
+                             <td class=""><input class="product_num easyui-textbox"/></td>
+                             <td class=""><input class="product_price easyui-textbox"/></td>
+                             <td class=""><input class="product_sum easyui-textbox"/></td>
+                             <td class=""><input class="product_memo easyui-textbox"/></td>
+                         </tr>
+                         <tr>
+                             <td class=""><select class="product_name easyui-combobox " name="state">
+                                 <option value="AL">Alabama</option>
+                             </select></td>
+                             <td class=""><input class="product_units easyui-textbox"/></td>
+                             <td class=""><input class="product_num easyui-textbox"/></td>
+                             <td class=""><input class="product_price easyui-textbox"/></td>
+                             <td class=""><input class="product_sum easyui-textbox"/></td>
+                             <td class=""><input class="product_memo easyui-textbox"/></td>
+                         </tr>-->
+
+                    <tr>
+                        <td colspan="6" style="text-align: right;font-weight: bold;">合计金额：
+                            <span id="product_total_sum" style="margin-right: 20%;"></span>
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="bill_user_table">
+                    <td>制单人：<input class="f1 easyui-textbox"></input></td>
+                    <td>送货司机：<select class="easyui-combobox" name="state1"
+                                     style="width:150px;"></select></td>
+                    <td>签收人：<input class="f1 easyui-textbox" disabled></input></td>
+                </table>
+
+                </form>
+            </div>
+
+            <!--<table class="bill_table">
                 <tr>
                     <td style="text-align: center; padding:10px;"><span
                             style="font-size:26px;">苏州元斌塑胶科技有限公司 销售单</span>
@@ -228,94 +464,18 @@
                 </tr>
                 <tr>
                     <td>
-                        <table class="bill_customer_table">
-                            <tr>
-                                <td>客户名称：<input id="new_order_customer_name" class="easyui-textbox customer_name"
-                                            />
-                                </td>
-                                <td>送货日期：<input id="new_order_sale_date" class="easyui-datebox sale_date" labelPosition="top"/></td>
-                                <td>销售单号：<span id="new_order_sale_No" style="font-weight:bold;">20181012001</span></td>
-                            </tr>
-                            <tr>
-                                <td>送货地址：<input id="new_order_customer_address" class="customer_address easyui-textbox"/></td>
-                                <td>联&nbsp;&nbsp;系&nbsp;&nbsp;人：<input id="new_order_customer_principal"
-                                                                       class="principal easyui-textbox"/>
-                                </td>
-                                <td>联系电话：<input id="new_order_customer_phone" class="telephone easyui-textbox"/></td>
-                            </tr>
-                        </table>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <table class="bill_product_table">
-                            <tr>
-                                <th>品名规格</th>
-                                <th>单位</th>
-                                <th>数量</th>
-                                <th>单价</th>
-                                <th>金额</th>
-                                <th>备注</th>
-                            </tr>
-                            <tr>
-                                <td class=""><select class="product_name easyui-combobox " name="state">
-                                    <option value="AL">Alabama</option>
-                                </select></td>
-                                <td class=""><input class="product_units easyui-textbox"/></td>
-                                <td class=""><input class="product_num easyui-textbox"/></td>
-                                <td class=""><input class="product_price easyui-textbox"/></td>
-                                <td class=""><input class="product_sum easyui-textbox"/></td>
-                                <td class=""><input class="product_memo easyui-textbox"/></td>
-                            </tr>
-                            <tr>
-                                <td class=""><select class="product_name easyui-combobox " name="state">
-                                    <option value="AL">Alabama</option>
-                                </select></td>
-                                <td class=""><input class="product_units easyui-textbox"/></td>
-                                <td class=""><input class="product_num easyui-textbox"/></td>
-                                <td class=""><input class="product_price easyui-textbox"/></td>
-                                <td class=""><input class="product_sum easyui-textbox"/></td>
-                                <td class=""><input class="product_memo easyui-textbox"/></td>
-                            </tr>
-                            <tr>
-                                <td class=""><select class="product_name easyui-combobox " name="state">
-                                    <option value="AL">Alabama</option>
-                                </select></td>
-                                <td class=""><input class="product_units easyui-textbox"/></td>
-                                <td class=""><input class="product_num easyui-textbox"/></td>
-                                <td class=""><input class="product_price easyui-textbox"/></td>
-                                <td class=""><input class="product_sum easyui-textbox"/></td>
-                                <td class=""><input class="product_memo easyui-textbox"/></td>
-                            </tr>
-                            <tr>
-                                <td class=""><select class="product_name easyui-combobox " name="state">
-                                    <option value="AL">Alabama</option>
-                                </select></td>
-                                <td class=""><input class="product_units easyui-textbox"/></td>
-                                <td class=""><input class="product_num easyui-textbox"/></td>
-                                <td class=""><input class="product_price easyui-textbox"/></td>
-                                <td class=""><input class="product_sum easyui-textbox"/></td>
-                                <td class=""><input class="product_memo easyui-textbox"/></td>
-                            </tr>
-                            <tr>
-                                <td colspan="6" style="text-align: right;font-weight: bold;">合计金额：
-                                    <span id="product_total_sum" style="margin-right: 20%;"></span>
-                                </td>
-                            </tr>
-                        </table>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <table class="bill_user_table">
-                            <td>制单人：<input class="f1 easyui-textbox"></input></td>
-                            <td>送货司机：<select class="easyui-combobox" name="state1"
-                                             style="width:150px;"></select></td>
-                            <td>签收人：<input class="f1 easyui-textbox" disabled></input></td>
-                        </table>
+
                     </td>
                 </tr>
-            </table>
+            </table>-->
         </div>
     </div>
 
@@ -675,7 +835,7 @@
 
 <script>
     $(document).ready(function () {
-        require('electron').remote.getCurrentWindow().show()
+        //require('electron').remote.getCurrentWindow().show()
 
     })
 

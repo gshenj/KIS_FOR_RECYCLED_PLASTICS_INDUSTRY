@@ -16,6 +16,7 @@
     width: 100%;
     border-collapse: collapse;
     border: 1px solid #aaa;
+    margin-top:20px;
 }
 
 .bill_customer_table td {
@@ -31,28 +32,32 @@
     width: 100%;
     border-collapse: collapse;
     border: 1px solid #aaa;
+    margin-top:20px;
 }
 
 .bill_product_table th {
     text-align: center;
     border: 1px solid #aaa;
-    padding: 20px auto;
+    padding: 0px auto;
     height: 40px;
 }
 
 .bill_product_table td {
     text-align: left;
-    padding: 4px 0.5% 4px 0.5%;
+    padding: 1px 0.5% 1px 0.5%;
     height: 32px;
     vertical-align: middle;
     border: 1px solid #aaa;
     /*background-color:#eee;*/
 }
 
+
+
 .bill_user_table {
     border-collapse: collapse;
     border: 1px solid #aaa;
     width: 100%;
+    margin-top:20px
 }
 
 .bill_user_table td {
