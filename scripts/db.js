@@ -3,6 +3,8 @@ var Schema = mongoose.Schema;
 let ROLES = [];
 let ROLE_SELECT_DATA = {text:"系统角色", children:[]};
 
+let COMPANY_INFO = {}
+
 
 
 const REGION = {region:"地区", provinces: [
@@ -14,6 +16,9 @@ const REGION = {region:"地区", provinces: [
 
 const UNITS = [{units:"千克"}, {units:"公斤"}, {units:"包"}]
 
+let configSchema = new Schema({company_name:String, company_address:String,
+    company_phone:String, company_logo:Buffer, db_version:String})
+
 let roleSchema = new Schema({role:String})
 
 let  provinceSchema = new Schema({province:String, cities:[String]})
@@ -23,8 +28,9 @@ let classificationSchema = new Schema({classifications:Schema.Types.Mixed})// {c
 
 var userSchema = new Schema({role:String, name:String, disabled:Boolean, password:String});
 
+let driverSchema = new Schema({name:String, car_No:String, id_No:String, driving_license_No:String, phone:String, address:String})
 
-var product = {name:String, modal:String, price:String, units:String, memo:String,
+var product = {name:String, model:String, price:String, units:String, memo:String,
 customer:{ type: Schema.Types.ObjectId, ref: 'CustomerModel' }};
 var productSchema = new Schema(product);          //product不生成_id字段
 
@@ -70,14 +76,16 @@ var orderSchema = new Schema(order);
 /**DB utils **/
 mongoose.connect('mongodb://localhost:27017',{dbName:'kis', useNewUrlParser:true});
 
+ConfigModel = mongoose.model('config', configSchema, 'configs')
 RoleModel = mongoose.model('role', roleSchema, 'roles');
 RegionModel = mongoose.model('region', regionSchema, 'regions');
 UserModel = mongoose.model('user'/*ming zi er yi*/, userSchema,'users');
 CustomerModel = mongoose.model('customer'/*ming zi er yi*/, customerSchema,'customers');
 ProductModel = mongoose.model('product'/*ming zi er yi*/, productSchema,'products');
 OrderModel = mongoose.model('order'/*ming zi er yi*/, orderSchema,'orders');
-classificationModel = mongoose.model("classification", classificationSchema, "classifications")
+ClassificationModel = mongoose.model("classification", classificationSchema, "classifications")
 
+DriverModel = mongoose.model("driver", driverSchema,"drivers")
 
 
 var db = mongoose.connection;
@@ -111,10 +119,12 @@ module.exports = mongoose;
 module.exports.loadSysRoles = loadSysRoles
 module.exports.getSysRoleTreeData = getSysRoleTreeData
 module.exports.ROLE_SELECT_DATA = ROLE_SELECT_DATA;
+module.exports.ConfigModel = ConfigModel;
 module.exports.RegionModel = RegionModel;
-module.exports.ClassificationModel = classificationModel;
+module.exports.ClassificationModel = ClassificationModel;
 module.exports.UserModel = UserModel;
 module.exports.RoleModel = RoleModel;
 module.exports.CustomerModel = CustomerModel;
 module.exports.ProductModel = ProductModel;
+module.exports.DriverModel = DriverModel;
 module.exports.UNITS = UNITS;

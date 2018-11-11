@@ -23,11 +23,16 @@ $.parser.onComplete = function () {
     no = setTimeout(completeLoading, 0);
 }
 
+$.extend($.messager.defaults,{
+    ok:"确定",
+    cancel:"取消"
+});
 
 //加载状态为complete时移除loading效果
 function completeLoading() {
     if (document.readyState == "complete") {
         var loadingMask = document.getElementById('loadingDiv');
-        loadingMask.parentNode.removeChild(loadingMask);
+        if(loadingMask)
+            loadingMask.parentNode.removeChild(loadingMask);
     }
 }

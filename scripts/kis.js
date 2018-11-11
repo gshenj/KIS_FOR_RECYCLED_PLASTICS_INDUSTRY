@@ -1,65 +1,20 @@
-function set_tool_butoon_status(click_src) {
+function show_panel(src, manage_panel_id) {
+    hide_all_panel()
+    $('#'+manage_panel_id).panel('open').panel('resize')
+    $('#main_layout').layout('resize')
+    set_tool_button_status(src)
+}
+
+function hide_all_panel() {
+    $('.opt_panel').panel('close')
+}
+
+function set_tool_button_status(click_src) {
     $('.tool_button').linkbutton('enable')
     $(click_src).linkbutton('disable')
     document.title = DOCUMENT_TITLE + '　──　' + $(click_src).linkbutton('options').text + ''
 }
 
-function show_order_input(src) {
-    hide_others()
-    $('#order_input_panel').panel('open').panel('resize')
-    $('#main_layout').layout('resize')
-    //load_customer_grid();
-    // $('#order_input_toolbar').show()
-
-    set_tool_butoon_status(src)
-
-}
-
-function show_orders_list(src) {
-    hide_others()
-    $('#orders_grid_panel').panel('open').panel('resize')
-    $('#main_layout').layout('resize')
-    // load_customer_grid();
-
-    set_tool_butoon_status(src)
-
-}
-
-
-function show_orders_chart(src) {
-
-    set_tool_butoon_status(src)
-}
-
-function show_customer_manage(src) {
-    hide_others()
-    $('#customer_manage_panel').panel('open').panel('resize')
-    $('#main_layout').layout('resize')
-    // load_customer_grid();
-    set_tool_butoon_status(src)
-}
-
-function show_product_manage(src) {
-    hide_others()
-    $('#product_manage_panel').panel('open').panel('resize')
-    $('#main_layout').layout('resize')
-    //load_customer_grid();
-    set_tool_butoon_status(src)
-}
-
-function show_user_manage(src) {
-    hide_others()
-    $('#user_manage_panel').panel('open').panel('resize')
-    $('#main_layout').layout('resize')
-    // load_user_datagrid()
-    set_tool_butoon_status(src)
-}
-
-
-function hide_others() {
-    $('.opt_panel').panel('close')
-    // $('.page_toolbar').hide()
-}
 
 
 /**
@@ -95,3 +50,138 @@ function onOpenProductManagePanel() {
     // 加载产品列表
     loadProducts()
 }
+
+/**
+ * 打开系统设置页面触发函数
+ */
+function onOpenSysConfigPanel(){
+    // load configs
+    mongoose.ConfigModel.findOne({}, function(err,doc){
+        handleError(err)
+        $('#company_name').textbox('setValue', doc.company_name)
+        $('#company_phone').textbox('setValue', doc.company_phone)
+        $('#company_address').textbox('setValue', doc.company_address)
+    })
+}
+
+
+let DRIVER_GRID = null
+function onOpenDriverManagePanel() {
+    // load driver grid
+    loadDriverGrid()
+
+}
+
+function loadDriverGrid(params){
+    if (DRIVER_GRID == null) {
+        DRIVER_GRID = $('#driver_grid').datagrid({
+            //fit: true,
+            //border:false,
+            style:{marginTop:20, marginLeft:'auto', marginRight:'auto'},
+            height:'100%',
+            border:true,
+            singleSelect: true,
+            collapsible: false,
+            data: [],
+            remoteSort:false,
+            multiSort:true,
+            //showFilterBar:false,
+            rownumbers:true,
+            title:'<span style="font-weight: bold">司机列表</span>',
+            width:800,
+            toolbar: [{
+                text: '添加',
+                iconCls: 'icon-add',
+                handler: newDriver
+            }, {
+                text: '编辑',
+                iconCls: 'icon-edit',
+                handler: editDriver
+            },{
+                text: '删除',
+                iconCls: 'icon-remove',
+                handler: destroyDriver
+            }],
+            columns:[[
+                {title: "司机名称", field: 'name',width:120, sortable: true,sortOrder: 'asc'},
+                {title: "车牌号码", field: 'car_No', width:120, sortable:true, sortOrder: 'asc'},
+                {title: "身份证号", field: 'id_No',width:120},
+                {title: "行驶证号", field: 'driving_license_No',width:120},
+                {title: "联系电话", field: 'phone', width:100},
+                {title: "家庭住址", field: "address",width:200}
+            ]]
+        })
+    }
+
+    if (params == null) {
+        params = {}
+    }
+    mongoose.DriverModel.find(params, function (err, docs) {
+        DRIVER_GRID.datagrid('loadData', docs)
+        //DRIVER_GRID.datagrid('enableFilter', {filterMatchingType:'any'})
+    })
+}
+
+let opt_type_for_driver;
+function newDriver(){
+    $('#dlg_for_driver').dialog('open').dialog('center').dialog('setTitle','添加司机信息');
+    $('#fm_for_driver').form('clear');
+    opt_type_for_driver = 'new'
+}
+
+
+function editDriver(){
+    var row = DRIVER_GRID.datagrid('getSelected');
+    if (row){
+        $('#dlg_for_driver').dialog('open').dialog('center').dialog('setTitle','编辑司机信息');
+        $('#fm_for_driver').form('load',row);
+        opt_type_for_driver = 'edit'
+    }
+}
+
+function saveDriver() {
+
+    let name = $('#driver_name').textbox('getValue')
+    let car_No = $('#driver_car_No').textbox('getValue')
+    let id_No = $('#driver_id_No').textbox('getValue')
+    let driving_license_No = $('#driver_driving_license_No').textbox('getValue')
+    let phone = $('#driver_phone').textbox('getValue')
+    let address = $('#driver_address').textbox('getValue')
+    let driver = {name: name, car_No: car_No ,
+        id_No:id_No, driving_license_No: driving_license_No, phone:phone, address:address}
+
+    if (opt_type_for_driver == 'new') {
+        console.log("New driver is: " + JSON.stringify(driver))
+        mongoose.DriverModel.create(driver, function () {
+
+            $('#dlg_for_driver').dialog('close');
+            loadDriverGrid(null)
+
+        })
+
+    } else if (opt_type_for_driver == 'edit') {
+        let driverId = $('#driver_id').val();
+        console.log("Edit customer is: " + JSON.stringify(driver))
+        // customer不能包含products字段，否则会更新.update是局部字段更新的.
+        mongoose.DriverModel.findByIdAndUpdate(driverId, driver, function () {
+
+            $('#dlg_for_driver').dialog('close');
+            loadDriverGrid(null)
+        })
+    }
+}
+
+function destroyDriver(){
+    var row = DRIVER_GRID.datagrid('getSelected');
+    if (row){
+        $.messager.confirm('确定','是否确定删除选中的司机?',function(r){
+            if (r){
+                mongoose.DriverModel.findByIdAndDelete(row._id, function(){
+                    $('#dlg_for_driver').dialog('close');
+                    loadDriverGrid(null)
+                })
+            }
+        });
+    }
+}
+

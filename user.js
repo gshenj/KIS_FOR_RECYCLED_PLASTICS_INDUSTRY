@@ -160,6 +160,7 @@ function destroyUser(){
                 deleteUser({_id:row._id},function(){
                     $('#dlg').dialog('close');
                     loadSysUsers(null)
+                    show_msg("操作成功：删除用户成功！")
                 })
 
             }
@@ -175,6 +176,7 @@ function resetPassword() {
                 resetUserPassword({_id:row._id},function(){
                     $('#dlg').dialog('close');
                     loadSysUsers(null)
+                    show_msg("操作成功：重置密码成功！")
                 })
 
             }
@@ -228,3 +230,9 @@ function updateUser(user, callback) {
     });
 }
 
+
+
+function set_password(){
+    //todo
+    show_error("操作成功：设置密码成功！")
+}
