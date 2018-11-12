@@ -66,6 +66,11 @@
             width: 100%;
         }
 
+        .product_choose_textbox .textbox-icon:hover {
+            opacity: 1.0;
+            filter: alpha(opacity=100);
+            background:url('scripts/jquery-easyui/themes/icons/pencil.png') no-repeat center center;
+        }
     </style>
 
     <script>
@@ -90,11 +95,6 @@
                                 if (customer_choose_dlg_type == 'list_products') {
                                     loadProducts()
                                 } else if (customer_choose_dlg_type == 'new_order') {
-                                    // 清空客户内容，产品内容
-                                   // $('#new_order_customer_phone').textbox('setValue', '')
-                                   // $('#new_order_customer_principal').textbox('setValue', '')
-                                    // $('#new_order_customer_address').textbox('setValue', '')
-
                                     resetOrder()
                                 }
                             }
@@ -211,7 +211,7 @@
                 <a class="easyui-linkbutton" style="" onclick="deleteOrderRow()"
                    data-options="plain:true,iconCls:'icon-remove',iconAlign:'left'">减行</a>
 
-                <a class="easyui-linkbutton" style=""
+                <a class="easyui-linkbutton" style="" onclick="doPrint()"
                    data-options="plain:true,iconCls:'icon-print',iconAlign:'left'">打印</a>
                     </span>
                 <div style="clear:both; height:1px; line-height:1px"></div>
@@ -349,6 +349,17 @@
                 }
             }
 
+            function accept(){
+                if (endEditing()){
+                    $('#order_products_grid').datagrid('acceptChanges');
+                }
+            }
+            function doPrint(){
+                accept();
+                let rows = $('#order_products_grid').datagrid('getRows')
+                console.log(JSON.stringify(rows))
+            }
+
 
         </script>
         <div style="padding:20px 20px; border:0px dashed gray; width:810px; background-color:#fff; margin:0px auto ; clear:both;">
@@ -385,9 +396,10 @@ onClickCell: onClickCell,style:{marginTop:20}">
                             type:'textbox',
                             options:{
                                 prompt: '',
+                                cls:'product_choose_textbox',
                                 iconWidth: 22,
                                 icons: [{
-                                    iconCls:'icon-add',
+                                    iconCls:'icon-blank',
                                     handler: function(e){
                                         $('#dlg_for_product_choose').dialog('open').dialog('center');
                                     }
