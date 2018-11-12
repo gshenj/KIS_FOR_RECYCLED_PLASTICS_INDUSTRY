@@ -1,3 +1,18 @@
+let SYS_INFO = {}
+function init(){
+
+}
+
+
+function onShowDriverPanel(){
+    mongoose.DriverModel.find({}, function(err, docs) {
+        console.log(JSON.stringify(docs))
+        var g = $('#driver_select').combogrid('grid');	// get datagrid object
+        g.datagrid('loadData', docs);
+       // $("#driver_select").combogrid('loadData', docs)
+    })
+}
+
 function show_panel(src, manage_panel_id) {
     hide_all_panel()
     $('#'+ manage_panel_id).panel('open').panel('resize')

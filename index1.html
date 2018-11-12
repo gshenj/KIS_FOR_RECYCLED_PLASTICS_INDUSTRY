@@ -66,7 +66,7 @@
             width: 100%;
         }
 
-        .product_choose_textbox .textbox-icon:hover {
+        .product_choose_textbox:hover .textbox-icon {
             opacity: 1.0;
             filter: alpha(opacity=100);
             background:url('scripts/jquery-easyui/themes/icons/pencil.png') no-repeat center center;
@@ -429,8 +429,21 @@ onClickCell: onClickCell,style:{marginTop:20}">
 
                     <table class="bill_user_table">
                         <td>制单人：<input class="f1 easyui-textbox"></input></td>
-                        <td>送货司机：<select class="easyui-combobox" name="state1"
-                                         style="width:150px;"></select></td>
+                        <td>送货司机：<select class="easyui-combogrid" id="driver_select"
+                                         data-options="onShowPanel:onShowDriverPanel,
+                                    panelWidth: 600,
+                                    idField: 'name',
+                                    textField: 'name',
+                                    data:[],
+                                    columns: [[
+                                        {field:'name',title:'司机',width:90, align:'left', halign:'center'},
+                                        {field:'car_No',title:'车牌号',width:100, align:'left', halign:'center'},
+                                        {field:'driving_license_No',title:'行驶证号',width:100, align:'left', halign:'center'},
+                                        {field:'id_No',title:'身份证号',width:100, align:'left', halign:'center'},
+                                        {field:'phone',title:'电话',width:90, align:'left', halign:'center'},
+                                        {field:'address',title:'地址',width:150, align:'left', halign:'center'}
+                                    ]]"  style="width:150px;"></select>
+                        </td>
                         <td>签收人：<input class="f1 easyui-textbox" disabled></input></td>
                     </table>
 
