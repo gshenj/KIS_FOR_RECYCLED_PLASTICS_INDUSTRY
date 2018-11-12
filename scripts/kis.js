@@ -118,12 +118,12 @@ function loadDriverGrid(params){
                 handler: destroyDriver
             }],
             columns:[[
-                {title: "司机名称", field: 'name',width:120, sortable: true,sortOrder: 'asc'},
-                {title: "车牌号码", field: 'car_No', width:120, sortable:true, sortOrder: 'asc'},
-                {title: "身份证号", field: 'id_No',width:120},
-                {title: "行驶证号", field: 'driving_license_No',width:120},
+                {title: "姓名", field: 'name',width:70, sortable: true,sortOrder: 'asc'},
+                {title: "车牌号码", field: 'car_No', width:80, sortable:true, sortOrder: 'asc'},
+                {title: "身份证号", field: 'id_No',width:140},
+                {title: "行驶证号", field: 'driving_license_No',width:140},
                 {title: "联系电话", field: 'phone', width:100},
-                {title: "家庭住址", field: "address",width:200}
+                {title: "家庭住址", field: "address",width:230}
             ]]
         })
     }

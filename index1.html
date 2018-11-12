@@ -29,6 +29,7 @@
     <link rel="stylesheet" type="text/css" href="./styles/kis.css">
 
     <script type="text/javascript" src="./scripts/jquery-easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="./scripts/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
     <!--<script type="text/javascript" src="./scripts/jquery-easyui/datagrid-detailview.js"></script>-->
     <!--<script type="text/javascript" src="./scripts/DataTables/datatables.js"></script>-->
     <!--<script type="text/javascript" src="./scripts/bootstrap4/js/bootstrap.js"></script>-->
@@ -222,8 +223,10 @@
 
             function resetOrder() {
                 $('#new_order_form').form('clear')
+                $('#new_order_sale_date').datebox('setValue', myDateFormatter(new Date()))
                 resetOrderProductGrid(false)
             }
+
             function resetOrderProductGrid(addFirstRow){
                 deleteAllRows()
                 if (addFirstRow) {
@@ -372,7 +375,10 @@
                             <td>客户名称：<input id="new_order_customer_name" class="easyui-textbox customer_name"
                             />
                             </td>
-                            <td>送货日期：<input id="new_order_sale_date" class="easyui-datebox sale_date"
+                            <td>送货日期：<input id="new_order_sale_date"
+                                            class="easyui-datebox sale_date"
+                                            data-options="editable:false, formatter:myDateFormatter"
+                                            value="new Date()"
                                             labelPosition="top"/>
                             </td>
                             <td>销售单号：<span id="new_order_sale_No" style="font-weight:bold;">20181012001</span></td>
@@ -432,16 +438,17 @@ onClickCell: onClickCell,style:{marginTop:20}">
                         <td>送货司机：<select class="easyui-combogrid" id="driver_select"
                                          data-options="onShowPanel:onShowDriverPanel,
                                     panelWidth: 600,
+                                    panelMaxHeight:220,
                                     idField: 'name',
                                     textField: 'name',
                                     data:[],
                                     columns: [[
                                         {field:'name',title:'司机',width:90, align:'left', halign:'center'},
-                                        {field:'car_No',title:'车牌号',width:100, align:'left', halign:'center'},
+                                        {field:'car_No',title:'车牌号',width:90, align:'left', halign:'center'},
                                         {field:'driving_license_No',title:'行驶证号',width:100, align:'left', halign:'center'},
                                         {field:'id_No',title:'身份证号',width:100, align:'left', halign:'center'},
                                         {field:'phone',title:'电话',width:90, align:'left', halign:'center'},
-                                        {field:'address',title:'地址',width:150, align:'left', halign:'center'}
+                                        {field:'address',title:'地址',width:120, align:'left', halign:'center'}
                                     ]]"  style="width:150px;"></select>
                         </td>
                         <td>签收人：<input class="f1 easyui-textbox" disabled></input></td>
@@ -952,10 +959,18 @@ onClickCell: onClickCell,style:{marginTop:20}">
 </div>
 
 <script>
-    $(document).ready(function () {
-        //require('electron').remote.getCurrentWindow().show()
 
-    })
+    $(function(){
+        $('#new_order_sale_date').datebox().datebox('calendar').calendar({
+            validator: function(date){
+                var now = new Date();
+                var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate()-1);
+                var d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate()+6);
+                return d1<=date && date<=d2;
+            }
+        });
+    });
+
 
 </script>
 </body>
