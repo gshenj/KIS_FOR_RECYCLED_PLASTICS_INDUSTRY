@@ -37,7 +37,8 @@ let product_grid_columns = [[
     {field: 'model', title: '型号', width: 140, align: 'center'},
     {field: 'units', title: '单位', width: 80, align: 'center'},
     {field: 'price', title: '价格', width: 60, align: 'center'},
-    {field: 'memo', title: '描述', width: 160, align: 'center'}
+    {field: 'memo', title: '描述', width: 160, align: 'center'},
+    {field: 'customer', title: '所属客户', hidden:true, width: 160, align: 'center'}
 ]]
 
 
@@ -136,10 +137,68 @@ function destroyProduct(){
     }
 }
 
+let PRODUCT_GRID_FOR_CHOOSE
+function onOpenProductChooseDlg(){
+    let customerId = $('#new_order_customer_name').textbox('getValue')
+    if (!customerId) {
+        return false
+    }
+
+    console.log("CustomerId is "+customerId)
+    if (PRODUCT_GRID_FOR_CHOOSE == null) {
+        PRODUCT_GRID_FOR_CHOOSE = $('#grid_for_product01').datagrid({
+            fit:true,
+            singleSelect: true,
+            border:false,
+            fitColumns:true,
+            width: 580,
+            view:groupview,
+            groupField:'customer',
+            groupFormatter:function(value,rows){
+                if (value) {
+                    return "客户定制产品" + ' - ' + rows.length + ' 项';
+                } else {
+                    return "通用产品" + ' - ' +rows.length + ' 项'
+                }
+            },
+            data: [],
+            columns: product_grid_columns
+        })
+    }
 
 
-function onDlgForCustomerClose(){
-    //PRODUCT_GRID.datagrid('destroy')
-    //PRODUCT_GRID = null;
+    let params = { $or: [ {customer: customerId}, { customer: null } ] }
+    mongoose.ProductModel.find(params).sort({'customer':-1}).exec(function(err, docs){
+        //console.log(JSON.stringify(docs))
+        PRODUCT_GRID_FOR_CHOOSE.datagrid('loadData', docs)
+    })
+
+    return true
+}
+
+
+function chooseProduct(){
+    $('#dlg_for_product_choose').dialog('close')
+    let row = PRODUCT_GRID_FOR_CHOOSE.datagrid('getSelected')
+    if (row) {
+        let selectedRow = $('#order_products_grid').datagrid('getSelected');
+        if (selectedRow) {
+            console.log(JSON.stringify(selectedRow))
+            let selectedIndex = $('#order_products_grid').datagrid('getRowIndex', selectedRow);
+            let ed = $('#order_products_grid').datagrid('getEditor', {index:selectedIndex, field:'product_name'})
+            $(ed.target).textbox('setValue', row.name + '  (' + row.model + ')');
+
+            ed = $('#order_products_grid').datagrid('getEditor', {index:selectedIndex, field:'product_units'})
+            $(ed.target).textbox('setValue', row.units)
+
+            ed = $('#order_products_grid').datagrid('getEditor', {index:selectedIndex, field:'product_price'})
+            $(ed.target).textbox('setValue', row.price)
+
+            ed = $('#order_products_grid').datagrid('getEditor', {index:selectedIndex, field:'product_memo'})
+            $(ed.target).textbox('setValue', row.memo)
+
+
+        }
+    }
 }
 

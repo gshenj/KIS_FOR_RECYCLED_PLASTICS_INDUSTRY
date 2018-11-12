@@ -46,6 +46,7 @@
 
     <script type="text/javascript" src="./scripts/jquery-easyui/plugins/datagrid-export/datagrid-export.js"></script>
     <script type="text/javascript" src="./scripts/jquery-easyui/plugins/datagrid-filter/datagrid-filter.js"></script>
+    <script type="text/javascript" src="./scripts/jquery-easyui/plugins/datagrid-groupview.js"></script>
 
 
     <style type="text/css">
@@ -90,10 +91,11 @@
                                     loadProducts()
                                 } else if (customer_choose_dlg_type == 'new_order') {
                                     // 清空客户内容，产品内容
-                                    $('#new_order_customer_phone').textbox('setValue', '')
-                                    $('#new_order_customer_principal').textbox('setValue', '')
-                                    $('#new_order_customer_address').textbox('setValue', '')
+                                   // $('#new_order_customer_phone').textbox('setValue', '')
+                                   // $('#new_order_customer_principal').textbox('setValue', '')
+                                    // $('#new_order_customer_address').textbox('setValue', '')
 
+                                    resetOrder()
                                 }
                             }
                         });
@@ -194,7 +196,7 @@
     <!--新开送货单-->
     <div id="order_input_panel" class="easyui-panel opt_panel" 　
          style="width:100%; height:100%; padding:0px 0px; background-color:#999; text-align:center; "
-         data-options="fit:true,closed:true, border:false, onOpen:function(){}">
+         data-options="fit:true,closed:true, border:false">
 
         <div style="padding:0px 0px; border:0px solid red; width:850px;  margin:10px auto;  text-align:right;">
             <div id="order_input_toolbar"
@@ -220,11 +222,13 @@
 
             function resetOrder() {
                 $('#new_order_form').form('clear')
+                resetOrderProductGrid(false)
+            }
+            function resetOrderProductGrid(addFirstRow){
                 deleteAllRows()
-                //$('#order_products_grid').datagrid('loadData',)
-                //$('#order_products_grid').datagrid('rejectChanges')
-                //editIndex = undefined;
-                addOrderRow()
+                if (addFirstRow) {
+                    addOrderRow()
+                }
             }
 
             function endEditing() {
@@ -374,78 +378,36 @@
 
                     <table id="order_products_grid" class="easyui-datagrid" style="maring-top:20px;"
                            data-options="height:202,data:[],singleSelect:true,
-onClickCell: onClickCell,style:{marginTop:20},onLoadSuccess:addOrderRow">
+onClickCell: onClickCell,style:{marginTop:20}">
                         <thead>
                         <tr>
-                            <th data-options="field:'product_name', halign:'center',width:248,editor:{
-                            type:'combobox',
+                            <th data-options="field:'product_name', align:'left', halign:'center',width:248,editor:{
+                            type:'textbox',
                             options:{
-                                singleSelect:true,
-                                valueField:'productid',
-                                textField:'productname'
+                                prompt: '',
+                                iconWidth: 22,
+                                icons: [{
+                                    iconCls:'icon-add',
+                                    handler: function(e){
+                                        $('#dlg_for_product_choose').dialog('open').dialog('center');
+                                    }
+                                }]
                             }
                         }">品名规格
                             </th>
-                            <th data-options="field:'product_units', halign:'center', width:80, editor:{
-                            type:'combobox',
-                            options:{
-                                valueField:'units',
-                                textField:'units'
-                            }
-                        }">单位
+                            <th data-options="field:'product_units', align:'center', halign:'center', width:80, editor:'textbox'">单位
                             </th>
-                            <th data-options="field:'product_num', halign:'center', width:100, editor:'textbox'">数量</th>
-                            <th data-options="field:'product_price', halign:'center', width:80, editor:{type:'numberbox',options:{precision:2}}">
+                            <th data-options="field:'product_num', align:'center', halign:'center', width:100, editor:'textbox'">数量</th>
+                            <th data-options="field:'product_price', align:'center', halign:'center', width:80, editor:{type:'numberbox',options:{precision:2}}">
                                 单价
                             </th>
-                            <th data-options="field:'product_sum', halign:'center', width:100, editor:{type:'numberbox',options:{precision:2}}">
+                            <th data-options="field:'product_sum', align:'center', halign:'center', width:100, editor:{type:'numberbox',options:{precision:2}}">
                                 金额
                             </th>
-                            <th data-options="field:'product_memo', halign:'center', width:200, editor:'textbox'">备注
+                            <th data-options="field:'product_memo', align:'left', halign:'center', width:200, editor:'textbox'">备注
                             </th>
                         </tr>
                         </thead>
-                        <!--     <tr>
-                                 <td class=""><select class="product_name easyui-combobox " name="state">
-                                     <option value="AL">Alabama</option>
-                                 </select></td>
-                                 <td class=""><input class="product_units easyui-textbox"/></td>
-                                 <td class=""><input class="product_num easyui-textbox"/></td>
-                                 <td class=""><input class="product_price easyui-textbox"/></td>
-                                 <td class=""><input class="product_sum easyui-textbox"/></td>
-                                 <td class=""><input class="product_memo easyui-textbox"/></td>
-                             </tr>
-                             <tr>
-                                 <td class=""><select class="product_name easyui-combobox " name="state">
-                                     <option value="AL">Alabama</option>
-                                 </select></td>
-                                 <td class=""><input class="product_units easyui-textbox"/></td>
-                                 <td class=""><input class="product_num easyui-textbox"/></td>
-                                 <td class=""><input class="product_price easyui-textbox"/></td>
-                                 <td class=""><input class="product_sum easyui-textbox"/></td>
-                                 <td class=""><input class="product_memo easyui-textbox"/></td>
-                             </tr>
-                             <tr>
-                                 <td class=""><select class="product_name easyui-combobox " name="state">
-                                     <option value="AL">Alabama</option>
-                                 </select></td>
-                                 <td class=""><input class="product_units easyui-textbox"/></td>
-                                 <td class=""><input class="product_num easyui-textbox"/></td>
-                                 <td class=""><input class="product_price easyui-textbox"/></td>
-                                 <td class=""><input class="product_sum easyui-textbox"/></td>
-                                 <td class=""><input class="product_memo easyui-textbox"/></td>
-                             </tr>
-                             <tr>
-                                 <td class=""><select class="product_name easyui-combobox " name="state">
-                                     <option value="AL">Alabama</option>
-                                 </select></td>
-                                 <td class=""><input class="product_units easyui-textbox"/></td>
-                                 <td class=""><input class="product_num easyui-textbox"/></td>
-                                 <td class=""><input class="product_price easyui-textbox"/></td>
-                                 <td class=""><input class="product_sum easyui-textbox"/></td>
-                                 <td class=""><input class="product_memo easyui-textbox"/></td>
-                             </tr>-->
-
                         <tr>
                             <td colspan="6" style="text-align: right;font-weight: bold;">合计金额：
                                 <span id="product_total_sum" style="margin-right: 20%;"></span>
@@ -463,26 +425,6 @@ onClickCell: onClickCell,style:{marginTop:20},onLoadSuccess:addOrderRow">
                 </form>
             </div>
 
-            <!--<table class="bill_table">
-                <tr>
-                    <td style="text-align: center; padding:10px;"><span
-                            style="font-size:26px;">苏州元斌塑胶科技有限公司 销售单</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-
-                    </td>
-                </tr>
-            </table>-->
         </div>
     </div>
 
@@ -559,7 +501,7 @@ onClickCell: onClickCell,style:{marginTop:20},onLoadSuccess:addOrderRow">
                 </div>
 
                 <div id="dlg_for_customer" class="easyui-dialog" style="width:500px"
-                     data-options="closed:true,modal:true,border:'thin',buttons:'#dlg_buttons_for_customer', onClose:onDlgForCustomerClose">
+                     data-options="closed:true,modal:true,border:'thin',buttons:'#dlg_buttons_for_customer'">
                     <form id="fm_for_customer" method="post" novalidate style="margin:0;padding:20px 50px">
                         <div style="margin-bottom:10px">
 
@@ -698,7 +640,8 @@ onClickCell: onClickCell,style:{marginTop:20},onLoadSuccess:addOrderRow">
                            style="width:100%">
                 </div>
                 <div style="margin-bottom:10px">
-                    <input name="driving_license_No" id="driver_driving_license_No" class="easyui-textbox" required="true"
+                    <input name="driving_license_No" id="driver_driving_license_No" class="easyui-textbox"
+                           required="true"
                            label="行驶证号:" labelAlign="right"
                            style="width:100%">
                 </div>
@@ -948,6 +891,8 @@ onClickCell: onClickCell,style:{marginTop:20},onLoadSuccess:addOrderRow">
                     $('#new_order_customer_principal').textbox('setValue', row.principal)
                     $('#new_order_customer_address').textbox('setValue', row.address)
 
+                    resetOrderProductGrid(true)
+
 
                 }
             }
@@ -967,6 +912,19 @@ onClickCell: onClickCell,style:{marginTop:20},onLoadSuccess:addOrderRow">
        onclick="javascript:$('#dlg_for_customer_choose').dialog('close')" style="width:90px">取消</a>
 </div>
 
+
+<!-- 产品选择对话框 -->
+<div id="dlg_for_product_choose" title="选择产品" class="easyui-dialog" style="width:700px; height:500px;"
+     data-options="onBeforeOpen:onOpenProductChooseDlg, resizable:true, closed:true, modal:true, border:'thin', buttons:'#dlg_buttons_for_product_choose01'">
+    <table id="grid_for_product01" style="width:100%">
+    </table>
+</div>
+<div id="dlg_buttons_for_product_choose01">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok"
+       onclick="chooseProduct()" style="width:90px">确定选择</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#dlg_for_product_choose').dialog('close')" style="width:90px">取消</a>
+</div>
 
 <script>
     $(document).ready(function () {

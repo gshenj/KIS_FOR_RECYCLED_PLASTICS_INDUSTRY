@@ -1,6 +1,6 @@
 function show_panel(src, manage_panel_id) {
     hide_all_panel()
-    $('#'+manage_panel_id).panel('open').panel('resize')
+    $('#'+ manage_panel_id).panel('open').panel('resize')
     $('#main_layout').layout('resize')
     set_tool_button_status(src)
 }
