@@ -184,7 +184,7 @@
 	padding:4px;">
             <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'password_set_panel')"
                data-options="plain:true, iconCls:'icon-large-smartart',iconAlign:'top'">密码设置</a>
-            <a class="easyui-linkbutton tool_button" onclick="alert('logout')"
+            <a class="easyui-linkbutton tool_button" onclick="logout()"
                data-options="plain:true, iconCls:'icon-large-smartart',iconAlign:'top'">退出系统</a>
         </div>
     </div>
@@ -361,6 +361,9 @@
                 accept();
                 let rows = $('#order_products_grid').datagrid('getRows')
                 console.log(JSON.stringify(rows))
+
+
+                printit()
             }
 
 
@@ -972,6 +975,29 @@ onClickCell: onClickCell,style:{marginTop:20}">
     });
 
 
+
+
+    const {ipcRenderer} = require('electron')
+    let win = require('electron').remote.getCurrentWindow();
+
+    win.on('close', () => {
+       ipcRenderer.sendSync('app-quit')
+    });
+
+    function logout(){
+        ipcRenderer.sendSync('logout')
+    }
+
+    const {BrowserWindow} = require('electron').remote
+    function printit() {
+        let parent = require('electron').remote.getCurrentWindow()
+        let win_print = new BrowserWindow({width: 800, height: 600, modal:true, show:false, parent:parent, autoHideMenuBar: true})
+        win_print.on('closed', () => {
+            win_print = null
+        })
+        win_print.loadURL('file://' + __dirname + '/print_template.html')
+        win_print.show()
+    }
 </script>
 </body>
 </html>

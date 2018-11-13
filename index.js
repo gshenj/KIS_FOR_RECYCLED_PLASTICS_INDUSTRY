@@ -1,4 +1,4 @@
-var {app, BrowserWindow,ipcMain} = require('electron');  // Module to control application life.
+var {app, BrowserWindow, ipcMain} = require('electron');  // Module to control application life.
 //var BrowserWindow = require('electron').browser-window;  // Module to create native browser window.
 
 // Report crashes to our server.
@@ -7,48 +7,85 @@ var {app, BrowserWindow,ipcMain} = require('electron');  // Module to control ap
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is GCed.
 var mainWindow = null;
+var loginWindow = null;
 
 // Quit when all windows are closed.
-app.on('window-all-closed', function() {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform != 'darwin') {
-    app.quit();
-  }
+app.on('window-all-closed', function () {
+    // On OS X it is common for applications and their menu bar
+    // to stay active until the user quits explicitly with Cmd + Q
+    if (process.platform != 'darwin') {
+        app.quit();
+    }
 });
 
 var session = {};
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
-app.on('ready', function() {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1000,
-   height: 750,
-     // show:false,
-      backgroundColor:'#2e2c29',
-      autoHideMenuBar:true//,
-      //frame:false
-  });
-
- // mainWindow.once('ready-to-show',()=>{mainWindow.show()})
-  // and load the index.html of the app.
-  mainWindow.loadURL('file://' + __dirname + '/index1.html');
-
-  // Open the devtools.
-  //mainWindow.webContents.openDevTools();
-
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function() {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    
-    //mainWindow.webContents.session.cookies
-    mainWindow = null;
-  });
-
+app.on('ready', function () {
+    // Create the browser window.
+    createMainWindow()
+    showLoginWindow()
 });
+
+function createMainWindow(){
+    mainWindow = new BrowserWindow({
+        width: 1000,
+        height: 750,
+        show: false,
+        backgroundColor: '#2e2c29',
+        autoHideMenuBar: true//,
+    });
+
+    mainWindow.on('closed', function () {
+        mainWindow = null;
+    });
+    mainWindow.loadURL('file://' + __dirname + '/index1.html');
+}
+
+function showLoginWindow() {
+    loginWindow = new BrowserWindow({
+        width: 450,
+        height: 300,
+        show: false,
+        autoHideMenuBar: true
+    })
+    loginWindow.loadURL('file://' + __dirname + '/login.html');
+    loginWindow.on('closed', function () {
+        loginWindow = null;
+    });
+
+    loginWindow.show();
+}
+
+// 登录成功
+ipcMain.on('login-success', (event, arg) => {
+    mainWindow.show()
+    loginWindow.close()
+});
+
+ipcMain.on('logout', (event, arg) => {
+    mainWindow.hide()
+    mainWindow.loadURL('file://' + __dirname + '/index1.html')
+    mainWindow.setSize(1000, 750)
+    showLoginWindow()
+})
+
+ipcMain.on('app-quit', (event, arg) => {
+    console.log("app-quite message.")
+    if (mainWindow) {
+        mainWindow.close()
+    }
+
+    if (loginWindow) {
+        loginWindow.close()
+    }
+
+    if (process.platform != 'darwin') {
+        app.quit();
+    }
+
+})
 
 
 // 遮罩层通过ipc来控制
@@ -56,25 +93,26 @@ app.on('ready', function() {
 //var ipc = require('ipc');
 var win = null;
 //这个方法创建窗口，没用
-ipcMain.on('show_print_win', function(event, arg) {
-    win = new BrowserWindow({width: 800,
+ipcMain.on('show_print_win', function (event, arg) {
+    win = new BrowserWindow({
+        width: 800,
         height: 600,
-        autoHideMenuBar:true
+        autoHideMenuBar: true
     });
     win.show();
-    win.loadURL('file://' + __dirname + '/'+arg.url);
-    win.on('closed', function() {
+    win.loadURL('file://' + __dirname + '/' + arg.url);
+    win.on('closed', function () {
         win = null;
     });
 
     event.returnValue = true;
 });
 
-ipcMain.on('hide_print_win', function(event, arg) {
+ipcMain.on('hide_print_win', function (event, arg) {
     console.log("arg")
     console.log(arg)
 
-   //mainWindow.webContents.executeJavaScript('hide_overlay('+arg+')');
+    //mainWindow.webContents.executeJavaScript('hide_overlay('+arg+')');
     mainWindow.webContents.send('hide_overlay', arg);
 
     // ipc2.sendSync("hide_overlay", {})
@@ -83,7 +121,7 @@ ipcMain.on('hide_print_win', function(event, arg) {
 });
 
 
-ipcMain.on('jump_to_list', function(event, arg) {
+ipcMain.on('jump_to_list', function (event, arg) {
     mainWindow.loadURL('file://' + __dirname + arg.url);
     event.returnValue = true;
 });
@@ -100,23 +138,23 @@ ipc.on('show_main_window', function(event,arg) {
 });*/
 
 
-ipcMain.on('session', function(event, arg) {  // arg->{opt:'', key:'', value:''}
-     var opt = arg.opt;
-     if (opt == 'get') {
-      // console.log('get')
-       
-       var ret = session[arg.key];
-     //  console.log('ret'+ret)
-       if(typeof(ret)=='undefined')
-        event.returnValue = 'undefined';
-       else 
-        event.returnValue=ret;
-     } else if (opt == 'put') {
-       session[arg.key]=arg.value;
-       event.returnValue = true;
+ipcMain.on('session', function (event, arg) {  // arg->{opt:'', key:'', value:''}
+    var opt = arg.opt;
+    if (opt == 'get') {
+        // console.log('get')
 
-     } else if (opt == 'remove') {
-         var bln = false;
+        var ret = session[arg.key];
+        //  console.log('ret'+ret)
+        if (typeof(ret) == 'undefined')
+            event.returnValue = 'undefined';
+        else
+            event.returnValue = ret;
+    } else if (opt == 'put') {
+        session[arg.key] = arg.value;
+        event.returnValue = true;
+
+    } else if (opt == 'remove') {
+        var bln = false;
 //  86         try {
 //  87             for (var k in session) {
 //  88                 if (session[k] == arg.key) {
@@ -129,8 +167,8 @@ ipcMain.on('session', function(event, arg) {  // arg->{opt:'', key:'', value:''}
 //  95         }
 //  96
         event.returnValue = bln;
-     } else if (opt == 'clear') {
-       session = {};
-       event.returnValue = 'true';
-     }
- });
+    } else if (opt == 'clear') {
+        session = {};
+        event.returnValue = 'true';
+    }
+});

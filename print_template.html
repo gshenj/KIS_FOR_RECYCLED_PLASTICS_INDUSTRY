@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        .container {
+            margin: 16pt auto;
+            padding: 10pt 8pt;
+            border: 1px dashed #aaa;
+            font-size: 11pt;
+        }
+        .container label {
+            font-weight: bold;
+        }
+        .company {
+            font-size: 18pt;
+            color: #000;
+            font-weight: bold;
+        }
+        .bill_table {
+            width: 100%;
+            margin-top: 10pt;
+            border: none;
+        }
+        .bill_table td {
+            text-align: left;
+            padding: 0pt 0pt;
+            border: none;
+            height: 18pt;
+            vertical-align: middle;
+        }
+        .bill_product_table {
+            border-collapse: collapse;
+            border: 1px dashed #aaa;
+        }
+        .bill_product_table th {
+            vertical-align: middle;
+            text-align: center;
+            font-weight: bold;
+            border: 1px dashed  #aaa;
+            height: 24pt;
+        }
+        .bill_product_table td {
+            text-align: left;
+            padding: 0pt 6pt;
+            height: 18pt;
+            vertical-align: middle;
+            border: 1px dashed  #aaa;
+            /*background-color:#eee;*/
+        }
+    </style>
+
+    <style media=print type="text/css">
+        .noprint {
+            visibility: hidden
+        }
+        .container {
+            border: none;
+            margin: 0 auto;
+            padding: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div style="text-align:center;">
+        <div class="company">
+            <div>苏州元斌塑胶科技有限公司</div>
+            <div style="font-size:16pt; word-spacing: 2pt;">出 库 单</div>
+        </div>
+
+        <table style="width:100%; text-align:left; border-bottom:1px solid black;">
+            <tr>
+                <td colspan="3" style="width:40%">
+                    地址：<span>苏州市相城区北桥街道石星路</span>&nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td style="width:35%">电话：0512-65410295</td>
+                <td style="width:35%">传真：0512-65410295</td>
+                <td style=" width:30%">出货单编号： <span id="order_number"></span></td>
+            </tr>
+        </table>
+
+        <table class="bill_table" cellpadding="0" cellspacing="0">
+            <tr>
+                <td colspan="7">
+                    客户名称：
+                    <span id="customer_name"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    送货地址：
+                    <span id="customer_address"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    客户电话：
+                    <span id="customer_phone">0512-9987334</span>
+                </td>
+                <td colspan="3">
+                    联系人：
+                    <span id="customer_principal">陈玉坤</span>
+                </td>
+
+                <td id="sale_date_div" colspan="2" style="text-align:right; padding-right:11%;">
+                    送货日期：
+                    <span id="sale_date">2015-11-27</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <table class="bill_product_table" style="width:100%; height:150px;" cellpadding="0" cellspacing="0">
+        <tr class="tbh">
+            <th width="31%" colspan="2">规格型号</th>
+            <!--<th width="14%">货物名称</th>-->
+            <th width="8%">单位</th>
+            <th width="10%">数量</th>
+            <th width="10%">价格</th>
+            <th width="12%">金额</th>
+            <th width="18%">备注</th>
+            <th rowspan="7" width="11%" style="border:none; font-weight:normal; padding:0;">
+                <div style="margin:0pt 0pt;">说明：</br>白联:存根<br/>红联:客户</br>黄联:结算</div>
+            </th>
+        </tr>
+        <tr idx="1">
+            <td style="text-align:center;" colspan="2">
+                <span class="product_modal"></span>
+            </td>
+            <!--<td style="text-align:center;">
+                <span class="product_category"></span>
+            </td>-->
+            <td style="text-align:center;">
+                <span class="product_units"></span>
+            </td>
+            <td style="text-align:right;">
+                <span class="product_num"></span>
+            </td>
+            <td style="text-align:right;">
+                <span class="product_unit_price"></span>
+            </td>
+            <td style="text-align:right;">
+                <span class="product_sum"></span>
+            </td>
+            <td>
+                <span class="product_memo"></span>
+            </td>
+        </tr>
+        <tr idx="1">
+            <td style="text-align:center;" colspan="2">
+                <span class="product_modal"></span>
+            </td>
+            <!--<td style="text-align:center;">
+                <span class="product_category"></span>
+            </td>-->
+            <td style="text-align:center;">
+                <span class="product_units"></span>
+            </td>
+            <td style="text-align:right;">
+                <span class="product_num"></span>
+            </td>
+            <td style="text-align:right;">
+                <span class="product_unit_price"></span>
+            </td>
+            <td style="text-align:right;">
+                <span class="product_sum"></span>
+            </td>
+            <td>
+                <span class="product_memo"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="7" style="border:none;">以下空白</td>
+        </tr>
+        <tr>
+            <td colspan="7" style="border:none;"> </td>
+        </tr>
+        <tr>
+            <td colspan="7" style="border:none;"> </td>
+        </tr>
+        <tr id="total_sum_tr">
+            <td colspan="5" style="text-align: right; font-weight: bold; border-right:none;">
+                合计金额：
+            </td>
+            <td colspan="2" style="border-left:none; font-weight:bold;"><span id="product_total_sum"></span></td>
+        </tr>
+    </table>
+    <table class="print_sign_table" style="width:100%;margin:20px 0 10px;">
+        <tr>
+            <td style="width:33.3%; text-align: center;padding-right:15%;">制单：</td>
+            <td style="width:33.3%; text-align: center;padding-right:15%;">司机：<span id="create_user"></span>
+            </td>
+            <td style="width:33.3%; text-align: center; padding-right:15%;">签收：</td>
+        </tr>
+    </table>
+</div>
+
+<div class="noprint" style="text-align:center;">
+
+    <button class="btn btn-default btn-primary" type="submit" onclick="window.close()">关 闭</button>
+
+    <button  class="btn btn-default btn-primary noprint btn-print" style="margin-left:150px;">保存&打印</button>
+
+</div>
+
+</body>
+</html>

@@ -38,6 +38,14 @@ function handleError(err) {
 }
 
 
+function load_company(){
+    mongoose.ConfigModel.findOne({},function(err, doc){
+        if (doc) {
+            SYS_INFO.companyInfo = doc;
+        }
+    })
+}
+
 function set_company() {
     let company_name = $('#company_name').textbox('getValue')
     let company_phone = $('#company_phone').textbox('getValue')

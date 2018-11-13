@@ -1,15 +1,16 @@
 let SYS_INFO = {}
 function init(){
 
+    load_company();
+
 }
 
 
 function onShowDriverPanel(){
     mongoose.DriverModel.find({}, function(err, docs) {
-        console.log(JSON.stringify(docs))
-        var g = $('#driver_select').combogrid('grid');	// get datagrid object
+        //console.log(JSON.stringify(docs))
+        var g = $('#driver_select').combogrid('grid');
         g.datagrid('loadData', docs);
-       // $("#driver_select").combogrid('loadData', docs)
     })
 }
 
