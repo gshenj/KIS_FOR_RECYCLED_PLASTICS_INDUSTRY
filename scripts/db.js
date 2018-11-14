@@ -28,7 +28,7 @@ let classificationSchema = new Schema({classifications:Schema.Types.Mixed})// {c
 
 var userSchema = new Schema({role:String, name:String, disabled:Boolean, password:String});
 
-let driverSchema = new Schema({name:String, car_No:String, id_No:String, driving_license_No:String, phone:String, address:String})
+let driverSchema = new Schema({name:String, car_type:String, car_No:String, id_No:String, driving_license_No:String, phone:String, address:String})
 
 var product = {name:String, model:String, price:String, units:String, memo:String,
 customer:{ type: Schema.Types.ObjectId, ref: 'CustomerModel' }};
@@ -50,7 +50,6 @@ var customerSchema = new Schema(customer);
 var orderProductSchema = Object.assign({},product, {num:Number, sum:Number});
 
 var order = {
-    order_id:String,
     cancelled:Boolean,
     order_num:String,
     create_date:Date,
@@ -64,9 +63,8 @@ var order = {
     products:[orderProductSchema],
     products_num:Number,
     products_sum:String,
-    delivery_siji:String, /*司机*/
-    zhidanren:String, /*制单人*/
-    shenhe:String,/*审核人*/
+    order_driver:String, /*司机*/
+    order_maker:String, /*制单人*/
     memo:String     /*订单备注*/
 }
 var orderSchema = new Schema(order);
@@ -127,4 +125,5 @@ module.exports.RoleModel = RoleModel;
 module.exports.CustomerModel = CustomerModel;
 module.exports.ProductModel = ProductModel;
 module.exports.DriverModel = DriverModel;
+module.exports.OrderModel = OrderModel;
 module.exports.UNITS = UNITS;

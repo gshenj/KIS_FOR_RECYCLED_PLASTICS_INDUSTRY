@@ -43,6 +43,7 @@
     <script type="text/javascript" src="scripts/classification.js"></script>
     <script type="text/javascript" src="./scripts/utils.js"></script>
     <script type="text/javascript" src="./scripts/loading.js"></script>
+    <script type="text/javascript" src="./scripts/sale_order.js"></script>
 
 
     <script type="text/javascript" src="./scripts/jquery-easyui/plugins/datagrid-export/datagrid-export.js"></script>
@@ -70,7 +71,7 @@
         .product_choose_textbox:hover .textbox-icon {
             opacity: 1.0;
             filter: alpha(opacity=100);
-            background:url('scripts/jquery-easyui/themes/icons/pencil.png') no-repeat center center;
+            background: url('scripts/jquery-easyui/themes/icons/pencil.png') no-repeat center center;
         }
     </style>
 
@@ -227,7 +228,7 @@
                 resetOrderProductGrid(false)
             }
 
-            function resetOrderProductGrid(addFirstRow){
+            function resetOrderProductGrid(addFirstRow) {
                 deleteAllRows()
                 if (addFirstRow) {
                     addOrderRow()
@@ -352,18 +353,66 @@
                 }
             }
 
-            function accept(){
-                if (endEditing()){
+            function accept() {
+                if (endEditing()) {
                     $('#order_products_grid').datagrid('acceptChanges');
                 }
             }
-            function doPrint(){
+
+            function doPrint() {
                 accept();
-                let rows = $('#order_products_grid').datagrid('getRows')
-                console.log(JSON.stringify(rows))
+
+                let products = $('#order_products_grid').datagrid('getRows')
+
+                // save orders
+                let customer_id = $('#new_order_customer_name').textbox('getValue');
+                let customer_name = $('#new_order_customer_name').textbox('getText');
+                let order_date = $('#new_order_sale_date').textbox('getText');
+                //let order_num = $('#new_order_sale_No').textbox('getValue')
+                let delivery_address = $('#new_order_customer_address').textbox('getValue')
+                let principal = $('#new_order_customer_principal').textbox('getValue')
+                let contact_number = $('#new_order_customer_phone').textbox('getValue')
+                let maker = $('#new_order_maker').textbox('getValue')
+                let driver = $('#driver_select').textbox('getValue')
+                let cancelled = false;
+
+                let products_num;
+                let products_sum;
+
+                let order_data = {
+                    order_num: 1,//order_num,
+                    customer_id: customer_id,
+                    customer_name: customer_name,
+                    customer_principal: principal,
+                    contact_number: contact_number,
+                    delivery_address: delivery_address,
+                    order_date: order_date,
+                    order_maker: maker,
+                    order_driver: driver,
+                    cancelled: cancelled,
+                    products:products
+                    //create_user:  current_user
+                }
+
+                console.log(JSON.stringify(order_data))
+                $('#win_in').html('正在保存出库单...')
+                $('#win').window('open')
+
+setTimeout(function(){
+    saveOrder(order_data, function(doc){
+        $('#win_in').html('开始打印...')
 
 
-                printit()
+        setTimeout(function() {
+
+            printit()
+            $('#win').window('close')
+        }, 1000)
+    })
+},1000)
+
+
+
             }
 
 
@@ -384,7 +433,9 @@
                                             value="new Date()"
                                             labelPosition="top"/>
                             </td>
-                            <td>销售单号：<span id="new_order_sale_No" style="font-weight:bold;">20181012001</span></td>
+                            <td>销售单号：<span id="new_order_sale_No" style="font-weight:bold;">20181012001</span>
+                                <!--<input type="hidden" id="new_order_sale_No" />-->
+                            </td>
                         </tr>
                         <tr>
                             <td>送货地址：<input id="new_order_customer_address" class="customer_address easyui-textbox"/>
@@ -416,16 +467,20 @@ onClickCell: onClickCell,style:{marginTop:20}">
                             }
                         }">品名规格
                             </th>
-                            <th data-options="field:'product_units', align:'center', halign:'center', width:80, editor:'textbox'">单位
+                            <th data-options="field:'product_units', align:'center', halign:'center', width:80, editor:'textbox'">
+                                单位
                             </th>
-                            <th data-options="field:'product_num', align:'center', halign:'center', width:100, editor:'textbox'">数量</th>
+                            <th data-options="field:'product_num', align:'center', halign:'center', width:100, editor:'textbox'">
+                                数量
+                            </th>
                             <th data-options="field:'product_price', align:'center', halign:'center', width:80, editor:{type:'numberbox',options:{precision:2}}">
                                 单价
                             </th>
                             <th data-options="field:'product_sum', align:'center', halign:'center', width:100, editor:{type:'numberbox',options:{precision:2}}">
                                 金额
                             </th>
-                            <th data-options="field:'product_memo', align:'left', halign:'center', width:200, editor:'textbox'">备注
+                            <th data-options="field:'product_memo', align:'left', halign:'center', width:200, editor:'textbox'">
+                                备注
                             </th>
                         </tr>
                         </thead>
@@ -437,22 +492,23 @@ onClickCell: onClickCell,style:{marginTop:20}">
                     </table>
 
                     <table class="bill_user_table">
-                        <td>制单人：<input class="f1 easyui-textbox"></input></td>
+                        <td>制单人：<input id="new_order_maker" class="f1 easyui-textbox"></input></td>
                         <td>送货司机：<select class="easyui-combogrid" id="driver_select"
                                          data-options="onShowPanel:onShowDriverPanel,
-                                    panelWidth: 600,
+                                    panelWidth: 810,
                                     panelMaxHeight:220,
                                     idField: 'name',
                                     textField: 'name',
                                     data:[],
                                     columns: [[
                                         {field:'name',title:'司机',width:90, align:'left', halign:'center'},
+                                        {field:'car_type',title:'车型载重',width:110, align:'left', halign:'center'},
                                         {field:'car_No',title:'车牌号',width:90, align:'left', halign:'center'},
-                                        {field:'driving_license_No',title:'行驶证号',width:100, align:'left', halign:'center'},
-                                        {field:'id_No',title:'身份证号',width:100, align:'left', halign:'center'},
+                                        {field:'driving_license_No',title:'行驶证号',width:110, align:'left', halign:'center'},
+                                        {field:'id_No',title:'身份证号',width:110, align:'left', halign:'center'},
                                         {field:'phone',title:'电话',width:90, align:'left', halign:'center'},
-                                        {field:'address',title:'地址',width:120, align:'left', halign:'center'}
-                                    ]]"  style="width:150px;"></select>
+                                        {field:'address',title:'地址',width:200, align:'left', halign:'center'}
+                                    ]]" style="width:150px;"></select>
                         </td>
                         <td>签收人：<input class="f1 easyui-textbox" disabled></input></td>
                     </table>
@@ -653,48 +709,71 @@ onClickCell: onClickCell,style:{marginTop:20}">
 
     <!--司机管理-->
     <div id="driver_manage_panel" class="easyui-panel opt_panel"
-         data-options="fit:true, closed:true, border:true, onOpen:onOpenDriverManagePanel">
-        <table id="driver_grid"></table>
-        <div id="dlg_for_driver" class="easyui-dialog" style="width:500px"
-             data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons_for_driver'">
-            <form id="fm_for_driver" method="post" novalidate style="margin:0;padding:20px 50px">
-                <div style="margin-bottom:10px">
-                    <input name="name" id="driver_name" class="easyui-textbox" required="true"
-                           label="司机名称:" labelAlign="right" style="width:100%">
-                    <input name="_id" id="driver_id" type="hidden"/>
-                </div>
-                <div style="margin-bottom:10px">
-                    <input name="car_No" id="driver_car_No" class="easyui-textbox" required="true"
-                           label="车牌号码:" labelAlign="right"
-                           style="width:100%">
-                </div>
+         data-options="fit:true, closed:true, border:false, onOpen:onOpenDriverManagePanel">
+        <div class="easyui-layout" data-options="fit:true, border:false">
+            <div data-options="region:'west'" style="width:180px; padding:4px;">
+                <ul id="car_type_tree" class="easyui-tree" data-options="lines:true,onSelect:loadCarTypes">
+                </ul>
+            </div>
+            <div data-options="region:'center'" style="padding:0px;">
+                <table id="driver_grid"></table>
+                <div id="dlg_for_driver" class="easyui-dialog" style="width:500px"
+                     data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons_for_driver'">
+                    <form id="fm_for_driver" method="post" novalidate style="margin:0;padding:20px 50px">
+                        <div style="margin-bottom:10px">
+                            <input name="name" id="driver_name" class="easyui-textbox" required="true"
+                                   label="司机名称:" labelAlign="right" style="width:100%">
+                            <input name="_id" id="driver_id" type="hidden"/>
+                        </div>
 
-                <div style="margin-bottom:10px">
-                    <input name="id_No" id="driver_id_No" class="easyui-textbox" required="true"
-                           label="身份证号:" labelAlign="right"
-                           style="width:100%">
+                        <div style="margin-bottom:10px">
+                            <select name="car_type" id="driver_car_type" class="easyui-combobox" required="true"
+                                    editable="false"
+                                    label="车型载重:" labelAlign="right"
+                                    style="width:100%">
+                                <option value="9.6米平板车-18吨">9.6米平板车-18吨</option>
+                                <option value="9.6米高栏车-18吨">9.6米高栏车-18吨</option>
+                                <option value="8.5米平板车-10吨">8.5米平板车-10吨</option>
+                                <option value="8.5米高栏车-10吨">8.5米高栏车-10吨</option>
+                                <option value="6.8米平板车-5吨">6.8米平板车-5吨</option>
+                                <option value="6.8米高栏车-5吨">6.8米高栏车-5吨</option>
+                            </select>
+                        </div>
+
+                        <div style="margin-bottom:10px">
+                            <input name="car_No" id="driver_car_No" class="easyui-textbox" required="true"
+                                   label="车牌号码:" labelAlign="right"
+                                   style="width:100%">
+                        </div>
+
+                        <div style="margin-bottom:10px">
+                            <input name="id_No" id="driver_id_No" class="easyui-textbox" required="true"
+                                   label="身份证号:" labelAlign="right"
+                                   style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+                            <input name="driving_license_No" id="driver_driving_license_No" class="easyui-textbox"
+                                   required="true"
+                                   label="行驶证号:" labelAlign="right"
+                                   style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+                            <input id="driver_phone" class="easyui-textbox" name="phone" labelAlign="right"
+                                   label="联系电话:" style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+                            <input id="driver_address" class="easyui-textbox" name="address" labelAlign="right"
+                                   label="联系地址:" style="width:100%">
+                        </div>
+                    </form>
                 </div>
-                <div style="margin-bottom:10px">
-                    <input name="driving_license_No" id="driver_driving_license_No" class="easyui-textbox"
-                           required="true"
-                           label="行驶证号:" labelAlign="right"
-                           style="width:100%">
+                <div id="dlg-buttons_for_driver">
+                    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveDriver()"
+                       style="width:90px">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+                       onclick="javascript:$('#dlg_for_driver').dialog('close')" style="width:90px">取消</a>
                 </div>
-                <div style="margin-bottom:10px">
-                    <input id="driver_phone" class="easyui-textbox" name="phone" labelAlign="right"
-                           label="联系电话:" style="width:100%">
-                </div>
-                <div style="margin-bottom:10px">
-                    <input id="driver_address" class="easyui-textbox" name="address" labelAlign="right"
-                           label="联系地址:" style="width:100%">
-                </div>
-            </form>
-        </div>
-        <div id="dlg-buttons_for_driver">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveDriver()"
-               style="width:90px">确定</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
-               onclick="javascript:$('#dlg_for_driver').dialog('close')" style="width:90px">取消</a>
+            </div>
         </div>
     </div>
 
@@ -961,37 +1040,52 @@ onClickCell: onClickCell,style:{marginTop:20}">
        onclick="javascript:$('#dlg_for_product_choose').dialog('close')" style="width:90px">取消</a>
 </div>
 
+<div id="win" class="easyui-window" title="" style="background-color: #95B8E7"
+     data-options="modal:true, closed:true, height:50, width:200, border:false,  style:{textAlign:'center'}">
+    <span style="height:50px;  line-height:50px; margin:0 auto; " id="win_in"></span>
+</div>
+
 <script>
 
-    $(function(){
+    $(function () {
         $('#new_order_sale_date').datebox().datebox('calendar').calendar({
-            validator: function(date){
+            validator: function (date) {
                 var now = new Date();
-                var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate()-1);
-                var d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate()+6);
-                return d1<=date && date<=d2;
+                var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+                var d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 6);
+                return d1 <= date && date <= d2;
             }
         });
     });
-
-
 
 
     const {ipcRenderer} = require('electron')
     let win = require('electron').remote.getCurrentWindow();
 
     win.on('close', () => {
-       ipcRenderer.sendSync('app-quit')
+        ipcRenderer.sendSync('app-quit')
     });
 
-    function logout(){
+    function logout() {
         ipcRenderer.sendSync('logout')
     }
 
     const {BrowserWindow} = require('electron').remote
+
     function printit() {
         let parent = require('electron').remote.getCurrentWindow()
-        let win_print = new BrowserWindow({width: 800, height: 600, modal:true, show:false, parent:parent, autoHideMenuBar: true})
+        let win_print = new BrowserWindow({
+            width: 800,
+            height: 550,
+            modal: true,
+            show: false,
+            maximizable: false,
+            minimizable: false,
+            resizable: false,
+            parent: parent,
+            title: '打印',
+            autoHideMenuBar: true
+        })
         win_print.on('closed', () => {
             win_print = null
         })

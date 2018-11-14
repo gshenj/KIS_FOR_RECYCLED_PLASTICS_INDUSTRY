@@ -45,9 +45,13 @@ function createMainWindow(){
 
 function showLoginWindow() {
     loginWindow = new BrowserWindow({
-        width: 450,
-        height: 300,
+        width: 410,
+        height: 280,
+        maximizable:false,
+        minimizable:false,
+        resizable:false,
         show: false,
+        title:'系统登录',
         autoHideMenuBar: true
     })
     loginWindow.loadURL('file://' + __dirname + '/login.html');
@@ -55,7 +59,7 @@ function showLoginWindow() {
         loginWindow = null;
     });
 
-    loginWindow.show();
+    //loginWindow.show();
 }
 
 // 登录成功

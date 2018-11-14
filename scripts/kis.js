@@ -91,11 +91,10 @@ function onOpenDriverManagePanel() {
 function loadDriverGrid(params){
     if (DRIVER_GRID == null) {
         DRIVER_GRID = $('#driver_grid').datagrid({
-            //fit: true,
-            //border:false,
-            style:{marginTop:20, marginLeft:'auto', marginRight:'auto'},
+            fit: true,
+            border:false,
+            //style:{marginTop:0, marginLeft:'auto', marginRight:'auto'},
             height:'100%',
-            border:true,
             singleSelect: true,
             collapsible: false,
             data: [],
@@ -120,11 +119,12 @@ function loadDriverGrid(params){
             }],
             columns:[[
                 {title: "姓名", field: 'name',width:70, sortable: true,sortOrder: 'asc'},
+                {title: "车型载重", field: 'car_type',width:120, sortable: true,sortOrder: 'asc'},
                 {title: "车牌号码", field: 'car_No', width:80, sortable:true, sortOrder: 'asc'},
                 {title: "身份证号", field: 'id_No',width:140},
                 {title: "行驶证号", field: 'driving_license_No',width:140},
                 {title: "联系电话", field: 'phone', width:100},
-                {title: "家庭住址", field: "address",width:230}
+                {title: "家庭住址", field: "address",width:250}
             ]]
         })
     }
@@ -158,12 +158,13 @@ function editDriver(){
 function saveDriver() {
 
     let name = $('#driver_name').textbox('getValue')
+    let car_type = $('#driver_car_type').textbox('getValue')
     let car_No = $('#driver_car_No').textbox('getValue')
     let id_No = $('#driver_id_No').textbox('getValue')
     let driving_license_No = $('#driver_driving_license_No').textbox('getValue')
     let phone = $('#driver_phone').textbox('getValue')
     let address = $('#driver_address').textbox('getValue')
-    let driver = {name: name, car_No: car_No ,
+    let driver = {name: name, car_type:car_type, car_No: car_No ,
         id_No:id_No, driving_license_No: driving_license_No, phone:phone, address:address}
 
     if (opt_type_for_driver == 'new') {
@@ -199,5 +200,9 @@ function destroyDriver(){
             }
         });
     }
+}
+
+function loadCarTypes(){
+
 }
 

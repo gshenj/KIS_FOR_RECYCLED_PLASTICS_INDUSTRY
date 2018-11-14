@@ -2,27 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <script>if (typeof module === 'object') {
+        window.module = module;
+        module = undefined;
+    }
+
+
+    let DOCUMENT_TITLE = document.title;
+    </script>
+    <!-- normal script imports etc  -->
+    <script src="./scripts/jquery-3.3.1.js"></script>
+    <!-- Insert this line after script imports -->
+    <script>
+        if (window.module)
+            module = window.module;
+
+    </script>
+    <link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/icon.css">
+    <script type="text/javascript" src="./scripts/jquery-easyui/jquery.easyui.min.js"></script>
+
     <style type="text/css">
+        body {
+            background-color: #999;
+            /*padding:0;
+            margin:0;*/
+        }
+
         .container {
-            margin: 16pt auto;
-            padding: 10pt 8pt;
-            border: 1px dashed #aaa;
+            margin: 0pt auto;
+            padding: 6pt 8pt;
+            border: 1px dashed #0081C2;
+            background-color: #fff;
             font-size: 11pt;
         }
+
         .container label {
             font-weight: bold;
         }
+
         .company {
             font-size: 18pt;
             color: #000;
             font-weight: bold;
         }
+
         .bill_table {
             width: 100%;
             margin-top: 10pt;
             border: none;
         }
+
         .bill_table td {
             text-align: left;
             padding: 0pt 0pt;
@@ -30,23 +60,26 @@
             height: 18pt;
             vertical-align: middle;
         }
+
         .bill_product_table {
             border-collapse: collapse;
             border: 1px dashed #aaa;
         }
+
         .bill_product_table th {
             vertical-align: middle;
             text-align: center;
             font-weight: bold;
-            border: 1px dashed  #aaa;
+            border: 1px dashed #aaa;
             height: 24pt;
         }
+
         .bill_product_table td {
             text-align: left;
             padding: 0pt 6pt;
             height: 18pt;
             vertical-align: middle;
-            border: 1px dashed  #aaa;
+            border: 1px dashed #aaa;
             /*background-color:#eee;*/
         }
     </style>
@@ -55,6 +88,7 @@
         .noprint {
             visibility: hidden
         }
+
         .container {
             border: none;
             margin: 0 auto;
@@ -64,6 +98,8 @@
 </head>
 
 <body>
+
+
 <div class="container">
     <div style="text-align:center;">
         <div class="company">
@@ -178,10 +214,10 @@
             <td colspan="7" style="border:none;">以下空白</td>
         </tr>
         <tr>
-            <td colspan="7" style="border:none;"> </td>
+            <td colspan="7" style="border:none;"></td>
         </tr>
         <tr>
-            <td colspan="7" style="border:none;"> </td>
+            <td colspan="7" style="border:none;"></td>
         </tr>
         <tr id="total_sum_tr">
             <td colspan="5" style="text-align: right; font-weight: bold; border-right:none;">
@@ -192,21 +228,28 @@
     </table>
     <table class="print_sign_table" style="width:100%;margin:20px 0 10px;">
         <tr>
-            <td style="width:33.3%; text-align: center;padding-right:15%;">制单：</td>
-            <td style="width:33.3%; text-align: center;padding-right:15%;">司机：<span id="create_user"></span>
+            <td style="width:33.3%; text-align: center;padding-right:15%;">制单人：</td>
+            <td style="width:33.3%; text-align: center;padding-right:15%;">送货司机：<span id="create_user"></span>
             </td>
-            <td style="width:33.3%; text-align: center; padding-right:15%;">签收：</td>
+            <td style="width:33.3%; text-align: center; padding-right:15%;">签收人：</td>
         </tr>
     </table>
 </div>
 
-<div class="noprint" style="text-align:center;">
-
-    <button class="btn btn-default btn-primary" type="submit" onclick="window.close()">关 闭</button>
-
-    <button  class="btn btn-default btn-primary noprint btn-print" style="margin-left:150px;">保存&打印</button>
-
+<div style="padding:0px 0px; border:0px solid red; margin:20px auto 10px; text-align:center;">
+    <div id="order_input_toolbar"
+         style="  margin:0px auto 1px;  padding:0px 0px; border:0px solid #bbb; ">
+        <a class="easyui-linkbutton" style="" onclick="doPrint()"
+           data-options="iconCls:'icon-print',iconAlign:'left'">打印</a>
+        <a class="easyui-linkbutton" style="margin-left:100px;" onclick="resetOrder()"
+           data-options="iconCls:'icon-undo',iconAlign:'left'">关闭</a>
+    </div>
 </div>
+
+<!--<div class="noprint" style="text-align:center;">
+    <button class="btn btn-default btn-primary" type="submit" onclick="window.close()">关 闭</button>
+    <button  class="btn btn-default btn-primary noprint btn-print" style="margin-left:150px;">保存&打印</button>
+</div>-->
 
 </body>
 </html>
