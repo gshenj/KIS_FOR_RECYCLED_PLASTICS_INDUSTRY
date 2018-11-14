@@ -390,7 +390,7 @@
                     order_maker: maker,
                     order_driver: driver,
                     cancelled: cancelled,
-                    products:products
+                    products: products
                     //create_user:  current_user
                 }
 
@@ -398,21 +398,17 @@
                 $('#win_in').html('正在保存出库单...')
                 $('#win').window('open')
 
-setTimeout(function(){
-    saveOrder(order_data, function(doc){
-        $('#win_in').html('开始打印...')
+                setTimeout(function () {
+                    saveOrder(order_data, function (doc) {
+                        $('#win_in').html('开始打印...')
 
-
-        setTimeout(function() {
-
-            printit()
-            $('#win').window('close')
-        }, 1000)
-    })
-},1000)
-
-
-
+                        setTimeout(function () {
+                            printit()
+                            //$('#win').window('close')
+                            //关闭打印页面，window消失
+                        }, 1000)
+                    })
+                }, 1000)
             }
 
 
