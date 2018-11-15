@@ -99,10 +99,25 @@
     </style>
 
     <script>
+
         $(document).ready(function(){
-            let r = require('electron').remote.getGlobal('globalObj').order_id
-            //console.log(JSON.stringify(r))
-            $('#order_number').html(r)
+            let globalObj = require('electron').remote.getGlobal('globalObj')
+            let order = globalObj.order
+            let config = globalObj.config
+
+            $('#order_number').html(order.order_num)
+            $('#customer_name').html(order.customer_name)
+            $('#delivery_address').html(order.delivery_address)
+            $('#contact_number').html(order.contact_number)
+            $('#customer_principal').html(order.customer_principal)
+            $('#order_date').html(order.order_date)
+            $('#order_maker').html(order.order_maker)
+            $('#order_driver').html(order.order_driver)
+
+            $('#company_name').html(config.company_name)
+            $('#company_address').html(config.company_address)
+            $('#company_phone').html(config.company_phone)
+            $('#company_fax').html(config.company_fax)
         })
     </script>
 </head>
@@ -113,19 +128,19 @@
 <div class="container">
     <div style="text-align:center;">
         <div class="company">
-            <div>苏州元斌塑胶科技有限公司</div>
+            <div id="company_name"></div>
             <div style="font-size:16pt; word-spacing: 2pt;">出 库 单</div>
         </div>
 
         <table style="width:100%; text-align:left; border-bottom:1px solid black;">
             <tr>
                 <td colspan="3" style="width:40%">
-                    地址：<span>苏州市相城区北桥街道石星路</span>&nbsp;
+                    地址：<span id="company_address"></span>&nbsp;
                 </td>
             </tr>
             <tr>
-                <td style="width:35%">电话：0512-65410295</td>
-                <td style="width:35%">传真：0512-65410295</td>
+                <td style="width:35%">电话：<span id="company_phone"></span></td>
+                <td style="width:35%">传真：<span id="company_fax"></span></td>
                 <td style=" width:30%">出货单编号： <span id="order_number"></span></td>
             </tr>
         </table>
@@ -140,22 +155,22 @@
             <tr>
                 <td colspan="7">
                     送货地址：
-                    <span id="customer_address"></span>
+                    <span id="delivery_address"></span>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
                     客户电话：
-                    <span id="customer_phone">0512-9987334</span>
+                    <span id="contact_number"></span>
                 </td>
                 <td colspan="3">
                     联系人：
-                    <span id="customer_principal">陈玉坤</span>
+                    <span id="customer_principal"></span>
                 </td>
 
                 <td id="sale_date_div" colspan="2" style="text-align:right; padding-right:11%;">
                     送货日期：
-                    <span id="sale_date">2015-11-27</span>
+                    <span id="sale_date"></span>
                 </td>
             </tr>
         </table>
@@ -238,8 +253,8 @@
     </table>
     <table class="print_sign_table" style="width:100%;margin:20px 0 10px;">
         <tr>
-            <td style="width:33.3%; text-align: center;padding-right:15%;">制单人：</td>
-            <td style="width:33.3%; text-align: center;padding-right:15%;">送货司机：<span id="create_user"></span>
+            <td style="width:33.3%; text-align: center;padding-right:15%;">制单人：<span id="order_maker"></span></td>
+            <td style="width:33.3%; text-align: center;padding-right:15%;">送货司机：<span id="order_driver"></span>
             </td>
             <td style="width:33.3%; text-align: center; padding-right:15%;">签收人：</td>
         </tr>

@@ -11,7 +11,8 @@ var loginWindow = null;
 
 // 在主进程里
 global.globalObj = {
-    order_id: ''
+    order: {},
+    config:{}
 };
 
 // Quit when all windows are closed.
@@ -52,7 +53,7 @@ function showLoginWindow() {
     loginWindow = new BrowserWindow({
         width: 410,
         height: 280,
-        maximizable:false,
+        //maximizable:false,
         minimizable:false,
         resizable:false,
         show: false,

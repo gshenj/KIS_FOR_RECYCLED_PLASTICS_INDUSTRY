@@ -1,5 +1,7 @@
 function saveOrder(order, callback) {
 
+    nextSeq("order_seq", function(orderNum){
+        order.order_num = orderNum
         mongoose.OrderModel.create(order, function(err, doc) {
             if (err) handleError(err)
             if (doc) {
@@ -8,6 +10,5 @@ function saveOrder(order, callback) {
                 callback(doc)
             }
         })
-
-
+    })
 }

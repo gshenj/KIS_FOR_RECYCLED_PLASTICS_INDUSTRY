@@ -38,6 +38,7 @@ function handleError(err) {
 }
 
 
+
 function load_company(){
     mongoose.ConfigModel.findOne({},function(err, doc){
         if (doc) {

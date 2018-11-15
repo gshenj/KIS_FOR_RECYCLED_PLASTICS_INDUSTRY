@@ -19,7 +19,7 @@ const UNITS = [{units:"千克"}, {units:"公斤"}, {units:"包"}]
 let sequenceSchema = new Schema({seq_name:String, value:Number})
 
 let configSchema = new Schema({company_name:String, company_address:String,
-    company_phone:String, company_logo:Buffer, db_version:String})
+    company_phone:String, company_fax:String, company_logo:Buffer, db_version:String})
 
 let roleSchema = new Schema({role:String})
 

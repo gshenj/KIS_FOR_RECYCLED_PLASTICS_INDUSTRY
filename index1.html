@@ -395,9 +395,9 @@
                     saveOrder(order_data, function (doc) {
                         $('#win_in').html('开始打印...')
 
-                        require('electron').remote.getGlobal('globalObj').order_id = mongoose.Types.ObjectId(doc._id).toString()
+                        require('electron').remote.getGlobal('globalObj').order = doc; //mongoose.Types.ObjectId(doc._id).toString()
 
-                        console.log(require('electron').remote.getGlobal('globalObj').order_id)
+                        //console.log(require('electron').remote.getGlobal('globalObj').order_id)
                         setTimeout(function () {
                             printit()
                             //$('#win').window('close')
@@ -825,6 +825,12 @@ onClickCell: onClickCell,style:{marginTop:20}">
                     <input id="company_phone"
                            class="easyui-textbox"
                            label="公司电话：" labelAlign="right" style="width:100%">
+                </div>
+
+                <div style="margin-top:20px">
+                    <input id="company_fax"
+                           class="easyui-textbox"
+                           label="公司传真：" labelAlign="right" style="width:100%">
                 </div>
                 <div style="margin-top:20px">
                     <input id="company_address"
