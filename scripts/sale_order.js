@@ -4,6 +4,7 @@ function saveOrder(order, callback) {
             if (err) handleError(err)
             if (doc) {
                 console.log("保存订单成功！")
+                console.log(JSON.stringify(doc))
                 callback(doc)
             }
         })

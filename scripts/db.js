@@ -16,6 +16,8 @@ const REGION = {region:"地区", provinces: [
 
 const UNITS = [{units:"千克"}, {units:"公斤"}, {units:"包"}]
 
+let sequenceSchema = new Schema({seq_name:String, value:Number})
+
 let configSchema = new Schema({company_name:String, company_address:String,
     company_phone:String, company_logo:Buffer, db_version:String})
 
@@ -74,6 +76,7 @@ var orderSchema = new Schema(order);
 /**DB utils **/
 mongoose.connect('mongodb://localhost:27017',{dbName:'kis', useNewUrlParser:true});
 
+SequenceModel = mongoose.model('sequence', sequenceSchema, 'sequences')
 ConfigModel = mongoose.model('config', configSchema, 'configs')
 RoleModel = mongoose.model('role', roleSchema, 'roles');
 RegionModel = mongoose.model('region', regionSchema, 'regions');
@@ -117,6 +120,7 @@ module.exports = mongoose;
 module.exports.loadSysRoles = loadSysRoles
 module.exports.getSysRoleTreeData = getSysRoleTreeData
 module.exports.ROLE_SELECT_DATA = ROLE_SELECT_DATA;
+module.exports.SequenceModel = SequenceModel;
 module.exports.ConfigModel = ConfigModel;
 module.exports.RegionModel = RegionModel;
 module.exports.ClassificationModel = ClassificationModel;

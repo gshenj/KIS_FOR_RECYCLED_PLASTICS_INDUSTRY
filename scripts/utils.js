@@ -82,3 +82,24 @@ function myDateFormatter(date){
     var d = date.getDate();
     return  y+'-'+(m<10?('0'+m):m)+'-'+(d<10?('0'+d):d)
 }
+
+function getCurrentSeq(seq_name, callback) {
+    mongoose.SequenceModel.findOne({"seq_name":seq_name}, function(err, doc){
+        if (doc) {
+            callback(doc.value)
+        } else {
+            mongoose.SequenceModel.create({'seq_name':seq_name, value:100000}, function(err, doc) {
+                callback(doc.value)
+            })
+        }
+    })
+}
+
+function nextSeq(seq_name, callback) {
+    mongoose.SequenceModel.findOneAndUpdate({"seq_name":seq_name},{$inc:{value:1}}, function(err, doc){
+        if (doc) {
+            callback(doc.value)
+        }
+    })
+}
+

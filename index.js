@@ -9,6 +9,11 @@ var {app, BrowserWindow, ipcMain} = require('electron');  // Module to control a
 var mainWindow = null;
 var loginWindow = null;
 
+// 在主进程里
+global.globalObj = {
+    order_id: ''
+};
+
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
     // On OS X it is common for applications and their menu bar
