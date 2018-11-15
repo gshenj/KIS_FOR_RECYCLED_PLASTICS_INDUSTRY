@@ -170,20 +170,15 @@
                 '                <td colspan="2" style="border-left:none; font-weight:bold;"><span id="product_total_sum">'+ order.products_sum+'</span></td>\n' +
                 '            </tr>')
 
-
-            console.log(JSON.stringify(order))
-
+           // console.log(JSON.stringify(order))
         })
 
 
+        const {ipcRenderer} = require('electron')
 
         function print_order(){
-            let contents = require('electron').remote.getCurrentWebContents();
-            let printers = contents.getPrinters()
-            console.log(JSON.stringify(printers))
-
-
-            contents.print()
+            window.print()
+            //ipcRenderer.send('print')
         }
     </script>
 </head>

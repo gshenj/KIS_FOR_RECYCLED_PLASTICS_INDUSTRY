@@ -1086,18 +1086,19 @@ onClickCell: onClickCell,style:{marginTop:20}">
            $('#win').window('close')
             $.messager.confirm('', '是否继续填写出库单?', function(r){
                 if (r){
-                    //alert('confirmed: '+r);
-                    //var opts = $('#new_order_customer_name').textbox('options');
-                    //$(opts.icons[0]).onclick()//opts.icons || [];  fixed
                     resetOrder();
                 } else {
                     $('#order_list_menu').click()
                 }
             });
         })
+
         win_print.loadURL('file://' + __dirname + '/print_template.html')
         win_print.show()
+
     }
+
+
 </script>
 </body>
 </html>

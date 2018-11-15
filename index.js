@@ -117,6 +117,37 @@ ipcMain.on('app-quit', (event, arg) => {
 })
 
 
+/*
+
+let winprintp = null;
+ipcMain.on("print-preview", (event, arg) => {
+    winprintp = new BrowserWindow({width: 800,
+        height: 550,
+        modal: true,
+        show: false,
+        maximizable: false,
+        minimizable: false,
+        resizable: false,
+        parent: mainWindow,
+        title: '打印',
+        autoHideMenuBar: true});
+    winprintp.on('close', function(){
+        winprintp = null;
+    })
+    winprintp.loadURL('file://' + __dirname + '/print_template.html');
+    winprintp.webContents.on('did-finish-load', () => {
+        winprintp.show()
+    });
+
+});
+
+ipcMain.on("print", (event, arg) => {
+    winprintp.webContents.print();
+})
+
+*/
+
+
 // 遮罩层通过ipc来控制
 // In main process.
 //var ipc = require('ipc');
