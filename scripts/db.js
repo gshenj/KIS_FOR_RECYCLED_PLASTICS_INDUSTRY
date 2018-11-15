@@ -49,7 +49,7 @@ var customer ={
 
 var customerSchema = new Schema(customer);
 
-var orderProductSchema = Object.assign({},product, {num:Number, sum:Number});
+var orderProductSchema = new Schema({product_name:String, product_model:String, product_price:String, product_units:String, product_memo:String, product_num:Number, product_sum:Number}, {_id:false});
 
 var order = {
     cancelled:Boolean,

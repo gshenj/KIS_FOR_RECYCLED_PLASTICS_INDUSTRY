@@ -394,10 +394,7 @@
                 setTimeout(function () {
                     saveOrder(order_data, function (doc) {
                         $('#win_in').html('开始打印...')
-
-                        require('electron').remote.getGlobal('globalObj').order = doc; //mongoose.Types.ObjectId(doc._id).toString()
-
-                        //console.log(require('electron').remote.getGlobal('globalObj').order_id)
+                        localStorage.setItem('order', JSON.stringify(doc));
                         setTimeout(function () {
                             printit()
                             //$('#win').window('close')

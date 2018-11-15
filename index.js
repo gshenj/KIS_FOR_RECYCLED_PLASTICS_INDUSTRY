@@ -10,10 +10,12 @@ var mainWindow = null;
 var loginWindow = null;
 
 // 在主进程里
+
 global.globalObj = {
     order: {},
     config:{}
 };
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -53,9 +55,9 @@ function showLoginWindow() {
     loginWindow = new BrowserWindow({
         width: 410,
         height: 280,
-        //maximizable:false,
-        minimizable:false,
+        maximizable:false,
         resizable:false,
+        minimizable:false,
         show: false,
         title:'系统登录',
         autoHideMenuBar: true
@@ -68,10 +70,25 @@ function showLoginWindow() {
     //loginWindow.show();
 }
 
+ipcMain.on('set-config', (event, arg) => {
+    global["config"] = arg
+    console.log("set config. "+JSON.stringify(arg))
+    event.returnValue = null;
+})
+
+ipcMain.on('set-order', (event, arg) => {
+    global["order"] = arg
+    console.log("set order."+JSON.stringify(arg))
+    event.returnValue = null;
+})
+
+
 // 登录成功
 ipcMain.on('login-success', (event, arg) => {
+    console.log("on login-success.")
     mainWindow.show()
     loginWindow.close()
+    event.returnValue = null;
 });
 
 ipcMain.on('logout', (event, arg) => {
@@ -79,6 +96,7 @@ ipcMain.on('logout', (event, arg) => {
     mainWindow.loadURL('file://' + __dirname + '/index1.html')
     mainWindow.setSize(1000, 750)
     showLoginWindow()
+    event.returnValue = null;
 })
 
 ipcMain.on('app-quit', (event, arg) => {
@@ -95,6 +113,7 @@ ipcMain.on('app-quit', (event, arg) => {
         app.quit();
     }
 
+    event.returnValue = null;
 })
 
 

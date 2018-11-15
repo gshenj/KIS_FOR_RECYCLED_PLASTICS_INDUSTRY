@@ -80,17 +80,12 @@
     let login_sccess = false;
     function login(){
         login_sccess = true;
-
-
         loadConfig(function(config){
-            console.log(config)
-            require('electron').remote.getGlobal('globalObj').config = config;   //company info
-
+            // localStorage只支持String值
+            localStorage.setItem('config', JSON.stringify(config));
             //
-            console.log(ipcRenderer.sendSync('login-success', 'ping')) // prints "pong"
+            ipcRenderer.sendSync('login-success', 'ping') // prints "pong"
         })
-
-
     }
 
     require('electron').remote.getCurrentWindow().on('close', () => {
@@ -98,8 +93,6 @@
             ipcRenderer.sendSync('app-quit')
         }
     })
-
-
 
     function loadConfig(callback){
         mongoose.ConfigModel.findOne({},function(err, doc){
