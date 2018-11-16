@@ -73,6 +73,10 @@
             filter: alpha(opacity=100);
             background: url('scripts/jquery-easyui/themes/icons/pencil.png') no-repeat center center;
         }
+
+        .no_border {
+            border: 1px solid #000
+        }
     </style>
 
     <script>
@@ -196,7 +200,7 @@
      style="margin:0;padding:0px;background:#eee;overflow-y: hidden;overflow-x: hidden">
 
     <!--新开送货单-->
-    <div id="order_input_panel" class="easyui-panel opt_panel"　
+    <div id="order_input_panel" class="easyui-panel opt_panel" 　
          style="width:100%; height:100%; padding:0px 0px; background-color:#999; text-align:center; "
          data-options="fit:true,closed:true, border:false, onOpen:resetOrder">
 
@@ -226,10 +230,9 @@
                 $('#new_order_form').form('clear')
 
                 //
-                getCurrentSeq("order_seq", function(value){
-                    $('#new_order_sale_No').html(value+1)
+                getCurrentSeq("order_seq", function (value) {
+                    $('#new_order_sale_No').html(value + 1)
                 })
-
 
 
                 //
@@ -344,6 +347,8 @@
                         }, 0);
                     }
                 }
+
+                event.stopPropagation();    //  阻止事件冒泡,防止响应表格panel的click事件
             }
 
             function accept() {
@@ -405,6 +410,54 @@
             }
 
 
+            function onLoadSuccess() {
+                let p = $('#order_products_grid').datagrid('getPanel')//.panel('panel');
+                //$(p.panel('body')).addCss('no_border')
+                // p.panel('options').bodyCls = 'no_border'
+                let b = $('#order_products_grid').datagrid('getPanel').panel('body')
+                $(b).bind('click', function () {
+                    accept()
+                })
+            }
+
+
+            function onChangePrice(newValue, oldValue) {
+                var ed = $('#order_products_grid').datagrid('getEditor', {index: editIndex, field: 'product_num'});
+                var ed1 = $('#order_products_grid').datagrid('getEditor', {index: editIndex, field: 'product_sum'});
+
+                if (ed) {
+                    let sumValue = ''
+                    let num = $(ed.target).textbox('getValue')
+                    if (isNumber(newValue) && isNumber(num)) {
+                        sumValue = Number(num) * Number(newValue)
+                        $(ed1.target).numberbox('setValue', sumValue)
+                        return true;
+                    }
+                }
+                if (ed1)
+                    $(ed1.target).numberbox('clear')
+
+            }
+
+            function onChangeNum(newValue, oldValue) {
+                var ed = $('#order_products_grid').datagrid('getEditor', {index: editIndex, field: 'product_price'});
+                var ed1 = $('#order_products_grid').datagrid('getEditor', {index: editIndex, field: 'product_sum'});
+
+                if (ed) {
+                    let sumValue = ''
+                    let price = $(ed.target).numberbox('getValue')
+                    if (isNumber(newValue) && isNumber(price)) {
+                        sumValue = Number(price) * Number(newValue)
+                        $(ed1.target).numberbox('setValue', sumValue)
+                        return true;
+                    }
+                }
+                if (ed1)
+                    $(ed1.target).numberbox('clear')
+
+            }
+
+
         </script>
         <div style="padding:20px 20px; border:0px dashed gray; width:810px; background-color:#fff; margin:0px auto ; clear:both;">
             <div style="width:100%">
@@ -436,12 +489,15 @@
                         </tr>
                     </table>
 
-                    <table id="order_products_grid" class="easyui-datagrid" style="maring-top:20px;"
-                           data-options="height:202,data:[],singleSelect:true,
-onClickCell: onClickCell,style:{marginTop:20}">
-                        <thead>
-                        <tr>
-                            <th data-options="field:'product_name', align:'left', halign:'center',width:248,editor:{
+                    <div style="width:100%; border:1px solid #ddd; margin:10px 0 0; padding:0 ">
+                        <!--data:{total:0, rows:[], footer:[{product_sum:'', product_price: '总金额:'}]},showFooter: true-->
+                        <table id="order_products_grid" class="easyui-datagrid"
+                               data-options="height:202, data:[], border:false,
+                           singleSelect:true, onLoadSuccess:onLoadSuccess,
+onClickCell: onClickCell">
+                            <thead>
+                            <tr>
+                                <th data-options="field:'product_name', align:'left', halign:'center',width:248,editor:{
                             type:'textbox',
                             options:{
                                 prompt: '',
@@ -455,30 +511,34 @@ onClickCell: onClickCell,style:{marginTop:20}">
                                 }]
                             }
                         }">品名规格
-                            </th>
-                            <th data-options="field:'product_units', align:'center', halign:'center', width:80, editor:'textbox'">
-                                单位
-                            </th>
-                            <th data-options="field:'product_num', align:'center', halign:'center', width:100, editor:'textbox'">
-                                数量
-                            </th>
-                            <th data-options="field:'product_price', align:'center', halign:'center', width:80, editor:{type:'numberbox',options:{precision:2}}">
-                                单价
-                            </th>
-                            <th data-options="field:'product_sum', align:'center', halign:'center', width:100, editor:{type:'numberbox',options:{precision:2}}">
-                                金额
-                            </th>
-                            <th data-options="field:'product_memo', align:'left', halign:'center', width:200, editor:'textbox'">
-                                备注
-                            </th>
-                        </tr>
-                        </thead>
-                        <tr>
-                            <td colspan="6" style="text-align: right;font-weight: bold;">合计金额：
-                                <span id="product_total_sum" style="margin-right: 20%;"></span>
-                            </td>
-                        </tr>
-                    </table>
+                                </th>
+                                <th data-options="field:'product_units', align:'center', halign:'center', width:80, editor:'textbox'">
+                                    单位
+                                </th>
+                                <th data-options="field:'product_num', align:'center', halign:'center', width:100, editor:{type:'textbox', options:{onChange:onChangeNum}}">
+                                    数量
+                                </th>
+                                <th data-options="field:'product_price', align:'center', halign:'center', width:80, editor:{type:'numberbox',options:{precision:2, onChange:onChangePrice}}">
+                                    单价
+                                </th>
+                                <th data-options="field:'product_sum', align:'center', halign:'center', width:100, editor:{type:'numberbox',options:{precision:2}}">
+                                    金额
+                                </th>
+                                <th data-options="field:'product_memo', align:'left', halign:'center', width:200, editor:'textbox'">
+                                    备注
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
+
+                    </div>
+                        <table style="border-collapse: collapse; width:100%; border:none;">
+                            <tr>
+                                <td style="text-align:right; width:508px; height:30px;  font-weight:bold;">合计金额：</td>
+                                <td style="text-align:left;font-weight:bold;"></td>
+                            </tr>
+                        </table>
+
 
                     <table class="bill_user_table">
                         <td>制单人：<input id="new_order_maker" class="f1 easyui-textbox"></input></td>
@@ -1083,9 +1143,9 @@ onClickCell: onClickCell,style:{marginTop:20}">
         })
         win_print.on('closed', () => {
             win_print = null
-           $('#win').window('close')
-            $.messager.confirm('', '是否继续填写出库单?', function(r){
-                if (r){
+            $('#win').window('close')
+            $.messager.confirm('', '是否继续填写出库单?', function (r) {
+                if (r) {
                     resetOrder();
                 } else {
                     $('#order_list_menu').click()

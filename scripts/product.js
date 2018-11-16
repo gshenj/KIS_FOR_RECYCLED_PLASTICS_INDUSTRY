@@ -56,6 +56,8 @@ function load_product_grid(customerId, title) {
             data: [],
             columns: product_grid_columns
         })
+
+
     }
 
     let params = {customer: customerId}
