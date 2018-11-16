@@ -33,6 +33,23 @@ function set_tool_button_status(click_src) {
 
 
 
+ORDER_GRID = null;
+function onOpenOrderListPanel(){
+    var now = new Date();
+    var begin = new Date(now.getFullYear(), 0, 1);
+    var end = new Date(now.getFullYear(), 11, 31);
+
+    $('#dd_begin').datebox('setValue', myDateFormatter(begin))
+    $('#dd_end').datebox('setValue', myDateFormatter(end))
+
+
+    doSearchOrders()
+
+
+
+}
+
+
 /**
  * 打开系统用户管理页面触发函数
  */

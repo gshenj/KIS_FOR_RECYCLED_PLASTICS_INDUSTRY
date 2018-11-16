@@ -75,7 +75,7 @@
         }
 
         .no_border {
-            border: 1px solid #000
+            border-color: #000
         }
     </style>
 
@@ -411,9 +411,9 @@
 
 
             function onLoadSuccess() {
-                let p = $('#order_products_grid').datagrid('getPanel')//.panel('panel');
-                //$(p.panel('body')).addCss('no_border')
+                //let p = $('#order_products_grid').datagrid('getPanel')//.panel('panel');
                 // p.panel('options').bodyCls = 'no_border'
+
                 let b = $('#order_products_grid').datagrid('getPanel').panel('body')
                 $(b).bind('click', function () {
                     accept()
@@ -460,8 +460,8 @@
 
         </script>
         <div style="padding:20px 20px; border:0px dashed gray; width:810px; background-color:#fff; margin:0px auto ; clear:both;">
-            <div style="width:100%">
-                <form id="new_order_form">
+            <div style="width:100%; padding:0">
+                <form id="new_order_form" style="padding:0">
                     <div style="text-align: center; padding:10px;"><span
                             style="font-size:26px;margin:0 auto;">苏州元斌塑胶科技有限公司 销售单</span></div>
                     <table class="bill_customer_table">
@@ -489,10 +489,9 @@
                         </tr>
                     </table>
 
-                    <div style="width:100%; border:1px solid #ddd; margin:10px 0 0; padding:0 ">
-                        <!--data:{total:0, rows:[], footer:[{product_sum:'', product_price: '总金额:'}]},showFooter: true-->
+                    <div style="width:808px; height:230px; border:1px solid #aaa; margin:10px 0 0; padding:0 ">
                         <table id="order_products_grid" class="easyui-datagrid"
-                               data-options="height:202, data:[], border:false,
+                               data-options="width:'100%', height:202, data:[], border:false,
                            singleSelect:true, onLoadSuccess:onLoadSuccess,
 onClickCell: onClickCell">
                             <thead>
@@ -531,14 +530,14 @@ onClickCell: onClickCell">
                             </thead>
                         </table>
 
-                    </div>
+
                         <table style="border-collapse: collapse; width:100%; border:none;">
                             <tr>
                                 <td style="text-align:right; width:508px; height:30px;  font-weight:bold;">合计金额：</td>
                                 <td style="text-align:left;font-weight:bold;"></td>
                             </tr>
                         </table>
-
+                    </div>
 
                     <table class="bill_user_table">
                         <td>制单人：<input id="new_order_maker" class="f1 easyui-textbox"></input></td>
@@ -570,21 +569,27 @@ onClickCell: onClickCell">
 
     <!--送货单列表-->
     <div id="orders_grid_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
-         data-options="fit:true, closed:true">
+         data-options="fit:true, closed:true, border:false, onOpen:onOpenOrderListPanel">
         <div class="easyui-layout" data-options="fit:true">
-            <div data-options="region:'west'" style="width:180px; padding:4px;">
-                <ul class="easyui-tree" data-options="lines:true">
-                    <li>
-                        <span>区域选择</span>
-                        <ul>
-                            <li><span><a href="#">管理员</a></span></li>
-                            <li><span><a href="#">操作员</a></span></li>
-                        </ul>
-                    </li>
-                </ul>
+            <div data-options="region:'west'" style="width:280px; padding:4px;">
+                <table style="width:100%; border-collapse: collapse">
+                    <tr><th COLSPAN="2"><h4>查询条件：</h4></th></tr>
+                    <!--<tr><td style="width:80px; padding:10px 0;">所属年份:</td><td style="width:200px;padding:10px 0;"><select id="order_search_year" class="easyui-combobox" style="width:100%"><option value="2018">2018</option></select> </td></tr>-->
+                    <tr><td style="padding:10px 0 5px 0;">起始日期:<td  style="width:200px;padding:10px 0 5px 0;"><input id="dd_begin" type="text" class="easyui-datebox" style="width:100%" /></td></tr>
+                    <tr><td style="padding:5px 0 10px 0;">结束日期:<td  style="width:200px;padding:5px 0 10px 0;"><input id="dd_end" type="text" style="width:100%" class="easyui-datebox" /></td></tr>
+                    <tr><td style="padding:10px 0;">客户名称:</td><td  style="width:200px;padding:10px 0;">
+                    <input id="customer_choose_for_order_list" class="easyui-textbox"
+                           data-options="prompt:'选择客户'" style="width:100%;height:32px;">
+                    </td></tr>
+
+                    <tr><td style="padding:10px 0;">单据状态:</td><td  style="width:200px;padding:10px 0;"><select id="order_state" class="easyui-combobox" style="width:100%;"></select> </td></tr>
+
+                    <tr><td style=""></td><td style="text-align: center; padding:15px 0;"> <a class="easyui-linkbutton"  style="width:100%;" data-options="iconCls:'icon-search',iconAlign:'left'" onclick="doSearchOrders()" >查询</a></td></tr>
+
+                </table>
             </div>
-            <div data-options="region:'center'" style="padding:4px;">
-                <table class="easyui-datagrid " style="width:100%"></table>
+            <div data-options="region:'center'" style="padding:0px;">
+                <table id="order_grid"  class="easyui-datagrid " style="width:100%"></table>
             </div>
         </div>
     </div>
@@ -1111,6 +1116,30 @@ onClickCell: onClickCell">
                 return d1 <= date && date <= d2;
             }
         });
+
+/*
+        $('#dd_begin').datebox().datebox('calendar').calendar({
+            validator: function(date){
+                //let year = $('#order_search_year').combobox('getValue');
+                console.log("year:"+year)
+                var begin = new Date(year, 0, 1);
+                var end = new Date(year, 11, 31)
+                return begin<=date && date<=end;
+            }
+        });
+
+        $('#dd_end').datebox().datebox('calendar').calendar({
+            validator: function(date){
+
+
+                //let year = $('#order_search_year').combobox('getValue');
+                var begin = new Date(year, 1, 1);
+                var end = new Date(year, 12, 31)
+
+                return begin<=date && date<=end;
+            }
+        });*/
+
     });
 
 
@@ -1131,7 +1160,7 @@ onClickCell: onClickCell">
         let parent = require('electron').remote.getCurrentWindow()
         let win_print = new BrowserWindow({
             width: 800,
-            height: 550,
+            height: 570,
             modal: true,
             show: false,
             maximizable: false,
