@@ -42,11 +42,7 @@ function onOpenOrderListPanel(){
     $('#dd_begin').datebox('setValue', myDateFormatter(begin))
     $('#dd_end').datebox('setValue', myDateFormatter(end))
 
-
-    doSearchOrders()
-
-
-
+    loadOrderGrid()
 }
 
 
@@ -95,6 +91,28 @@ function onOpenSysConfigPanel(){
         $('#company_phone').textbox('setValue', doc.company_phone)
         $('#company_address').textbox('setValue', doc.company_address)
     })
+}
+
+
+let timer
+// datagrid filter的触发过滤操作
+function onSearch(src, datagrid, doSearch) {
+    let e=arguments.callee.caller.arguments[0]||window.event
+    if (timer) {
+        clearTimeout(timer);
+    }
+    if (e.keyCode == 13) {
+        doSearch(src, datagrid)
+    } else if (400) {
+        timer = setTimeout(function () {
+            //doSearch(src, datagrid)
+            doSearch(src, datagrid)
+        }, 400);
+    }
+}
+
+function exportExcel(datagrid, filename) {
+    datagrid.datagrid('toExcel',filename);
 }
 
 

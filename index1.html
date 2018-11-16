@@ -43,11 +43,12 @@
     <script type="text/javascript" src="scripts/classification.js"></script>
     <script type="text/javascript" src="./scripts/utils.js"></script>
     <script type="text/javascript" src="./scripts/loading.js"></script>
-    <script type="text/javascript" src="./scripts/sale_order.js"></script>
+    <script type="text/javascript" src="scripts/order.js"></script>
 
 
     <script type="text/javascript" src="./scripts/jquery-easyui/plugins/datagrid-export/datagrid-export.js"></script>
     <script type="text/javascript" src="./scripts/jquery-easyui/plugins/datagrid-filter/datagrid-filter.js"></script>
+    <script type="text/javascript" src="./scripts/jquery-easyui/plugins/datagrid-detailview.js"></script>
     <script type="text/javascript" src="./scripts/jquery-easyui/plugins/datagrid-groupview.js"></script>
 
 
@@ -76,6 +77,35 @@
 
         .no_border {
             border-color: #000
+        }
+
+        input.search_input {
+            width: 200px;
+            height: 20px;
+            line-height: 20px;
+        }
+
+        .search_label {
+            height: 20px;
+            line-height: 20px;
+            vertical-align: middle;
+        }
+
+        .product_detail_table {
+            width: 600px;
+            border-collapse: collapse;
+            border: 1px dashed steelblue;
+            margin: 2px 0px 20px 80px;
+        }
+
+        .product_detail_table th {
+
+        }
+
+        .product_detail_table th, .product_detail_table td {
+            padding: 6px 4px;
+            font-weight: normal;
+            border: 1px dashed steelblue;
         }
     </style>
 
@@ -399,9 +429,8 @@
                 setTimeout(function () {
                     saveOrder(order_data, function (doc) {
                         $('#win_in').html('开始打印...')
-                        localStorage.setItem('order', JSON.stringify(doc));
                         setTimeout(function () {
-                            printit()
+                            preview(doc)
                             //$('#win').window('close')
                             //关闭打印页面，window消失
                         }, 1000)
@@ -573,23 +602,57 @@ onClickCell: onClickCell">
         <div class="easyui-layout" data-options="fit:true">
             <div data-options="region:'west'" style="width:280px; padding:4px;">
                 <table style="width:100%; border-collapse: collapse">
-                    <tr><th COLSPAN="2"><h4>查询条件：</h4></th></tr>
+                    <tr>
+                        <th COLSPAN="2"><h4>查询条件：</h4></th>
+                    </tr>
                     <!--<tr><td style="width:80px; padding:10px 0;">所属年份:</td><td style="width:200px;padding:10px 0;"><select id="order_search_year" class="easyui-combobox" style="width:100%"><option value="2018">2018</option></select> </td></tr>-->
-                    <tr><td style="padding:10px 0 5px 0;">起始日期:<td  style="width:200px;padding:10px 0 5px 0;"><input id="dd_begin" type="text" class="easyui-datebox" style="width:100%" /></td></tr>
-                    <tr><td style="padding:5px 0 10px 0;">结束日期:<td  style="width:200px;padding:5px 0 10px 0;"><input id="dd_end" type="text" style="width:100%" class="easyui-datebox" /></td></tr>
-                    <tr><td style="padding:10px 0;">客户名称:</td><td  style="width:200px;padding:10px 0;">
-                    <input id="customer_choose_for_order_list" class="easyui-textbox"
-                           data-options="prompt:'选择客户'" style="width:100%;height:32px;">
-                    </td></tr>
+                    <tr>
+                        <td style="padding:10px 0 5px 0;">起始日期:
+                        <td style="width:200px;padding:10px 0 5px 0;"><input id="dd_begin" type="text"
+                                                                             class="easyui-datebox" style="width:100%"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:5px 0 10px 0;">结束日期:
+                        <td style="width:200px;padding:5px 0 10px 0;"><input id="dd_end" type="text" style="width:100%"
+                                                                             class="easyui-datebox"/></td>
+                    </tr>
+                    <tr>
+                        <td style="padding:10px 0;">客户名称:</td>
+                        <td style="width:200px;padding:10px 0;">
+                            <input id="customer_choose_for_order_list" class="easyui-textbox"
+                                   data-options="prompt:'选择客户'" style="width:100%;height:32px;">
+                        </td>
+                    </tr>
 
-                    <tr><td style="padding:10px 0;">单据状态:</td><td  style="width:200px;padding:10px 0;"><select id="order_state" class="easyui-combobox" style="width:100%;"></select> </td></tr>
+                    <tr>
+                        <td style="padding:10px 0;">单据状态:</td>
+                        <td style="width:200px;padding:10px 0;"><select id="order_state" class="easyui-combobox"
+                                                                        style="width:100%;"></select></td>
+                    </tr>
 
-                    <tr><td style=""></td><td style="text-align: center; padding:15px 0;"> <a class="easyui-linkbutton"  style="width:100%;" data-options="iconCls:'icon-search',iconAlign:'left'" onclick="doSearchOrders()" >查询</a></td></tr>
+                    <tr>
+                        <td style=""></td>
+                        <td style="text-align: center; padding:15px 0;"><a class="easyui-linkbutton" style="width:100%;"
+                                                                           data-options="iconCls:'icon-search',iconAlign:'left'"
+                                                                           onclick="loadOrderGrid()">查询</a></td>
+                    </tr>
 
                 </table>
             </div>
             <div data-options="region:'center'" style="padding:0px;">
-                <table id="order_grid"  class="easyui-datagrid " style="width:100%"></table>
+                <table id="order_grid" class="easyui-datagrid " style="width:100%"></table>
+                <div id="order_grid_toolbar" style="padding:2px 5px;">
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="cancelOrder()">作废</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true"
+                       onclick="printPreview()">打印</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="destroyCustomer()">删除</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true"
+                       onclick="exportExcel(ORDER_GRID, '出库单列表.xls')">导出到excel</a>
+                    <span style="margin-left:20px" class="search_label">检索：</span>
+                    <input type="text" id="order_search_text" class="search_input"
+                           onkeyup="onSearch(this, ORDER_GRID, doSearchOrder)">
+                </div>
             </div>
         </div>
     </div>
@@ -640,9 +703,11 @@ onClickCell: onClickCell">
                     <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true"
                        onclick="editCustomer()">编辑</a>
                     <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="destroyCustomer()">删除</a>
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="exportExcel()">导出到excel</a>
-                    <span style="margin-left:100px">检索：<input type="text" id="customer_search_text" style="width:200px"
-                                                              onkeyup="onSearch(this, CUSTOMER_GRID)"></span>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true"
+                       onclick="exportExcel(CUSTOMER_GRID, '客户列表.xls')">导出到excel</a>
+                    <span style="margin-left:20px" class="search_label">检索：</span>
+                    <input type="text" id="customer_search_text" class="search_input"
+                           onkeyup="onSearch(this, CUSTOMER_GRID, doSearchCustomer)">
                 </div>
 
                 <div id="dlg_for_customer" class="easyui-dialog" style="width:500px"
@@ -945,11 +1010,10 @@ onClickCell: onClickCell">
             </form>
         </div>
     </div>
-
-
 </div>
 
 
+<!-- 客户选择对话框 -->
 <div id="dlg_for_customer_choose" title="选择客户" class="easyui-dialog" style="width:900px; height:550px;"
      data-options="onOpen:onOpenCustomerChooseDlg, resizable:true, closed:true, modal:true, border:'thin', buttons:'#dlg_buttons_for_classification01'">
     <div class="easyui-layout" data-options="fit:true">
@@ -963,120 +1027,11 @@ onClickCell: onClickCell">
             </table>
         </div>
     </div>
-
-    <script>
-
-        let CUSTOMER_GRID01 = null;
-
-        function loadCustomerGrid01(node) {
-
-            let t = $('#classification_tree01')
-            if (node == null) {
-                node = t.tree('getSelected')
-            }
-
-            let rootNode = t.tree('getRoot')
-
-            let params = {}
-            if (node == null || node == rootNode) {
-
-            } else if (t.tree('isLeaf', node.target)) {
-                console.log("Select classification node is a leaf.")
-                params.classification = node.text;
-            } else {
-                let arr = [node.text]
-                let children = t.tree('getChildren', node.target)
-                // children包含所有子节点
-                for (let i = 0; i < children.length; i++) {
-                    arr.push(children[i].text)
-                }
-                params.classification = {$in: arr}
-            }
-
-            console.log("Classification params is " + JSON.stringify(params))
-
-
-            if (CUSTOMER_GRID01 == null) {
-                CUSTOMER_GRID01 = $('#grid_for_customer01').datagrid({
-                    fit: true,
-                    singleSelect: true,
-                    collapsible: false,
-                    data: [],
-                    border: false,
-                    remoteSort: false,
-                    multiSort: true,
-                    showFilterBar: false,
-                    rownumbers: true,
-                    title: '<span style="font-weight: bold">客户列表</span>',
-                    width: 720,
-                    toolbar: '#customer_grid_toolbar01',
-                    columns: [[
-                        {title: "客户编码", field: 'classification', width: 80, sortable: true, sortOrder: 'asc'},
-                        {title: "客户名称", field: 'name', width: 200, sortable: true, sortOrder: 'asc'},
-                        {title: "客户简码", field: 'index_code', width: 80, sortable: true, sortOrder: 'asc'},
-                        {title: "联系人", field: "principal", width: 80},
-                        {title: "联系电话", field: 'phone', width: 100},
-                        {title: "联系地址", field: 'address', width: 220}
-                    ]]
-                })
-                enable_customer_filter = false;
-            }
-
-            if (params == null) {
-                params = {}
-            }
-            mongoose.CustomerModel.find(params, function (err, docs) {
-                CUSTOMER_GRID01.datagrid('loadData', docs)
-                CUSTOMER_GRID01.datagrid('enableFilter', {filterMatchingType: 'any'})
-            })
-        }
-
-        function onOpenCustomerChooseDlg() {
-
-            console.log("openCustomerChooseDlg")
-            // 加载分类树
-            loadClassifications(function (data) {
-                $('#classification_tree01').tree('loadData', data)
-            })
-
-            // 加载客户列表
-            loadCustomerGrid01(null)
-        }
-
-
-        let customer_choose_dlg_type = null;
-
-        function chooseCustomer(callback) {
-            $('#dlg_for_customer_choose').dialog('close')
-            let row = CUSTOMER_GRID01.datagrid('getSelected')
-            if (row) {
-
-                if (customer_choose_dlg_type == 'list_products') {
-                    $('#customer_choose_for_product_manage').textbox("setValue", row._id).textbox("setText", row.name)
-                    $('#customer_choose_for_product_manage').textbox('textbox').keyup()
-                    loadProducts()
-
-                } else if (customer_choose_dlg_type == 'new_order') {
-                    $('#new_order_customer_name').textbox("setValue", row._id).textbox("setText", row.name)
-                    $('#new_order_customer_name').textbox('textbox').keyup()
-
-                    // fill new order
-                    $('#new_order_customer_phone').textbox('setValue', row.phone)
-                    $('#new_order_customer_principal').textbox('setValue', row.principal)
-                    $('#new_order_customer_address').textbox('setValue', row.address)
-
-                    resetOrderProductGrid(true)
-
-
-                }
-            }
-        }
-
-    </script>
 </div>
 <div id="customer_grid_toolbar01" style="padding:2px 5px;">
-  <span style="margin-left:0px">检索：<input type="text" id="customer_search_text01" style="width:200px"
-                                          onkeyup="onSearch(this, CUSTOMER_GRID01)"></span>
+    <span class="search_label">检索：</span>
+    <input class="search_input" type="text" id="customer_search_text01"
+           onkeyup="onSearch(this, CUSTOMER_GRID01, doSearchCustomer)"/>
 </div>
 
 <div id="dlg_buttons_for_classification01">
@@ -1107,6 +1062,13 @@ onClickCell: onClickCell">
 
 <script>
 
+    const {BrowserWindow} = require('electron').remote
+    const {ipcRenderer} = require('electron')
+    let win = require('electron').remote.getCurrentWindow();
+    win.on('close', () => {
+        ipcRenderer.sendSync('app-quit')
+    });
+
     $(function () {
         $('#new_order_sale_date').datebox().datebox('calendar').calendar({
             validator: function (date) {
@@ -1116,47 +1078,24 @@ onClickCell: onClickCell">
                 return d1 <= date && date <= d2;
             }
         });
-
-/*
-        $('#dd_begin').datebox().datebox('calendar').calendar({
-            validator: function(date){
-                //let year = $('#order_search_year').combobox('getValue');
-                console.log("year:"+year)
-                var begin = new Date(year, 0, 1);
-                var end = new Date(year, 11, 31)
-                return begin<=date && date<=end;
-            }
-        });
-
-        $('#dd_end').datebox().datebox('calendar').calendar({
-            validator: function(date){
-
-
-                //let year = $('#order_search_year').combobox('getValue');
-                var begin = new Date(year, 1, 1);
-                var end = new Date(year, 12, 31)
-
-                return begin<=date && date<=end;
-            }
-        });*/
-
     });
 
-
-    const {ipcRenderer} = require('electron')
-    let win = require('electron').remote.getCurrentWindow();
-
-    win.on('close', () => {
-        ipcRenderer.sendSync('app-quit')
-    });
 
     function logout() {
         ipcRenderer.sendSync('logout')
     }
 
-    const {BrowserWindow} = require('electron').remote
 
-    function printit() {
+    function printPreview() {
+        let row = ORDER_GRID.datagrid('getSelected')
+        if (row) {
+            preview(row, 'list')
+        }
+    }
+
+    function preview(order, type) {
+        type = type||'new_order'
+        localStorage.setItem('order', JSON.stringify(order));
         let parent = require('electron').remote.getCurrentWindow()
         let win_print = new BrowserWindow({
             width: 800,
@@ -1172,22 +1111,25 @@ onClickCell: onClickCell">
         })
         win_print.on('closed', () => {
             win_print = null
-            $('#win').window('close')
-            $.messager.confirm('', '是否继续填写出库单?', function (r) {
-                if (r) {
-                    resetOrder();
-                } else {
-                    $('#order_list_menu').click()
-                }
-            });
+
+            if (type == 'new_order') {
+                $('#win').window('close')
+                $.messager.confirm('', '是否继续填写出库单?', function (r) {
+                    if (r) {
+                        resetOrder();
+                    } else {
+                        $('#order_list_menu').click()
+                    }
+                })
+
+            } else if (type== 'list') {
+
+            }
         })
 
         win_print.loadURL('file://' + __dirname + '/print_template.html')
         win_print.show()
-
     }
-
-
 </script>
 </body>
 </html>

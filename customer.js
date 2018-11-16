@@ -166,51 +166,26 @@ function showClassificationCombotree(){
 
 
 function beforeSelectClassificationCombotree(node){
-    console.log(JSON.stringify(node));
     if (typeof(node.id) == 'undefined') {
-
         console.log("选中编码分类根节点")
-        //$.messager.alert({title:"警告", msg:"请选择城市", zIndex:1000000})
-        // $('#customer_region').combo('showPanel')
         return false;
     }
-
     return true
-
 }
 
 
-
-function exportExcel() {
-    CUSTOMER_GRID.datagrid('toExcel','客户列表.xls');
-}
-
-
-
-
-let timer
-function onSearch(src, datagrid) {
-    let e=arguments.callee.caller.arguments[0]||window.event
-
-    if (timer) {
-        clearTimeout(timer);
-    }
-    if (e.keyCode == 13) {
-        doSearch(src, datagrid)
-    } else if (400) {
-        timer = setTimeout(function () {
-            doSearch(src, datagrid)
-        }, 400);
-    }
-}
-
-function doSearch(input, datagrid) {
+/**
+ * 触发过滤客户的操作
+ * @param input
+ * @param datagrid
+ */
+function doSearchCustomer(input, datagrid) {
     let searchText = input.value
     datagrid.datagrid('removeFilterRule').datagrid('addFilterRule', {
         field: 'index_code',
         op: 'contains',
         value: searchText
-    },{
+    }).datagrid('addFilterRule',{
         field: 'name',
         op: 'contains',
         value: searchText
@@ -234,3 +209,103 @@ function doSearch(input, datagrid) {
 }
 
 
+/***********************************************客户选择对话框****************************************************/
+let CUSTOMER_GRID01 = null;
+function loadCustomerGrid01(node) {
+
+    let t = $('#classification_tree01')
+    if (node == null) {
+        node = t.tree('getSelected')
+    }
+
+    let rootNode = t.tree('getRoot')
+
+    let params = {}
+    if (node == null || node == rootNode) {
+
+    } else if (t.tree('isLeaf', node.target)) {
+        console.log("Select classification node is a leaf.")
+        params.classification = node.text;
+    } else {
+        let arr = [node.text]
+        let children = t.tree('getChildren', node.target)
+        // children包含所有子节点
+        for (let i = 0; i < children.length; i++) {
+            arr.push(children[i].text)
+        }
+        params.classification = {$in: arr}
+    }
+
+    //console.log("Classification params is " + JSON.stringify(params))
+
+    if (CUSTOMER_GRID01 == null) {
+        CUSTOMER_GRID01 = $('#grid_for_customer01').datagrid({
+            fit: true,
+            singleSelect: true,
+            collapsible: false,
+            data: [],
+            border: false,
+            remoteSort: false,
+            multiSort: true,
+            showFilterBar: false,
+            rownumbers: true,
+            title: '<span style="font-weight: bold">客户列表</span>',
+            width: 720,
+            toolbar: '#customer_grid_toolbar01',
+            columns: [[
+                {title: "客户编码", field: 'classification', width: 80, sortable: true, sortOrder: 'asc'},
+                {title: "客户名称", field: 'name', width: 200, sortable: true, sortOrder: 'asc'},
+                {title: "客户简码", field: 'index_code', width: 80, sortable: true, sortOrder: 'asc'},
+                {title: "联系人", field: "principal", width: 80},
+                {title: "联系电话", field: 'phone', width: 100},
+                {title: "联系地址", field: 'address', width: 220}
+            ]]
+        })
+        enable_customer_filter = false;
+    }
+
+    if (params == null) {
+        params = {}
+    }
+    mongoose.CustomerModel.find(params, function (err, docs) {
+        CUSTOMER_GRID01.datagrid('loadData', docs)
+        CUSTOMER_GRID01.datagrid('enableFilter', {filterMatchingType: 'any'})
+    })
+}
+
+function onOpenCustomerChooseDlg() {
+    console.log("openCustomerChooseDlg")
+    // 加载分类树
+    loadClassifications(function (data) {
+        $('#classification_tree01').tree('loadData', data)
+    })
+
+    // 加载客户列表
+    loadCustomerGrid01(null)
+}
+
+
+let customer_choose_dlg_type = null;
+function chooseCustomer(callback) {
+    $('#dlg_for_customer_choose').dialog('close')
+    let row = CUSTOMER_GRID01.datagrid('getSelected')
+    if (row) {
+
+        if (customer_choose_dlg_type == 'list_products') {
+            $('#customer_choose_for_product_manage').textbox("setValue", row._id).textbox("setText", row.name)
+            $('#customer_choose_for_product_manage').textbox('textbox').keyup()
+            loadProducts()
+
+        } else if (customer_choose_dlg_type == 'new_order') {
+            $('#new_order_customer_name').textbox("setValue", row._id).textbox("setText", row.name)
+            $('#new_order_customer_name').textbox('textbox').keyup()
+
+            // fill new order
+            $('#new_order_customer_phone').textbox('setValue', row.phone)
+            $('#new_order_customer_principal').textbox('setValue', row.principal)
+            $('#new_order_customer_address').textbox('setValue', row.address)
+
+            resetOrderProductGrid(true)
+        }
+    }
+}
