@@ -99,8 +99,8 @@
 .icon-large-sysconfig{
 	background:url('icons/large_sysconfig.png') no-repeat center center;
 }
-.icon-large-userconfig{
-	background:url('icons/large_userconfig.png') no-repeat center center;
+.icon-large-usermanage{
+	background:url('icons/large_usermanage.png') no-repeat center center;
 }
 .icon-large-logout{
 	background:url('icons/large_logout.png') no-repeat center center;
@@ -116,4 +116,13 @@
 }
 .icon-large-customerconfig{
 	background:url('icons/large_customerconfig.png') no-repeat center center;
+}
+.icon-large-drivermanage{
+	background:url('icons/large_drivermanage.png') no-repeat center center;
+}
+.icon-large-passwordmanage{
+	background:url('icons/large_passwordmanage.png') no-repeat center center;
+}
+.icon-large-productmanage{
+	background:url('icons/large_productmanage.png') no-repeat center center;
 }

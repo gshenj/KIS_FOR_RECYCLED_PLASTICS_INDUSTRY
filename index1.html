@@ -61,6 +61,16 @@
         body {
             margin: 0;
             padding: 0;
+            /*font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;*/
+            /*font-family:  "Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;*/
+            font: 12px/1.5 Tahoma,Helvetica,Arial,'宋体',sans-serif;
+
+
+            /*font: 12px/1 Tahoma,Helvetica,Arial,"\5b8b\4f53",sans-serif;*/
+
+
+            /*ok*/
+            /*font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;*/
         }
 
         .radio_label {
@@ -173,10 +183,10 @@
       style="-webkit-app-region: drag; padding:0; margin:0;overflow-y: hidden;overflow-x: hidden; height:100%">
 
 <div data-options="region:'north',split:false, border:false"
-     style="height:106px;width:100%; margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
+     style="height:106px;width:100%; -webkit-user-select: none;  margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
 
-    <div id="tt" class="easyui-tabs" data-options="border:false"
-         style="width:100%;height:106px; padding:0; margin:0;">
+    <div id="tt" class="easyui-tabs" data-options="border:false, tabHeight:36, height:108, plain:true"
+         style="width:100%; padding:0; margin:0;">
 
         <div title="送货单管理" data-options="border:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:4px;  -webkit-user-select: none; ">
@@ -200,17 +210,17 @@
                    data-options="plain:true, iconCls:'icon-large-customerconfig', size:'large', iconAlign:'top'">客户管理</a>
 
                 <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'product_manage_panel')"
-                   data-options="plain:true, iconCls:'icon-large-smartart', iconAlign:'top'">产品管理</a>
+                   data-options="plain:true, iconCls:'icon-large-productmanage',size:'large', iconAlign:'top'">产品管理</a>
 
                 <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'driver_manage_panel')"
-                   data-options="plain:true, iconCls:'icon-lorry',size:'large',iconAlign:'top'">司机管理</a>
+                   data-options="plain:true, iconCls:'icon-large-drivermanage',size:'large',iconAlign:'top'">司机管理</a>
             </div>
         </div>
 
         <div title="系统设置" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:4px;">
             <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'user_manage_panel')"
-               data-options="plain:true,  size:'large', iconCls:'icon-large-userconfig', iconAlign:'top'">用户管理</a>
+               data-options="plain:true,  size:'large', iconCls:'icon-large-usermanage', iconAlign:'top'">用户管理</a>
             <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'sys_config_panel')"
                data-options="plain:true, size:'large', iconCls:'icon-large-sysconfig', iconAlign:'top'">系统参数</a>
         </div>
@@ -218,7 +228,7 @@
         <div title="我的账户" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:4px;">
             <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'password_set_panel')"
-               data-options="plain:true, iconCls:'icon-large-smartart',iconAlign:'top'">密码设置</a>
+               data-options="plain:true, iconCls:'icon-large-passwordmanage', size:'large',iconAlign:'top'">密码设置</a>
             <a class="easyui-linkbutton tool_button" onclick="logout()"
                data-options="plain:true, size:'large', iconCls:'icon-large-logout', iconAlign:'top'">退出系统</a>
         </div>
@@ -512,7 +522,7 @@
                         <tr>
                             <td>送货地址：<input id="new_order_customer_address" class="customer_address easyui-textbox"/>
                             </td>
-                            <td>联&nbsp;&nbsp;系&nbsp;&nbsp;人：<input id="new_order_customer_principal"
+                            <td>联&ensp;系&ensp;人：<input id="new_order_customer_principal"
                                                                    class="principal easyui-textbox"/>
                             </td>
                             <td>联系电话：<input id="new_order_customer_phone" class="telephone easyui-textbox"/></td>
@@ -797,28 +807,28 @@ onClickCell: onClickCell">
                     <form id="fm_for_product" method="post" novalidate style="margin:0;padding:20px 50px">
                         <div style="margin-bottom:10px">
                             <input name="name" id="product_name" class="easyui-textbox" required="true"
-                                   label="品名:" labelAlign="right" style="width:100%">
+                                   label="品名：" labelAlign="right" style="width:100%">
                             <input name="_id" id="product_id" type="hidden"/>
                         </div>
                         <div style="margin-bottom:10px">
                             <input name="model" id="product_model" class="easyui-textbox" required="true"
-                                   label="型号:" labelAlign="right"
+                                   label="型号：" labelAlign="right"
                                    style="width:100%">
                         </div>
 
                         <div style="margin-bottom:10px">
                             <input name="units" id="product_units" class="easyui-textbox" required="true"
-                                   label="单位:" labelAlign="right"
+                                   label="单位：" labelAlign="right"
                                    style="width:100%">
                         </div>
                         <div style="margin-bottom:10px">
                             <input name="price" id="product_price" class="easyui-textbox"
-                                   label="单价:" labelAlign="right"
+                                   label="单价：" labelAlign="right"
                                    style="width:100%">
                         </div>
                         <div style="margin-bottom:10px">
                             <input id="product_memo" class="easyui-textbox" name="memo" labelAlign="right"
-                                   label="描述:" style="width:100%">
+                                   label="描述：" style="width:100%">
                         </div>
                     </form>
                 </div>
@@ -848,14 +858,14 @@ onClickCell: onClickCell">
                     <form id="fm_for_driver" method="post" novalidate style="margin:0;padding:20px 50px">
                         <div style="margin-bottom:10px">
                             <input name="name" id="driver_name" class="easyui-textbox" required="true"
-                                   label="司机名称:" labelAlign="right" style="width:100%">
+                                   label="司机名称：" labelAlign="right" style="width:100%">
                             <input name="_id" id="driver_id" type="hidden"/>
                         </div>
 
                         <div style="margin-bottom:10px">
                             <select name="car_type" id="driver_car_type" class="easyui-combobox" required="true"
                                     editable="false"
-                                    label="车型载重:" labelAlign="right"
+                                    label="车型载重：" labelAlign="right"
                                     style="width:100%">
                                 <option value="9.6米平板车-18吨">9.6米平板车-18吨</option>
                                 <option value="9.6米高栏车-18吨">9.6米高栏车-18吨</option>
@@ -868,28 +878,28 @@ onClickCell: onClickCell">
 
                         <div style="margin-bottom:10px">
                             <input name="car_No" id="driver_car_No" class="easyui-textbox" required="true"
-                                   label="车牌号码:" labelAlign="right"
+                                   label="车牌号码：" labelAlign="right"
                                    style="width:100%">
                         </div>
 
                         <div style="margin-bottom:10px">
                             <input name="id_No" id="driver_id_No" class="easyui-textbox" required="true"
-                                   label="身份证号:" labelAlign="right"
+                                   label="身份证号：" labelAlign="right"
                                    style="width:100%">
                         </div>
                         <div style="margin-bottom:10px">
                             <input name="driving_license_No" id="driver_driving_license_No" class="easyui-textbox"
                                    required="true"
-                                   label="行驶证号:" labelAlign="right"
+                                   label="行驶证号：" labelAlign="right"
                                    style="width:100%">
                         </div>
                         <div style="margin-bottom:10px">
                             <input id="driver_phone" class="easyui-textbox" name="phone" labelAlign="right"
-                                   label="联系电话:" style="width:100%">
+                                   label="联系电话：" style="width:100%">
                         </div>
                         <div style="margin-bottom:10px">
                             <input id="driver_address" class="easyui-textbox" name="address" labelAlign="right"
-                                   label="联系地址:" style="width:100%">
+                                   label="联系地址：" style="width:100%">
                         </div>
                     </form>
                 </div>
@@ -918,19 +928,19 @@ onClickCell: onClickCell">
                     <form id="fm" method="post" novalidate style="margin:0;padding:20px 50px">
                         <div style="margin-bottom:10px">
                             <input name="name" id="name_textbox" class="easyui-textbox" required="true"
-                                   label="用&nbsp;&nbsp;户&nbsp;&nbsp;名:" labelAlign="right" style="width:100%">
+                                   label="用户名：" labelAlign="right" style="width:100%">
                             <input name="_id" id="user_id" type="hidden"/>
                         </div>
                         <div style="margin-bottom:10px">
                             <input name="role" id="role_combobox" class="easyui-combobox" required="true"
-                                   data-options="panelHeight:100"
-                                   label="角&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色:" labelAlign="right"
+                                   data-options="panelHeight:40"
+                                   label="角&emsp;色：" labelAlign="right"
                                    style="width:100%">
                         </div>
                         <div style="margin-bottom:10px">
 
                             <input id="disabled_checkbox" class="easyui-checkbox" name="disabled" labelAlign="right"
-                                   label="禁&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;用:">
+                                   label="禁&emsp;用：">
 
                         </div>
                     </form>
@@ -995,19 +1005,19 @@ onClickCell: onClickCell">
             <form id="fm_for_password_set" method="post" novalidate style="margin:0;padding:20px 50px">
                 <div style="margin-top:20px">
                     <input id="old_pass" class="easyui-textbox"
-                           label="旧&nbsp;&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;&nbsp;码：" labelWidth="100"
+                           label="旧&emsp;密&emsp;码:"
                            labelAlign="left" style="width:100%">
                 </div>
                 <div style="margin-top:20px">
                     <input id="new_pass"
                            class="easyui-textbox"
-                           label="新&nbsp;&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;&nbsp;&nbsp;码：" labelWidth="100"
+                           label="新&emsp;密&emsp;码:"
                            labelAlign="left" style="width:100%">
                 </div>
                 <div style="margin-top:20px">
                     <input id="new_pass_again"
                            class="easyui-textbox"
-                           label="重复新密码：" labelAlign="left" labelWidth="100" style="width:100%">
+                           label="重复新密码:" labelAlign="left"  style="width:100%">
                 </div>
 
                 <div style="margin-top:40px;">
