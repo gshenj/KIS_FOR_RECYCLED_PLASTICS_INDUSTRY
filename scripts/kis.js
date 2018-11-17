@@ -1,11 +1,3 @@
-let SYS_INFO = {}
-function init(){
-
-    load_company();
-
-}
-
-
 function onShowDriverPanel(){
     mongoose.DriverModel.find({}, function(err, docs) {
         //console.log(JSON.stringify(docs))
@@ -28,7 +20,8 @@ function hide_all_panel() {
 function set_tool_button_status(click_src) {
     $('.tool_button').linkbutton('enable')
     $(click_src).linkbutton('disable')
-    document.title = DOCUMENT_TITLE + '　──　' + $(click_src).linkbutton('options').text + ''
+
+    document.title = DOCUMENT_TITLE_PREFIX + '　─　' + $(click_src).linkbutton('options').text + ''
 }
 
 
@@ -84,11 +77,14 @@ function onOpenProductManagePanel() {
  * 打开系统设置页面触发函数
  */
 function onOpenSysConfigPanel(){
+
+    // can load form localstorge
     // load configs
     mongoose.ConfigModel.findOne({}, function(err,doc){
         handleError(err)
         $('#company_name').textbox('setValue', doc.company_name)
         $('#company_phone').textbox('setValue', doc.company_phone)
+        $('#company_fax').textbox('setValue', doc.company_fax)
         $('#company_address').textbox('setValue', doc.company_address)
     })
 }

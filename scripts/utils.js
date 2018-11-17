@@ -49,7 +49,7 @@ function isNumber(value) {         //验证是否为数字
 function load_company(){
     mongoose.ConfigModel.findOne({},function(err, doc){
         if (doc) {
-            SYS_INFO.companyInfo = doc;
+            localStorage.setItem("sys_config", JSON.stringify(doc))
         }
     })
 }
@@ -57,6 +57,7 @@ function load_company(){
 function set_company() {
     let company_name = $('#company_name').textbox('getValue')
     let company_phone = $('#company_phone').textbox('getValue')
+    let company_fax = $('#company_fax').textbox('getValue')
     let company_address = $('#company_address').textbox('getValue')
     let company_logo_path = $('#company_logo').textbox('getValue')
     mongoose.ConfigModel.findOne({},function(err, doc){
@@ -66,18 +67,19 @@ function set_company() {
             update = false
         }
 
-        doc.company_name = company_name;
+        doc.company_name = company_name
         doc.company_phone = company_phone
+        doc.company_fax = company_fax
         doc.company_address = company_address
 
         doc.save(function(err){
             handleError(err)
 
             if (!err) {
+                localStorage.setItem("sys_config", JSON.stringify(doc))
                 show_msg("操作成功：信息保存成功！")
             }
         })
-
 
     })
 

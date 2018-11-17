@@ -86,6 +86,7 @@ ipcMain.on('set-order', (event, arg) => {
 // 登录成功
 ipcMain.on('login-success', (event, arg) => {
     console.log("on login-success.")
+    //mainWindow.setTitle(arg)
     mainWindow.show()
     loginWindow.close()
     event.returnValue = null;

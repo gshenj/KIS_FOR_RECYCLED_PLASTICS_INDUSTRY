@@ -8,7 +8,6 @@
     }
 
 
-    let DOCUMENT_TITLE = document.title;
     </script>
     <!-- normal script imports etc  -->
     <script src="./scripts/jquery-3.3.1.js"></script>
@@ -70,37 +69,38 @@
 <script>
 
     let mongoose = require("./scripts/db")
-
-    $.parser.onComplete = function () {
-        require('electron').remote.getCurrentWindow().show()
-    }
-
     const {ipcRenderer} = require('electron')
-
     let login_sccess = false;
-    function login(){
-        login_sccess = true;
-        loadConfig(function(config){
-            // localStorage只支持String值
-            localStorage.setItem('config', JSON.stringify(config));
-            //
-            ipcRenderer.sendSync('login-success', 'ping') // prints "pong"
-        })
-    }
-
-    require('electron').remote.getCurrentWindow().on('close', () => {
+    const win = require('electron').remote.getCurrentWindow();
+    win.on('close', () => {
         if (!login_sccess) {
             ipcRenderer.sendSync('app-quit')
         }
     })
 
-    function loadConfig(callback){
-        mongoose.ConfigModel.findOne({},function(err, doc){
-            if (doc) {
-                callback(doc)
-            }
-        })
+    $.parser.onComplete = function () {
+        win.show()
     }
+
+    function login(){
+        login_sccess = true
+
+
+        //find user by name and password.
+        ipcRenderer.sendSync('login-success', null) // prints "pong"
+
+
+        //loadConfig(function(config){
+            // localStorage只支持String值
+            //localStorage.setItem('sys_config', JSON.stringify(config));
+
+
+        //})
+    }
+
+
+
+
 </script>
 </body>
 </html>

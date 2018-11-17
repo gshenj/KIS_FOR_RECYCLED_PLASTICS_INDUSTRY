@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>苏州元斌塑胶科技有限公司 KIS v1.0.0 </title>
     <script>if (typeof module === 'object') {
         window.module = module;
         module = undefined;
     }
+    const KIS_VERSION = 'v1.0'
+    let DOCUMENT_TITLE_PREFIX = '';
+    let SYS_CONFIG = null;
 
-
-    let DOCUMENT_TITLE = document.title;
     </script>
     <!-- normal script imports etc  -->
     <script src="./scripts/jquery-3.3.1.js"></script>
@@ -183,13 +183,13 @@
             <div style="float:left; width:60%; padding:0px;">
                 <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
                    onclick="show_panel(this, 'order_input_panel')"
-                   data-options="plain:true, iconCls:'icon-large-smartart', size:'large', iconAlign:'top'">单据填开</a>
+                   data-options="plain:true, iconCls:'icon-large-neworder', size:'large', iconAlign:'top'">单据填开</a>
                 <a id="order_list_menu" class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
                    onclick="show_panel(this, 'orders_grid_panel')"
-                   data-options="plain:true, iconCls:'icon-large-clipart', iconAlign:'top'">单据查询</a>
+                   data-options="plain:true, iconCls:'icon-large-orderlist', size:'large', iconAlign:'top'">单据查询</a>
                 <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
                    onclick="show_panel(this, 'order_report_panel')"
-                   data-options="plain:true, iconCls:'icon-large-chart', iconAlign:'top'">统计报表</a>
+                   data-options="plain:true, iconCls:'icon-large-orderreport', size:'large', iconAlign:'top'">统计报表</a>
             </div>
         </div>
 
@@ -197,7 +197,7 @@
 	padding:4px;">
             <div style="float:left; width:60%; padding:0px;">
                 <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'customer_manage_panel')"
-                   data-options="plain:true, iconCls:'icon-large-smartart',iconAlign:'top'">客户管理</a>
+                   data-options="plain:true, iconCls:'icon-large-customerconfig', size:'large', iconAlign:'top'">客户管理</a>
 
                 <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'product_manage_panel')"
                    data-options="plain:true, iconCls:'icon-large-smartart', iconAlign:'top'">产品管理</a>
@@ -210,9 +210,9 @@
         <div title="系统设置" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:4px;">
             <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'user_manage_panel')"
-               data-options="plain:true, iconCls:'icon-large-smartart',iconAlign:'top'">用户管理</a>
+               data-options="plain:true,  size:'large', iconCls:'icon-large-userconfig', iconAlign:'top'">用户管理</a>
             <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'sys_config_panel')"
-               data-options="plain:true, iconCls:'icon-large-smartart', iconAlign:'top'">系统参数</a>
+               data-options="plain:true, size:'large', iconCls:'icon-large-sysconfig', iconAlign:'top'">系统参数</a>
         </div>
 
         <div title="我的账户" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
@@ -220,7 +220,7 @@
             <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'password_set_panel')"
                data-options="plain:true, iconCls:'icon-large-smartart',iconAlign:'top'">密码设置</a>
             <a class="easyui-linkbutton tool_button" onclick="logout()"
-               data-options="plain:true, iconCls:'icon-large-smartart',iconAlign:'top'">退出系统</a>
+               data-options="plain:true, size:'large', iconCls:'icon-large-logout', iconAlign:'top'">退出系统</a>
         </div>
     </div>
 </div>
@@ -430,6 +430,7 @@
                     saveOrder(order_data, function (doc) {
                         $('#win_in').html('开始打印...')
                         setTimeout(function () {
+                            $('#win').window('close')
                             preview(doc)
                             //$('#win').window('close')
                             //关闭打印页面，window消失
@@ -627,8 +628,14 @@ onClickCell: onClickCell">
 
                     <tr>
                         <td style="padding:10px 0;">单据状态:</td>
-                        <td style="width:200px;padding:10px 0;"><select id="order_state" class="easyui-combobox"
-                                                                        style="width:100%;"></select></td>
+                        <td style="width:200px;padding:10px 0;">
+                            <select id="order_state" class="easyui-combobox" data-options="panelHeight:100"
+                                    style="width:100%;">
+                                <option value="">全部</option>
+                                <option value="false">正常</option>
+                                <option value="true">作废</option>
+                            </select>
+                        </td>
                     </tr>
 
                     <tr>
@@ -916,6 +923,7 @@ onClickCell: onClickCell">
                         </div>
                         <div style="margin-bottom:10px">
                             <input name="role" id="role_combobox" class="easyui-combobox" required="true"
+                                   data-options="panelHeight:100"
                                    label="角&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色:" labelAlign="right"
                                    style="width:100%">
                         </div>
@@ -1069,7 +1077,19 @@ onClickCell: onClickCell">
         ipcRenderer.sendSync('app-quit')
     });
 
+
     $(function () {
+        loadConfig(function (config) {
+            // localStorage只支持String值
+            console.log("load configs")
+            document.title = config.company_name + KIS_VERSION
+            DOCUMENT_TITLE_PREFIX = document.title
+            SYS_CONFIG = config;
+
+            //localStorage.setItem('sys_config', JSON.stringify(config));
+        });
+
+
         $('#new_order_sale_date').datebox().datebox('calendar').calendar({
             validator: function (date) {
                 var now = new Date();
@@ -1080,6 +1100,14 @@ onClickCell: onClickCell">
         });
     });
 
+
+    function loadConfig(callback){
+        mongoose.ConfigModel.findOne({},function(err, doc){
+            if (doc) {
+                callback(doc)
+            }
+        })
+    }
 
     function logout() {
         ipcRenderer.sendSync('logout')
@@ -1094,7 +1122,7 @@ onClickCell: onClickCell">
     }
 
     function preview(order, type) {
-        type = type||'new_order'
+        type = type || 'new_order'
         localStorage.setItem('order', JSON.stringify(order));
         let parent = require('electron').remote.getCurrentWindow()
         let win_print = new BrowserWindow({
@@ -1113,7 +1141,6 @@ onClickCell: onClickCell">
             win_print = null
 
             if (type == 'new_order') {
-                $('#win').window('close')
                 $.messager.confirm('', '是否继续填写出库单?', function (r) {
                     if (r) {
                         resetOrder();
@@ -1122,7 +1149,7 @@ onClickCell: onClickCell">
                     }
                 })
 
-            } else if (type== 'list') {
+            } else if (type == 'list') {
 
             }
         })

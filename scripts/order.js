@@ -19,14 +19,16 @@ let ORDER_GRID = null;
 let order_grid_columns = [[
     {field: 'order_num', title: '出库单号', width: 80, align: 'center'},
     {field: 'order_date', title: '出库日期', width: 80, align: 'center'},
+    {field: 'cancelled', title: '单据状态', width: 80, align: 'center',formatter: function(value,row,index){
+            return row.cancelled? '<span style="color:red">作废</span>' : '正常'
+        }},
     {field: 'customer_name', title: '客户名称', width: 220, align: 'center'},
     {field: 'customer_principal', title: '联系人', width: 60, align: 'center'},
     {field: 'contact_number', title: '联系电话', width: 80, align: 'center'},
     {field: 'delivery_address', title: '送货地址', width: 220, align: 'center'},
     {field: 'order_maker', title: '制单人', width: 60, align: 'center'},
     {field: 'order_driver', title: '送货司机', width: 70, align: 'center'},
-    {field: 'create_date', title: '录入时间', width: 80, align: 'center'},
-    {field: 'cancelled', title: '状态', width: 40, align: 'center'}
+    {field: 'create_date', title: '录入时间', width: 80, align: 'center'}
 ]]
 
 
@@ -92,13 +94,13 @@ function findOrders(callback) {
     }
 
     let orderState = $('#order_state').combobox('getValue')
-    if (orderState) {
+    if (orderState != '') {
         // orderState为''，就不做查询条件
         params.cancelled = orderState
     }
 
     //console.log("Find orders ->" +JSON.stringify(params))
-    mongoose.OrderModel.find(params).sort({'order_date': -1}).exec(function (err, docs) {
+    mongoose.OrderModel.find(params).sort({'order_num': -1}).exec(function (err, docs) {
         callback(docs)
     })
 

@@ -105,7 +105,7 @@ function loadSysUserGrid(params) {
 
 
 function newUser(){
-    $('#dlg').dialog('open').dialog('center').dialog('setTitle','New User');
+    $('#dlg').dialog('open').dialog('center').dialog('setTitle','添加用户');
     $('#fm').form('clear');
     // url = 'save_user.php';
     url = 'new'
@@ -113,7 +113,7 @@ function newUser(){
 function editUser(){
     var row = $('#sys_user_datagrid').datagrid('getSelected');
     if (row){
-        $('#dlg').dialog('open').dialog('center').dialog('setTitle','Edit User');
+        $('#dlg').dialog('open').dialog('center').dialog('setTitle','编辑用户');
         console.log("ROw"+JSON.stringify(row))
         $('#fm').form('load',row);
         if (row.disabled) {
