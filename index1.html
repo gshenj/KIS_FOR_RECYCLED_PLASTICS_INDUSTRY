@@ -63,11 +63,9 @@
             padding: 0;
             /*font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;*/
             /*font-family:  "Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;*/
-            font: 12px/1.5 Tahoma,Helvetica,Arial,'宋体',sans-serif;
-
+            font: 12px/1.5 Tahoma, Helvetica, Arial, '宋体', sans-serif;
 
             /*font: 12px/1 Tahoma,Helvetica,Arial,"\5b8b\4f53",sans-serif;*/
-
 
             /*ok*/
             /*font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;*/
@@ -116,6 +114,18 @@
             padding: 6px 4px;
             font-weight: normal;
             border: 1px dashed steelblue;
+        }
+
+        .tabs {
+            -webkit-app-region: drag;
+        }
+        .tabs li, .tabs-panels {
+            -webkit-app-region: no-drag;
+        }
+
+
+        .test {
+            background: -webkit-gradient(linear, 0 0, 0 100%, from(rgb(255, 255, 255)), to(rgb(234, 237, 241)));
         }
     </style>
 
@@ -180,64 +190,96 @@
 
 </head>
 <body class="easyui-layout" id="main_layout" data-options="border:false"
-      style="-webkit-app-region: drag; padding:0; margin:0;overflow-y: hidden;overflow-x: hidden; height:100%">
+      style=" padding:0; margin:0;overflow-y: hidden;overflow-x: hidden; height:100%">
 
 <div data-options="region:'north',split:false, border:false"
-     style="height:106px;width:100%; -webkit-user-select: none;  margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
+     style="height:84px;width:100%; -webkit-user-select: none;  margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
 
-    <div id="tt" class="easyui-tabs" data-options="border:false, tabHeight:36, height:108, plain:true"
-         style="width:100%; padding:0; margin:0;">
+    <!--<div class="easyui-layout" data-options="border:false, fit:true">-->
+        <!--<div data-options="region:'west', border:false" style="width:106px; height:106px; float:left;background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));">user logo</div>-->
 
-        <div title="送货单管理" data-options="border:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
-	padding:4px;  -webkit-user-select: none; ">
-            <div style="float:left; width:60%; padding:0px;">
-                <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
-                   onclick="show_panel(this, 'order_input_panel')"
-                   data-options="plain:true, iconCls:'icon-large-neworder', size:'large', iconAlign:'top'">单据填开</a>
-                <a id="order_list_menu" class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
-                   onclick="show_panel(this, 'orders_grid_panel')"
-                   data-options="plain:true, iconCls:'icon-large-orderlist', size:'large', iconAlign:'top'">单据查询</a>
-                <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
-                   onclick="show_panel(this, 'order_report_panel')"
-                   data-options="plain:true, iconCls:'icon-large-orderreport', size:'large', iconAlign:'top'">统计报表</a>
+        <!--<div data-options="region:'center', border:false">-->
+            <div id="tt" class="easyui-tabs" data-options="border:false, tools:'#tab-tools', tabWidth:120, tabHeight:26, height:88, plain:true"
+                 style="width:100%; padding-left:70px; margin:0;">
+
+                <div title="送货单管理" data-options="border:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+	padding:6px;  -webkit-user-select: none; ">
+                    <div style="float:left; width:60%; padding:0px;">
+                        <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
+                           onclick="show_panel(this, 'order_input_panel')"
+                           data-options="plain:true, iconCls:'icon-large-neworder', size:'large', iconAlign:'left'">单据填开</a>
+                        <a id="order_list_menu" class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
+                           onclick="show_panel(this, 'orders_grid_panel')"
+                           data-options="plain:true, iconCls:'icon-large-orderlist', size:'large', iconAlign:'left'">单据查询</a>
+                        <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
+                           onclick="show_panel(this, 'order_report_panel')"
+                           data-options="plain:true, iconCls:'icon-large-orderreport', size:'large', iconAlign:'left'">统计报表</a>
+                    </div>
+                </div>
+
+                <div title="资料管理" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+	padding:6px;">
+                    <div style="float:left; width:60%; padding:0px;">
+                        <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'customer_manage_panel')"
+                           data-options="plain:true, iconCls:'icon-large-customerconfig', size:'large', iconAlign:'left'">客户管理</a>
+
+                        <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'product_manage_panel')"
+                           data-options="plain:true, iconCls:'icon-large-productmanage',size:'large', iconAlign:'left'">产品管理</a>
+
+                        <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'driver_manage_panel')"
+                           data-options="plain:true, iconCls:'icon-large-drivermanage',size:'large',iconAlign:'left'">司机管理</a>
+                    </div>
+                </div>
+
+                <div title="系统设置" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+	padding:6px;">
+                    <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'user_manage_panel')"
+                       data-options="plain:true,  size:'large', iconCls:'icon-large-usermanage', iconAlign:'left'">用户管理</a>
+                    <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'sys_config_panel')"
+                       data-options="plain:true, size:'large', iconCls:'icon-large-sysconfig', iconAlign:'left'">系统参数</a>
+                </div>
+
+                <div title="我的账户" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+	padding:6px;">
+                    <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'password_set_panel')"
+                       data-options="plain:true, iconCls:'icon-large-passwordmanage', size:'large',iconAlign:'left'">密码设置</a>
+                    <a class="easyui-linkbutton tool_button" onclick="logout()"
+                       data-options="plain:true, size:'large', iconCls:'icon-large-logout', iconAlign:'left'">注销登录</a>
+                </div>
             </div>
+        <!--</div>-->
+    <!--</div>-->
+
+    <div id="tab-tools" style="-webkit-app-region: no-drag;">
+
+        <!--<a href="javascript:void(0)" style="width:40px;">账户信息</a>-->
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" onclick="maxwin()"></a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'" onclick="closewin()"></a>
+    </div>
+
+
+    <div style="width:70px; position: absolute;top:0; left:0px; border:none; height:84px; line-height:84px;-webkit-app-region: no-drag;">
+        <div style="width:70px; height:27px; background-color:#ffffff;border-bottom:1px solid #95B8E7"></div>
+        <div class="test" style="width:70px; height:57px;">
+            <!--<a href="#" class="easyui-menubutton" data-options="menu:'#mm1',showEvent:'click'" style="font-size:12px; height:20px; line-height:20px;">用户信息</a>-->
+
         </div>
+    </div>
 
-        <div title="资料管理" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
-	padding:4px;">
-            <div style="float:left; width:60%; padding:0px;">
-                <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'customer_manage_panel')"
-                   data-options="plain:true, iconCls:'icon-large-customerconfig', size:'large', iconAlign:'top'">客户管理</a>
+    <div style="width:64px; position: absolute;top:2px; left:4px; border:none; height:64px; line-height:64px; ">
+        <img src="images/account_logo.png" />
+    </div>
 
-                <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'product_manage_panel')"
-                   data-options="plain:true, iconCls:'icon-large-productmanage',size:'large', iconAlign:'top'">产品管理</a>
 
-                <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'driver_manage_panel')"
-                   data-options="plain:true, iconCls:'icon-large-drivermanage',size:'large',iconAlign:'top'">司机管理</a>
-            </div>
-        </div>
 
-        <div title="系统设置" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
-	padding:4px;">
-            <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'user_manage_panel')"
-               data-options="plain:true,  size:'large', iconCls:'icon-large-usermanage', iconAlign:'top'">用户管理</a>
-            <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'sys_config_panel')"
-               data-options="plain:true, size:'large', iconCls:'icon-large-sysconfig', iconAlign:'top'">系统参数</a>
-        </div>
-
-        <div title="我的账户" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
-	padding:4px;">
-            <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'password_set_panel')"
-               data-options="plain:true, iconCls:'icon-large-passwordmanage', size:'large',iconAlign:'top'">密码设置</a>
-            <a class="easyui-linkbutton tool_button" onclick="logout()"
-               data-options="plain:true, size:'large', iconCls:'icon-large-logout', iconAlign:'top'">退出系统</a>
-        </div>
+    <div id="mm1" style="width:150px;">
+        <div>Cut</div>
     </div>
 </div>
 
 
 <div data-options="region:'center', border:false"
-     style="margin:0;padding:0px;background:#eee;overflow-y: hidden;overflow-x: hidden">
+     style="margin:0;padding:0px;background:#eee;overflow-y: hidden;overflow-x: hidden; -webkit-app-region: no-drag">
 
     <!--新开送货单-->
     <div id="order_input_panel" class="easyui-panel opt_panel" 　
@@ -433,7 +475,7 @@
                 }
 
                 console.log(JSON.stringify(order_data))
-                $('#win_in').html('正在保存出库单...')
+                $('#win_in').html('正在保存单剧...')
                 $('#win').window('open')
 
                 setTimeout(function () {
@@ -503,7 +545,7 @@
             <div style="width:100%; padding:0">
                 <form id="new_order_form" style="padding:0">
                     <div style="text-align: center; padding:10px;"><span
-                            style="font-size:26px;margin:0 auto;">苏州元斌塑胶科技有限公司 销售单</span></div>
+                            style="font-size:26px;margin:0 auto;">苏州元斌塑胶科技有限公司 出货单</span></div>
                     <table class="bill_customer_table">
                         <tr>
                             <td>客户名称：<input id="new_order_customer_name" class="easyui-textbox customer_name"
@@ -515,7 +557,7 @@
                                             value="new Date()"
                                             labelPosition="top"/>
                             </td>
-                            <td>销售单号：<span id="new_order_sale_No" style="font-weight:bold;"></span>
+                            <td>出货单号：<span id="new_order_sale_No" style="font-weight:bold;"></span>
                                 <!--<input type="hidden" id="new_order_sale_No" />-->
                             </td>
                         </tr>
@@ -523,7 +565,7 @@
                             <td>送货地址：<input id="new_order_customer_address" class="customer_address easyui-textbox"/>
                             </td>
                             <td>联&ensp;系&ensp;人：<input id="new_order_customer_principal"
-                                                                   class="principal easyui-textbox"/>
+                                                       class="principal easyui-textbox"/>
                             </td>
                             <td>联系电话：<input id="new_order_customer_phone" class="telephone easyui-textbox"/></td>
                         </tr>
@@ -665,7 +707,7 @@ onClickCell: onClickCell">
                        onclick="printPreview()">打印</a>
                     <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="destroyCustomer()">删除</a>
                     <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true"
-                       onclick="exportExcel(ORDER_GRID, '出库单列表.xls')">导出到excel</a>
+                       onclick="exportExcel(ORDER_GRID, '出货单列表.xls')">导出到excel</a>
                     <span style="margin-left:20px" class="search_label">检索：</span>
                     <input type="text" id="order_search_text" class="search_input"
                            onkeyup="onSearch(this, ORDER_GRID, doSearchOrder)">
@@ -1017,7 +1059,7 @@ onClickCell: onClickCell">
                 <div style="margin-top:20px">
                     <input id="new_pass_again"
                            class="easyui-textbox"
-                           label="重复新密码:" labelAlign="left"  style="width:100%">
+                           label="重复新密码:" labelAlign="left" style="width:100%">
                 </div>
 
                 <div style="margin-top:40px;">
@@ -1030,6 +1072,11 @@ onClickCell: onClickCell">
     </div>
 </div>
 
+<!--<div data-options="region:'south', border:false, height:40">
+    <div style="text-align: center">
+        <div style="height:24px; line-height:24px; margin:6px auto; display: inline-block  ">苏州元斌塑胶科技有限公司版权所有@copyright</div>
+    </div>
+</div>-->
 
 <!-- 客户选择对话框 -->
 <div id="dlg_for_customer_choose" title="选择客户" class="easyui-dialog" style="width:900px; height:550px;"
@@ -1078,32 +1125,15 @@ onClickCell: onClickCell">
     <span style="height:50px;  line-height:50px; margin:0 auto; " id="win_in"></span>
 </div>
 
+<!--
+<div id="title" style="position:absolute; top:0px; left:350px; font-size:16px; height:36px; line-height:36px; z-index:1000000">
+苏州元斌塑胶科技有限公司KIS系统 v1.0
+</div>-->
+
 <script>
 
     const {BrowserWindow} = require('electron').remote
     const {ipcRenderer} = require('electron')
-    let win = require('electron').remote.getCurrentWindow();
-    win.on('close', () => {
-        ipcRenderer.sendSync('app-quit')
-    });
-
-    //const {dialog} = require('electron').remote
-//todo
-    // let exit_app = false
-    // window.onbeforeunload = (e) => {
-    //     if (exit_app) {
-    //         return undefined
-    //     }
-    //     // 与通常的浏览器不同,会提示给用户一个消息框,
-    //     //返回非空值将默认取消关闭
-    //     //建议使用对话框 API 让用户确认关闭应用程序.
-    //     $.messager.confirm('确定','是否确定删除选中的用户?',function(r) {
-    //         if (r) {
-    //
-    //         }
-    //     });
-    //     e.returnValue = false // 相当于 `return false` ，但是不推荐使用
-    // }
 
     $(function () {
         loadConfig(function (config) {
@@ -1128,8 +1158,8 @@ onClickCell: onClickCell">
     });
 
 
-    function loadConfig(callback){
-        mongoose.ConfigModel.findOne({},function(err, doc){
+    function loadConfig(callback) {
+        mongoose.ConfigModel.findOne({}, function (err, doc) {
             if (doc) {
                 callback(doc)
             }
@@ -1147,6 +1177,15 @@ onClickCell: onClickCell">
             preview(row, 'list')
         }
     }
+
+    function maxwin(){
+        require('electron').remote.getCurrentWindow().maximize()
+    }
+
+    function closewin(){
+        require('electron').remote.getCurrentWindow().close()
+    }
+
 
     function preview(order, type) {
         type = type || 'new_order'
@@ -1168,7 +1207,7 @@ onClickCell: onClickCell">
             win_print = null
 
             if (type == 'new_order') {
-                $.messager.confirm('', '是否继续填写出库单?', function (r) {
+                $.messager.confirm('', '是否继续填写出货单?', function (r) {
                     if (r) {
                         resetOrder();
                     } else {

@@ -24,65 +24,90 @@
     <script type="text/javascript" src="scripts/jquery-easyui/jquery.easyui.min.js"></script>
 
     <style type="text/css">
-        *{
-            font-size:12px;
+        * {
+            font-size: 12px;
         }
+
         body {
-            font-family:verdana,helvetica,arial,sans-serif;
-            padding:20px;
-            font-size:12px;
-            margin:0;
+            width:100%;
+            height:100%;
+            font-family: verdana, helvetica, arial, sans-serif;
+            padding: 20px;
+            font-size: 12px;
+            margin: 0;
+            overflow: hidden;
         }
+
         h2 {
-            font-size:18px;
-            font-weight:bold;
-            margin:0;
-            margin-bottom:15px;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+            margin-bottom: 15px;
         }
-        .demo-info{
-            padding:0 0 12px 0;
+
+        .demo-info {
+            padding: 0 0 12px 0;
         }
-        .demo-tip{
-            display:none;
+
+        .demo-tip {
+            display: none;
         }
     </style>
 </head>
 <body>
-<div class="easyui-panel" data-options="border:false, fit:true" style="width:100%;max-width:400px;padding:10px 60px; margin-top:20px;">
+<div class="easyui-panel" data-options="border:false, fit:true"
+     style="width:100%;max-width:400px;padding:10px 60px; margin-top:20px;">
     <div style="margin-bottom:10px">
-        <input class="easyui-textbox" style="width:100%;height:40px;padding:12px" data-options="prompt:'输入账号',iconCls:'icon-man',iconWidth:38">
+        <input class="easyui-textbox" id="username" style="width:100%;height:40px;padding:12px"
+               data-options="prompt:'输入账号',iconCls:'icon-man',iconWidth:38">
     </div>
     <div style="margin-bottom:10px">
-        <input class="easyui-textbox" type="password" style="width:100%;height:40px;padding:12px" data-options="prompt:'输入密码',iconCls:'icon-lock',iconWidth:38">
+        <input class="easyui-textbox" id="password" type="password" style="width:100%;height:40px;padding:12px"
+               data-options="prompt:'输入密码',iconCls:'icon-lock',iconWidth:38">
     </div>
     <div style="margin-bottom:20px">
         <!--<input type="checkbox" checked="checked">
         <span>记住我的账号</span>-->
-        <input class="easyui-checkbox" data-options="labelPosition:'after'" name="rememberme"  label="记住我的账号" />
+        <input class="easyui-checkbox" data-options="labelPosition:'after'" name="rememberme" label="记住我的账号"/>
     </div>
     <div>
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="login()" style="padding:5px 0px;width:100%;">
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="login()"
+           style="padding:5px 0px;width:100%;">
             <span style="font-size:14px;">登录</span>
         </a>
     </div>
 </div>
 <script>
 
+    var no;
     let mongoose = require("./scripts/db")
     const {ipcRenderer} = require('electron')
-    let login_sccess = false;
     const win = require('electron').remote.getCurrentWindow();
-    win.on('close', () => {
-        if (!login_sccess) {
-            ipcRenderer.sendSync('app-quit')
-        }
+
+/*    win.on('close', () => {
+        // 关闭登录窗体，意味着退出系统
+        ipcRenderer.sendSync('app-quit')
+    })*/
+
+    win.on('show', () => {
+        // 每次重新显示登录窗体都清空表单
+        $('#username').textbox('setValue', '')
+        $('#password').textbox('setValue', '')
     })
 
     $.parser.onComplete = function () {
-        win.show()
+        if (no) clearTimeout(no);
+        no = setTimeout(completeLoading, 0);
     }
 
-    function login(){
+    function completeLoading() {
+        // 第一次显示登录窗体
+        if (document.readyState == "complete") {
+            win.show()
+        }
+    }
+
+    function login() {
         login_sccess = true
 
 
@@ -91,14 +116,12 @@
 
 
         //loadConfig(function(config){
-            // localStorage只支持String值
-            //localStorage.setItem('sys_config', JSON.stringify(config));
+        // localStorage只支持String值
+        //localStorage.setItem('sys_config', JSON.stringify(config));
 
 
         //})
     }
-
-
 
 
 </script>

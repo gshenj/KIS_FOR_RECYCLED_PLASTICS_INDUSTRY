@@ -164,23 +164,16 @@
                 }
             }
 
-
             $('#order_product_table').append('<tr id="total_sum_tr">\n' +
                 '                <td colspan="5" style="text-align: right; border-right:none;">\n' +
                 '                合计金额：\n' +
                 '                </td>\n' +
                 '                <td colspan="2" style="text-align:left; border-left:none;"><span id="product_total_sum">'+ order.products_sum+'</span></td>\n' +
                 '            </tr>')
-
-           // console.log(JSON.stringify(order))
         })
-
-
-        //const {ipcRenderer} = require('electron')
 
         function print_order(){
             window.print()
-            //ipcRenderer.send('print')
         }
     </script>
 </head>
@@ -190,7 +183,7 @@
     <div style="text-align:center;">
         <div class="company">
             <div id="company_name"></div>
-            <div style="font-size:16pt; word-spacing: 2pt;">出 库 单</div>
+            <div style="font-size:16pt; word-spacing: 2pt;">出货单</div>
         </div>
 
         <table style="width:100%; text-align:left; border-bottom:1px solid black;">
@@ -202,7 +195,7 @@
             <tr>
                 <td style="width:35%">电话：<span id="company_phone"></span></td>
                 <td style="width:35%">传真：<span id="company_fax"></span></td>
-                <td style=" width:30%; text-align: right; padding-right:2px;">出库单号： <span id="order_number"></span></td>
+                <td style=" width:30%; text-align: right; padding-right:2px;">出货单号： <span id="order_number"></span></td>
             </tr>
         </table>
 

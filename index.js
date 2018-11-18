@@ -1,4 +1,4 @@
-var {app, BrowserWindow, ipcMain} = require('electron');  // Module to control application life.
+var {app, BrowserWindow, ipcMain, dialog} = require('electron');  // Module to control application life.
 //var BrowserWindow = require('electron').browser-window;  // Module to create native browser window.
 
 // Report crashes to our server.
@@ -13,7 +13,7 @@ var loginWindow = null;
 
 global.globalObj = {
     order: {},
-    config:{}
+    config: {}
 };
 
 
@@ -32,76 +32,117 @@ var session = {};
 // initialization and is ready to create browser windows.
 app.on('ready', function () {
     // Create the browser window.
+    createLoginWindow()
     createMainWindow()
-    showLoginWindow()
 });
 
-function createMainWindow(){
+let need_close_confirm = true;
+
+function createMainWindow() {
     mainWindow = new BrowserWindow({
         width: 1000,
         height: 750,
         show: false,
+       // frame:false,
         backgroundColor: '#2e2c29',
         autoHideMenuBar: true//,
     });
 
+    //关闭确认对话框
+    mainWindow.on('close', (e) => {
+        if (need_close_confirm) {
+            e.preventDefault()
+            dialog.showMessageBox(mainWindow, {
+                type: 'info',
+                title: '确认退出',
+                message: '确定退出系统吗',
+                buttons: ['yes', 'no']
+            }, (index) => {
+                if (index == 0) {
+                    need_close_confirm = false;
+                    mainWindow.close()
+                    mainWindow = null
+                    loginWindow.close()
+                }
+            });
+        }
+    })
+
+
     mainWindow.on('closed', function () {
         mainWindow = null;
     });
+
     mainWindow.loadURL('file://' + __dirname + '/index1.html');
 }
 
-function showLoginWindow() {
+function createLoginWindow() {
     loginWindow = new BrowserWindow({
         width: 410,
         height: 280,
-        maximizable:false,
-        resizable:false,
-        minimizable:false,
+        maximizable: false,
+        resizable: false,
+        minimizable: false,
         show: false,
-        title:'系统登录',
+        title: '系统登录',
         autoHideMenuBar: true
     })
     loginWindow.loadURL('file://' + __dirname + '/login.html');
-    loginWindow.on('closed', function () {
-        loginWindow = null;
-    });
 
-    //loginWindow.show();
+    loginWindow.on('close', function () {
+        need_close_confirm = false
+        if (mainWindow)
+            mainWindow.close()
+    })
+
+    loginWindow.on('closed', function () {
+        loginWindow = null
+    })
+    //loginWindow.show()
 }
 
+/*
 ipcMain.on('set-config', (event, arg) => {
     global["config"] = arg
-    console.log("set config. "+JSON.stringify(arg))
+    console.log("set config. " + JSON.stringify(arg))
     event.returnValue = null;
 })
 
 ipcMain.on('set-order', (event, arg) => {
     global["order"] = arg
-    console.log("set order."+JSON.stringify(arg))
+    console.log("set order." + JSON.stringify(arg))
     event.returnValue = null;
 })
+*/
 
 
-// 登录成功
+// 登录成功消息
 ipcMain.on('login-success', (event, arg) => {
     console.log("on login-success.")
     //mainWindow.setTitle(arg)
     mainWindow.show()
-    loginWindow.close()
+    loginWindow.hide()
+    //loginWindow.webContents.reload()
     event.returnValue = null;
 });
 
+// 退出登录消息
 ipcMain.on('logout', (event, arg) => {
     mainWindow.hide()
+
+    // 重置页面
     mainWindow.loadURL('file://' + __dirname + '/index1.html')
     mainWindow.setSize(1000, 750)
-    showLoginWindow()
-    event.returnValue = null;
+
+    loginWindow.show()
+    event.returnValue = null
 })
 
+// 退出系统消息
+/*
 ipcMain.on('app-quit', (event, arg) => {
     console.log("app-quite message.")
+    need_close_confirm = false
     if (mainWindow) {
         mainWindow.close()
     }
@@ -116,6 +157,7 @@ ipcMain.on('app-quit', (event, arg) => {
 
     event.returnValue = null;
 })
+*/
 
 
 /*
