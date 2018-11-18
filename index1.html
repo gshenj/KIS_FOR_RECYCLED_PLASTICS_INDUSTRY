@@ -127,10 +127,25 @@
         .test {
             background: -webkit-gradient(linear, 0 0, 0 100%, from(rgb(255, 255, 255)), to(rgb(234, 237, 241)));
         }
+
+        a.account_logo {
+            margin-top:31px;
+            width:48px;
+            height:48px;
+            border-radius:50%; display:inline-block; _float:left; background-image: url('images/account_logo.png')
+        }
+        a:hover.account_logo{
+            background-color:#fff;
+        }
+
+        #title_bar {
+            -webkit-app-region: drag;
+            background-color:#fff;width:100%;height:30px;line-height: 30px;padding-left: 30px;font-size:12px;
+        }
+
     </style>
 
     <script>
-
 
         $.extend($.fn.textbox.methods, {
             addClearBtn: function (jq, iconCls) {
@@ -193,14 +208,13 @@
       style=" padding:0; margin:0;overflow-y: hidden;overflow-x: hidden; height:100%">
 
 <div data-options="region:'north',split:false, border:false"
-     style="height:84px;width:100%; -webkit-user-select: none;  margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
+     style="height:114px;width:100%; -webkit-user-select: none;  margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
 
-    <!--<div class="easyui-layout" data-options="border:false, fit:true">-->
-        <!--<div data-options="region:'west', border:false" style="width:106px; height:106px; float:left;background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));">user logo</div>-->
+    <div id="title_bar"><span style="width:20px; height:20px;"></span>苏州元斌塑胶科技有限公司</div>
 
-        <!--<div data-options="region:'center', border:false">-->
-            <div id="tt" class="easyui-tabs" data-options="border:false, tools:'#tab-tools', tabWidth:120, tabHeight:26, height:88, plain:true"
-                 style="width:100%; padding-left:70px; margin:0;">
+
+    <div id="tt" class="easyui-tabs" data-options="border:false, tabWidth:120, tabHeight:26, height:88, plain:true"
+                 style="width:100%;  margin:0;">
 
                 <div title="送货单管理" data-options="border:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:6px;  -webkit-user-select: none; ">
@@ -250,31 +264,15 @@
         <!--</div>-->
     <!--</div>-->
 
-    <div id="tab-tools" style="-webkit-app-region: no-drag;">
 
-        <!--<a href="javascript:void(0)" style="width:40px;">账户信息</a>-->
-        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add'" onclick="maxwin()"></a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove'" onclick="closewin()"></a>
+
+    <div style="width:70px; position: absolute;top:30px; right:0px; border:none; background:transparent; height:84px; line-height:84px;-webkit-app-region: no-drag;">
+        <!--<div style="width:70px; height:27px; background-color:#ffffff;border-bottom:1px solid #95B8E7"></div>-->
+        <!--<div class="test" style="width:70px; height:57px; line-height:57px; padding:0;">-->
+            <a class="account_logo" href="#"></a>
+        <!--</div>-->
     </div>
 
-
-    <div style="width:70px; position: absolute;top:0; left:0px; border:none; height:84px; line-height:84px;-webkit-app-region: no-drag;">
-        <div style="width:70px; height:27px; background-color:#ffffff;border-bottom:1px solid #95B8E7"></div>
-        <div class="test" style="width:70px; height:57px;">
-            <!--<a href="#" class="easyui-menubutton" data-options="menu:'#mm1',showEvent:'click'" style="font-size:12px; height:20px; line-height:20px;">用户信息</a>-->
-
-        </div>
-    </div>
-
-    <div style="width:64px; position: absolute;top:2px; left:4px; border:none; height:64px; line-height:64px; ">
-        <img src="images/account_logo.png" />
-    </div>
-
-
-
-    <div id="mm1" style="width:150px;">
-        <div>Cut</div>
-    </div>
 </div>
 
 
@@ -1125,6 +1123,38 @@ onClickCell: onClickCell">
     <span style="height:50px;  line-height:50px; margin:0 auto; " id="win_in"></span>
 </div>
 
+<!--<div id="account_info" >-->
+    <div id="account_info" class="easyui-menu" data-options="hideOnUnhover:false" style="width:120px;">
+        <div>账号信息</div>
+        <div>密码修改</div>
+        <div>注销登录</div>
+        <div class="menu-sep"></div>
+
+        <div>退出系统</div>
+        <div class="menu-sep"></div>
+
+        <div>检查更新</div>
+        <div>系统设置</div>
+        <div>关于</div>
+        <!--<div id="mm1" class="easyui-menu" style="width:120px;">-->
+            <!--<div>账号信息</div>-->
+            <!--<div>-->
+                <!--<span>Open</span>-->
+                <!--<div style="width:150px;">-->
+                    <!--<div><b>Word</b></div>-->
+                    <!--<div>Excel</div>-->
+                    <!--<div>PowerPoint</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div data-options="iconCls:'icon-save'">Save</div>-->
+            <!--<div class="menu-sep"></div>-->
+            <!--<div>Exit</div>-->
+        <!--</div>-->
+    </div>
+
+<!--</div>-->
+
+
 <!--
 <div id="title" style="position:absolute; top:0px; left:350px; font-size:16px; height:36px; line-height:36px; z-index:1000000">
 苏州元斌塑胶科技有限公司KIS系统 v1.0
@@ -1155,6 +1185,17 @@ onClickCell: onClickCell">
                 return d1 <= date && date <= d2;
             }
         });
+
+
+        $('.account_logo').bind('click', function (e){
+            e.preventDefault();
+            $('#account_info').menu('show', {
+                left: e.pageX,
+                top: 75
+            })
+        });
+
+
     });
 
 
