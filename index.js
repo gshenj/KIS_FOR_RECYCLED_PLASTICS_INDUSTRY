@@ -41,9 +41,9 @@ let need_close_confirm = true;
 function createMainWindow() {
     mainWindow = new BrowserWindow({
         width: 1000,
-        height: 750,
+        height: 700,
         show: false,
-       // frame:false,
+        frame:false,
         backgroundColor: '#2e2c29',
         autoHideMenuBar: true//,
     });
@@ -83,6 +83,7 @@ function createLoginWindow() {
         maximizable: false,
         resizable: false,
         minimizable: false,
+        frame:false,
         show: false,
         title: '系统登录',
         autoHideMenuBar: true

@@ -21,7 +21,8 @@
     </script>
 
 
-    <link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/default/easyui.css">
+    <!--<link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/material-teal/easyui.css">-->
+    <link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/ui-cupertino/easyui.css">
     <link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/color.css">
     <link rel="stylesheet" type="text/css" href="./scripts/DataTables/datatables.css">
@@ -65,6 +66,7 @@
             /*font-family:  "Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;*/
             font: 12px/1.5 Tahoma, Helvetica, Arial, '宋体', sans-serif;
 
+            background-color:#fff;
             /*font: 12px/1 Tahoma,Helvetica,Arial,"\5b8b\4f53",sans-serif;*/
 
             /*ok*/
@@ -119,30 +121,85 @@
         .tabs {
             -webkit-app-region: drag;
         }
+
         .tabs li, .tabs-panels {
             -webkit-app-region: no-drag;
         }
-
 
         .test {
             background: -webkit-gradient(linear, 0 0, 0 100%, from(rgb(255, 255, 255)), to(rgb(234, 237, 241)));
         }
 
         a.account_logo {
-            margin-top:31px;
-            width:48px;
-            height:48px;
-            border-radius:50%; display:inline-block; _float:left; background-image: url('images/account_logo.png')
+            margin-top: 31px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: inline-block;
+            _float: left;
+            background-image: url('images/account_logo.png')
         }
-        a:hover.account_logo{
-            background-color:#fff;
+
+        a:hover.account_logo {
+            background-color: #fff;
         }
 
         #title_bar {
             -webkit-app-region: drag;
-            background-color:#fff;width:100%;height:30px;line-height: 30px;padding-left: 30px;font-size:12px;
+            border: 0px solid red;
+            background-color: #ffffff;
+            width: 100%;
+            height: 24px;
+            line-height: 24px;
+            /*padding-left: 30px;*/
+            font-size: 12px;
         }
 
+        .win_btn_tb {
+            width: 135px;
+            height: 24px;
+            text-align: left;
+            position: absolute;
+            border-collapse: collapse;
+            top: 0px;
+            right: 2px;
+        }
+
+        a.win_btn {
+            width: 45px;
+            height: 24px;
+            text-align: center;
+            display: block;
+            -webkit-app-region: no-drag;
+            cursor: default;
+
+        }
+
+        win_btn_tb td {
+            padding: 0 4px;
+        }
+
+        .win_btn_tb a:hover {
+            background-color: #eee;
+
+        }
+
+        .win_btn_tb a:hover#close_btn {
+            background-color: red
+
+        }
+
+        .win_btn_tb a svg {
+            fill: #666666;
+        }
+
+        .win_btn_tb a:hover svg {
+            fill: black;
+        }
+
+        .win_btn_tb a:hover#close_btn svg {
+            fill: white;
+        }
     </style>
 
     <script>
@@ -210,66 +267,115 @@
 <div data-options="region:'north',split:false, border:false"
      style="height:114px;width:100%; -webkit-user-select: none;  margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
 
-    <div id="title_bar"><span style="width:20px; height:20px;"></span>苏州元斌塑胶科技有限公司</div>
+    <div id="title_bar">
+        <div style="height:20px; width:20px; margin:3px 2px 0px 5px; line-height: 20px; float:left; background-color:#fff;">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" width="18px" height="18px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
+<g><path fill="#1f637b" d="M418,496.3c0-17.3-15.2-31.3-34-31.3H232.3c-18.8,0-34,14.1-34,31.3c0,17.3,15.2,31.3,34,31.3H384C402.8,527.6,418,513.5,418,496.3z M135.3,857.2c-25.8,0-46.8-21.3-46.8-47.5V182.7c0-26.2,20.9-47.4,46.8-47.4h502.8c25.8,0,46.8,21.3,46.8,47.4v219.4c27.3,0,53.2,4.6,78.5,11.1V103.8c0-25.9-21.2-47-47.5-47H57.5c-26.2,0-47.5,21.1-47.5,47v784.9c0,25.9,21.3,47,47.5,47h403.6c-22.4-22.8-40.4-49.7-55.1-78.5L135.3,857.2L135.3,857.2z M632.6,626l-47.9,47.8l86.9,86.6l-1,1l47.8,47.8l1-1l1,1l47.9-47.8l-1-1L990,538.3l-47.9-47.8L719.5,712.6L632.6,626z M353,621.8H231.9c-18.6,0-33.6,14.1-33.6,31.3c0,17.4,15,31.4,33.6,31.4H353c18.6,0,33.6-14.1,33.6-31.4C386.6,635.8,371.6,621.8,353,621.8z M865,731.8c-12.4,80.1-81.2,141.5-164.9,141.5c-92.6,0-167.6-74.9-167.6-167.2c0-92.3,75-167.2,167.6-167.2c35.3,0,67.9,11,94.9,29.6l49.5-49.4c-40.1-30.9-89.8-50.1-144.5-50.1C568.8,468.9,462.4,575,462.4,706c0,130.9,106.4,237.1,237.7,237.1c131.3,0,237.7-106.2,237.7-237.1c0-14.6-1.8-28.7-4.3-42.6L865,731.8z M590.6,323.7c0-17.3-15-31.4-33.8-31.4H232.2c-18.7,0-33.8,14.1-33.8,31.4s15.1,31.3,33.8,31.3h324.7C575.6,355,590.6,340.9,590.6,323.7z"/></g>
+            </svg>
+        </div>
+        <div style="height:24px; line-height:24px; margin:0 0 0 2px; padding:0;  float:left; display: inline-block; ">苏州元斌塑胶科技有限公司 KIS系统 v1.0</div>
+
+        <table class="win_btn_tb" style="">
+
+            <tr>
+                <td>
+                    <a class="win_btn" onclick="minwin()">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"  width="10px" height="10px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
+                <g><path d="M10,475.5h980v49H10V475.5z"/></g>
+            </svg>
+                    </a>
+
+                <td>
+                    <a class="win_btn" href="#" onclick="maxwin()">
+                        <svg id="to_unmax" style="display:none;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"  width="10px" height="10px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
+              <g><path d="M930.6,705.1H754.3v168v59.4v1.1h-59.4v-1.1H69.4v1.1H10v-1.1v-59.4V353.6v-59.4h59.4h168.4V66.4h4.1h55.3h633.4h55.6h3.8v579.3v59.4H930.6z M69.4,873.1h625.5v-168v-59.4V353.6H69.4V873.1z M930.6,125.8H297.2v168.4h397.7h59.4v59.4v292.1h176.3V125.8z"/></g>
+            </svg>
+
+             <svg id="to_max" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="10px" height="10px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
+                <!--<g><g transform="matrix(1 0 0 -1 0 1008)"><path d="M316.3,171.1v-30.6H10v306.3h30.6V171.1H316.3z M316.3,875.5v-30.6H40.6V569.3H10v306.3H316.3z M990,446.8V140.5H668.4v30.6h290.9v275.6H990z M990,875.5V569.3h-30.6v275.6H683.8v30.6H990z"/></g></g>-->
+               <g><g><path d="M10,10v980h980V10H10z M934,934H66V66h868V934z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></g>
+
+                </svg>
+                    </a>
+                </td>
 
 
-    <div id="tt" class="easyui-tabs" data-options="border:false, tabWidth:120, tabHeight:26, height:88, plain:true"
-                 style="width:100%;  margin:0;">
+                <td>
+                    <a class="win_btn" href="#" id="close_btn" onclick="closewin()">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"  width="10px" height="10px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
+                    <!--<path d="M500,516.3l457.3,457.3L990,941L532.7,483.7L957.3,59l-32.7-32.7L500,451L75.3,26.3L42.7,59l424.7,424.7L10,941l32.7,32.7L500,516.3z" />-->
+<!--<g><path d="M990,60.7L548.1,502.8l436.5,436.7l-50.6,50.6L497.6,553.4L64.5,986.8L13.8,936l433.1-433.3L10,65.7l50.6-50.6l436.9,437L939.3,9.9L990,60.7z"/></g>-->
+                            <g><path d="M990,54.1l-43.3-43.4L500,456.7L53.3,10.7L10,54.1l446.6,446L10,946l43.3,43.3l446.7-446l446.7,446L990,946L543.4,500L990,54.1z"/></g>
 
-                <div title="送货单管理" data-options="border:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+
+                </svg>
+                    </a>
+                </td>
+            </tr>
+
+
+        </table>
+
+
+    </div>
+
+
+    <div id="tt" class="easyui-tabs" data-options="border:false, tabWidth:120, tabHeight:26, height:94, plain:true"
+         style="width:100%;  margin:0;">
+
+        <div title="送货单管理" data-options="border:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:6px;  -webkit-user-select: none; ">
-                    <div style="float:left; width:60%; padding:0px;">
-                        <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
-                           onclick="show_panel(this, 'order_input_panel')"
-                           data-options="plain:true, iconCls:'icon-large-neworder', size:'large', iconAlign:'left'">单据填开</a>
-                        <a id="order_list_menu" class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
-                           onclick="show_panel(this, 'orders_grid_panel')"
-                           data-options="plain:true, iconCls:'icon-large-orderlist', size:'large', iconAlign:'left'">单据查询</a>
-                        <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
-                           onclick="show_panel(this, 'order_report_panel')"
-                           data-options="plain:true, iconCls:'icon-large-orderreport', size:'large', iconAlign:'left'">统计报表</a>
-                    </div>
-                </div>
-
-                <div title="资料管理" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
-	padding:6px;">
-                    <div style="float:left; width:60%; padding:0px;">
-                        <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'customer_manage_panel')"
-                           data-options="plain:true, iconCls:'icon-large-customerconfig', size:'large', iconAlign:'left'">客户管理</a>
-
-                        <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'product_manage_panel')"
-                           data-options="plain:true, iconCls:'icon-large-productmanage',size:'large', iconAlign:'left'">产品管理</a>
-
-                        <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'driver_manage_panel')"
-                           data-options="plain:true, iconCls:'icon-large-drivermanage',size:'large',iconAlign:'left'">司机管理</a>
-                    </div>
-                </div>
-
-                <div title="系统设置" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
-	padding:6px;">
-                    <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'user_manage_panel')"
-                       data-options="plain:true,  size:'large', iconCls:'icon-large-usermanage', iconAlign:'left'">用户管理</a>
-                    <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'sys_config_panel')"
-                       data-options="plain:true, size:'large', iconCls:'icon-large-sysconfig', iconAlign:'left'">系统参数</a>
-                </div>
-
-                <div title="我的账户" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
-	padding:6px;">
-                    <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'password_set_panel')"
-                       data-options="plain:true, iconCls:'icon-large-passwordmanage', size:'large',iconAlign:'left'">密码设置</a>
-                    <a class="easyui-linkbutton tool_button" onclick="logout()"
-                       data-options="plain:true, size:'large', iconCls:'icon-large-logout', iconAlign:'left'">注销登录</a>
-                </div>
+            <div style="float:left; width:60%; padding:0px;">
+                <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
+                   onclick="show_panel(this, 'order_input_panel')"
+                   data-options="plain:true, iconCls:'icon-large-neworder', size:'large', iconAlign:'left'">单据填开</a>
+                <a id="order_list_menu" class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
+                   onclick="show_panel(this, 'orders_grid_panel')"
+                   data-options="plain:true, iconCls:'icon-large-orderlist', size:'large', iconAlign:'left'">单据查询</a>
+                <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
+                   onclick="show_panel(this, 'order_report_panel')"
+                   data-options="plain:true, iconCls:'icon-large-orderreport', size:'large', iconAlign:'left'">统计报表</a>
             </div>
-        <!--</div>-->
+        </div>
+
+        <div title="资料管理" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+	padding:6px;">
+            <div style="float:left; width:60%; padding:0px;">
+                <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'customer_manage_panel')"
+                   data-options="plain:true, iconCls:'icon-large-customerconfig', size:'large', iconAlign:'left'">客户管理</a>
+
+                <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'product_manage_panel')"
+                   data-options="plain:true, iconCls:'icon-large-productmanage',size:'large', iconAlign:'left'">产品管理</a>
+
+                <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'driver_manage_panel')"
+                   data-options="plain:true, iconCls:'icon-large-drivermanage',size:'large',iconAlign:'left'">司机管理</a>
+            </div>
+        </div>
+
+        <div title="系统设置" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+	padding:6px;">
+            <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'user_manage_panel')"
+               data-options="plain:true,  size:'large', iconCls:'icon-large-usermanage', iconAlign:'left'">用户管理</a>
+            <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'sys_config_panel')"
+               data-options="plain:true, size:'large', iconCls:'icon-large-sysconfig', iconAlign:'left'">系统参数</a>
+        </div>
+
+        <div title="我的账户" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+	padding:6px;">
+            <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'password_set_panel')"
+               data-options="plain:true, iconCls:'icon-large-passwordmanage', size:'large',iconAlign:'left'">密码设置</a>
+            <a class="easyui-linkbutton tool_button" onclick="logout()"
+               data-options="plain:true, size:'large', iconCls:'icon-large-logout', iconAlign:'left'">注销登录</a>
+        </div>
+    </div>
+    <!--</div>-->
     <!--</div>-->
 
 
-
-    <div style="width:70px; position: absolute;top:30px; right:0px; border:none; background:transparent; height:84px; line-height:84px;-webkit-app-region: no-drag;">
+    <div style="width:70px; position: absolute;top:24px; right:0px; border:none; background:transparent; height:84px; line-height:84px;-webkit-app-region: no-drag;">
         <!--<div style="width:70px; height:27px; background-color:#ffffff;border-bottom:1px solid #95B8E7"></div>-->
         <!--<div class="test" style="width:70px; height:57px; line-height:57px; padding:0;">-->
-            <a class="account_logo" href="#"></a>
+        <a class="account_logo" ></a>
         <!--</div>-->
     </div>
 
@@ -672,7 +778,7 @@ onClickCell: onClickCell">
                         <td style="padding:10px 0;">客户名称:</td>
                         <td style="width:200px;padding:10px 0;">
                             <input id="customer_choose_for_order_list" class="easyui-textbox"
-                                   data-options="prompt:'选择客户'" style="width:100%;height:32px;">
+                                   data-options="prompt:'选择客户'" style="width:100%;">
                         </td>
                     </tr>
 
@@ -833,7 +939,7 @@ onClickCell: onClickCell">
                     说明：未选择客户，则为管理通用产品信息。
                 </div>
                 <input id="customer_choose_for_product_manage" class="easyui-textbox"
-                       data-options="buttonText:'选择客户',prompt:'选择客户'" style="width:100%;height:32px;">
+                       data-options="buttonText:'选择客户',prompt:'选择客户'" style="width:100%;">
 
 
                 <div id="selected_customer_info" style="width:100%; height:300px;"></div>
@@ -1124,33 +1230,33 @@ onClickCell: onClickCell">
 </div>
 
 <!--<div id="account_info" >-->
-    <div id="account_info" class="easyui-menu" data-options="hideOnUnhover:false" style="width:120px;">
-        <div>账号信息</div>
-        <div>密码修改</div>
-        <div>注销登录</div>
-        <div class="menu-sep"></div>
+<div id="account_info" class="easyui-menu" data-options="hideOnUnhover:false,onClick:menuHandler" style="width:120px;">
+    <div name="account_info">账号信息</div>
+    <div>密码修改</div>
+    <div name="logout">注销登录</div>
+    <div class="menu-sep"></div>
 
-        <div>退出系统</div>
-        <div class="menu-sep"></div>
+    <div name="exit">退出系统</div>
+    <div class="menu-sep"></div>
 
-        <div>检查更新</div>
-        <div>系统设置</div>
-        <div>关于</div>
-        <!--<div id="mm1" class="easyui-menu" style="width:120px;">-->
-            <!--<div>账号信息</div>-->
-            <!--<div>-->
-                <!--<span>Open</span>-->
-                <!--<div style="width:150px;">-->
-                    <!--<div><b>Word</b></div>-->
-                    <!--<div>Excel</div>-->
-                    <!--<div>PowerPoint</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div data-options="iconCls:'icon-save'">Save</div>-->
-            <!--<div class="menu-sep"></div>-->
-            <!--<div>Exit</div>-->
-        <!--</div>-->
-    </div>
+    <div>检查更新</div>
+    <div>系统设置</div>
+    <div name="about">关于</div>
+    <!--<div id="mm1" class="easyui-menu" style="width:120px;">-->
+    <!--<div>账号信息</div>-->
+    <!--<div>-->
+    <!--<span>Open</span>-->
+    <!--<div style="width:150px;">-->
+    <!--<div><b>Word</b></div>-->
+    <!--<div>Excel</div>-->
+    <!--<div>PowerPoint</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div data-options="iconCls:'icon-save'">Save</div>-->
+    <!--<div class="menu-sep"></div>-->
+    <!--<div>Exit</div>-->
+    <!--</div>-->
+</div>
 
 <!--</div>-->
 
@@ -1162,8 +1268,38 @@ onClickCell: onClickCell">
 
 <script>
 
+    function menuHandler(item){
+        switch (item.name) {
+            case 'logout':
+                logout();
+                break;
+            case 'about':
+                // show about
+                break;
+            case 'exit':
+                //
+                closewin()
+                break;
+            default:
+                ;
+        }
+    }
+
+
     const {BrowserWindow} = require('electron').remote
     const {ipcRenderer} = require('electron')
+    const win = require('electron').remote.getCurrentWindow();
+    win.on('maximize', function(){
+        $('#to_max').hide();
+        $('#to_unmax').show();
+        console.log('max')
+    })
+
+    win.on('unmaximize', function(){
+        $('#to_unmax').hide();
+        $('#to_max').show();
+        console.log('unmax')
+    })
 
     $(function () {
         loadConfig(function (config) {
@@ -1187,11 +1323,11 @@ onClickCell: onClickCell">
         });
 
 
-        $('.account_logo').bind('click', function (e){
+        $('.account_logo').bind('click', function (e) {
             e.preventDefault();
             $('#account_info').menu('show', {
                 left: e.pageX,
-                top: 75
+                top: 105
             })
         });
 
@@ -1219,19 +1355,30 @@ onClickCell: onClickCell">
         }
     }
 
-    function maxwin(){
-        require('electron').remote.getCurrentWindow().maximize()
+
+    function maxwin() {
+
+        if (win.isMaximized()) {
+
+            win.unmaximize()
+        } else {
+
+            win.maximize()
+        }
     }
 
-    function closewin(){
-        require('electron').remote.getCurrentWindow().close()
+    function minwin() {
+        win.minimize()
+    }
+
+    function closewin() {
+        win.close()
     }
 
 
     function preview(order, type) {
         type = type || 'new_order'
         localStorage.setItem('order', JSON.stringify(order));
-        let parent = require('electron').remote.getCurrentWindow()
         let win_print = new BrowserWindow({
             width: 800,
             height: 570,
@@ -1240,7 +1387,7 @@ onClickCell: onClickCell">
             maximizable: false,
             minimizable: false,
             resizable: false,
-            parent: parent,
+            parent: win,
             title: '打印',
             autoHideMenuBar: true
         })
