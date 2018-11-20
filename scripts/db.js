@@ -71,10 +71,12 @@ var order = {
 }
 var orderSchema = new Schema(order);
 
-
+let ip_address = localStorage.getItem("db_address")  || 'localhost'
+let db_address = 'mongodb://'+ip_address+':27017'
+console.log(db_address)
 
 /**DB utils **/
-mongoose.connect('mongodb://localhost:27017',{dbName:'kis', useNewUrlParser:true});
+mongoose.connect(db_address,{dbName:'kis', useNewUrlParser:true});
 
 SequenceModel = mongoose.model('sequence', sequenceSchema, 'sequences')
 ConfigModel = mongoose.model('config', configSchema, 'configs')

@@ -1,4 +1,3 @@
-
 //获取浏览器页面可见高度和宽度
 var _PageHeight = document.documentElement.clientHeight,
     _PageWidth = document.documentElement.clientWidth;
@@ -8,10 +7,10 @@ var _LoadingTop = _PageHeight > 61 ? (_PageHeight - 61) / 2 : 0,
     _LoadingLeft = _PageWidth > 215 ? (_PageWidth - 215) / 2 : 0;
 
 //加载gif地址
-var Loadimagerul="./scripts/jquery-easyui/themes/default/images/loading.gif";
+var Loadimagerul = "./scripts/jquery-easyui/themes/default/images/loading.gif";
 
 //在页面未加载完毕之前显示的loading Html自定义内容
-var _LoadingHtml = '<div id="loadingDiv" style="position:absolute;left:0;width:100%;height:100%;top:0;background:#f3f8ff;opacity:1;filter:alpha(opacity=80);z-index:10000;"><div style="position: absolute; cursor1: wait; left: ' + _LoadingLeft + 'px; top:' + _LoadingTop + 'px; width:100px;; height: 39px; line-height: 39px; padding-left: 40px; padding-right: 5px; background: #fff url('+Loadimagerul+') no-repeat scroll 5px 12px; border: 2px solid #95B8E7; color: #696969; font-family:\'Microsoft YaHei\';">程序加载中 ...</div></div>';
+var _LoadingHtml = '<div id="loadingDiv" style="position:absolute;left:0;width:100%;height:100%;top:0;background:#f3f8ff;opacity:1;filter:alpha(opacity=80);z-index:10000;"><div style="position: absolute; cursor1: wait; left: ' + _LoadingLeft + 'px; top:' + _LoadingTop + 'px; width:100px;; height: 39px; line-height: 39px; padding-left: 40px; padding-right: 5px; background: #fff url(' + Loadimagerul + ') no-repeat scroll 5px 12px; border: 2px solid #95B8E7; color: #696969; font-family:\'Microsoft YaHei\';">程序加载中 ...</div></div>';
 
 //呈现loading效果
 document.write(_LoadingHtml);
@@ -23,16 +22,18 @@ $.parser.onComplete = function () {
     no = setTimeout(completeLoading, 0);
 }
 
-$.extend($.messager.defaults,{
-    ok:"确定",
-    cancel:"取消"
+$.extend($.messager.defaults, {
+    ok: "确定",
+    cancel: "取消"
 });
 
 //加载状态为complete时移除loading效果
 function completeLoading() {
-    if (document.readyState == "complete") {
-        var loadingMask = document.getElementById('loadingDiv');
-        if(loadingMask)
-            loadingMask.parentNode.removeChild(loadingMask);
-    }
+    //if (document.readyState == "complete") {
+    var loadingMask = document.getElementById('loadingDiv');
+    if (loadingMask)
+        loadingMask.parentNode.removeChild(loadingMask);
+
+    showMainWindow()
+    // }
 }
