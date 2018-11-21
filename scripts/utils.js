@@ -113,3 +113,17 @@ function nextSeq(seq_name, callback) {
     })
 }
 
+
+
+
+
+
+function loadUnits(callback) {
+    UnitsModel.find({}, function (err, units) {
+        let unitsData =  { text: "车型载重", children: [] }
+        for (let i = 0; i < units.length; i++) {
+            unitsData.children.push({ "text": units[i] })
+        }
+        callback(unitsData)
+    })
+}

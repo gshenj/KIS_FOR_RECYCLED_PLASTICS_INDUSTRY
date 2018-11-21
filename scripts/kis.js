@@ -44,9 +44,21 @@ function onOpenOrderListPanel(){
  */
 function onOpenUserManagePanel() {
     // 加载角色树
-    mongoose.getSysRoleTreeData(function (data) {
+    getSysRoleTree(function (data) {
         let tree = $('#role_tree').tree('loadData', data)
         loadSysUsers(tree.tree("getRoot"))
+    })
+}
+
+
+
+function getSysRoleTree(callback) {
+    let tree_root = { text: "系统角色", children: [] };
+    RoleModel.find({}, function (err, roles) {
+        for (let i = 0; i < roles.length; i++) {
+            tree_root.children.push({ "text": roles[i].role })
+        }
+        callback([tree_root])
     })
 }
 
@@ -56,7 +68,7 @@ function onOpenUserManagePanel() {
  */
 function onOpenCustomerManagePanel() {
     // 加载分类树
-    loadClassifications(function (data) {
+    loadClassificationTree(function (data) {
         $('#classification_tree').tree('loadData', data)
     })
 
@@ -64,6 +76,30 @@ function onOpenCustomerManagePanel() {
     console.log("Load customers")
     loadCustomerGrid(null)
 }
+
+
+function loadClassificationTree(callback) {
+
+    let data = {text: "客户编码"}
+    ClassificationModel.findOne({}, function (err, classification) {
+
+        if (classification == null) {
+            console.log("classification is null")
+            callback([data]);
+            return;
+        }
+
+        let arr = classification.classifications     //{classifications:[{name:"江苏",children:[]}]}
+        let children = []
+        for (let i = 0; i < arr.length; i++) {
+            children.push(classificationToTree(arr[i]))
+        }
+        data.children = children
+        callback([data])
+    })
+}
+
+
 
 /**
  * 打开产品管理页面触发函数
@@ -80,7 +116,7 @@ function onOpenSysConfigPanel(){
 
     // can load form localstorge
     // load configs
-    mongoose.ConfigModel.findOne({}, function(err,doc){
+    ConfigModel.findOne({}, function(err,doc){
         handleError(err)
         $('#company_name').textbox('setValue', doc.company_name)
         $('#company_phone').textbox('setValue', doc.company_phone)
@@ -114,10 +150,29 @@ function exportExcel(datagrid, filename) {
 
 let DRIVER_GRID = null
 function onOpenDriverManagePanel() {
-    // load driver grid
-    loadDriverGrid()
-
+     // 加载货车类型树
+    loadCartypeTree()
 }
+
+
+function loadCartypeTree(){
+    loadCartypes(function (data) {
+        let tree = $('#cartype_tree').tree('loadData', data)
+        loadDriverGrid()
+    })
+}
+
+
+function loadCartypes(callback) {
+    CartypeModel.find({}, function (err, types) {
+        let carTypesData =  { text: "车型载重", children: [] }
+        for (let i = 0; i < types.length; i++) {
+            carTypesData.children.push({ "text": types[i] })
+        }
+        callback([carTypesData])
+    })
+}
+
 
 function loadDriverGrid(params){
     if (DRIVER_GRID == null) {
@@ -233,7 +288,4 @@ function destroyDriver(){
     }
 }
 
-function loadCarTypes(){
-
-}
 

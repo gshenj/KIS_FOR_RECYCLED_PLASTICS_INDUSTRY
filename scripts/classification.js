@@ -80,27 +80,6 @@ function delete_classification_tree_node() {
 }
 
 
-function loadClassifications(callback) {
-
-    let data = {text: "客户编码"}
-    mongoose.ClassificationModel.findOne({}, function (err, classification) {
-
-        if (classification == null) {
-            console.log("classification is null")
-            callback([data]);
-            return;
-        }
-
-        let arr = classification.classifications     //{classifications:[{name:"江苏",children:[]}]}
-        let children = []
-        for (let i = 0; i < arr.length; i++) {
-            children.push(classificationToTree(arr[i]))
-        }
-        data.children = children
-        callback([data])
-    })
-}
-
 
 function saveClassifications(tree, callback) {
     let treeRoot = tree.tree('getRoot')
