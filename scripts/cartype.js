@@ -33,40 +33,24 @@ function delete_cartype_tree_node() {
 }
 
 
+//todo
 /**
  * 保存分类树到db
  */
 function saveCartype() {
     let text = $('#cartype_name_textbox').textbox('getValue')
     if (opt_type_for_cartype == 'new') {
-        var t = $('#cartype_tree');
-        var node = t.tree('getSelected');
-        t.tree('append', {
-            parent: (node ? node.target : null),
-            data: [{
-                text: text
-            }]
-        });
-    } else if (opt_type_for_cartype == 'edit') {
-        var t = $('#cartype_tree');
-        var node = t.tree('getSelected');
-        if (node) {
-            t.tree('update', {
-                target: node.target,
-                text: text
-            });
-        }
-    }
 
-    CartypeModel.create()
-    saveClassifications(t.tree(), function () {
-
-        //reload classification tree
-        loadClassifications(function (data) {
-            $('#classification_tree').tree('loadData', data)
+        CartypeModel.create({cartype:text}, function(err, doc){
+           loadCartypeTree()
         })
 
-    })
+    } else if (opt_type_for_cartype == 'edit') {
+        CartypeModel.findOneAndUpdate({_id:text},{cartype: text},  function(err, doc){
+            loadCartypeTree()
+        })
+    }
+
 
     $('#dlg_for_classification').dialog('close');
 }
