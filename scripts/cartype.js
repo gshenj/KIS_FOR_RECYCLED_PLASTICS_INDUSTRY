@@ -3,8 +3,10 @@ let opt_type_for_cartype
 function edit_cartype_tree_node() {
     var node = $('#cartype_tree').tree('getSelected');
     if (node) {
-        $('#dlg_for_cartype').dialog('open').dialog('center').dialog('setTitle', '修改类型');
-        $('#fm_for_cartype').form('load', node);
+        $('#dlg_for_cartype').dialog('open').dialog('center').dialog('setTitle', '修改类型名称');
+        //$('#fm_for_cartype').form('load', node)
+        $('#cartype_id').val(node._id);
+        $('#cartype_name_textbox').textbox('setValue', node.text);
         opt_type_for_cartype = 'edit'
     }
 }
@@ -13,7 +15,7 @@ function edit_cartype_tree_node() {
  * 添加分类
  */
 function append_cartype_tree_node() {
-    $('#dlg_for_cartype').dialog('open').dialog('center').dialog('setTitle', '新增编码');
+    $('#dlg_for_cartype').dialog('open').dialog('center').dialog('setTitle', '新增货车类型');
     $('#fm_for_cartype').form('clear');
     opt_type_for_cartype = 'new'
 }
@@ -27,8 +29,12 @@ function delete_cartype_tree_node() {
     let t = $('#cartype_tree');
     let node = t.tree('getSelected');
    // t.tree('remove', node.target);
-    CartypeModel.findOneAndDelete({name: node.text}, function(err, doc){
-        loadCartypeTree()
+    $.messager.confirm('确定','是否确定删除选中的货车分类?',function(r) {
+        if (r) {
+            CartypeModel.findOneAndDelete({_id: node._id}, function (err, doc) {
+                loadCartypeTree()
+            })
+        }
     })
 }
 
@@ -38,19 +44,27 @@ function delete_cartype_tree_node() {
  * 保存分类树到db
  */
 function saveCartype() {
-    let text = $('#cartype_name_textbox').textbox('getValue')
+    let cartype = $('#cartype_name_textbox').textbox('getValue')
     if (opt_type_for_cartype == 'new') {
 
-        CartypeModel.create({cartype:text}, function(err, doc){
+        CartypeModel.create({name:cartype }, function(err, doc){
            loadCartypeTree()
         })
 
     } else if (opt_type_for_cartype == 'edit') {
-        CartypeModel.findOneAndUpdate({_id:text},{cartype: text},  function(err, doc){
+        let cartype_id = $('#cartype_id').val()
+        CartypeModel.findOneAndUpdate({_id:cartype_id},{name: cartype },  function(err, doc){
             loadCartypeTree()
         })
     }
 
 
-    $('#dlg_for_classification').dialog('close');
+    $('#dlg_for_cartype').dialog('close');
+}
+
+
+function loadCartypeSelectData() {
+    CartypeModel.find({}, function(err, types) {
+        $('#driver_car_type').combobox('loadData', types)
+    })
 }

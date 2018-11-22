@@ -1,5 +1,5 @@
 function onShowDriverPanel(){
-    mongoose.DriverModel.find({}, function(err, docs) {
+    DriverModel.find({}).populate('cartype').exec(function(err, docs) {
         //console.log(JSON.stringify(docs))
         var g = $('#driver_select').combogrid('grid');
         g.datagrid('loadData', docs);
@@ -158,23 +158,38 @@ function onOpenDriverManagePanel() {
 function loadCartypeTree(){
     loadCartypes(function (data) {
         let tree = $('#cartype_tree').tree('loadData', data)
-        loadDriverGrid()
+        loadDriverGrid(null)
     })
 }
 
 
 function loadCartypes(callback) {
     CartypeModel.find({}, function (err, types) {
-        let carTypesData =  { text: "车型载重", children: [] }
+        let carTypesData =  { text: "货车分类", children: [] }
         for (let i = 0; i < types.length; i++) {
-            carTypesData.children.push({ "text": types[i] })
+            carTypesData.children.push({ "text": types[i].name, "_id": types[i]._id })
         }
         callback([carTypesData])
     })
 }
 
 
-function loadDriverGrid(params){
+function loadDriverGrid(node) {
+    let t = $('#cartype_tree')
+    if (node == null) {
+        node = t.tree('getSelected')
+    }
+    let rootNode = t.tree('getRoot')
+    if (node == null || node == rootNode) {
+        loadDriverGridByParams(null)
+    } else {
+        loadDriverGridByParams({cartype: node._id})
+    }
+
+}
+
+
+function loadDriverGridByParams(params){
     if (DRIVER_GRID == null) {
         DRIVER_GRID = $('#driver_grid').datagrid({
             fit: true,
@@ -205,7 +220,9 @@ function loadDriverGrid(params){
             }],
             columns:[[
                 {title: "姓名", field: 'name',width:70, sortable: true,sortOrder: 'asc'},
-                {title: "车型载重", field: 'car_type',width:120, sortable: true,sortOrder: 'asc'},
+                {title: "车型载重", field: 'cartype_name',width:120, sortable: true,sortOrder: 'asc', formatter: function(value,row,index){
+                     if (row.cartype) return row.cartype.name;
+                    }},
                 {title: "车牌号码", field: 'car_No', width:80, sortable:true, sortOrder: 'asc'},
                 {title: "身份证号", field: 'id_No',width:140},
                 {title: "行驶证号", field: 'driving_license_No',width:140},
@@ -218,7 +235,7 @@ function loadDriverGrid(params){
     if (params == null) {
         params = {}
     }
-    mongoose.DriverModel.find(params, function (err, docs) {
+    mongoose.DriverModel.find(params).populate("cartype").exec(function (err, docs) {
         DRIVER_GRID.datagrid('loadData', docs)
         //DRIVER_GRID.datagrid('enableFilter', {filterMatchingType:'any'})
     })
@@ -228,6 +245,10 @@ let opt_type_for_driver;
 function newDriver(){
     $('#dlg_for_driver').dialog('open').dialog('center').dialog('setTitle','添加司机信息');
     $('#fm_for_driver').form('clear');
+    let selectedNode = $('#cartype_tree').tree('getSelected')
+    if (selectedNode) {
+        $('#driver_car_type').combobox('setValue', selectedNode._id)
+    }
     opt_type_for_driver = 'new'
 }
 
@@ -237,6 +258,7 @@ function editDriver(){
     if (row){
         $('#dlg_for_driver').dialog('open').dialog('center').dialog('setTitle','编辑司机信息');
         $('#fm_for_driver').form('load',row);
+        $('#driver_car_type').combobox('setValue', row.cartype._id)
         opt_type_for_driver = 'edit'
     }
 }
@@ -250,7 +272,7 @@ function saveDriver() {
     let driving_license_No = $('#driver_driving_license_No').textbox('getValue')
     let phone = $('#driver_phone').textbox('getValue')
     let address = $('#driver_address').textbox('getValue')
-    let driver = {name: name, car_type:car_type, car_No: car_No ,
+    let driver = {name: name, cartype:new mongoose.Types.ObjectId(car_type), car_No: car_No ,
         id_No:id_No, driving_license_No: driving_license_No, phone:phone, address:address}
 
     if (opt_type_for_driver == 'new') {
@@ -264,8 +286,7 @@ function saveDriver() {
 
     } else if (opt_type_for_driver == 'edit') {
         let driverId = $('#driver_id').val();
-        console.log("Edit customer is: " + JSON.stringify(driver))
-        // customer不能包含products字段，否则会更新.update是局部字段更新的.
+        console.log("Edit driver is: " + JSON.stringify(driver))
         mongoose.DriverModel.findByIdAndUpdate(driverId, driver, function () {
 
             $('#dlg_for_driver').dialog('close');

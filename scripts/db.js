@@ -7,7 +7,7 @@ let UNIT_SELECT_DATA
 
 const UNITS = [{ units: "千克" }, { units: "公斤" }, { units: "包" }]
 
-let carTypeSchema = new Schema({ cartype: String })
+let cartypeSchema = new Schema({ name: String })
 let unitSchema = new Schema({ unit: String })
 let sequenceSchema = new Schema({ seq_name: String, value: Number })
 let configSchema = new Schema({ company_name: String, company_address: String, company_phone: String, company_fax: String, company_logo: Buffer, db_version: String })
@@ -16,12 +16,12 @@ let provinceSchema = new Schema({ province: String, cities: [String] })
 let regionSchema = new Schema({ region: String, provinces: [provinceSchema] })
 let classificationSchema = new Schema({ classifications: Schema.Types.Mixed })// {classifications:[{name:"江苏",children:[]}]}
 let userSchema = new Schema({ role: String, name: String, disabled: Boolean, password: String });
-let driverSchema = new Schema({ name: String, car_type: String, car_No: String, id_No: String, driving_license_No: String, phone: String, address: String })
+let driverSchema = new Schema({ name: String, cartype: {type:Schema.Types.ObjectId, ref:'cartype'}, car_No: String, id_No: String, driving_license_No: String, phone: String, address: String })
 
-let _product = { name: String, model: String, price: String, units: String, memo: String, customer: { type: Schema.Types.ObjectId, ref: 'CustomerModel' }}
+let _product = { name: String, model: String, price: String, units: String, memo: String, customer: { type: Schema.Types.ObjectId, ref: 'customer' }}
 let productSchema = new Schema(_product)        //product不生成_id字段
 
-let _customer = { name: String, index_code: String, principal: String, phone: String, address: String, classification: String, products: [{ type: Schema.Types.ObjectId, ref: 'ProductModel' }]}
+let _customer = { name: String, index_code: String, principal: String, phone: String, address: String, classification: String, products: [{ type: Schema.Types.ObjectId, ref: 'product' }]}
 let customerSchema = new Schema(_customer);
 
 let orderProductSchema = new Schema({ product_name: String, product_model: String, product_price: String, product_units: String, product_memo: String, product_num: Number, product_sum: Number }, { _id: false });
@@ -54,7 +54,7 @@ console.log(db_address)
 /**DB utils **/
 mongoose.connect(db_address, { dbName: 'kis', useNewUrlParser: true });
 
-CartypeModel = mongoose.model('cartype', carTypeSchema, 'cartypes')
+CartypeModel = mongoose.model('cartype', cartypeSchema, 'cartypes')
 UnitModel = mongoose.model('unit', unitSchema, 'units')
 SequenceModel = mongoose.model('sequence', sequenceSchema, 'sequences')
 ConfigModel = mongoose.model('config', configSchema, 'configs')

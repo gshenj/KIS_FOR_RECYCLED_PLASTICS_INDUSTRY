@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <script>if (typeof module === 'object') {
-            window.module = module;
-            module = undefined;
-        }
+        window.module = module;
+        module = undefined;
+    }
 
-        const KIS_VERSION = 'v1.0'
-        let DOCUMENT_TITLE_PREFIX = '';
-        let SYS_CONFIG = null;
+    const KIS_VERSION = 'v1.0'
+    let DOCUMENT_TITLE_PREFIX = '';
+    let SYS_CONFIG = null;
 
     </script>
     <!-- normal script imports etc  -->
@@ -106,40 +106,44 @@
 
 </head>
 
-<body class="easyui-layout" id="main_layout" data-options="border:false" style=" padding:0; margin:0;overflow-y: hidden;overflow-x: hidden; height:100%">
+<body class="easyui-layout" id="main_layout" data-options="border:false"
+      style=" padding:0; margin:0;overflow-y: hidden;overflow-x: hidden; height:100%">
 
-    <div data-options="region:'north',split:false, border:false" style="height:114px;width:100%; -webkit-user-select: none;  margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
+<div data-options="region:'north',split:false, border:false"
+     style="height:114px;width:100%; -webkit-user-select: none;  margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
 
-        <div id="title_bar">
-            <div style="height:20px; width:20px; margin:3px 2px 0px 5px; line-height: 20px; float:left; background-color:#fff;">
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+    <div id="title_bar">
+        <div style="height:20px; width:20px; margin:3px 2px 0px 5px; line-height: 20px; float:left; background-color:#fff;">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
                     width="18px" height="18px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000"
                     xml:space="preserve">
                     <g>
                         <path fill="#1f637b" d="M418,496.3c0-17.3-15.2-31.3-34-31.3H232.3c-18.8,0-34,14.1-34,31.3c0,17.3,15.2,31.3,34,31.3H384C402.8,527.6,418,513.5,418,496.3z M135.3,857.2c-25.8,0-46.8-21.3-46.8-47.5V182.7c0-26.2,20.9-47.4,46.8-47.4h502.8c25.8,0,46.8,21.3,46.8,47.4v219.4c27.3,0,53.2,4.6,78.5,11.1V103.8c0-25.9-21.2-47-47.5-47H57.5c-26.2,0-47.5,21.1-47.5,47v784.9c0,25.9,21.3,47,47.5,47h403.6c-22.4-22.8-40.4-49.7-55.1-78.5L135.3,857.2L135.3,857.2z M632.6,626l-47.9,47.8l86.9,86.6l-1,1l47.8,47.8l1-1l1,1l47.9-47.8l-1-1L990,538.3l-47.9-47.8L719.5,712.6L632.6,626z M353,621.8H231.9c-18.6,0-33.6,14.1-33.6,31.3c0,17.4,15,31.4,33.6,31.4H353c18.6,0,33.6-14.1,33.6-31.4C386.6,635.8,371.6,621.8,353,621.8z M865,731.8c-12.4,80.1-81.2,141.5-164.9,141.5c-92.6,0-167.6-74.9-167.6-167.2c0-92.3,75-167.2,167.6-167.2c35.3,0,67.9,11,94.9,29.6l49.5-49.4c-40.1-30.9-89.8-50.1-144.5-50.1C568.8,468.9,462.4,575,462.4,706c0,130.9,106.4,237.1,237.7,237.1c131.3,0,237.7-106.2,237.7-237.1c0-14.6-1.8-28.7-4.3-42.6L865,731.8z M590.6,323.7c0-17.3-15-31.4-33.8-31.4H232.2c-18.7,0-33.8,14.1-33.8,31.4s15.1,31.3,33.8,31.3h324.7C575.6,355,590.6,340.9,590.6,323.7z" />
                     </g>
                 </svg>
-            </div>
-            <div style="height:24px; line-height:24px; margin:0 0 0 2px; padding:0;  float:left; display: inline-block; ">苏州元斌塑胶科技有限公司
-                KIS系统 v1.0</div>
+        </div>
+        <div style="height:24px; line-height:24px; margin:0 0 0 2px; padding:0;  float:left; display: inline-block; ">
+            苏州元斌塑胶科技有限公司
+            KIS系统 v1.0
+        </div>
 
-            <table class="win_btn_tb">
+        <table class="win_btn_tb">
 
-                <tr>
-                    <td>
-                        <a class="win_btn" onclick="minwin()">
-                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            <tr>
+                <td>
+                    <a class="win_btn" onclick="minwin()">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 x="0px" y="0px" width="10px" height="10px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000"
                                 xml:space="preserve">
                                 <g>
                                     <path d="M10,475.5h980v49H10V475.5z" />
                                 </g>
                             </svg>
-                        </a>
+                    </a>
 
-                    <td>
-                        <a class="win_btn" href="#" onclick="maxwin()">
-                            <svg id="to_unmax" style="display:none;" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                <td>
+                    <a class="win_btn" href="#" onclick="maxwin()">
+                        <svg id="to_unmax" style="display:none;" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="10px" height="10px"
                                 viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
                                 <g>
@@ -172,355 +176,380 @@
                                 </g>
 
                             </svg>
-                        </a>
-                    </td>
+                    </a>
+                </td>
 
 
-                    <td>
-                        <a class="win_btn" href="#" id="close_btn" onclick="closewin()">
-                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                <td>
+                    <a class="win_btn" href="#" id="close_btn" onclick="closewin()">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 x="0px" y="0px" width="10px" height="10px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000"
                                 xml:space="preserve">
                                 <g>
                                     <path d="M990,54.1l-43.3-43.4L500,456.7L53.3,10.7L10,54.1l446.6,446L10,946l43.3,43.3l446.7-446l446.7,446L990,946L543.4,500L990,54.1z" />
                                 </g>
                             </svg>
-                        </a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-
-        <div id="tt" class="easyui-tabs" data-options="border:false, tabWidth:120, tabHeight:26, height:94, plain:true"
-            style="width:100%;  margin:0;">
-
-            <div title="出货单管理" data-options="border:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
-	padding:6px;  -webkit-user-select: none; ">
-                <div style="float:left; width:60%; padding:0px;">
-                    <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;" onclick="show_panel(this, 'order_input_panel')"
-                        data-options="plain:true, iconCls:'icon-large-neworder', size:'large', iconAlign:'left'">单据填开</a>
-                    <a id="order_list_menu" class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
-                        onclick="show_panel(this, 'orders_grid_panel')" data-options="plain:true, iconCls:'icon-large-orderlist', size:'large', iconAlign:'left'">单据查询</a>
-                    <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;" onclick="show_panel(this, 'order_report_panel')"
-                        data-options="plain:true, iconCls:'icon-large-orderreport', size:'large', iconAlign:'left'">统计报表</a>
-                </div>
-            </div>
-
-            <div title="资料管理" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
-	padding:6px;">
-                <div style="float:left; width:60%; padding:0px;">
-                    <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'customer_manage_panel')"
-                        data-options="plain:true, iconCls:'icon-large-customerconfig', size:'large', iconAlign:'left'">客户管理</a>
-
-                    <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'product_manage_panel')"
-                        data-options="plain:true, iconCls:'icon-large-productmanage',size:'large', iconAlign:'left'">产品管理</a>
-
-                    <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'driver_manage_panel')"
-                        data-options="plain:true, iconCls:'icon-large-drivermanage',size:'large',iconAlign:'left'">司机管理</a>
-                </div>
-            </div>
-
-            <div title="系统设置" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
-	padding:6px;">
-                <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'user_manage_panel')" data-options="plain:true,  size:'large', iconCls:'icon-large-usermanage', iconAlign:'left'">用户管理</a>
-                <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'sys_config_panel')" data-options="plain:true, size:'large', iconCls:'icon-large-sysconfig', iconAlign:'left'">系统参数</a>
-            </div>
-
-            <div title="我的账户" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
-	padding:6px;">
-                <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'password_set_panel')" data-options="plain:true, iconCls:'icon-large-passwordmanage', size:'large',iconAlign:'left'">密码设置</a>
-                <a class="easyui-linkbutton tool_button" onclick="logout()" data-options="plain:true, size:'large', iconCls:'icon-large-logout', iconAlign:'left'">注销登录</a>
-            </div>
-        </div>
-
-        <div style="width:70px; position: absolute;top:24px; right:0px; border:none; background:transparent; height:84px; line-height:84px;-webkit-app-region: no-drag;">
-            <a class="account_logo"></a>
-        </div>
-
+                    </a>
+                </td>
+            </tr>
+        </table>
     </div>
 
 
-    <div data-options="region:'center', border:false" style="margin:0;padding:0px;background:#eee;overflow-y: hidden;overflow-x: hidden; -webkit-app-region: no-drag">
+    <div id="tt" class="easyui-tabs" data-options="border:false, tabWidth:120, tabHeight:26, height:94, plain:true,tools:'#tab-tools'"
+         style="width:100%;  margin:0;">
 
-        <!--新开送货单-->
-        <div id="order_input_panel" class="easyui-panel opt_panel" 　 style="width:100%; height:100%; padding:0px 0px; background-color:#999; text-align:center; "
-            data-options="fit:true,closed:true, border:false, onOpen:resetOrder">
-
-            <div style="padding:0px 0px; border:0px solid red; width:850px;  margin:10px auto;  text-align:right;">
-                <div id="order_input_toolbar" style=" height:40px; line-height:40px; margin:0px auto 1px; background-color:#eee; padding:0px 10px; border:0px solid #bbb;  float:right;">
-                    <span>
-                        <a class="easyui-linkbutton" onclick="resetOrder()" data-options="plain:true,iconCls:'icon-undo',iconAlign:'left'">重填</a>
-
-                        <a class="easyui-linkbutton" onclick="addOrderRow()" data-options="plain:true,iconCls:'icon-add',iconAlign:'left'">增行</a>
-
-                        <a class="easyui-linkbutton" onclick="deleteOrderRow()" data-options="plain:true,iconCls:'icon-remove',iconAlign:'left'">减行</a>
-
-                        <a class="easyui-linkbutton" onclick="doPrint()" data-options="plain:true,iconCls:'icon-print',iconAlign:'left'">打印</a>
-                    </span>
-                    <div style="clear:both; height:1px; line-height:1px"></div>
-                </div>
+        <div title="出货单管理" data-options="border:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+	padding:6px;  -webkit-user-select: none; ">
+            <div style="float:left; width:60%; padding:0px;">
+                <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
+                   onclick="show_panel(this, 'order_input_panel')"
+                   data-options="plain:true, iconCls:'icon-large-neworder', size:'large', iconAlign:'left'">单据填开</a>
+                <a id="order_list_menu" class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
+                   onclick="show_panel(this, 'orders_grid_panel')"
+                   data-options="plain:true, iconCls:'icon-large-orderlist', size:'large', iconAlign:'left'">单据查询</a>
+                <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
+                   onclick="show_panel(this, 'order_report_panel')"
+                   data-options="plain:true, iconCls:'icon-large-orderreport', size:'large', iconAlign:'left'">统计报表</a>
             </div>
+        </div>
 
-            <script>
+        <div title="资料管理" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+	padding:6px;">
+            <div style="float:left; width:60%; padding:0px;">
+                <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'customer_manage_panel')"
+                   data-options="plain:true, iconCls:'icon-large-customerconfig', size:'large', iconAlign:'left'">客户管理</a>
 
-                function resetOrder() {
-                    $('#new_order_form').form('clear')
+                <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'product_manage_panel')"
+                   data-options="plain:true, iconCls:'icon-large-productmanage',size:'large', iconAlign:'left'">产品管理</a>
 
-                    //
-                    getCurrentSeq("order_seq", function (value) {
-                        $('#new_order_sale_No').html(value + 1)
-                    })
+                <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'driver_manage_panel')"
+                   data-options="plain:true, iconCls:'icon-large-drivermanage',size:'large',iconAlign:'left'">司机管理</a>
 
-                    //
-                    let t = $('#new_order_customer_name')
-                    if (!t.textbox('getText')) {
-                        t.textbox('getIcon', 0).css('visibility', 'hidden');
-                    }
-                    //
-                    $('#new_order_sale_date').datebox('setValue', myDateFormatter(new Date()))
-                    //
-                    resetOrderProductGrid(false)
+
+            </div>
+        </div>
+
+        <div title="系统设置" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+	padding:6px;">
+            <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'user_manage_panel')"
+               data-options="plain:true,  size:'large', iconCls:'icon-large-usermanage', iconAlign:'left'">用户管理</a>
+            <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'sys_config_panel')"
+               data-options="plain:true, size:'large', iconCls:'icon-large-sysconfig', iconAlign:'left'">系统参数</a>
+        </div>
+
+        <div title="我的账户" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+	padding:6px;">
+            <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'password_set_panel')"
+               data-options="plain:true, iconCls:'icon-large-passwordmanage', size:'large',iconAlign:'left'">密码设置</a>
+            <a class="easyui-linkbutton tool_button" onclick="logout()"
+               data-options="plain:true, size:'large', iconCls:'icon-large-logout', iconAlign:'left'">注销登录</a>
+        </div>
+    </div>
+
+    <!--<div style="width:70px; position: absolute;top:24px; right:0px; border:none; background:transparent; height:84px; line-height:84px;-webkit-app-region: no-drag;">
+        <a class="account_logo"></a>
+    </div>-->
+
+    <div id="tab-tools" style="background-color:transparent; border-left:none; border-top:none; border-right:none">
+        <a  style="margin-right:20px; background-color:transparent; border:none;" onclick="showAccountMenu(e)">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
+<g><path d="M226.9,228.4H10V119.2h216.9V228.4z M226.9,445.4H10v109.3h216.9V445.4z M226.9,771.6H10v109.3h216.9V771.6z M990,771.6H336.1v109.3H990V771.6z M990,445.4H336.1v109.3H990V445.4z M990,119.2H336.1v109.3H990V119.2z"/></g>
+</svg></a>
+    </div>
+
+</div>
+
+
+<div data-options="region:'center', border:false"
+     style="margin:0;padding:0px;background:#eee;overflow-y: hidden;overflow-x: hidden; -webkit-app-region: no-drag">
+
+    <!--新开送货单-->
+    <div id="order_input_panel" class="easyui-panel opt_panel" 　
+         style="width:100%; height:100%; padding:0px 0px; background-color:#999; text-align:center; "
+         data-options="fit:true,closed:true, border:false, onOpen:resetOrder">
+
+        <div style="padding:0px 0px; border:0px solid red; width:850px;  margin:10px auto;  text-align:right;">
+            <div id="order_input_toolbar"
+                 style=" height:40px; line-height:40px; margin:0px auto 1px; background-color:#eee; padding:0px 10px; border:0px solid #bbb;  float:right;">
+                    <span>
+                        <a class="easyui-linkbutton" onclick="resetOrder()"
+                           data-options="plain:true,iconCls:'icon-undo',iconAlign:'left'">重填</a>
+
+                        <a class="easyui-linkbutton" onclick="addOrderRow()"
+                           data-options="plain:true,iconCls:'icon-add',iconAlign:'left'">增行</a>
+
+                        <a class="easyui-linkbutton" onclick="deleteOrderRow()"
+                           data-options="plain:true,iconCls:'icon-remove',iconAlign:'left'">减行</a>
+
+                        <a class="easyui-linkbutton" onclick="doPrint()"
+                           data-options="plain:true,iconCls:'icon-print',iconAlign:'left'">打印</a>
+                    </span>
+                <div style="clear:both; height:1px; line-height:1px"></div>
+            </div>
+        </div>
+
+        <script>
+
+            function resetOrder() {
+                $('#new_order_form').form('clear')
+
+                //
+                getCurrentSeq("order_seq", function (value) {
+                    $('#new_order_sale_No').html(value + 1)
+                })
+
+                //
+                let t = $('#new_order_customer_name')
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
                 }
+                //
+                $('#new_order_sale_date').datebox('setValue', myDateFormatter(new Date()))
+                //
+                resetOrderProductGrid(false)
+            }
 
-                function resetOrderProductGrid(addFirstRow) {
-                    deleteAllRows()
-                    if (addFirstRow) {
-                        addOrderRow()
-                    }
+            function resetOrderProductGrid(addFirstRow) {
+                deleteAllRows()
+                if (addFirstRow) {
+                    addOrderRow()
                 }
+            }
 
-                function endEditing() {
-                    if (typeof (editIndex) == 'undefined') {
-                        return true
-                    }
-                    if ($('#order_products_grid').datagrid('validateRow', editIndex)) {
-                        $('#order_products_grid').datagrid('endEdit', editIndex);
-                        editIndex = undefined;
-                        return true;
+            function endEditing() {
+                if (typeof (editIndex) == 'undefined') {
+                    return true
+                }
+                if ($('#order_products_grid').datagrid('validateRow', editIndex)) {
+                    $('#order_products_grid').datagrid('endEdit', editIndex);
+                    editIndex = undefined;
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+
+            function deleteOrderRow() {
+                removeit()
+            }
+
+
+            function addOrderRow() {
+                if (endEditing()) {
+                    let rows = $('#order_products_grid').datagrid('getRows');
+                    if (rows.length == 0 || rows.length == 1) {
+                        // 如果当面没有行，或者只有1行，那么追加一行
+                        $('#order_products_grid').datagrid('appendRow', {});
+                        editIndex = $('#order_products_grid').datagrid('getRows').length - 1;
+
                     } else {
-                        return false;
-                    }
-                }
-
-
-                function deleteOrderRow() {
-                    removeit()
-                }
-
-
-                function addOrderRow() {
-                    if (endEditing()) {
-                        let rows = $('#order_products_grid').datagrid('getRows');
-                        if (rows.length == 0 || rows.length == 1) {
-                            // 如果当面没有行，或者只有1行，那么追加一行
-                            $('#order_products_grid').datagrid('appendRow', {});
-                            editIndex = $('#order_products_grid').datagrid('getRows').length - 1;
-
-                        } else {
-                            let selectedRow = $('#order_products_grid').datagrid('getSelected');
-                            if (selectedRow) {
-                                console.log(JSON.stringify(selectedRow))
-                                let selectedIndex = $('#order_products_grid').datagrid('getRowIndex', selectedRow);
-                                if (selectedIndex == (rows.length - 1)) {
-                                    // 不管多少行，如果当前选中最后一行，添加最后一行
-                                    $('#order_products_grid').datagrid('appendRow', {});
-                                    editIndex = $('#order_products_grid').datagrid('getRows').length - 1;
-                                } else {
-                                    // 否则在选中行之前插入一行
-                                    console.log("selectedINdex" + selectedIndex)
-                                    $('#order_products_grid').datagrid("insertRow", { index: selectedIndex, row: {} })
-                                    editIndex = selectedIndex;
-                                }
-
-                            } else {
-                                //如果当前没有选中任何一行，那么在尾部添加一行，正常不会执行到这里
+                        let selectedRow = $('#order_products_grid').datagrid('getSelected');
+                        if (selectedRow) {
+                            console.log(JSON.stringify(selectedRow))
+                            let selectedIndex = $('#order_products_grid').datagrid('getRowIndex', selectedRow);
+                            if (selectedIndex == (rows.length - 1)) {
+                                // 不管多少行，如果当前选中最后一行，添加最后一行
                                 $('#order_products_grid').datagrid('appendRow', {});
                                 editIndex = $('#order_products_grid').datagrid('getRows').length - 1;
+                            } else {
+                                // 否则在选中行之前插入一行
+                                console.log("selectedINdex" + selectedIndex)
+                                $('#order_products_grid').datagrid("insertRow", {index: selectedIndex, row: {}})
+                                editIndex = selectedIndex;
                             }
-                        }
 
-                        $('#order_products_grid').datagrid('selectRow', editIndex)
-                            .datagrid('beginEdit', editIndex);
-                    }
-                }
-
-                function removeit() {
-                    if (editIndex == undefined) {
-                        return
-                    }
-                    $('#order_products_grid').datagrid('cancelEdit', editIndex)
-                        .datagrid('deleteRow', editIndex);
-                    editIndex = undefined;
-                }
-
-                function deleteAllRows() {
-                    let rows = $('#order_products_grid').datagrid('getRows')
-                    for (let i = rows.length; i > 0;) {
-                        i--;
-                        $('#order_products_grid').datagrid('cancelEdit', i).datagrid('deleteRow', i)
-                    }
-                    editIndex = undefined
-                }
-
-                function onClickCell(index, field, value) {
-
-                    console.log("onClickCell")
-                    if (editIndex != index) {
-                        if (endEditing()) {
-                            $('#order_products_grid').datagrid('selectRow', index)
-                                .datagrid('beginEdit', index);
-                            var ed = $('#order_products_grid').datagrid('getEditor', { index: index, field: field });
-                            if (ed) {
-                                ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
-                            }
-                            editIndex = index;
                         } else {
-                            setTimeout(function () {
-                                $('#order_products_grid').datagrid('selectRow', editIndex);
-                            }, 0);
+                            //如果当前没有选中任何一行，那么在尾部添加一行，正常不会执行到这里
+                            $('#order_products_grid').datagrid('appendRow', {});
+                            editIndex = $('#order_products_grid').datagrid('getRows').length - 1;
                         }
                     }
 
-                    event.stopPropagation();    //  阻止事件冒泡,防止响应表格panel的click事件
+                    $('#order_products_grid').datagrid('selectRow', editIndex)
+                        .datagrid('beginEdit', editIndex);
                 }
+            }
 
-                function accept() {
+            function removeit() {
+                if (editIndex == undefined) {
+                    return
+                }
+                $('#order_products_grid').datagrid('cancelEdit', editIndex)
+                    .datagrid('deleteRow', editIndex);
+                editIndex = undefined;
+            }
+
+            function deleteAllRows() {
+                let rows = $('#order_products_grid').datagrid('getRows')
+                for (let i = rows.length; i > 0;) {
+                    i--;
+                    $('#order_products_grid').datagrid('cancelEdit', i).datagrid('deleteRow', i)
+                }
+                editIndex = undefined
+            }
+
+            function onClickCell(index, field, value) {
+
+                console.log("onClickCell")
+                if (editIndex != index) {
                     if (endEditing()) {
-                        $('#order_products_grid').datagrid('acceptChanges');
+                        $('#order_products_grid').datagrid('selectRow', index)
+                            .datagrid('beginEdit', index);
+                        var ed = $('#order_products_grid').datagrid('getEditor', {index: index, field: field});
+                        if (ed) {
+                            ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+                        }
+                        editIndex = index;
+                    } else {
+                        setTimeout(function () {
+                            $('#order_products_grid').datagrid('selectRow', editIndex);
+                        }, 0);
                     }
                 }
 
-                function doPrint() {
-                    accept();
+                event.stopPropagation();    //  阻止事件冒泡,防止响应表格panel的click事件
+            }
 
-                    let products = $('#order_products_grid').datagrid('getRows')
+            function accept() {
+                if (endEditing()) {
+                    $('#order_products_grid').datagrid('acceptChanges');
+                }
+            }
 
-                    // save orders
-                    let customer_id = $('#new_order_customer_name').textbox('getValue');
-                    let customer_name = $('#new_order_customer_name').textbox('getText');
-                    let order_date = $('#new_order_sale_date').textbox('getText');
-                    //let order_num = $('#new_order_sale_No').textbox('getValue')
-                    let delivery_address = $('#new_order_customer_address').textbox('getValue')
-                    let principal = $('#new_order_customer_principal').textbox('getValue')
-                    let contact_number = $('#new_order_customer_phone').textbox('getValue')
-                    let maker = $('#new_order_maker').textbox('getValue')
-                    let driver = $('#driver_select').textbox('getValue')
-                    let cancelled = false;
+            function doPrint() {
+                accept();
 
-                    let products_num;
-                    let products_sum;
+                let products = $('#order_products_grid').datagrid('getRows')
 
-                    let order_data = {
-                        order_num: 1,//order_num,
-                        customer_id: customer_id,
-                        customer_name: customer_name,
-                        customer_principal: principal,
-                        contact_number: contact_number,
-                        delivery_address: delivery_address,
-                        order_date: order_date,
-                        order_maker: maker,
-                        order_driver: driver,
-                        cancelled: cancelled,
-                        products: products
-                        //create_user:  current_user
-                    }
+                // save orders
+                let customer_id = $('#new_order_customer_name').textbox('getValue');
+                let customer_name = $('#new_order_customer_name').textbox('getText');
+                let order_date = $('#new_order_sale_date').textbox('getText');
+                //let order_num = $('#new_order_sale_No').textbox('getValue')
+                let delivery_address = $('#new_order_customer_address').textbox('getValue')
+                let principal = $('#new_order_customer_principal').textbox('getValue')
+                let contact_number = $('#new_order_customer_phone').textbox('getValue')
+                let maker = $('#new_order_maker').textbox('getValue')
+                let driver = $('#driver_select').textbox('getValue')
+                let cancelled = false;
 
-                    console.log(JSON.stringify(order_data))
-                    $('#win_in').html('正在保存单剧...')
-                    $('#win').window('open')
+                let products_num;
+                let products_sum;
 
-                    setTimeout(function () {
-                        saveOrder(order_data, function (doc) {
-                            $('#win_in').html('开始打印...')
-                            setTimeout(function () {
-                                $('#win').window('close')
-                                preview(doc)
-                                //$('#win').window('close')
-                                //关闭打印页面，window消失
-                            }, 1000)
-                        })
-                    }, 1000)
+                let order_data = {
+                    order_num: 1,//order_num,
+                    customer_id: customer_id,
+                    customer_name: customer_name,
+                    customer_principal: principal,
+                    contact_number: contact_number,
+                    delivery_address: delivery_address,
+                    order_date: order_date,
+                    order_maker: maker,
+                    order_driver: driver,
+                    cancelled: cancelled,
+                    products: products
+                    //create_user:  current_user
                 }
 
+                console.log(JSON.stringify(order_data))
+                $('#win_in').html('正在保存单剧...')
+                $('#win').window('open')
 
-                function onLoadSuccess() {
-                    let b = $('#order_products_grid').datagrid('getPanel').panel('body')
-                    $(b).bind('click', function () {
-                        accept()
+                setTimeout(function () {
+                    saveOrder(order_data, function (doc) {
+                        $('#win_in').html('开始打印...')
+                        setTimeout(function () {
+                            $('#win').window('close')
+                            preview(doc)
+                            //$('#win').window('close')
+                            //关闭打印页面，window消失
+                        }, 1000)
                     })
-                }
+                }, 1000)
+            }
 
 
-                function onChangePrice(newValue, oldValue) {
-                    var ed = $('#order_products_grid').datagrid('getEditor', { index: editIndex, field: 'product_num' });
-                    var ed1 = $('#order_products_grid').datagrid('getEditor', { index: editIndex, field: 'product_sum' });
+            function onLoadSuccess() {
+                let b = $('#order_products_grid').datagrid('getPanel').panel('body')
+                $(b).bind('click', function () {
+                    accept()
+                })
+            }
 
-                    if (ed) {
-                        let sumValue = ''
-                        let num = $(ed.target).textbox('getValue')
-                        if (isNumber(newValue) && isNumber(num)) {
-                            sumValue = Number(num) * Number(newValue)
-                            $(ed1.target).numberbox('setValue', sumValue)
-                            return true;
-                        }
+
+            function onChangePrice(newValue, oldValue) {
+                var ed = $('#order_products_grid').datagrid('getEditor', {index: editIndex, field: 'product_num'});
+                var ed1 = $('#order_products_grid').datagrid('getEditor', {index: editIndex, field: 'product_sum'});
+
+                if (ed) {
+                    let sumValue = ''
+                    let num = $(ed.target).textbox('getValue')
+                    if (isNumber(newValue) && isNumber(num)) {
+                        sumValue = Number(num) * Number(newValue)
+                        $(ed1.target).numberbox('setValue', sumValue)
+                        return true;
                     }
-                    if (ed1)
-                        $(ed1.target).numberbox('clear')
-
                 }
+                if (ed1)
+                    $(ed1.target).numberbox('clear')
 
-                function onChangeNum(newValue, oldValue) {
-                    var ed = $('#order_products_grid').datagrid('getEditor', { index: editIndex, field: 'product_price' });
-                    var ed1 = $('#order_products_grid').datagrid('getEditor', { index: editIndex, field: 'product_sum' });
+            }
 
-                    if (ed) {
-                        let sumValue = ''
-                        let price = $(ed.target).numberbox('getValue')
-                        if (isNumber(newValue) && isNumber(price)) {
-                            sumValue = Number(price) * Number(newValue)
-                            $(ed1.target).numberbox('setValue', sumValue)
-                            return true;
-                        }
+            function onChangeNum(newValue, oldValue) {
+                var ed = $('#order_products_grid').datagrid('getEditor', {index: editIndex, field: 'product_price'});
+                var ed1 = $('#order_products_grid').datagrid('getEditor', {index: editIndex, field: 'product_sum'});
+
+                if (ed) {
+                    let sumValue = ''
+                    let price = $(ed.target).numberbox('getValue')
+                    if (isNumber(newValue) && isNumber(price)) {
+                        sumValue = Number(price) * Number(newValue)
+                        $(ed1.target).numberbox('setValue', sumValue)
+                        return true;
                     }
-                    if (ed1)
-                        $(ed1.target).numberbox('clear')
-
                 }
+                if (ed1)
+                    $(ed1.target).numberbox('clear')
+
+            }
 
 
-            </script>
-            <div class="new_order_main_div" style="padding:20px 20px;width:810px;margin:0px auto ; clear:both;">
-                <div style="width:100%; padding:0">
-                    <form id="new_order_form" style="padding:0">
-                        <div style="text-align: center; padding:10px;"><span style="font-size:26px;margin:0 auto;">苏州元斌塑胶科技有限公司
+        </script>
+        <div class="new_order_main_div" style="padding:20px 20px;width:810px;margin:0px auto ; clear:both;">
+            <div style="width:100%; padding:0">
+                <form id="new_order_form" style="padding:0">
+                    <div style="text-align: center; padding:10px;"><span style="font-size:26px;margin:0 auto;">苏州元斌塑胶科技有限公司
                                 出货单</span></div>
-                        <table class="bill_customer_table">
-                            <tr>
-                                <td>客户名称：<input id="new_order_customer_name" class="easyui-textbox customer_name" />
-                                </td>
-                                <td>送货日期：<input id="new_order_sale_date" class="easyui-datebox sale_date" data-options="editable:false, formatter:myDateFormatter"
-                                        value="new Date()" labelPosition="top" />
-                                </td>
-                                <td>出货单号：<span id="new_order_sale_No" style="font-weight:bold;"></span>
-                                    <!--<input type="hidden" id="new_order_sale_No" />-->
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>送货地址：<input id="new_order_customer_address" class="customer_address easyui-textbox" />
-                                </td>
-                                <td>联&ensp;系&ensp;人：<input id="new_order_customer_principal" class="principal easyui-textbox" />
-                                </td>
-                                <td>联系电话：<input id="new_order_customer_phone" class="telephone easyui-textbox" /></td>
-                            </tr>
-                        </table>
+                    <table class="bill_customer_table">
+                        <tr>
+                            <td>客户名称：<input id="new_order_customer_name" class="easyui-textbox customer_name"/>
+                            </td>
+                            <td>送货日期：<input id="new_order_sale_date" class="easyui-datebox sale_date"
+                                            data-options="editable:false, formatter:myDateFormatter"
+                                            value="new Date()" labelPosition="top"/>
+                            </td>
+                            <td>出货单号：<span id="new_order_sale_No" style="font-weight:bold;"></span>
+                                <!--<input type="hidden" id="new_order_sale_No" />-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>送货地址：<input id="new_order_customer_address" class="customer_address easyui-textbox"/>
+                            </td>
+                            <td>联&ensp;系&ensp;人：<input id="new_order_customer_principal"
+                                                       class="principal easyui-textbox"/>
+                            </td>
+                            <td>联系电话：<input id="new_order_customer_phone" class="telephone easyui-textbox"/></td>
+                        </tr>
+                    </table>
 
-                        <div style="width:808px; height:230px; border:1px solid #aaa; margin:10px 0 0; padding:0 ">
-                            <table id="order_products_grid" class="easyui-datagrid" data-options="width:'100%', height:202, data:[], border:false,
+                    <div style="width:808px; height:230px; border:1px solid #aaa; margin:10px 0 0; padding:0 ">
+                        <table id="order_products_grid" class="easyui-datagrid" data-options="width:'100%', height:202, data:[], border:false,
                            singleSelect:true, onLoadSuccess:onLoadSuccess, onClickCell: onClickCell">
-                                <thead>
-                                    <tr>
-                                        <th data-options="field:'product_name', align:'left', halign:'center',width:248,editor:{
+                            <thead>
+                            <tr>
+                                <th data-options="field:'product_name', align:'left', halign:'center',width:248,editor:{
                             type:'textbox',
                             options:{
                                 prompt: '',
@@ -534,38 +563,38 @@
                                 }]
                             }
                         }">品名规格
-                                        </th>
-                                        <th data-options="field:'product_units', align:'center', halign:'center', width:80, editor:'textbox'">
-                                            单位
-                                        </th>
-                                        <th data-options="field:'product_num', align:'center', halign:'center', width:100, editor:{type:'textbox', options:{onChange:onChangeNum}}">
-                                            数量
-                                        </th>
-                                        <th data-options="field:'product_price', align:'center', halign:'center', width:80, editor:{type:'numberbox',options:{precision:2, onChange:onChangePrice}}">
-                                            单价
-                                        </th>
-                                        <th data-options="field:'product_sum', align:'center', halign:'center', width:100, editor:{type:'numberbox',options:{precision:2}}">
-                                            金额
-                                        </th>
-                                        <th data-options="field:'product_memo', align:'left', halign:'center', width:200, editor:'textbox'">
-                                            备注
-                                        </th>
-                                    </tr>
-                                </thead>
-                            </table>
+                                </th>
+                                <th data-options="field:'product_units', align:'center', halign:'center', width:80, editor:'textbox'">
+                                    单位
+                                </th>
+                                <th data-options="field:'product_num', align:'center', halign:'center', width:100, editor:{type:'textbox', options:{onChange:onChangeNum}}">
+                                    数量
+                                </th>
+                                <th data-options="field:'product_price', align:'center', halign:'center', width:80, editor:{type:'numberbox',options:{precision:2, onChange:onChangePrice}}">
+                                    单价
+                                </th>
+                                <th data-options="field:'product_sum', align:'center', halign:'center', width:100, editor:{type:'numberbox',options:{precision:2}}">
+                                    金额
+                                </th>
+                                <th data-options="field:'product_memo', align:'left', halign:'center', width:200, editor:'textbox'">
+                                    备注
+                                </th>
+                            </tr>
+                            </thead>
+                        </table>
 
 
-                            <table style="border-collapse: collapse; width:100%; border:none;">
-                                <tr>
-                                    <td style="text-align:right; width:508px; height:30px;  font-weight:bold;">合计金额：</td>
-                                    <td style="text-align:left;font-weight:bold;"></td>
-                                </tr>
-                            </table>
-                        </div>
+                        <table style="border-collapse: collapse; width:100%; border:none;">
+                            <tr>
+                                <td style="text-align:right; width:508px; height:30px;  font-weight:bold;">合计金额：</td>
+                                <td style="text-align:left;font-weight:bold;"></td>
+                            </tr>
+                        </table>
+                    </div>
 
-                        <table class="bill_user_table">
-                            <td>制单人：<input id="new_order_maker" class="f1 easyui-textbox"></input></td>
-                            <td>送货司机：<select class="easyui-combogrid" id="driver_select" data-options="onShowPanel:onShowDriverPanel,
+                    <table class="bill_user_table">
+                        <td>制单人：<input id="new_order_maker" class="f1 easyui-textbox"></input></td>
+                        <td>送货司机：<select class="easyui-combogrid" id="driver_select" data-options="onShowPanel:onShowDriverPanel,
                                     panelWidth: 810,
                                     panelMaxHeight:220,
                                     idField: 'name',
@@ -573,91 +602,101 @@
                                     data:[],
                                     columns: [[
                                         {field:'name',title:'司机',width:90, align:'left', halign:'center'},
-                                        {field:'car_type',title:'车型载重',width:110, align:'left', halign:'center'},
+                                        {field:'car_type',title:'货车类型',width:110, align:'left', halign:'center', formatter: function(value,row,index){
+                                                         if (row.cartype) return row.cartype.name;} },
                                         {field:'car_No',title:'车牌号',width:90, align:'left', halign:'center'},
                                         {field:'driving_license_No',title:'行驶证号',width:110, align:'left', halign:'center'},
                                         {field:'id_No',title:'身份证号',width:110, align:'left', halign:'center'},
                                         {field:'phone',title:'电话',width:90, align:'left', halign:'center'},
                                         {field:'address',title:'地址',width:200, align:'left', halign:'center'}
                                     ]]"
-                                    style="width:150px;"></select>
-                            </td>
-                            <td>签收人：<input class="f1 easyui-textbox" disabled></input></td>
-                        </table>
-
-                    </form>
-                </div>
-
-            </div>
-        </div>
-
-        <!--送货单列表-->
-        <div id="orders_grid_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; " data-options="fit:true, closed:true, border:false, onOpen:onOpenOrderListPanel">
-            <div class="easyui-layout" data-options="fit:true">
-                <div data-options="region:'west'" style="width:280px; padding:4px;">
-                    <table style="width:100%; border-collapse: collapse">
-                        <tr>
-                            <th COLSPAN="2">
-                                <h4>查询条件：</h4>
-                            </th>
-                        </tr>
-                        <tr>
-                            <td style="padding:10px 0 5px 0;">起始日期:
-                            <td style="width:200px;padding:10px 0 5px 0;"><input id="dd_begin" type="text" class="easyui-datebox"
-                                    style="width:100%" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding:5px 0 10px 0;">结束日期:
-                            <td style="width:200px;padding:5px 0 10px 0;"><input id="dd_end" type="text" style="width:100%"
-                                    class="easyui-datebox" /></td>
-                        </tr>
-                        <tr>
-                            <td style="padding:10px 0;">客户名称:</td>
-                            <td style="width:200px;padding:10px 0;">
-                                <input id="customer_choose_for_order_list" class="easyui-textbox" data-options="prompt:'选择客户'"
-                                    style="width:100%;">
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td style="padding:10px 0;">单据状态:</td>
-                            <td style="width:200px;padding:10px 0;">
-                                <select id="order_state" class="easyui-combobox" data-options="panelHeight:100" style="width:100%;">
-                                    <option value="">全部</option>
-                                    <option value="false">正常</option>
-                                    <option value="true">作废</option>
-                                </select>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td style=""></td>
-                            <td style="text-align: center; padding:15px 0;"><a class="easyui-linkbutton" style="width:100%;"
-                                    data-options="iconCls:'icon-search',iconAlign:'left'" onclick="loadOrderGrid()">查询</a></td>
-                        </tr>
-
+                                         style="width:150px;"></select>
+                        </td>
+                        <td>签收人：<input class="f1 easyui-textbox" disabled></input></td>
                     </table>
-                </div>
-                <div data-options="region:'center'" style="padding:0px;">
-                    <table id="order_grid" class="easyui-datagrid " style="width:100%"></table>
-                    <div id="order_grid_toolbar" style="padding:2px 5px;">
-                        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="cancelOrder()">作废</a>
-                        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="printPreview()">打印</a>
-                        <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="destroyCustomer()">删除</a>
-                        <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="exportExcel(ORDER_GRID, '出货单列表.xls')">导出到excel</a>
-                        <span style="margin-left:20px" class="search_label">检索：</span>
-                        <input type="text" id="order_search_text" class="search_input" onkeyup="onSearch(this, ORDER_GRID, doSearchOrder)">
-                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!--送货单列表-->
+    <div id="orders_grid_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
+         data-options="fit:true, closed:true, border:false, onOpen:onOpenOrderListPanel">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'west'" style="width:280px; padding:4px;">
+                <table style="width:100%; border-collapse: collapse">
+                    <tr>
+                        <th COLSPAN="2">
+                            <h4>查询条件：</h4>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td style="padding:10px 0 5px 0;">起始日期:
+                        <td style="width:200px;padding:10px 0 5px 0;"><input id="dd_begin" type="text"
+                                                                             class="easyui-datebox"
+                                                                             style="width:100%"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:5px 0 10px 0;">结束日期:
+                        <td style="width:200px;padding:5px 0 10px 0;"><input id="dd_end" type="text" style="width:100%"
+                                                                             class="easyui-datebox"/></td>
+                    </tr>
+                    <tr>
+                        <td style="padding:10px 0;">客户名称:</td>
+                        <td style="width:200px;padding:10px 0;">
+                            <input id="customer_choose_for_order_list" class="easyui-textbox"
+                                   data-options="prompt:'选择客户'"
+                                   style="width:100%;">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding:10px 0;">单据状态:</td>
+                        <td style="width:200px;padding:10px 0;">
+                            <select id="order_state" class="easyui-combobox" data-options="panelHeight:100"
+                                    style="width:100%;">
+                                <option value="">全部</option>
+                                <option value="false">正常</option>
+                                <option value="true">作废</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style=""></td>
+                        <td style="text-align: center; padding:15px 0;"><a class="easyui-linkbutton" style="width:100%;"
+                                                                           data-options="iconCls:'icon-search',iconAlign:'left'"
+                                                                           onclick="loadOrderGrid()">查询</a></td>
+                    </tr>
+
+                </table>
+            </div>
+            <div data-options="region:'center'" style="padding:0px;">
+                <table id="order_grid" class="easyui-datagrid " style="width:100%"></table>
+                <div id="order_grid_toolbar" style="padding:2px 5px;">
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="cancelOrder()">作废</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true"
+                       onclick="printPreview()">打印</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="destroyCustomer()">删除</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true"
+                       onclick="exportExcel(ORDER_GRID, '出货单列表.xls')">导出到excel</a>
+                    <span style="margin-left:20px" class="search_label">检索：</span>
+                    <input type="text" id="order_search_text" class="search_input"
+                           onkeyup="onSearch(this, ORDER_GRID, doSearchOrder)">
                 </div>
             </div>
         </div>
+    </div>
 
-        <!--客户管理-->
-        <div id="customer_manage_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; " data-options="fit:true, closed:true, border:false, onOpen:onOpenCustomerManagePanel">
-            <div class="easyui-layout" data-options="fit:true">
-                <div data-options="region:'west'" style="width:180px; padding:4px;">
-                    <ul id="classification_tree" class="easyui-tree" data-options="lines:true,onSelect:loadCustomerGrid,
+    <!--客户管理-->
+    <div id="customer_manage_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
+         data-options="fit:true, closed:true, border:false, onOpen:onOpenCustomerManagePanel">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'west'" style="width:180px; padding:4px;">
+                <ul id="classification_tree" class="easyui-tree" data-options="lines:true,onSelect:loadCustomerGrid,
                         onContextMenu: function(e,node){
                                             e.preventDefault();
                                             $(this).tree('select',node.target);
@@ -666,560 +705,610 @@
                                                 top: e.pageY
                                             });
                                         }">
-                    </ul>
-                    <div id="mm_classification" class="easyui-menu" style="width:120px;" data-options="">
-                        <div onclick="edit_classification_tree_node()" data-options="iconCls:'icon-add'">编辑此编码</div>
-                        <div onclick="append_classification_tree_node()" data-options="iconCls:'icon-add'">添加子编码</div>
-                        <div onclick="delete_classification_tree_node()" data-options="iconCls:'icon-remove'">删除此编码</div>
-                    </div>
-
-                    <div id="dlg_for_classification" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg_buttons_for_classification'">
-                        <form id="fm_for_classification" method="post" novalidate style="margin:0;padding:20px 50px">
-                            <div style="margin-bottom:10px">
-                                <input name="text" id="classification_name_textbox" class="easyui-textbox" required="true"
-                                    label="编码名称：" labelAlign="right" style="width:100%">
-                            </div>
-                        </form>
-                    </div>
-                    <div id="dlg_buttons_for_classification">
-                        <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveClassification()"
-                            style="width:90px">Save</a>
-                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg_for_classification').dialog('close')"
-                            style="width:90px">Cancel</a>
-                    </div>
+                </ul>
+                <div id="mm_classification" class="easyui-menu" style="width:120px;" data-options="">
+                    <div onclick="edit_classification_tree_node()" data-options="iconCls:'icon-add'">编辑此编码</div>
+                    <div onclick="append_classification_tree_node()" data-options="iconCls:'icon-add'">添加子编码</div>
+                    <div onclick="delete_classification_tree_node()" data-options="iconCls:'icon-remove'">删除此编码</div>
                 </div>
-                <div data-options="region:'center'" style="padding:0px;">
-                    <table id="grid_for_customer" style="width:100%"></table>
 
-                    <div id="customer_grid_toolbar" style="padding:2px 5px;">
-                        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newCustomer()">添加</a>
-                        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editCustomer()">编辑</a>
-                        <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="destroyCustomer()">删除</a>
-                        <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="exportExcel(CUSTOMER_GRID, '客户列表.xls')">导出到excel</a>
-                        <span style="margin-left:20px" class="search_label">检索：</span>
-                        <input type="text" id="customer_search_text" class="search_input" onkeyup="onSearch(this, CUSTOMER_GRID, doSearchCustomer)">
-                    </div>
-
-                    <div id="dlg_for_customer" class="easyui-dialog" style="width:500px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg_buttons_for_customer'">
-                        <form id="fm_for_customer" method="post" novalidate style="margin:0;padding:20px 50px">
-                            <div style="margin-bottom:10px">
-
-                                <input name="name" id="customer_name" class="easyui-textbox" required="true" label="客户名称："
-                                    labelAlign="right" style="width:100%">
-                                <input name="_id" id="customer_id" type="hidden" />
-                            </div>
-                            <div style="margin-bottom:10px">
-
-                                <input name="index_code" id="customer_index_code" class="easyui-textbox" label="客户简码："
-                                    labelAlign="right" style="width:100%">
-                            </div>
-                            <div style="margin-bottom:10px">
-
-                                <input name="classification" id="customer_classification" class="easyui-combotree"
-                                    data-options="data:[], editable:false, required:true, lines:true, onShowPanel:showClassificationCombotree, onBeforeSelect:beforeSelectClassificationCombotree"
-                                    label="编码分类：" labelAlign="right" style="width:100%">
-                            </div>
-
-                            <div style="margin-bottom:10px">
-
-                                <input id="customer_principal" class="easyui-textbox" name="principal" labelAlign="right"
-                                    required="true" label="联&nbsp;&nbsp;系&nbsp;&nbsp;人：" style="width:100%">
-                            </div>
-                            <div style="margin-bottom:10px">
-
-                                <input id="customer_phone" class="easyui-textbox" name="phone" labelAlign="right"
-                                    required="true" label="联系电话：" style="width:100%">
-                            </div>
-                            <div style="margin-bottom:10px">
-
-                                <input id="customer_address" class="easyui-textbox" name="address" labelAlign="right"
-                                    required="true" label="联系地址：" style="width:100%">
-                            </div>
-                        </form>
-                    </div>
-                    <div id="dlg_buttons_for_customer">
-                        <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveCustomer()"
-                            style="width:90px">Save</a>
-                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg_for_customer').dialog('close')"
-                            style="width:90px">Cancel</a>
-                    </div>
+                <div id="dlg_for_classification" class="easyui-dialog" style="width:400px"
+                     data-options="closed:true,modal:true,border:'thin',buttons:'#dlg_buttons_for_classification'">
+                    <form id="fm_for_classification" method="post" novalidate style="margin:0;padding:20px 50px">
+                        <div style="margin-bottom:10px">
+                            <input name="text" id="classification_name_textbox" class="easyui-textbox" required="true"
+                                   label="编码名称：" labelAlign="right" style="width:100%">
+                        </div>
+                    </form>
+                </div>
+                <div id="dlg_buttons_for_classification">
+                    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok"
+                       onclick="saveClassification()"
+                       style="width:90px">Save</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+                       onclick="javascript:$('#dlg_for_classification').dialog('close')"
+                       style="width:90px">Cancel</a>
                 </div>
             </div>
+            <div data-options="region:'center'" style="padding:0px;">
+                <table id="grid_for_customer" style="width:100%"></table>
 
-        </div>
-
-        <!--产品管理-->
-        <div id="product_manage_panel" class="easyui-panel opt_panel" 　 style="width:800px; height:100%; padding:0px 0px; text-align:center; "
-            data-options="fit:true, closed:true, border:false, onOpen:onOpenProductManagePanel">
-
-            <div class="easyui-layout" data-options="fit:true, border:false">
-                <div data-options="region:'west'" style="width:300px; padding:4px;">
-
-                    <div style="color:red; margin-top:10px; width:100%;">
-                        说明：未选择客户，则为管理通用产品信息。
-                    </div>
-                    <input id="customer_choose_for_product_manage" class="easyui-textbox" data-options="buttonText:'选择客户',prompt:'选择客户'"
-                        style="width:100%;">
-
-
-                    <div id="selected_customer_info" style="width:100%; height:300px;"></div>
-
+                <div id="customer_grid_toolbar" style="padding:2px 5px;">
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newCustomer()">添加</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true"
+                       onclick="editCustomer()">编辑</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="destroyCustomer()">删除</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true"
+                       onclick="exportExcel(CUSTOMER_GRID, '客户列表.xls')">导出到excel</a>
+                    <span style="margin-left:20px" class="search_label">检索：</span>
+                    <input type="text" id="customer_search_text" class="search_input"
+                           onkeyup="onSearch(this, CUSTOMER_GRID, doSearchCustomer)">
                 </div>
-                <div data-options="region:'center'" style="padding:0px;">
-                    <table id="product_grid" style="width:100%"></table>
 
-                    <div id="dlg_for_product" class="easyui-dialog" style="width:500px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons_for_product'">
-                        <form id="fm_for_product" method="post" novalidate style="margin:0;padding:20px 50px">
-                            <div style="margin-bottom:10px">
-                                <input name="name" id="product_name" class="easyui-textbox" required="true" label="品名："
-                                    labelAlign="right" style="width:100%">
-                                <input name="_id" id="product_id" type="hidden" />
-                            </div>
-                            <div style="margin-bottom:10px">
-                                <input name="model" id="product_model" class="easyui-textbox" required="true" label="型号："
-                                    labelAlign="right" style="width:100%">
-                            </div>
+                <div id="dlg_for_customer" class="easyui-dialog" style="width:500px"
+                     data-options="closed:true,modal:true,border:'thin',buttons:'#dlg_buttons_for_customer'">
+                    <form id="fm_for_customer" method="post" novalidate style="margin:0;padding:20px 50px">
+                        <div style="margin-bottom:10px">
 
-                            <div style="margin-bottom:10px">
-                                <input name="units" id="product_units" class="easyui-textbox" required="true" label="单位："
-                                    labelAlign="right" style="width:100%">
-                            </div>
-                            <div style="margin-bottom:10px">
-                                <input name="price" id="product_price" class="easyui-textbox" label="单价：" labelAlign="right"
-                                    style="width:100%">
-                            </div>
-                            <div style="margin-bottom:10px">
-                                <input id="product_memo" class="easyui-textbox" name="memo" labelAlign="right" label="描述："
-                                    style="width:100%">
-                            </div>
-                        </form>
-                    </div>
-                    <div id="dlg-buttons_for_product">
-                        <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveProduct()"
-                            style="width:90px">确定</a>
-                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#dlg_for_product').dialog('close')"
-                            style="width:90px">取消</a>
-                    </div>
+                            <input name="name" id="customer_name" class="easyui-textbox" required="true" label="客户名称："
+                                   labelAlign="right" style="width:100%">
+                            <input name="_id" id="customer_id" type="hidden"/>
+                        </div>
+                        <div style="margin-bottom:10px">
 
+                            <input name="index_code" id="customer_index_code" class="easyui-textbox" label="客户简码："
+                                   labelAlign="right" style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+
+                            <input name="classification" id="customer_classification" class="easyui-combotree"
+                                   data-options="data:[], editable:false, required:true, lines:true, onShowPanel:showClassificationCombotree, onBeforeSelect:beforeSelectClassificationCombotree"
+                                   label="编码分类：" labelAlign="right" style="width:100%">
+                        </div>
+
+                        <div style="margin-bottom:10px">
+
+                            <input id="customer_principal" class="easyui-textbox" name="principal" labelAlign="right"
+                                   required="true" label="联&nbsp;&nbsp;系&nbsp;&nbsp;人：" style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+
+                            <input id="customer_phone" class="easyui-textbox" name="phone" labelAlign="right"
+                                   required="true" label="联系电话：" style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+
+                            <input id="customer_address" class="easyui-textbox" name="address" labelAlign="right"
+                                   required="true" label="联系地址：" style="width:100%">
+                        </div>
+                    </form>
+                </div>
+                <div id="dlg_buttons_for_customer">
+                    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveCustomer()"
+                       style="width:90px">Save</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+                       onclick="javascript:$('#dlg_for_customer').dialog('close')"
+                       style="width:90px">Cancel</a>
                 </div>
             </div>
         </div>
 
-        <!--司机管理-->
-        <div id="driver_manage_panel" class="easyui-panel opt_panel" data-options="fit:true, closed:true, border:false, onOpen:onOpenDriverManagePanel">
-            <div class="easyui-layout" data-options="fit:true, border:false">
-                <div data-options="region:'west'" style="width:180px; padding:4px;">
-                    <ul id="cartype_tree" class="easyui-tree" data-options="lines:true, onContextMenu: onCarTypeTreeContextMenu">
-                    </ul>
-                    <div id="mm_cartype" class="easyui-menu" style="width:120px;" data-options="">
-                        <div id="cartype_menu_edit" onclick="edit_cartype_tree_node()" data-options="iconCls:'icon-add'">编辑</div>
-                        <div id="cartype_menu_append" onclick="append_cartype_tree_node()" data-options="iconCls:'icon-add'">添加</div>
-                        <div id="cartype_menu_delete" onclick="delete_cartype_tree_node()" data-options="iconCls:'icon-remove'">删除</div>
-                    </div>
-                    <div id="dlg_for_cartype" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg_buttons_for_cartype'">
-                        <form id="fm_for_cartype" method="post" novalidate style="margin:0;padding:20px 50px">
-                            <div style="margin-bottom:10px">
-                                <input name="text" id="cartype_name_textbox" class="easyui-textbox" required="true"
-                                       label="编码名称：" labelAlign="right" style="width:100%">
-                            </div>
-                        </form>
-                    </div>
-                    <div id="dlg_buttons_for_cartype">
-                        <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveCartype()"
-                           style="width:90px">Save</a>
-                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg_buttons_for_cartype').dialog('close')"
-                           style="width:90px">Cancel</a>
-                    </div>
+    </div>
 
+    <!--产品管理-->
+    <div id="product_manage_panel" class="easyui-panel opt_panel" 　
+         style="width:800px; height:100%; padding:0px 0px; text-align:center; "
+         data-options="fit:true, closed:true, border:false, onOpen:onOpenProductManagePanel">
+
+        <div class="easyui-layout" data-options="fit:true, border:false">
+            <div data-options="region:'west'" style="width:300px; padding:4px;">
+
+                <div style="color:red; margin-top:10px; width:100%;">
+                    说明：未选择客户，则为管理通用产品信息。
                 </div>
-                <div data-options="region:'center'" style="padding:0px;">
-                    <table id="driver_grid"></table>
-                    <div id="dlg_for_driver" class="easyui-dialog" style="width:500px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons_for_driver'">
-                        <form id="fm_for_driver" method="post" novalidate style="margin:0;padding:20px 50px">
-                            <div style="margin-bottom:10px">
-                                <input name="name" id="driver_name" class="easyui-textbox" required="true" label="司机名称："
-                                    labelAlign="right" style="width:100%">
-                                <input name="_id" id="driver_id" type="hidden" />
-                            </div>
+                <input id="customer_choose_for_product_manage" class="easyui-textbox"
+                       data-options="buttonText:'选择客户',prompt:'选择客户'"
+                       style="width:100%;">
 
-                            <div style="margin-bottom:10px">
-                                <select name="car_type" id="driver_car_type" class="easyui-combobox" required="true"
-                                    editable="false" label="车型载重：" labelAlign="right" style="width:100%">
-                                    <option value="9.6米平板车-18吨">9.6米平板车-18吨</option>
-                                    <option value="9.6米高栏车-18吨">9.6米高栏车-18吨</option>
-                                    <option value="8.5米平板车-10吨">8.5米平板车-10吨</option>
-                                    <option value="8.5米高栏车-10吨">8.5米高栏车-10吨</option>
-                                    <option value="6.8米平板车-5吨">6.8米平板车-5吨</option>
-                                    <option value="6.8米高栏车-5吨">6.8米高栏车-5吨</option>
-                                </select>
-                            </div>
 
-                            <div style="margin-bottom:10px">
-                                <input name="car_No" id="driver_car_No" class="easyui-textbox" required="true" label="车牌号码："
-                                    labelAlign="right" style="width:100%">
-                            </div>
+                <div id="selected_customer_info" style="width:100%; height:300px;"></div>
 
-                            <div style="margin-bottom:10px">
-                                <input name="id_No" id="driver_id_No" class="easyui-textbox" required="true" label="身份证号："
-                                    labelAlign="right" style="width:100%">
-                            </div>
-                            <div style="margin-bottom:10px">
-                                <input name="driving_license_No" id="driver_driving_license_No" class="easyui-textbox"
-                                    required="true" label="行驶证号：" labelAlign="right" style="width:100%">
-                            </div>
-                            <div style="margin-bottom:10px">
-                                <input id="driver_phone" class="easyui-textbox" name="phone" labelAlign="right" label="联系电话："
-                                    style="width:100%">
-                            </div>
-                            <div style="margin-bottom:10px">
-                                <input id="driver_address" class="easyui-textbox" name="address" labelAlign="right"
-                                    label="联系地址：" style="width:100%">
-                            </div>
-                        </form>
-                    </div>
-                    <div id="dlg-buttons_for_driver">
-                        <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveDriver()"
-                            style="width:90px">确定</a>
-                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg_for_driver').dialog('close')"
-                            style="width:90px">取消</a>
-                    </div>
-                </div>
             </div>
-        </div>
+            <div data-options="region:'center'" style="padding:0px;">
+                <table id="product_grid" style="width:100%"></table>
 
-        <!--登录用户管理-->
-        <div id="user_manage_panel" class="easyui-panel opt_panel" data-options="fit:true, border:false, closed:true, onOpen:onOpenUserManagePanel">
-            <div class="easyui-layout" data-options="fit:true, border:false">
-                <div data-options="region:'west'" style="width:180px; padding:4px;">
-                    <ul id="role_tree" class="easyui-tree" data-options="lines:true,onSelect:loadSysUsers">
-                    </ul>
+                <div id="dlg_for_product" class="easyui-dialog" style="width:500px"
+                     data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons_for_product'">
+                    <form id="fm_for_product" method="post" novalidate style="margin:0;padding:20px 50px">
+                        <div style="margin-bottom:10px">
+                            <input name="name" id="product_name" class="easyui-textbox" required="true" label="品名："
+                                   labelAlign="right" style="width:100%">
+                            <input name="_id" id="product_id" type="hidden"/>
+                        </div>
+                        <div style="margin-bottom:10px">
+                            <input name="model" id="product_model" class="easyui-textbox" required="true" label="型号："
+                                   labelAlign="right" style="width:100%">
+                        </div>
+
+                        <div style="margin-bottom:10px">
+                            <input name="units" id="product_units" class="easyui-textbox" required="true" label="单位："
+                                   labelAlign="right" style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+                            <input name="price" id="product_price" class="easyui-textbox" label="单价：" labelAlign="right"
+                                   style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+                            <input id="product_memo" class="easyui-textbox" name="memo" labelAlign="right" label="描述："
+                                   style="width:100%">
+                        </div>
+                    </form>
                 </div>
-                <div data-options="region:'center'" style="padding:0px;">
-                    <table id="sys_user_datagrid"></table>
-                    <div id="dlg" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
-                        <form id="fm" method="post" novalidate style="margin:0;padding:20px 50px">
-                            <div style="margin-bottom:10px">
-                                <input name="name" id="name_textbox" class="easyui-textbox" required="true" label="用户名："
-                                    labelAlign="right" style="width:100%">
-                                <input name="_id" id="user_id" type="hidden" />
-                            </div>
-                            <div style="margin-bottom:10px">
-                                <input name="role" id="role_combobox" class="easyui-combobox" required="true"
-                                    data-options="panelHeight:40" label="角&emsp;色：" labelAlign="right" style="width:100%">
-                            </div>
-                            <div style="margin-bottom:10px">
-
-                                <input id="disabled_checkbox" class="easyui-checkbox" name="disabled" labelAlign="right"
-                                    label="禁&emsp;用：">
-
-                            </div>
-                        </form>
-                    </div>
-                    <div id="dlg-buttons">
-                        <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser()"
-                            style="width:90px">确定</a>
-                        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')"
-                            style="width:90px">取消</a>
-                    </div>
+                <div id="dlg-buttons_for_product">
+                    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveProduct()"
+                       style="width:90px">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+                       onclick="$('#dlg_for_product').dialog('close')"
+                       style="width:90px">取消</a>
                 </div>
-            </div>
-        </div>
 
-
-        <!--系统设置-->
-        <div id="sys_config_panel" class="easyui-panel opt_panel" data-options="fit:true, closed:true, border:true, onOpen:onOpenSysConfigPanel">
-            <div class="easyui-panel" data-options="title:'系统设置', width:600, style:{marginLeft:'auto', marginRight:'auto', marginTop:20}">
-                <form id="fm_for_system" method="post" novalidate style="margin:0;padding:20px 50px">
-                    <div style="margin-top:20px">
-                        <input id="company_name" class="easyui-textbox" required="true" label="公司名称：" labelAlign="right"
-                            style="width:100%">
-                    </div>
-                    <div style="margin-top:20px">
-                        <input id="company_phone" class="easyui-textbox" label="公司电话：" labelAlign="right" style="width:100%">
-                    </div>
-
-                    <div style="margin-top:20px">
-                        <input id="company_fax" class="easyui-textbox" label="公司传真：" labelAlign="right" style="width:100%">
-                    </div>
-                    <div style="margin-top:20px">
-                        <input id="company_address" class="easyui-textbox" label="公司地址：" labelAlign="right" style="width:100%">
-                    </div>
-                    <div style="margin-top:20px">
-                        <input id="company_logo" class="easyui-textbox" labelAlign="right" label="公司logo：" style="width:100%">
-                    </div>
-                    <div style="margin-top:40px;">
-                        <a onclick="set_company()" class="easyui-linkbutton" style="width:100px">确定</a>
-                    </div>
-                </form>
-            </div>
-
-        </div>
-
-        <!--用户设置密码 -->
-        <div id="password_set_panel" class="easyui-panel opt_panel" data-options="fit:true, closed:true, border:true, onOpen:onOpenDriverManagePanel">
-            <div class="easyui-panel" data-options="title:'修改用户密码', width:600, style:{marginLeft:'auto', marginRight:'auto', marginTop:20}">
-                <form id="fm_for_password_set" method="post" novalidate style="margin:0;padding:20px 50px">
-                    <div style="margin-top:20px">
-                        <input id="old_pass" class="easyui-textbox" label="旧&emsp;密&emsp;码:" labelAlign="left" style="width:100%">
-                    </div>
-                    <div style="margin-top:20px">
-                        <input id="new_pass" class="easyui-textbox" label="新&emsp;密&emsp;码:" labelAlign="left" style="width:100%">
-                    </div>
-                    <div style="margin-top:20px">
-                        <input id="new_pass_again" class="easyui-textbox" label="重复新密码:" labelAlign="left" style="width:100%">
-                    </div>
-
-                    <div style="margin-top:40px;">
-                        <a onclick="set_password()" class="easyui-linkbutton" style="width:100px">确定</a>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
 
-    <!--<div data-options="region:'south', border:false, height:40">
-    <div style="text-align: center">
-        <div style="height:24px; line-height:24px; margin:6px auto; display: inline-block  ">苏州元斌塑胶科技有限公司版权所有@copyright</div>
-    </div>
-</div>-->
-
-    <!-- 客户选择对话框 -->
-    <div id="dlg_for_customer_choose" title="选择客户" class="easyui-dialog" style="width:900px; height:550px;"
-        data-options="onOpen:onOpenCustomerChooseDlg, resizable:true, closed:true, modal:true, border:'thin', buttons:'#dlg_buttons_for_classification01'">
-        <div class="easyui-layout" data-options="fit:true">
+    <!--司机管理-->
+    <div id="driver_manage_panel" class="easyui-panel opt_panel"
+         data-options="fit:true, closed:true, border:false, onOpen:onOpenDriverManagePanel">
+        <div class="easyui-layout" data-options="fit:true, border:false">
             <div data-options="region:'west'" style="width:180px; padding:4px;">
-                <ul id="classification_tree01" class="easyui-tree" data-options="lines:true,onSelect:loadCustomerGrid01,
-                      ">
+                <ul id="cartype_tree" class="easyui-tree"
+                    data-options="lines:true, onContextMenu: onCarTypeTreeContextMenu,onSelect:loadDriverGrid">
+                </ul>
+                <div id="mm_cartype" class="easyui-menu" style="width:120px;" data-options="">
+                    <div id="cartype_menu_edit" onclick="edit_cartype_tree_node()" data-options="iconCls:'icon-add'">
+                        编辑
+                    </div>
+                    <div id="cartype_menu_append" onclick="append_cartype_tree_node()"
+                         data-options="iconCls:'icon-add'">添加
+                    </div>
+                    <div id="cartype_menu_delete" onclick="delete_cartype_tree_node()"
+                         data-options="iconCls:'icon-remove'">删除
+                    </div>
+                </div>
+                <div id="dlg_for_cartype" class="easyui-dialog" style="width:400px"
+                     data-options="closed:true,modal:true,border:'thin',buttons:'#dlg_buttons_for_cartype'">
+                    <form id="fm_for_cartype" method="post" novalidate style="margin:0;padding:20px 50px">
+                        <div style="margin-bottom:10px">
+                            <input name="cartype_name" id="cartype_name_textbox" class="easyui-textbox" required="true"
+                                   label="货车分类：" labelAlign="right" style="width:100%">
+                            <input id="cartype_id" type="hidden"/>
+                        </div>
+                    </form>
+                </div>
+                <div id="dlg_buttons_for_cartype">
+                    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveCartype()"
+                       style="width:90px">保存</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+                       onclick="javascript:$('#dlg_for_cartype').dialog('close')"
+                       style="width:90px">取消</a>
+                </div>
+
+            </div>
+            <div data-options="region:'center'" style="padding:0px;">
+                <table id="driver_grid"></table>
+                <div id="dlg_for_driver" class="easyui-dialog" style="width:500px"
+                     data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons_for_driver', onOpen:loadCartypeSelectData">
+                    <form id="fm_for_driver" method="post" novalidate style="margin:0;padding:20px 50px">
+                        <div style="margin-bottom:10px">
+                            <input name="name" id="driver_name" class="easyui-textbox" required="true" label="司机名称："
+                                   labelAlign="right" style="width:100%">
+                            <input name="_id" id="driver_id" type="hidden"/>
+                        </div>
+
+                        <div style="margin-bottom:10px">
+                            <select name="cartype" id="driver_car_type" class="easyui-combobox" required="true"
+                                    data-options="data:[], valueField:'_id', textField:'name'"
+                                    editable="false" label="货车分类：" labelAlign="right" style="width:100%">
+                            </select>
+                        </div>
+
+                        <div style="margin-bottom:10px">
+                            <input name="car_No" id="driver_car_No" class="easyui-textbox" required="true" label="车牌号码："
+                                   labelAlign="right" style="width:100%">
+                        </div>
+
+                        <div style="margin-bottom:10px">
+                            <input name="id_No" id="driver_id_No" class="easyui-textbox" required="true" label="身份证号："
+                                   labelAlign="right" style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+                            <input name="driving_license_No" id="driver_driving_license_No" class="easyui-textbox"
+                                   required="true" label="行驶证号：" labelAlign="right" style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+                            <input id="driver_phone" class="easyui-textbox" name="phone" labelAlign="right"
+                                   label="联系电话："
+                                   style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+                            <input id="driver_address" class="easyui-textbox" name="address" labelAlign="right"
+                                   label="联系地址：" style="width:100%">
+                        </div>
+                    </form>
+                </div>
+                <div id="dlg-buttons_for_driver">
+                    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveDriver()"
+                       style="width:90px">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+                       onclick="javascript:$('#dlg_for_driver').dialog('close')"
+                       style="width:90px">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--登录用户管理-->
+    <div id="user_manage_panel" class="easyui-panel opt_panel"
+         data-options="fit:true, border:false, closed:true, onOpen:onOpenUserManagePanel">
+        <div class="easyui-layout" data-options="fit:true, border:false">
+            <div data-options="region:'west'" style="width:180px; padding:4px;">
+                <ul id="role_tree" class="easyui-tree" data-options="lines:true,onSelect:loadSysUsers">
                 </ul>
             </div>
             <div data-options="region:'center'" style="padding:0px;">
-                <table id="grid_for_customer01" style="width:100%">
-                </table>
+                <table id="sys_user_datagrid"></table>
+                <div id="dlg" class="easyui-dialog" style="width:400px"
+                     data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
+                    <form id="fm" method="post" novalidate style="margin:0;padding:20px 50px">
+                        <div style="margin-bottom:10px">
+                            <input name="name" id="name_textbox" class="easyui-textbox" required="true" label="用户名："
+                                   labelAlign="right" style="width:100%">
+                            <input name="_id" id="user_id" type="hidden"/>
+                        </div>
+                        <div style="margin-bottom:10px">
+                            <input name="role" id="role_combobox" class="easyui-combobox" required="true"
+                                   data-options="panelHeight:40" label="角&emsp;色：" labelAlign="right"
+                                   style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+
+                            <input id="disabled_checkbox" class="easyui-checkbox" name="disabled" labelAlign="right"
+                                   label="禁&emsp;用：">
+
+                        </div>
+                    </form>
+                </div>
+                <div id="dlg-buttons">
+                    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser()"
+                       style="width:90px">确定</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+                       onclick="javascript:$('#dlg').dialog('close')"
+                       style="width:90px">取消</a>
+                </div>
             </div>
         </div>
     </div>
-    <div id="customer_grid_toolbar01" style="padding:2px 5px;">
-        <span class="search_label">检索：</span>
-        <input class="search_input" type="text" id="customer_search_text01" onkeyup="onSearch(this, CUSTOMER_GRID01, doSearchCustomer)" />
+
+
+    <!--系统设置-->
+    <div id="sys_config_panel" class="easyui-panel opt_panel"
+         data-options="fit:true, closed:true, border:true, onOpen:onOpenSysConfigPanel">
+        <div class="easyui-panel"
+             data-options="title:'系统设置', width:600, style:{marginLeft:'auto', marginRight:'auto', marginTop:20}">
+            <form id="fm_for_system" method="post" novalidate style="margin:0;padding:20px 50px">
+                <div style="margin-top:20px">
+                    <input id="company_name" class="easyui-textbox" required="true" label="公司名称：" labelAlign="right"
+                           style="width:100%">
+                </div>
+                <div style="margin-top:20px">
+                    <input id="company_phone" class="easyui-textbox" label="公司电话：" labelAlign="right"
+                           style="width:100%">
+                </div>
+
+                <div style="margin-top:20px">
+                    <input id="company_fax" class="easyui-textbox" label="公司传真：" labelAlign="right" style="width:100%">
+                </div>
+                <div style="margin-top:20px">
+                    <input id="company_address" class="easyui-textbox" label="公司地址：" labelAlign="right"
+                           style="width:100%">
+                </div>
+                <div style="margin-top:20px">
+                    <input id="company_logo" class="easyui-textbox" labelAlign="right" label="公司logo："
+                           style="width:100%">
+                </div>
+                <div style="margin-top:40px;">
+                    <a onclick="set_company()" class="easyui-linkbutton" style="width:100px">确定</a>
+                </div>
+            </form>
+        </div>
+
     </div>
 
-    <div id="dlg_buttons_for_classification01">
-        <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="chooseCustomer()" style="width:90px">确定选择</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg_for_customer_choose').dialog('close')"
-            style="width:90px">取消</a>
+    <!--用户设置密码 -->
+    <div id="password_set_panel" class="easyui-panel opt_panel"
+         data-options="fit:true, closed:true, border:true, onOpen:onOpenDriverManagePanel">
+        <div class="easyui-panel"
+             data-options="title:'修改用户密码', width:600, style:{marginLeft:'auto', marginRight:'auto', marginTop:20}">
+            <form id="fm_for_password_set" method="post" novalidate style="margin:0;padding:20px 50px">
+                <div style="margin-top:20px">
+                    <input id="old_pass" class="easyui-textbox" label="旧&emsp;密&emsp;码:" labelAlign="left"
+                           style="width:100%">
+                </div>
+                <div style="margin-top:20px">
+                    <input id="new_pass" class="easyui-textbox" label="新&emsp;密&emsp;码:" labelAlign="left"
+                           style="width:100%">
+                </div>
+                <div style="margin-top:20px">
+                    <input id="new_pass_again" class="easyui-textbox" label="重复新密码:" labelAlign="left"
+                           style="width:100%">
+                </div>
+
+                <div style="margin-top:40px;">
+                    <a onclick="set_password()" class="easyui-linkbutton" style="width:100px">确定</a>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
 
+<!--<div data-options="region:'south', border:false, height:40">
+<div style="text-align: center">
+    <div style="height:24px; line-height:24px; margin:6px auto; display: inline-block  ">苏州元斌塑胶科技有限公司版权所有@copyright</div>
+</div>
+</div>-->
 
-    <!-- 产品选择对话框 -->
-    <div id="dlg_for_product_choose" title="选择产品" class="easyui-dialog" style="width:700px; height:500px;" data-options="onBeforeOpen:onOpenProductChooseDlg, resizable:true, closed:true, modal:true, border:'thin', buttons:'#dlg_buttons_for_product_choose01'">
-        <table id="grid_for_product01" style="width:100%">
-        </table>
+<!-- 客户选择对话框 -->
+<div id="dlg_for_customer_choose" title="选择客户" class="easyui-dialog" style="width:900px; height:550px;"
+     data-options="onOpen:onOpenCustomerChooseDlg, resizable:true, closed:true, modal:true, border:'thin', buttons:'#dlg_buttons_for_classification01'">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'west'" style="width:180px; padding:4px;">
+            <ul id="classification_tree01" class="easyui-tree" data-options="lines:true,onSelect:loadCustomerGrid01,
+                      ">
+            </ul>
+        </div>
+        <div data-options="region:'center'" style="padding:0px;">
+            <table id="grid_for_customer01" style="width:100%">
+            </table>
+        </div>
     </div>
-    <div id="dlg_buttons_for_product_choose01">
-        <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="chooseProduct()" style="width:90px">确定选择</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg_for_product_choose').dialog('close')"
-            style="width:90px">取消</a>
-    </div>
+</div>
+<div id="customer_grid_toolbar01" style="padding:2px 5px;">
+    <span class="search_label">检索：</span>
+    <input class="search_input" type="text" id="customer_search_text01"
+           onkeyup="onSearch(this, CUSTOMER_GRID01, doSearchCustomer)"/>
+</div>
 
-    <div id="win" class="easyui-window" title="" style="background-color: #95B8E7" data-options="modal:true, closed:true, height:50, width:200, border:false,  style:{textAlign:'center'}">
-        <span style="height:50px;  line-height:50px; margin:0 auto; " id="win_in"></span>
-    </div>
-
-    <!--<div id="account_info" >-->
-    <div id="account_info" class="easyui-menu" data-options="hideOnUnhover:false,onClick:menuHandler" style="width:120px;">
-        <div name="account_info">账号信息</div>
-        <div>密码修改</div>
-        <div name="logout">注销登录</div>
-        <div class="menu-sep"></div>
-
-        <div name="exit">退出系统</div>
-        <div class="menu-sep"></div>
-
-        <div>检查更新</div>
-        <div>系统设置</div>
-        <div name="about">关于</div>
-    </div>
-
-    <script>
+<div id="dlg_buttons_for_classification01">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="chooseCustomer()"
+       style="width:90px">确定选择</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#dlg_for_customer_choose').dialog('close')"
+       style="width:90px">取消</a>
+</div>
 
 
-        function onCarTypeTreeContextMenu(e, node) {
-            e.preventDefault();
-            $(this).tree('select', node.target);
-            let root = $(this).tree('getRoot')
-            $('#mm_cartype').menu('show', {
-                left: e.pageX,
-                top: e.pageY
-            });
+<!-- 产品选择对话框 -->
+<div id="dlg_for_product_choose" title="选择产品" class="easyui-dialog" style="width:700px; height:500px;"
+     data-options="onBeforeOpen:onOpenProductChooseDlg, resizable:true, closed:true, modal:true, border:'thin', buttons:'#dlg_buttons_for_product_choose01'">
+    <table id="grid_for_product01" style="width:100%">
+    </table>
+</div>
+<div id="dlg_buttons_for_product_choose01">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="chooseProduct()"
+       style="width:90px">确定选择</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#dlg_for_product_choose').dialog('close')"
+       style="width:90px">取消</a>
+</div>
 
-            var cartype_item_edit = $('#cartype_menu_edit')[0];
-            var cartype_item_append = $('#cartype_menu_apppend')[0];
-            var cartype_item_delete = $('#cartype_menu_delete')[0];
+<div id="win" class="easyui-window" title="" style="background-color: #95B8E7"
+     data-options="modal:true, closed:true, height:50, width:200, border:false,  style:{textAlign:'center'}">
+    <span style="height:50px;  line-height:50px; margin:0 auto; " id="win_in"></span>
+</div>
 
-            if (root == node) {
-                $('#mm_cartype').menu('enableItem', cartype_item_append)
-                $('#mm_cartype').menu('disableItem', cartype_item_edit)
-                $('#mm_cartype').menu('disableItem', cartype_item_delete)
-            } else {
-                $('#mm_cartype').menu('disableItem', cartype_item_append)
-                $('#mm_cartype').menu('enableItem', cartype_item_edit)
-                $('#mm_cartype').menu('enableItem', cartype_item_delete)
-            }
+<!--<div id="account_info" >-->
+<div id="account_info" class="easyui-menu" data-options="hideOnUnhover:false,onClick:menuHandler" style="width:120px;">
+    <div name="account_info">账号信息</div>
+    <div>密码修改</div>
+    <div name="logout">注销登录</div>
+    <div class="menu-sep"></div>
 
+    <div name="exit">退出系统</div>
+    <div class="menu-sep"></div>
+
+    <div>检查更新</div>
+    <div>系统设置</div>
+    <div name="about">关于</div>
+</div>
+
+<script>
+
+
+    function onCarTypeTreeContextMenu(e, node) {
+        e.preventDefault();
+        $(this).tree('select', node.target);
+        let root = $(this).tree('getRoot')
+        $('#mm_cartype').menu('show', {
+            left: e.pageX,
+            top: e.pageY
+        });
+
+        var cartype_item_edit = $('#cartype_menu_edit')[0];
+        var cartype_item_append = $('#cartype_menu_append')[0];
+        var cartype_item_delete = $('#cartype_menu_delete')[0];
+
+        if (root == node) {
+            $('#mm_cartype').menu('enableItem', cartype_item_append)
+            $('#mm_cartype').menu('disableItem', cartype_item_edit)
+            $('#mm_cartype').menu('disableItem', cartype_item_delete)
+        } else {
+            $('#mm_cartype').menu('disableItem', cartype_item_append)
+            $('#mm_cartype').menu('enableItem', cartype_item_edit)
+            $('#mm_cartype').menu('enableItem', cartype_item_delete)
         }
 
+    }
 
-        function menuHandler(item) {
-            switch (item.name) {
-                case 'logout':
-                    logout();
-                    break;
-                case 'about':
-                    // show about
-                    break;
-                case 'exit':
-                    //
-                    closewin()
-                    break;
-                default:
-                    ;
-            }
+
+    function menuHandler(item) {
+        switch (item.name) {
+            case 'logout':
+                logout();
+                break;
+            case 'about':
+                // show about
+                break;
+            case 'exit':
+                //
+                closewin()
+                break;
+            default:
+                ;
         }
+    }
 
 
-        const { BrowserWindow } = require('electron').remote
-        const { ipcRenderer } = require('electron')
-        const win = require('electron').remote.getCurrentWindow();
-        win.on('maximize', function () {
-            $('#to_max').hide();
-            $('#to_unmax').show();
-            console.log('max')
+    const {BrowserWindow} = require('electron').remote
+    const {ipcRenderer} = require('electron')
+    const win = require('electron').remote.getCurrentWindow();
+    win.on('maximize', function () {
+        $('#to_max').hide();
+        $('#to_unmax').show();
+        console.log('max')
+    })
+
+    win.on('unmaximize', function () {
+        $('#to_unmax').hide();
+        $('#to_max').show();
+        console.log('unmax')
+    })
+
+
+    function showMainWindow() {
+        win.show()
+    }
+
+
+    function showAccountMenu(e){
+        e.preventDefault();
+        $('#account_info').menu('show', {
+            left: e.pageX,
+            top: 105
         })
-
-        win.on('unmaximize', function () {
-            $('#to_unmax').hide();
-            $('#to_max').show();
-            console.log('unmax')
-        })
+    }
 
 
-        function showMainWindow() {
-            win.show()
-        }
 
-        $(function () {
-            loadConfig(function (config) {
-                // localStorage只支持String值
-                console.log("load configs")
-                document.title = config.company_name + KIS_VERSION
-                DOCUMENT_TITLE_PREFIX = document.title
-                SYS_CONFIG = config;
-            });
-
-
-            $('#new_order_sale_date').datebox().datebox('calendar').calendar({
-                validator: function (date) {
-                    var now = new Date();
-                    var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
-                    var d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 6);
-                    return d1 <= date && date <= d2;
-                }
-            });
-
-
-            $('.account_logo').bind('click', function (e) {
-                e.preventDefault();
-                $('#account_info').menu('show', {
-                    left: e.pageX,
-                    top: 105
-                })
-            });
-
-
+    $(function () {
+        loadConfig(function (config) {
+            // localStorage只支持String值
+            console.log("load configs")
+            document.title = config.company_name + KIS_VERSION
+            DOCUMENT_TITLE_PREFIX = document.title
+            SYS_CONFIG = config;
         });
 
 
-        function loadConfig(callback) {
-            mongoose.ConfigModel.findOne({}, function (err, doc) {
-                if (doc) {
-                    callback(doc)
-                }
-            })
-        }
-
-        function logout() {
-            ipcRenderer.sendSync('logout')
-        }
-
-
-        function printPreview() {
-            let row = ORDER_GRID.datagrid('getSelected')
-            if (row) {
-                preview(row, 'list')
+        $('#new_order_sale_date').datebox().datebox('calendar').calendar({
+            validator: function (date) {
+                var now = new Date();
+                var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+                var d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 6);
+                return d1 <= date && date <= d2;
             }
-        }
+        });
 
 
-        function maxwin() {
+        $('.account_logo').bind('click', function (e) {
+            showAccountMenu(e)
+        });
 
-            if (win.isMaximized()) {
 
-                win.unmaximize()
-            } else {
+    });
 
-                win.maximize()
+
+
+    function loadConfig(callback) {
+        mongoose.ConfigModel.findOne({}, function (err, doc) {
+            if (doc) {
+                callback(doc)
             }
+        })
+    }
+
+    function logout() {
+        ipcRenderer.sendSync('logout')
+    }
+
+
+    function printPreview() {
+        let row = ORDER_GRID.datagrid('getSelected')
+        if (row) {
+            preview(row, 'list')
         }
+    }
 
-        function minwin() {
-            win.minimize()
+
+    function maxwin() {
+
+        if (win.isMaximized()) {
+
+            win.unmaximize()
+        } else {
+
+            win.maximize()
         }
+    }
 
-        function closewin() {
-            $.messager.confirm('确定', '确定要关闭应用程序吗?', function (r) {
-                if (r) {
-                    win.close()
-                }
-            });
-        }
+    function minwin() {
+        win.minimize()
+    }
+
+    function closewin() {
+        $.messager.confirm('确定', '确定要关闭应用程序吗?', function (r) {
+            if (r) {
+                win.close()
+            }
+        });
+    }
 
 
-        function preview(order, type) {
-            type = type || 'new_order'
-            localStorage.setItem('order', JSON.stringify(order));
-            let win_print = new BrowserWindow({
-                width: 800,
-                height: 570,
-                modal: true,
-                show: false,
-                maximizable: false,
-                minimizable: false,
-                resizable: false,
-                parent: win,
-                title: '打印',
-                autoHideMenuBar: true
-            })
-            win_print.on('closed', () => {
-                win_print = null
+    function preview(order, type) {
+        type = type || 'new_order'
+        localStorage.setItem('order', JSON.stringify(order));
+        let win_print = new BrowserWindow({
+            width: 800,
+            height: 570,
+            modal: true,
+            show: false,
+            maximizable: false,
+            minimizable: false,
+            resizable: false,
+            parent: win,
+            title: '打印',
+            autoHideMenuBar: true
+        })
+        win_print.on('closed', () => {
+            win_print = null
 
-                if (type == 'new_order') {
-                    $.messager.confirm('', '是否继续填写出货单?', function (r) {
-                        if (r) {
-                            resetOrder();
-                        } else {
-                            $('#order_list_menu').click()
-                        }
-                    })
+            if (type == 'new_order') {
+                $.messager.confirm('', '是否继续填写出货单?', function (r) {
+                    if (r) {
+                        resetOrder();
+                    } else {
+                        $('#order_list_menu').click()
+                    }
+                })
 
-                } else if (type == 'list') {
+            } else if (type == 'list') {
 
-                }
-            })
+            }
+        })
 
-            win_print.loadURL('file://' + __dirname + '/print_template.html')
-            win_print.show()
-        }
-    </script>
+        win_print.loadURL('file://' + __dirname + '/print_template.html')
+        win_print.show()
+    }
+</script>
 
 
 </body>

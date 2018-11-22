@@ -53,14 +53,16 @@ body {
 
 input.search_input {
     width: 200px;
-    height: 20px;
-    line-height: 20px;
+    height: 16px;
+    line-height: 16px;
+    font-size:11px;
 }
 
 .search_label {
-    height: 20px;
-    line-height: 20px;
+    height: 18px;
+    line-height: 18px;
     vertical-align: middle;
+
 }
 
 .product_detail_table {

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh_CN">
-
 <head>
     <meta charset="UTF-8">
-    <script>if (typeof module === 'object') {
+    <script>
+        if (typeof module === 'object') {
             window.module = module;
             module = undefined;
         }
@@ -19,7 +19,6 @@
 
     <link rel="stylesheet" type="text/css" href="scripts/jquery-easyui/themes/ui-cupertino/easyui.css">
     <link rel="stylesheet" type="text/css" href="scripts/jquery-easyui/themes/icon.css">
-    <script type="text/javascript" src="scripts/jquery-3.3.1.js"></script>
     <script type="text/javascript" src="scripts/jquery-easyui/jquery.easyui.min.js"></script>
     <style type="text/css">
         * {
@@ -223,8 +222,8 @@
             </div>
         </div>
     </div>
-    <script>
 
+    <script>
         function changeUser(newvalue, oldvalue) {
             let data = $('#username').combobox('getData')
             let find = false;
