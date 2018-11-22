@@ -11,13 +11,13 @@ function show_messager(msg, type) {
     $.messager.show({
         //title:'My Title',
         width: 500,
-        height: 40,
+        height: 48,
         msg: msg,
         showType: 'fade',
         showSpeed: 200,
         style: {
             right: '',
-            top: document.body.scrollTop + document.documentElement.scrollTop,
+            top: 52,   //document.body.scrollTop + document.documentElement.scrollTop,
             bottom: ''
         },
         border: false,

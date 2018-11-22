@@ -258,7 +258,9 @@ function editDriver(){
     if (row){
         $('#dlg_for_driver').dialog('open').dialog('center').dialog('setTitle','编辑司机信息');
         $('#fm_for_driver').form('load',row);
-        $('#driver_car_type').combobox('setValue', row.cartype._id)
+        if(row.cartype) {
+            $('#driver_car_type').combobox('setValue', row.cartype._id)
+        }
         opt_type_for_driver = 'edit'
     }
 }
@@ -308,5 +310,8 @@ function destroyDriver(){
         });
     }
 }
+
+
+
 
 

@@ -110,7 +110,7 @@
       style=" padding:0; margin:0;overflow-y: hidden;overflow-x: hidden; height:100%">
 
 <div data-options="region:'north',split:false, border:false"
-     style="height:114px;width:100%; -webkit-user-select: none;  margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
+     style="height:106px;width:100%; -webkit-user-select: none;  margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
 
     <div id="title_bar">
         <div style="height:20px; width:20px; margin:3px 2px 0px 5px; line-height: 20px; float:left; background-color:#fff;">
@@ -196,7 +196,7 @@
     </div>
 
 
-    <div id="tt" class="easyui-tabs" data-options="border:false, tabWidth:120, tabHeight:26, height:94, plain:true,tools:'#tab-tools'"
+    <div id="tt" class="easyui-tabs" data-options="border:false, tabWidth:120, tabHeight:26, height:86, plain:true,tools:'#tab-tools'"
          style="width:100%;  margin:0;">
 
         <div title="出货单管理" data-options="border:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
@@ -1152,6 +1152,9 @@
 
     function menuHandler(item) {
         switch (item.name) {
+            case 'account_info':
+                alert(localStorage.getItem('user'))
+                break;
             case 'logout':
                 logout();
                 break;

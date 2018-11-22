@@ -44,7 +44,9 @@ body {
 .product_choose_textbox:hover .textbox-icon {
     opacity: 1.0;
     filter: alpha(opacity=100);
-    background: url('scripts/jquery-easyui/themes/icons/pencil.png') no-repeat center center;
+    /* background: url('../scripts/jquery-easyui/themes/icons/pencil.png') no-repeat center center; */
+    background: url('../images/\(select\)_SFont.CN.svg') no-repeat center center;
+
 }
 
 .no_border {
@@ -69,7 +71,7 @@ input.search_input {
     width: 600px;
     border-collapse: collapse;
     border: 1px dashed steelblue;
-    margin: 2px 0px 20px 80px;
+    margin: 2px 0px 20px 0px;
 }
 
 .product_detail_table th {
