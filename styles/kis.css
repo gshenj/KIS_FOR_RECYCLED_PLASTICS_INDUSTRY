@@ -101,11 +101,15 @@ a.account_logo {
     border-radius: 50%;
     display: inline-block;
     _float: left;
-    background-image: url('images/account_logo.png')
+    background-image: url("../images/account_logo.png")
 }
 
 a:hover.account_logo {
     background-color: #fff;
+}
+
+a:hover.menu_a {
+    border:1px solid blue
 }
 
 #title_bar {
