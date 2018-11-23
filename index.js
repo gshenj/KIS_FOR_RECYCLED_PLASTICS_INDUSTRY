@@ -36,7 +36,7 @@ function createMainWindow() {
         autoHideMenuBar: true
     })
 
-    mainWindow.loadURL('file://' + __dirname + '/index1.html')
+    mainWindow.loadURL('file://' + __dirname + '/index.html')
 
     mainWindow.once('ready-to-show', () => {
         mainWindow.show()
