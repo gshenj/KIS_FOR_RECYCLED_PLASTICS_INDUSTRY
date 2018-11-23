@@ -141,3 +141,227 @@ function cancelOrder(callback) {
 
 }
 
+
+function resetOrder() {
+    $('#new_order_form').form('clear')
+
+    //
+    getCurrentSeq("order_seq", function (value) {
+        $('#new_order_sale_No').html(value + 1)
+    })
+
+    //
+    let t = $('#new_order_customer_name')
+    if (!t.textbox('getText')) {
+        t.textbox('getIcon', 0).css('visibility', 'hidden');
+    }
+    //
+    $('#new_order_sale_date').datebox('setValue', myDateFormatter(new Date()))
+    //
+    resetOrderProductGrid(false)
+}
+
+function resetOrderProductGrid(addFirstRow) {
+    deleteAllRows()
+    if (addFirstRow) {
+        addOrderRow()
+    }
+}
+
+function endEditing() {
+    if (typeof (editIndex) == 'undefined') {
+        return true
+    }
+    if ($('#order_products_grid').datagrid('validateRow', editIndex)) {
+        $('#order_products_grid').datagrid('endEdit', editIndex);
+        editIndex = undefined;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+function deleteOrderRow() {
+    removeit()
+}
+
+
+function addOrderRow() {
+    if (endEditing()) {
+        let rows = $('#order_products_grid').datagrid('getRows');
+        if (rows.length == 0 || rows.length == 1) {
+            // 如果当面没有行，或者只有1行，那么追加一行
+            $('#order_products_grid').datagrid('appendRow', {});
+            editIndex = $('#order_products_grid').datagrid('getRows').length - 1;
+
+        } else {
+            let selectedRow = $('#order_products_grid').datagrid('getSelected');
+            if (selectedRow) {
+                console.log(JSON.stringify(selectedRow))
+                let selectedIndex = $('#order_products_grid').datagrid('getRowIndex', selectedRow);
+                if (selectedIndex == (rows.length - 1)) {
+                    // 不管多少行，如果当前选中最后一行，添加最后一行
+                    $('#order_products_grid').datagrid('appendRow', {});
+                    editIndex = $('#order_products_grid').datagrid('getRows').length - 1;
+                } else {
+                    // 否则在选中行之前插入一行
+                    console.log("selectedINdex" + selectedIndex)
+                    $('#order_products_grid').datagrid("insertRow", { index: selectedIndex, row: {} })
+                    editIndex = selectedIndex;
+                }
+
+            } else {
+                //如果当前没有选中任何一行，那么在尾部添加一行，正常不会执行到这里
+                $('#order_products_grid').datagrid('appendRow', {});
+                editIndex = $('#order_products_grid').datagrid('getRows').length - 1;
+            }
+        }
+
+        $('#order_products_grid').datagrid('selectRow', editIndex)
+            .datagrid('beginEdit', editIndex);
+    }
+}
+
+function removeit() {
+    if (editIndex == undefined) {
+        return
+    }
+    $('#order_products_grid').datagrid('cancelEdit', editIndex)
+        .datagrid('deleteRow', editIndex);
+    editIndex = undefined;
+}
+
+function deleteAllRows() {
+    let rows = $('#order_products_grid').datagrid('getRows')
+    for (let i = rows.length; i > 0;) {
+        i--;
+        $('#order_products_grid').datagrid('cancelEdit', i).datagrid('deleteRow', i)
+    }
+    editIndex = undefined
+}
+
+function onClickCell(index, field, value) {
+
+    console.log("onClickCell")
+    if (editIndex != index) {
+        if (endEditing()) {
+            $('#order_products_grid').datagrid('selectRow', index)
+                .datagrid('beginEdit', index);
+            var ed = $('#order_products_grid').datagrid('getEditor', { index: index, field: field });
+            if (ed) {
+                ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+            }
+            editIndex = index;
+        } else {
+            setTimeout(function () {
+                $('#order_products_grid').datagrid('selectRow', editIndex);
+            }, 0);
+        }
+    }
+
+    event.stopPropagation();    //  阻止事件冒泡,防止响应表格panel的click事件
+}
+
+function accept() {
+    if (endEditing()) {
+        $('#order_products_grid').datagrid('acceptChanges');
+    }
+}
+
+function doPrint() {
+    accept();
+
+    let products = $('#order_products_grid').datagrid('getRows')
+
+    // save orders
+    let customer_id = $('#new_order_customer_name').textbox('getValue');
+    let customer_name = $('#new_order_customer_name').textbox('getText');
+    let order_date = $('#new_order_sale_date').textbox('getText');
+    //let order_num = $('#new_order_sale_No').textbox('getValue')
+    let delivery_address = $('#new_order_customer_address').textbox('getValue')
+    let principal = $('#new_order_customer_principal').textbox('getValue')
+    let contact_number = $('#new_order_customer_phone').textbox('getValue')
+    let maker = $('#new_order_maker').textbox('getValue')
+    let driver = $('#driver_select').textbox('getValue')
+    let cancelled = false;
+
+    let products_num;
+    let products_sum;
+
+    let order_data = {
+        order_num: 1,//order_num,
+        customer_id: customer_id,
+        customer_name: customer_name,
+        customer_principal: principal,
+        contact_number: contact_number,
+        delivery_address: delivery_address,
+        order_date: order_date,
+        order_maker: maker,
+        order_driver: driver,
+        cancelled: cancelled,
+        products: products
+        //create_user:  current_user
+    }
+
+    console.log(JSON.stringify(order_data))
+    $('#win_in').html('正在保存单剧...')
+    $('#win').window('open')
+
+    setTimeout(function () {
+        saveOrder(order_data, function (doc) {
+            $('#win_in').html('开始打印...')
+            setTimeout(function () {
+                $('#win').window('close')
+                preview(doc)
+                //$('#win').window('close')
+                //关闭打印页面，window消失
+            }, 1000)
+        })
+    }, 1000)
+}
+
+
+function onLoadSuccess() {
+    let b = $('#order_products_grid').datagrid('getPanel').panel('body')
+    $(b).bind('click', function () {
+        accept()
+    })
+}
+
+
+function onChangePrice(newValue, oldValue) {
+    var ed = $('#order_products_grid').datagrid('getEditor', { index: editIndex, field: 'product_num' });
+    var ed1 = $('#order_products_grid').datagrid('getEditor', { index: editIndex, field: 'product_sum' });
+
+    if (ed) {
+        let sumValue = ''
+        let num = $(ed.target).textbox('getValue')
+        if (isNumber(newValue) && isNumber(num)) {
+            sumValue = Number(num) * Number(newValue)
+            $(ed1.target).numberbox('setValue', sumValue)
+            return true;
+        }
+    }
+    if (ed1)
+        $(ed1.target).numberbox('clear')
+
+}
+
+function onChangeNum(newValue, oldValue) {
+    var ed = $('#order_products_grid').datagrid('getEditor', { index: editIndex, field: 'product_price' });
+    var ed1 = $('#order_products_grid').datagrid('getEditor', { index: editIndex, field: 'product_sum' });
+
+    if (ed) {
+        let sumValue = ''
+        let price = $(ed.target).numberbox('getValue')
+        if (isNumber(newValue) && isNumber(price)) {
+            sumValue = Number(price) * Number(newValue)
+            $(ed1.target).numberbox('setValue', sumValue)
+            return true;
+        }
+    }
+    if (ed1)
+        $(ed1.target).numberbox('clear')
+
+}
