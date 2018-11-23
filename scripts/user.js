@@ -1,4 +1,3 @@
-mongoose = require("./scripts/db")
 let USER_GRID = null;
 let INIT_PASS = "123";
 let SYS_USER_OPERATOR = '';
@@ -59,7 +58,7 @@ function loadSysUsers(node_selected) {
 
     console.log("params:" + JSON.stringify(params))
     loadSysUserGrid(params)
-    /* mongoose.UserModel.find(params, function (err, users) {
+    /* UserModel.find(params, function (err, users) {
          let d = users_to_grid(users)
          console.log(JSON.stringify(d))
          $('#sys_user_datagrid').datagrid('loadData', d)
@@ -97,7 +96,7 @@ function loadSysUserGrid(params) {
         })
     }
 
-    mongoose.UserModel.find(params, function (err, users) {
+    UserModel.find(params, function (err, users) {
         //console.log("Load users: " +JSON.stringify(users))
         SYS_USER_GRID.datagrid('loadData', users)
     })
@@ -189,7 +188,7 @@ function addUser(user, callback) {
 
     //添加用户的初始密码
     user.password = INIT_PASS;
-    mongoose.UserModel.create(user, function (err, doc) {
+    UserModel.create(user, function (err, doc) {
         if (err) return handleError(err);
         else {
             callback()
@@ -198,7 +197,7 @@ function addUser(user, callback) {
 }
 
 function deleteUser(user, callback) {
-    mongoose.UserModel.findByIdAndDelete(user._id, function(err, doc){
+    UserModel.findByIdAndDelete(user._id, function(err, doc){
         if (err) return handleError(err);
         callback()
     })
@@ -206,7 +205,7 @@ function deleteUser(user, callback) {
 
 
 function resetUserPassword(user, callback) {
-    mongoose.UserModel.findById(user._id, function(err, doc){
+    UserModel.findById(user._id, function(err, doc){
         if (err) return handleError(err);
         doc.password = INIT_PASS
         doc.save(function(err, d) {
@@ -218,7 +217,7 @@ function resetUserPassword(user, callback) {
 
 function updateUser(user, callback) {
 
-    mongoose.UserModel.findById(user._id, function (err, doc) {
+    UserModel.findById(user._id, function (err, doc) {
         if (err) return handleError(err);
         doc.name = user.name;
         doc.role = user.role

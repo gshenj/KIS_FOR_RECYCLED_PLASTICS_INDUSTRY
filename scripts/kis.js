@@ -235,7 +235,7 @@ function loadDriverGridByParams(params){
     if (params == null) {
         params = {}
     }
-    mongoose.DriverModel.find(params).populate("cartype").exec(function (err, docs) {
+    DriverModel.find(params).populate("cartype").exec(function (err, docs) {
         DRIVER_GRID.datagrid('loadData', docs)
         //DRIVER_GRID.datagrid('enableFilter', {filterMatchingType:'any'})
     })
@@ -279,7 +279,7 @@ function saveDriver() {
 
     if (opt_type_for_driver == 'new') {
         console.log("New driver is: " + JSON.stringify(driver))
-        mongoose.DriverModel.create(driver, function () {
+        DriverModel.create(driver, function () {
 
             $('#dlg_for_driver').dialog('close');
             loadDriverGrid(null)
@@ -289,7 +289,7 @@ function saveDriver() {
     } else if (opt_type_for_driver == 'edit') {
         let driverId = $('#driver_id').val();
         console.log("Edit driver is: " + JSON.stringify(driver))
-        mongoose.DriverModel.findByIdAndUpdate(driverId, driver, function () {
+        DriverModel.findByIdAndUpdate(driverId, driver, function () {
 
             $('#dlg_for_driver').dialog('close');
             loadDriverGrid(null)
@@ -302,7 +302,7 @@ function destroyDriver(){
     if (row){
         $.messager.confirm('确定','是否确定删除选中的司机?',function(r){
             if (r){
-                mongoose.DriverModel.findByIdAndDelete(row._id, function(){
+                DriverModel.findByIdAndDelete(row._id, function(){
                     $('#dlg_for_driver').dialog('close');
                     loadDriverGrid(null)
                 })

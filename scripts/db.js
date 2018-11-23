@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+mongoose.set('useFindAndModify', false)
+
 var Schema = mongoose.Schema;
 let ROLES = [];
 let ROLE_SELECT_DATA = { text: "系统角色", children: [] }
@@ -83,7 +85,7 @@ function loadSysRoles() {
 
 
 
-module.exports = mongoose;
+/*module.exports = mongoose;
 module.exports.loadSysRoles = loadSysRoles
 // module.exports.getSysRoleTreeData = getSysRoleTreeData
 module.exports.ROLE_SELECT_DATA = ROLE_SELECT_DATA;
@@ -97,4 +99,4 @@ module.exports.CustomerModel = CustomerModel;
 module.exports.ProductModel = ProductModel;
 module.exports.DriverModel = DriverModel;
 module.exports.OrderModel = OrderModel;
-module.exports.UNITS = UNITS;
+module.exports.UNITS = UNITS;*/

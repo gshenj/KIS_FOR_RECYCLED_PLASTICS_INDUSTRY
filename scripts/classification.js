@@ -83,7 +83,7 @@ function delete_classification_tree_node() {
 function loadClassifications(callback) {
 
     let data = {text: "客户编码"}
-    mongoose.ClassificationModel.findOne({}, function (err, classification) {
+    ClassificationModel.findOne({}, function (err, classification) {
 
         if (classification == null) {
             console.log("classification is null")
@@ -110,7 +110,7 @@ function saveClassifications(tree, callback) {
         model.classifications.push(treeToClassification(children[i]))
     }
 
-    mongoose.ClassificationModel.updateOne({}, model, function (err, doc) {
+    ClassificationModel.updateOne({}, model, function (err, doc) {
         handleError(err)
         // 成功后调用
         callback()

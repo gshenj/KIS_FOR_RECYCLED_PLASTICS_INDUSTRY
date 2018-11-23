@@ -14,7 +14,7 @@
 
     </script>
     <!-- normal script imports etc  -->
-    <script src="./scripts/jquery-3.3.1.js"></script>
+    <script src="../scripts/jquery-3.3.1.js"></script>
     <!-- Insert this line after script imports -->
     <script>
         if (window.module)
@@ -24,29 +24,34 @@
 
 
     <!--<link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/material-teal/easyui.css">-->
-    <link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/ui-cupertino/easyui.css">
-    <link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/icon.css">
-    <link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/color.css">
-    <link rel="stylesheet" type="text/css" href="./styles/kis.css">
+    <link rel="stylesheet" type="text/css" href="../scripts/jquery-easyui/themes/ui-cupertino/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../scripts/jquery-easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../scripts/jquery-easyui/themes/color.css">
+    <link rel="stylesheet" type="text/css" href="../styles/kis.css">
 
-    <script type="text/javascript" src="./scripts/jquery-easyui/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="./scripts/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
-
-    <script type="text/javascript" src="./scripts/kis.js"></script>
-    <script type="text/javascript" src="./user.js"></script>
-    <script type="text/javascript" src="./customer.js"></script>
-    <script type="text/javascript" src="./scripts/product.js"></script>
-    <script type="text/javascript" src="./scripts/classification.js"></script>
-    <script type="text/javascript" src="./scripts/cartype.js"></script>
-    <script type="text/javascript" src="./scripts/utils.js"></script>
-    <script type="text/javascript" src="./scripts/loading.js"></script>
-    <script type="text/javascript" src="./scripts/order.js"></script>
+    <script type="text/javascript" src="../scripts/db.js"></script>
 
 
-    <script type="text/javascript" src="./scripts/jquery-easyui/plugins/datagrid-export/datagrid-export.js"></script>
-    <script type="text/javascript" src="./scripts/jquery-easyui/plugins/datagrid-filter/datagrid-filter.js"></script>
-    <script type="text/javascript" src="./scripts/jquery-easyui/plugins/datagrid-detailview.js"></script>
-    <script type="text/javascript" src="./scripts/jquery-easyui/plugins/datagrid-groupview.js"></script>
+    <script type="text/javascript" src="../scripts/jquery-easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../scripts/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+
+
+
+    <script type="text/javascript" src="../scripts/kis.js"></script>
+    <script type="text/javascript" src="../scripts/user.js"></script>
+    <script type="text/javascript" src="../scripts/customer.js"></script>
+    <script type="text/javascript" src="../scripts/product.js"></script>
+    <script type="text/javascript" src="../scripts/classification.js"></script>
+    <script type="text/javascript" src="../scripts/cartype.js"></script>
+    <script type="text/javascript" src="../scripts/utils.js"></script>
+    <script type="text/javascript" src="../scripts/loading.js"></script>
+    <script type="text/javascript" src="../scripts/order.js"></script>
+
+
+    <script type="text/javascript" src="../scripts/jquery-easyui/plugins/datagrid-export/datagrid-export.js"></script>
+    <script type="text/javascript" src="../scripts/jquery-easyui/plugins/datagrid-filter/datagrid-filter.js"></script>
+    <script type="text/javascript" src="../scripts/jquery-easyui/plugins/datagrid-detailview.js"></script>
+    <script type="text/javascript" src="../scripts/jquery-easyui/plugins/datagrid-groupview.js"></script>
 
     <script>
         $.extend($.fn.textbox.methods, {
@@ -943,7 +948,7 @@
 
 
         function loadConfig(callback) {
-            mongoose.ConfigModel.findOne({}, function (err, doc) {
+            ConfigModel.findOne({}, function (err, doc) {
                 if (doc) {
                     callback(doc)
                 }
@@ -1019,7 +1024,7 @@
                 }
             })
 
-            win_print.loadURL('file://' + __dirname + '/print_template.html')
+            win_print.loadURL('file://' + __dirname + '/pages/print_template.html')
             win_print.show()
         }
     </script>

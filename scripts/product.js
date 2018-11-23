@@ -61,7 +61,7 @@ function load_product_grid(customerId, title) {
     }
 
     let params = {customer: customerId}
-    mongoose.ProductModel.find(params, function(err, docs){
+    ProductModel.find(params, function(err, docs){
         PRODUCT_GRID.datagrid('loadData', docs)
     })
 
@@ -108,7 +108,7 @@ function saveProduct() {
 
     if (opt_type_for_product == 'new') {
         console.log("New product is: " + JSON.stringify(product))
-        mongoose.ProductModel.create(product, function () {
+        ProductModel.create(product, function () {
             $('#dlg_for_product').dialog('close');
             loadProducts()
         })
@@ -117,7 +117,7 @@ function saveProduct() {
         let id = $('#product_id').val();
         console.log("Edit product is: " + JSON.stringify(product))
         // customer不能包含products字段，否则会更新.update是局部字段更新的.
-        mongoose.ProductModel.findByIdAndUpdate(id, product, function () {
+        ProductModel.findByIdAndUpdate(id, product, function () {
 
             $('#dlg_for_product').dialog('close');
             loadProducts()
@@ -130,7 +130,7 @@ function destroyProduct(){
     if (row){
         $.messager.confirm('确定','是否确定删除选中的产品?',function(r){
             if (r){
-                mongoose.ProductModel.findByIdAndDelete(row._id, function(){
+                ProductModel.findByIdAndDelete(row._id, function(){
                     $('#dlg_for_product').dialog('close');
                     loadProducts()
                 })
@@ -170,7 +170,7 @@ function onOpenProductChooseDlg(){
 
 
     let params = { $or: [ {customer: customerId}, { customer: null } ] }
-    mongoose.ProductModel.find(params).sort({'customer':-1}).exec(function(err, docs){
+    ProductModel.find(params).sort({'customer':-1}).exec(function(err, docs){
         //console.log(JSON.stringify(docs))
         PRODUCT_GRID_FOR_CHOOSE.datagrid('loadData', docs)
     })

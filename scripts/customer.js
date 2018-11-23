@@ -1,5 +1,3 @@
-mongoose = require("./scripts/db")
-mongoose.set('useFindAndModify', false)
 
 
 let CUSTOMER_GRID = null
@@ -66,7 +64,7 @@ function loadCustomerGrid(node) {
     if (params == null) {
         params = {}
     }
-    mongoose.CustomerModel.find(params, function (err, docs) {
+    CustomerModel.find(params, function (err, docs) {
         CUSTOMER_GRID.datagrid('loadData', docs)
         CUSTOMER_GRID.datagrid('enableFilter', {filterMatchingType:'any'})
     })
@@ -122,7 +120,7 @@ function saveCustomer() {
     if (opt_type_for_customer == 'new') {
         //customer.products = []
         console.log("New customer is: " + JSON.stringify(customer))
-        mongoose.CustomerModel.create(customer, function () {
+        CustomerModel.create(customer, function () {
 
             $('#dlg_for_customer').dialog('close');
             loadCustomerGrid(null)
@@ -134,7 +132,7 @@ function saveCustomer() {
         //customer._id = customer_id;
         console.log("Edit customer is: " + JSON.stringify(customer))
         // customer不能包含products字段，否则会更新.update是局部字段更新的.
-        mongoose.CustomerModel.findByIdAndUpdate(customerId, customer, function () {
+        CustomerModel.findByIdAndUpdate(customerId, customer, function () {
 
             $('#dlg_for_customer').dialog('close');
             loadCustomerGrid(null)
@@ -147,7 +145,7 @@ function destroyCustomer(){
     if (row){
         $.messager.confirm('确定','是否确定删除选中的用户?',function(r){
             if (r){
-                mongoose.CustomerModel.findByIdAndDelete(row._id, function(){
+                CustomerModel.findByIdAndDelete(row._id, function(){
                     $('#dlg_for_customer').dialog('close');
                     loadCustomerGrid(null)
                 })
@@ -267,7 +265,7 @@ function loadCustomerGrid01(node) {
     if (params == null) {
         params = {}
     }
-    mongoose.CustomerModel.find(params, function (err, docs) {
+    CustomerModel.find(params, function (err, docs) {
         CUSTOMER_GRID01.datagrid('loadData', docs)
         CUSTOMER_GRID01.datagrid('enableFilter', {filterMatchingType: 'any'})
     })

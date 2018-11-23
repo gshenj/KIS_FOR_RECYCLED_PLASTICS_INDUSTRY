@@ -47,7 +47,7 @@ function isNumber(value) {         //验证是否为数字
 }
 
 function load_company(){
-    mongoose.ConfigModel.findOne({},function(err, doc){
+    ConfigModel.findOne({},function(err, doc){
         if (doc) {
             localStorage.setItem("sys_config", JSON.stringify(doc))
         }
@@ -60,10 +60,10 @@ function set_company() {
     let company_fax = $('#company_fax').textbox('getValue')
     let company_address = $('#company_address').textbox('getValue')
     let company_logo_path = $('#company_logo').textbox('getValue')
-    mongoose.ConfigModel.findOne({},function(err, doc){
+    ConfigModel.findOne({},function(err, doc){
         let update = true
         if (!doc) {
-           doc = new mongoose.ConfigModel()
+           doc = new ConfigModel()
             update = false
         }
 
@@ -94,11 +94,11 @@ function myDateFormatter(date){
 }
 
 function getCurrentSeq(seq_name, callback) {
-    mongoose.SequenceModel.findOne({"seq_name":seq_name}, function(err, doc){
+    SequenceModel.findOne({"seq_name":seq_name}, function(err, doc){
         if (doc) {
             callback(doc.value)
         } else {
-            mongoose.SequenceModel.create({'seq_name':seq_name, value:100000}, function(err, doc) {
+            SequenceModel.create({'seq_name':seq_name, value:100000}, function(err, doc) {
                 callback(doc.value)
             })
         }
@@ -106,7 +106,7 @@ function getCurrentSeq(seq_name, callback) {
 }
 
 function nextSeq(seq_name, callback) {
-    mongoose.SequenceModel.findOneAndUpdate({"seq_name":seq_name},{$inc:{value:1}}, function(err, doc){
+    SequenceModel.findOneAndUpdate({"seq_name":seq_name},{$inc:{value:1}}, function(err, doc){
         if (doc) {
             callback(doc.value)
         }

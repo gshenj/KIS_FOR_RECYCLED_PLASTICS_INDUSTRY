@@ -2,7 +2,7 @@ function saveOrder(order, callback) {
 
     nextSeq("order_seq", function (orderNum) {
         order.order_num = orderNum
-        mongoose.OrderModel.create(order, function (err, doc) {
+        OrderModel.create(order, function (err, doc) {
             if (err) handleError(err)
             if (doc) {
                 console.log("保存订单成功！")
@@ -109,7 +109,7 @@ function findOrders(callback) {
     }
 
     console.log("Find orders ->" +JSON.stringify(params))
-    mongoose.OrderModel.find(params).sort({'order_num': -1}).exec(function (err, docs) {
+    OrderModel.find(params).sort({'order_num': -1}).exec(function (err, docs) {
         callback(docs)
     })
 
@@ -140,7 +140,7 @@ function cancelOrder(callback) {
     if(row && !row.cancelled) {
         $.messager.confirm('', '确定作废选中的出库单?', function (r) {
             if (r) {
-                mongoose.OrderModel.findByIdAndUpdate(row._id, {cancelled: true, cancel_by: ''}, function (err, doc) {
+                OrderModel.findByIdAndUpdate(row._id, {cancelled: true, cancel_by: ''}, function (err, doc) {
                     //callback(doc);
                     loadOrderGrid()
                 })
