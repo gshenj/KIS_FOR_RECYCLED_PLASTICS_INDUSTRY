@@ -306,6 +306,9 @@ function chooseCustomer(callback) {
             $('#new_order_customer_address').textbox('setValue', row.address)
 
             resetOrderProductGrid(true)
+
+        } else if (customer_choose_dlg_type == 'list_order') {
+            $('#customer_choose_for_order_list').textbox('setValue', row._id).textbox('setText', row.name)
         }
     }
 }

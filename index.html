@@ -271,10 +271,11 @@
                             type:'textbox',
                             options:{
                                 prompt: '',
+                                editable: false,
                                 cls:'product_choose_textbox',
                                 iconWidth: 22,
                                 icons: [{
-                                    iconCls:'icon-blank',
+                                    iconCls:'icon-select',
                                     handler: function(e){
                                         $('#dlg_for_product_choose').dialog('open').dialog('center');
                                     }
@@ -342,7 +343,7 @@
         <!--送货单列表-->
         <div id="orders_grid_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; " data-options="fit:true, closed:true, border:false, onOpen:onOpenOrderListPanel">
             <div class="easyui-layout" data-options="fit:true">
-                <div data-options="region:'west'" style="width:280px; padding:4px;">
+                <div data-options="region:'west'" style="width:280px; padding:4px 8px;">
                     <table style="width:100%; border-collapse: collapse">
                         <tr>
                             <th COLSPAN="2">
@@ -363,11 +364,27 @@
                         <tr>
                             <td style="padding:10px 0;">客户名称:</td>
                             <td style="width:200px;padding:10px 0;">
-                                <input id="customer_choose_for_order_list" class="easyui-textbox" data-options="prompt:'选择客户'"
+                                <input id="customer_choose_for_order_list" class="easyui-textbox" data-options="icons: [{
+                                    iconCls:'icon-more',
+                                    handler: function(e){
+                                        open_customer_choose_for_list_order();
+                                    }
+                                }] "
                                     style="width:100%;">
                             </td>
                         </tr>
-
+                        <tr>
+                            <td style="padding:10px 0;">制&ensp;单&ensp;人:</td>
+                            <td style="width:200px;padding:10px 0;">
+                                <input id="order_maker_searchbox" class="easyui-textbox" style="width:100%"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px 0;">送货司机:</td>
+                            <td style="width:200px;padding:10px 0;">
+                                <input id="order_dirver_searchbox" class="easyui-textbox" style="width:100%"/>
+                            </td>
+                        </tr>
                         <tr>
                             <td style="padding:10px 0;">单据状态:</td>
                             <td style="width:200px;padding:10px 0;">
@@ -902,6 +919,8 @@
                 open_customer_choose_for_new_order()
             });
 
+            //去掉tab菜单按钮的href，防止鼠标按住拖动出现href属性
+            $('.tabs li a').removeAttr('href')
 
         });
 
@@ -916,6 +935,10 @@
             $('#dlg_for_customer_choose').dialog('open').dialog('center')
         }
 
+        function open_customer_choose_for_list_order() {
+            customer_choose_dlg_type = 'list_order'
+            $('#dlg_for_customer_choose').dialog('open').dialog('center')
+        }
 
 
 

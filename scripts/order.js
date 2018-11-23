@@ -17,9 +17,9 @@ function saveOrder(order, callback) {
 let ORDER_GRID = null;
 
 let order_grid_columns = [[
-    {field: 'order_num', title: '出库单号', width: 80, align: 'center'},
+    {field: 'order_num', title: '出库单号', width: 60, align: 'center'},
     {field: 'order_date', title: '出库日期', width: 80, align: 'center'},
-    {field: 'cancelled', title: '单据状态', width: 80, align: 'center',formatter: function(value,row,index){
+    {field: 'cancelled', title: '单据状态', width: 60, align: 'center',formatter: function(value,row,index){
             return row.cancelled? '<span style="color:red">作废</span>' : '正常'
         }},
     {field: 'customer_name', title: '客户名称', width: 220, align: 'center'},
@@ -27,7 +27,7 @@ let order_grid_columns = [[
     {field: 'contact_number', title: '联系电话', width: 80, align: 'center'},
     {field: 'delivery_address', title: '送货地址', width: 220, align: 'center'},
     {field: 'order_maker', title: '制单人', width: 60, align: 'center'},
-    {field: 'order_driver', title: '送货司机', width: 70, align: 'center'},
+    {field: 'order_driver', title: '送货司机', width: 60, align: 'center'},
     {field: 'create_date', title: '录入时间', width: 80, align: 'center'}
 ]]
 
@@ -88,10 +88,19 @@ function findOrders(callback) {
         params.order_date = {$gte: begin, $lte: end}
     }
 
-    let customer = $('#customer_choose_for_order_list').textbox('getValue')
-    if (customer) {
-        params.customer_id = customer
+    // let customer = $('#customer_choose_for_order_list').textbox('getValue')
+    // if (customer) {
+    //     params.customer_id = customer
+    // }
+    let customer_name = $.trim($('#customer_choose_for_order_list').textbox('getText'))
+    if (customer_name) {
+        params.customer_name = {$regex:new RegExp(customer_name)}
     }
+
+    // if (params.customer_id && params.customer_name) {
+    //     params['$or'] = [{customer_id: customer_id}, {customer_name:}]
+    // }
+
 
     let orderState = $('#order_state').combobox('getValue')
     if (orderState != '') {
@@ -99,7 +108,7 @@ function findOrders(callback) {
         params.cancelled = orderState
     }
 
-    //console.log("Find orders ->" +JSON.stringify(params))
+    console.log("Find orders ->" +JSON.stringify(params))
     mongoose.OrderModel.find(params).sort({'order_num': -1}).exec(function (err, docs) {
         callback(docs)
     })

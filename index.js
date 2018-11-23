@@ -73,7 +73,9 @@ function createLoginWindow() {
 
 
 ipcMain.on('main-window-ready', (event, arg) =>{
+    if(loginWindow) {
     loginWindow.close()
+    }
     mainWindow.show()
     event.returnValue = null;
 

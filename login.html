@@ -190,14 +190,14 @@
 
                 <td style="padding:5px 0px 2px 0px; -webkit-app-region: no-drag;">
                     <input class="easyui-combobox" id="username" style="width:100%;height:30px;padding:2px 10px; font-size:22px;"
-                        data-options="validateOnCreate:false, required:true, prompt:'输入账号',iconWidth:38, panelHeight:85, valueField: 'name', onChange:changeUser,
+                        data-options="validateOnCreate:false, required:true,missingMessage:'请输入账号', prompt:'输入账号',iconWidth:38, panelHeight:85, valueField: 'name', onChange:changeUser,
                     textField: 'name'">
                 </td>
             </tr>
             <tr>
                 <td style=" padding:2px 0px 5px 0px; -webkit-app-region: no-drag;">
                     <input id="password" class="easyui-passwordbox" style="width:100%;height:30px;padding:2px 10px;  font-size:22px;"
-                        data-options="required:true, validateOnCreate:false, prompt:'输入密码',iconCls:'icon-lock',iconWidth:38, showEye:false">
+                        data-options="required:true, missingMessage:'请输入密码',validateOnCreate:false, prompt:'输入密码',iconCls:'icon-lock',iconWidth:38, showEye:false">
                 </td>
             </tr>
             <tr>
@@ -205,7 +205,7 @@
 
                 </td>
                 <td style="padding:10px 0 10px 0px;">
-                    <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="login()" style="padding:2px 0px;width:100%; -webkit-app-region: no-drag;">
+                    <a id="login_btn" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="login()" style="padding:2px 0px;width:100%; -webkit-app-region: no-drag; cursor: default">
                         登录
                     </a>
                 </td>
@@ -301,9 +301,11 @@
             let is_validate_username = $('#username').combobox('isValid')
             let is_validate_password = $('#password').passwordbox('isValid')
             if (!is_validate_username || !is_validate_password) {
-                alert(false)
+                //alert(false)
                 return false
             }
+
+            $('#login_btn').linkbutton('disable').linkbutton({'text':'登录中...',iconCls:'icon-loading'})
 
             let user = $('#username').combobox('getValue')
             let password = $('#password').passwordbox('getValue')
@@ -321,6 +323,7 @@
                     console.log('set local_users ' + local_users)
                     localStorage.setItem("local_users", JSON.stringify(local_users))
 
+                    
                     ipcRenderer.sendSync('login-success', null) // prints "pong"
 
                 } else {
@@ -337,7 +340,7 @@
         function loginToDb(username, password, callback) {
             UserModel.findOne({name: username, disabled: false }, function (err, u) {
                 console.log(u)
-                if (u.password == password) {
+                if (u && u.password == password) {
                     // login ok
                     callback(u)
                 } else {
@@ -351,6 +354,8 @@
         function returnToLogin() {
             $('#login_failed_panel').panel('close')
             $('#login_form_panel').panel('open')
+            $('#login_btn').linkbutton({'text':'登录', iconCls:'icon-ok'}).linkbutton('enable')
+
             $('#setting_btn').css("visibility", "visible")
         }
 

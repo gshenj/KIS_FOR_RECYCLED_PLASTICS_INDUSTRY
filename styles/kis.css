@@ -33,7 +33,9 @@ body {
       filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#EFF5FF,endColorstr=#d7ebf9,GradientType=0);*/
 }
 
-
+.tool_button {
+    cursor: default
+}
 
 .radio_label {
     font-weight: bold;
@@ -45,7 +47,7 @@ body {
     opacity: 1.0;
     filter: alpha(opacity=100);
     /* background: url('../scripts/jquery-easyui/themes/icons/pencil.png') no-repeat center center; */
-    background: url('../images/\(select\)_SFont.CN.svg') no-repeat center center;
+    /* background: url('../images/\(select\)_SFont.CN.svg') no-repeat center center; */
 
 }
 
@@ -328,7 +330,10 @@ div.toolbar1 {
 }
 
 
+.tabs li a {
+    cursor: default;
+}
 
-.icon-lorry{
-    background:url('../images/3d_lorry.png') no-repeat center center;
+.icon-select{
+	background:url('../images/select.png') no-repeat center center;
 }
