@@ -191,11 +191,7 @@
                 <td style="padding:5px 0px 2px 0px; -webkit-app-region: no-drag;">
                     <input class="easyui-combobox" id="username" style="width:100%;height:30px;padding:2px 10px; font-size:22px;"
                         data-options="validateOnCreate:false, required:true, prompt:'输入账号',iconWidth:38, panelHeight:85, valueField: 'name', onChange:changeUser,
-                    textField: 'name', err: function(target, message, action){
-                        var opts = $(target).validatebox('options');
-                        message = opts.prompt;
-                        $.fn.validatebox.defaults.err(target, message, action);
-                    }">
+                    textField: 'name'">
                 </td>
             </tr>
             <tr>
