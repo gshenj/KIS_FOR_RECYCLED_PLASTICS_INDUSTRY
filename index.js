@@ -39,7 +39,7 @@ function createMainWindow() {
     mainWindow.loadURL('file://' + __dirname + '/index.html')
 
     mainWindow.once('ready-to-show', () => {
-        mainWindow.show()
+        //mainWindow.show()
     })
 
     mainWindow.on('closed', () => {
@@ -72,11 +72,18 @@ function createLoginWindow() {
 }
 
 
+ipcMain.on('main-window-ready', (event, arg) =>{
+    loginWindow.close()
+    mainWindow.show()
+    event.returnValue = null;
+
+})
+
 // 登录成功消息
 ipcMain.on('login-success', (event, arg) => {
     console.log("login-success.")
     createMainWindow()
-    loginWindow.close()
+    //loginWindow.close()
     event.returnValue = null;
 })
 

@@ -854,7 +854,8 @@
 
 
         function showMainWindow() {
-            win.show()
+            //win.show()
+            ipcRenderer.sendSync('main-window-ready', null)
         }
 
 
