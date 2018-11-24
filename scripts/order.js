@@ -28,14 +28,16 @@ let order_grid_columns = [[
     {field: 'delivery_address', title: '送货地址', width: 220, align: 'center'},
     {field: 'order_maker', title: '制单人', width: 60, align: 'center'},
     {field: 'order_driver', title: '送货司机', width: 60, align: 'center'},
-    {field: 'create_date', title: '录入时间', width: 80, align: 'center'}
+    {field: 'products_num', title: '产品总数量', width: 80, align: 'center'},
+    {field: 'products_sum', title: '产品总金额', width: 80, align: 'center'},
+    {field: 'create_date', title: '录入时间', width: 140, align: 'center'}
 ]]
 
 
 function productDetailFormatter(rowIndex, rowData) {
     let products = rowData.products;
     let len = products.length
-    let html = '<table class="product_detail_table">'
+    let html = '<div style="width:100%; background-color:#fff"><table class="product_detail_table">'
     html += '<tr><th style="font-size:24px; vertical-align: top;" rowspan="' + (len + 1) + '">产品信息</th><th>产品名称</th><th>单位</th><th>数量</th><th>价格</th><th>金额</th><th>备注</th></tr>'
     for (let i = 0; i < products.length; i++) {
         html += '<tr><td>' + products[i].product_name + '</td><td>'
@@ -47,7 +49,7 @@ function productDetailFormatter(rowIndex, rowData) {
             + products[i].product_memo + '</td></tr>'
     }
 
-    return html += '</table>'
+    return html += '</table></div>'
 }
 
 function loadOrderGrid() {
@@ -101,6 +103,15 @@ function findOrders(callback) {
     //     params['$or'] = [{customer_id: customer_id}, {customer_name:}]
     // }
 
+    let order_maker = $.trim($('#order_maker_searchbox').textbox('getValue'))
+    if (order_maker) {
+        params.order_maker = {$regex: new RegExp(order_maker)}
+    }
+
+    let order_driver = $.trim($('#order_dirver_searchbox').textbox('getValue'))
+    if(order_driver) {
+        params.order_driver = {$regex:new RegExp(order_driver)}
+    }
 
     let orderState = $('#order_state').combobox('getValue')
     if (orderState != '') {
@@ -153,8 +164,11 @@ function cancelOrder(callback) {
 
 function resetOrder() {
     $('#new_order_form').form('clear')
-
-    //
+    // set order maker
+    let current_user = localStorage.getItem('user')
+    current_user = JSON.parse(current_user)
+    $('#new_order_maker').textbox('setValue', current_user.name)
+    // set order No.
     getCurrentSeq("order_seq", function (value) {
         $('#new_order_sale_No').html(value + 1)
     })
@@ -164,8 +178,10 @@ function resetOrder() {
     if (!t.textbox('getText')) {
         t.textbox('getIcon', 0).css('visibility', 'hidden');
     }
+
     //
     $('#new_order_sale_date').datebox('setValue', myDateFormatter(new Date()))
+    
     //
     resetOrderProductGrid(false)
 }
@@ -276,6 +292,28 @@ function accept() {
     if (endEditing()) {
         $('#order_products_grid').datagrid('acceptChanges');
     }
+
+    let rows = $('#order_products_grid').datagrid('getRows')
+    console.log("Accept rows:" +JSON.stringify(rows))
+    let totalSum = 0;
+    for (let i=0; i<rows.length; i++)  {
+        if (rows[i].product_sum) {
+            totalSum += Number(rows[i].product_sum)
+        } else{
+            totalSum = ''
+            break;
+        }
+    }
+    $('#products_sum').html(totalSum ? totalSum.toFixed(2) : totalSum)
+
+    let products_num = 0;
+    for (let i=0; i<rows.length; i++)  {
+        if (rows[i].product_num) {
+            products_num += Number(rows[i].product_num)
+        }
+    }
+    $('#products_num').html(products_num)
+
 }
 
 function doPrint() {
@@ -293,24 +331,31 @@ function doPrint() {
     let contact_number = $('#new_order_customer_phone').textbox('getValue')
     let maker = $('#new_order_maker').textbox('getValue')
     let driver = $('#driver_select').textbox('getValue')
+    //let total_sum = $('#total_sum').html()
+
     let cancelled = false;
 
-    let products_num;
-    let products_sum;
+    let products_num = $('#products_num').html()
+    let products_sum = $('#products_sum').html()
+
+    let create_user = JSON.parse(localStorage.getItem('user')).name
 
     let order_data = {
-        order_num: 1,//order_num,
+        order_num: 0,//order_num,
         customer_id: customer_id,
         customer_name: customer_name,
         customer_principal: principal,
         contact_number: contact_number,
         delivery_address: delivery_address,
         order_date: order_date,
+        create_date: (new Date()).dtFormat("yyyy-MM-dd hh:mm:ss.S"),
         order_maker: maker,
         order_driver: driver,
         cancelled: cancelled,
-        products: products
-        //create_user:  current_user
+        products: products,
+        products_num: products_num,
+        products_sum: products_sum,
+        create_user:  create_user
     }
 
     console.log(JSON.stringify(order_data))
@@ -352,8 +397,11 @@ function onChangePrice(newValue, oldValue) {
             return true;
         }
     }
-    if (ed1)
-        $(ed1.target).numberbox('clear')
+    if (ed1) {
+        //$(ed1.target).numberbox('clear')
+        $(ed1.target).numberbox('setValue', '')
+    }
+       
 
 }
 
@@ -370,7 +418,11 @@ function onChangeNum(newValue, oldValue) {
             return true;
         }
     }
-    if (ed1)
-        $(ed1.target).numberbox('clear')
+    if (ed1) {
+        //$(ed1.target).numberbox('clear')
+        $(ed1.target).numberbox('setValue', '')
+
+
+    }
 
 }

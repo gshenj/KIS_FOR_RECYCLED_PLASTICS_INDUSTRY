@@ -94,7 +94,7 @@ function saveProduct() {
     let name = $('#product_name').textbox('getValue')
     let model = $('#product_model').textbox('getValue')
     let units = $('#product_units').textbox('getValue')
-    let price = $('#product_price').textbox('getValue')
+    let price = $('#product_price').numberbox('getValue')
     let memo = $('#product_memo').textbox('getValue')
     let product = {name: name, model: model, units:units, price: price, memo:memo}
     // get customer Id

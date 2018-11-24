@@ -70,10 +70,10 @@ input.search_input {
 }
 
 .product_detail_table {
-    width: 600px;
+    width: 700px;
     border-collapse: collapse;
     border: 1px dashed steelblue;
-    margin: 2px 0px 20px 0px;
+    margin: 0px 0px 0px 0px;
 }
 
 .product_detail_table th {

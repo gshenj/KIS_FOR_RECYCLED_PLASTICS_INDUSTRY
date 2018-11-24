@@ -26,12 +26,12 @@ let productSchema = new Schema(_product)        //product不生成_id字段
 let _customer = { name: String, index_code: String, principal: String, phone: String, address: String, classification: String, products: [{ type: Schema.Types.ObjectId, ref: 'product' }]}
 let customerSchema = new Schema(_customer);
 
-let orderProductSchema = new Schema({ product_name: String, product_model: String, product_price: String, product_units: String, product_memo: String, product_num: Number, product_sum: Number }, { _id: false });
+let orderProductSchema = new Schema({ product_name: String, product_model: String, product_price: String, product_units: String, product_memo: String, product_num: Number, product_sum: String }, { _id: false });
 
 let _order = {
     cancelled: Boolean,
     order_num: String,
-    create_date: Date,
+    create_date: String,
     create_user: String,
     customer_id: String,
     customer_name: String,

@@ -276,10 +276,11 @@ function onOpenCustomerChooseDlg() {
     // 加载分类树
     loadClassifications(function (data) {
         $('#classification_tree01').tree('loadData', data)
+        // 加载客户列表
+        loadCustomerGrid01(null)
     })
 
-    // 加载客户列表
-    loadCustomerGrid01(null)
+
 }
 
 

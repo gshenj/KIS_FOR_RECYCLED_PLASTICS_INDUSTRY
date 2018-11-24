@@ -39,7 +39,7 @@
             border: 1px dashed #0081C2;
             background-color: #fff;
             font-size: 11pt;
-            /*font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;*/
+            /* font-family: sans-serif; */
             font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
         }
 
@@ -129,6 +129,10 @@
 
             let i=0;
             for (; i < products.length; i++) {
+                let product_price = products[i].product_price?products[i].product_price:''
+                let product_sum = products[i].product_sum?products[i].product_sum:''
+                // let product_sum = products[i].product_sum?Number(products[i].product_sum).toFixed(2):''
+                let product_memo = products[i].product_memo? products[i].product_memo:''
                 let tr = '<tr idx="'+ i +'"><td style="text-align:center;" colspan="2">\n' +
                     '                    <span class="product_name">' + products[i].product_name + '</span>\n' +
                     '                    </td>\n' +
@@ -142,10 +146,10 @@
                     '                    <span class="product_price">' + products[i].product_price + '</span>\n' +
                     '                    </td>\n' +
                     '                    <td style="text-align:right;">\n' +
-                    '                    <span class="product_sum">' + products[i].product_sum + '</span>\n' +
+                    '                    <span class="product_sum">' + product_sum + '</span>\n' +
                     '                    </td>\n' +
                     '                    <td>\n' +
-                    '                    <span class="product_memo">' + products[i].product_memo + '</span>\n' +
+                    '                    <span class="product_memo">' + product_memo + '</span>\n' +
                     '                    </td>\n' +
                     '                    </tr>'
 
@@ -165,10 +169,14 @@
             }
 
             $('#order_product_table').append('<tr id="total_sum_tr">\n' +
-                '                <td colspan="5" style="text-align: right; border-right:none;">\n' +
+                '                <td colspan="3" style="text-align: right; border-right:none; padding-right:0">\n' +
+                '                合计数量：\n' +
+                '                </td>\n' +
+                '                <td style="text-align:left; border-left:none; border-right:none;padding-left:0"><span id="product_total_num">'+ order.products_num+'</span></td>\n' +
+                '                <td style="text-align: right;border-left:none; border-right:none;padding-right:0">\n' +
                 '                合计金额：\n' +
                 '                </td>\n' +
-                '                <td colspan="2" style="text-align:left; border-left:none;"><span id="product_total_sum">'+ order.products_sum+'</span></td>\n' +
+                '                <td colspan="2" style="text-align:left; border-left:none;padding-left:0"><span id="product_total_sum">'+ order.products_sum+'</span></td>\n' +
                 '            </tr>')
         })
 
@@ -231,15 +239,15 @@
     </div>
     <table id="order_product_table" class="bill_product_table" style="width:100%; height:150px;" cellpadding="0" cellspacing="0">
         <tr class="tbh" id="tbh">
-            <th width="31%" colspan="2">规格型号</th>
+            <th width="30%" colspan="2">规格型号</th>
             <!--<th width="14%">货物名称</th>-->
-            <th width="8%">单位</th>
+            <th width="7%">单位</th>
             <th width="10%">数量</th>
-            <th width="10%">价格</th>
+            <th width="12%">价格</th>
             <th width="12%">金额</th>
             <th width="18%">备注</th>
             <th rowspan="7" width="11%" style="border:none; font-weight:normal; ">
-                <div style="margin:0pt 0pt;">说明：</br>白联:存根<br/>红联:客户</br>黄联:结算</div>
+                <div style="margin:0pt 0pt;">说明：</br>白联:存根<br/>红联:客户</br>黄联:回单</div>
             </th>
         </tr>
     </table>
