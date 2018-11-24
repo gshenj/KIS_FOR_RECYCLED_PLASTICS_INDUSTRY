@@ -8,9 +8,6 @@
             module = undefined;
         }
 
-        const KIS_VERSION = 'v1.0'
-        let DOCUMENT_TITLE_PREFIX = '';
-        let SYS_CONFIG = null;
 
     </script>
     <!-- normal script imports etc  -->
@@ -19,6 +16,11 @@
     <script>
         if (window.module)
             module = window.module;
+
+
+        const KIS_VERSION = 'v1.0'
+        let DOCUMENT_TITLE_PREFIX = '';
+        let SYS_CONFIG = null;
 
     </script>
 
@@ -110,7 +112,7 @@
                     </g>
                 </svg>
             </div>
-            <div style="height:24px; line-height:24px; margin:0 0 0 2px; padding:0;  float:left; display: inline-block; ">
+            <div id="main_title" style="height:24px; line-height:24px; margin:0 0 0 2px; padding:0;  float:left; display: inline-block; ">
                 苏州元斌塑胶科技有限公司
                 KIS系统 v1.0
             </div>
@@ -800,7 +802,7 @@
     <!--<div id="account_info" >-->
     <div id="account_info" class="easyui-menu" data-options="hideOnUnhover:false,onClick:menuHandler" style="width:120px;">
         <div name="account_info">账号信息</div>
-        <div>密码修改</div>
+        <div name="set_password">密码修改</div>
         <div name="logout">注销登录</div>
         <div class="menu-sep"></div>
 
@@ -808,11 +810,13 @@
         <div class="menu-sep"></div>
 
         <div>检查更新</div>
-        <div>系统设置</div>
         <div name="about">关于</div>
     </div>
 
     <script>
+        const { BrowserWindow } = require('electron').remote
+        const { ipcRenderer } = require('electron')
+        const win = require('electron').remote.getCurrentWindow();
 
         function onCarTypeTreeContextMenu(e, node) {
             e.preventDefault();
@@ -850,10 +854,31 @@
                     break;
                 case 'about':
                     // show about
+                    let win_about = new BrowserWindow({
+                                    width: 400,
+                                    height: 300,
+                                    modal: true,
+                                    show: false,
+                                    maximizable: false,
+                                    minimizable: false,
+                                    resizable: false,
+                                    parent: win,
+                                    title: '关于系统',
+                                    autoHideMenuBar: true
+                                })
+                    win_about.loadURL('file://' + __dirname + '/about.html')
+                    win_about.on('closed', ()=>{
+                        win_about = null
+                    })
+                    win_about.show()
                     break;
                 case 'exit':
                     //
                     closewin()
+                    break;
+                case 'set_password':
+                 // 改弹出框
+                    show_panel(null, 'password_set_panel')
                     break;
                 default:
                     ;
@@ -861,9 +886,7 @@
         }
 
 
-        const { BrowserWindow } = require('electron').remote
-        const { ipcRenderer } = require('electron')
-        const win = require('electron').remote.getCurrentWindow();
+
         win.on('maximize', function () {
             $('#to_max').hide();
             $('#to_unmax').show();
@@ -897,10 +920,10 @@
             loadConfig(function (config) {
                 // localStorage只支持String值
                 console.log("load configs")
-                document.title = config.company_name + KIS_VERSION
-                DOCUMENT_TITLE_PREFIX = document.title
+                DOCUMENT_TITLE_PREFIX = config.company_name + KIS_VERSION
+                $('#main_title').html(DOCUMENT_TITLE_PREFIX)
                 SYS_CONFIG = config;
-            });
+            })
 
 
             $('#new_order_sale_date').datebox().datebox('calendar').calendar({
