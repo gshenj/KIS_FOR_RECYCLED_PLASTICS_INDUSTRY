@@ -255,9 +255,9 @@
                                 出货单</span></div>
                         <table class="bill_customer_table">
                             <tr>
-                                <td>客户名称：<input id="new_order_customer_name" data-options="height:30" class="easyui-textbox customer_name" />
+                                <td>客户名称：<input id="new_order_customer_name"  class="easyui-textbox customer_name" />
                                 </td>
-                                <td>送货日期：<input id="new_order_sale_date" class="easyui-datebox sale_date" data-options="editable:false, height:30, formatter:myDateFormatter"
+                                <td>送货日期：<input id="new_order_sale_date" class="easyui-datebox sale_date" data-options="editable:false, formatter:myDateFormatter"
                                         value="new Date()" labelPosition="top" />
                                 </td>
                                 <td>出货单号：<span id="new_order_sale_No" style="font-weight:bold;"></span>
@@ -265,21 +265,17 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>送货地址：<input id="new_order_customer_address" data-options="height:30" class="customer_address easyui-textbox" />
+                                <td>送货地址：<input id="new_order_customer_address" class="customer_address easyui-textbox" />
                                 </td>
-                                <td>联&ensp;系&ensp;人：<input id="new_order_customer_principal" data-options="height:30" class="principal easyui-textbox" />
+                                <td>联&ensp;系&ensp;人：<input id="new_order_customer_principal"  class="principal easyui-textbox" />
                                 </td>
-                                <td>联系电话：<input id="new_order_customer_phone" data-options="height:30" class="telephone easyui-textbox" /></td>
+                                <td>联系电话：<input id="new_order_customer_phone"  class="telephone easyui-textbox" /></td>
                             </tr>
                         </table>
 
                         <div id="order_products_grid_wrapper" style="width:808px;  border:1px solid #aaa; margin:10px 0 0; padding:0 ">
                             <table id="order_products_grid" class="easyui-datagrid" 
-                            data-options="width:'100%', height:202, data:[], border:false, autoRowHeight:false,
-                            rowStyler: function(index,row){
-                                    return 'height:30px';
-                    	
-                            },
+                            data-options="width:'100%', height:202, data:[], border:false, editorHeight:24,
                            singleSelect:true, onLoadSuccess:onLoadSuccess, onClickCell: onClickCell">
                                 <thead>
                                     <tr>
@@ -331,10 +327,9 @@
                         </div>
 
                         <table class="bill_user_table">
-                                <td>制单人：<input id="new_order_maker" data-options="height:30" class="f1 easyui-textbox"></input></td>
+                                <td>制单人：<input id="new_order_maker" class="f1 easyui-textbox"></input></td>
                                 <td>送货司机：<select class="easyui-combogrid" id="driver_select" data-options="onShowPanel:onShowDriverPanel,
                                         panelWidth: 810,
-                                        height:30,
                                         panelMaxHeight:220,
                                         idField: 'name',
                                         textField: 'name',
@@ -351,7 +346,7 @@
                                         ]]"
                                         style="width:150px;"></select>
                                 </td>
-                                <td>签收人：<input data-options="height:30" class="f1 easyui-textbox" disabled></input></td>
+                                <td>签收人：<input class="f1 easyui-textbox" disabled></input></td>
                         </table>
                     </form>
                 </div>
