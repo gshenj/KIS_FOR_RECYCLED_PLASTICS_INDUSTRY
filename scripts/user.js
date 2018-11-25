@@ -233,5 +233,23 @@ function updateUser(user, callback) {
 
 function set_password(){
     //todo
-    show_error("操作成功：设置密码成功！")
+
+    let old_pass = $('#old_pass').passwordbox('getValue')
+    let new_pass = $('#new_pass').passwordbox('getValue')
+    let new_pass_again = $('#new_pass_again').passwordbox('getValue')
+
+    if(new_pass == new_pass_again) {
+        let user = JSON.parse(localStorage.getItem('user'))
+        UserModel.findOne({name:user.name}, function(err, doc) {
+            if (doc.password == old_pass) {
+                doc.password = new_pass;
+                doc.save(function(err, doc){
+                    // update localstorage
+                    $('#dlg_for_setpassword').dialog('close')   
+                     show_msg("操作成功：设置密码成功！")
+                })
+            }
+        })
+    }
+
 }

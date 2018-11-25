@@ -294,7 +294,11 @@ function accept() {
     }
 
     let rows = $('#order_products_grid').datagrid('getRows')
-    console.log("Accept rows:" +JSON.stringify(rows))
+    if (rows.length == 0) {
+        return false;
+    }
+
+    //console.log("Accept rows:" +JSON.stringify(rows))
     let totalSum = 0;
     for (let i=0; i<rows.length; i++)  {
         if (rows[i].product_sum) {
@@ -310,6 +314,9 @@ function accept() {
     for (let i=0; i<rows.length; i++)  {
         if (rows[i].product_num) {
             products_num += Number(rows[i].product_num)
+        } else {
+            products_num = ''
+            break;
         }
     }
     $('#products_num').html(products_num)
@@ -377,7 +384,8 @@ function doPrint() {
 
 
 function onLoadSuccess() {
-    let b = $('#order_products_grid').datagrid('getPanel').panel('body')
+    //let b = $('#order_products_grid').datagrid('getPanel').panel('body')
+    let b = '#order_products_grid_wrapper'
     $(b).bind('click', function () {
         accept()
     })

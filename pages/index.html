@@ -18,6 +18,7 @@
             module = window.module;
 
 
+        const KIS_NAME = 'KIS系统'
         const KIS_VERSION = 'v1.0'
         let DOCUMENT_TITLE_PREFIX = '';
         let SYS_CONFIG = null;
@@ -113,8 +114,8 @@
                 </svg>
             </div>
             <div id="main_title" style="height:24px; line-height:24px; margin:0 0 0 2px; padding:0;  float:left; display: inline-block; ">
-                苏州元斌塑胶科技有限公司
-                KIS系统 v1.0
+                <!-- 苏州元斌塑胶科技有限公司
+                KIS系统 v1.0 -->
             </div>
 
             <table class="win_btn_tb">
@@ -126,13 +127,15 @@
                                 x="0px" y="0px" width="10px" height="10px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000"
                                 xml:space="preserve">
                                 <g>
-                                    <path d="M10,475.5h980v49H10V475.5z" />
+                                    <!-- <path d="M10,475.5h980v49H10V475.5z" /> -->
+                                    <path d="M990,549.5c0,6.5-5.3,11.8-11.8,11.8H21.8c-6.5,0-11.8-5.3-11.8-11.8v-99c0-6.5,5.3-11.8,11.8-11.8h956.5c6.5,0,11.8,5.3,11.8,11.8V549.5z" />
                                 </g>
                             </svg>
                         </a>
 
                     <td>
-                        <a class="win_btn" href="#" onclick="maxwin()">
+                        <a id="to_max_a" class="win_btn" onclick="maxwin()">
+                            <!-- <img id="to_max_img" src="../images/to_max_SFont.CN.svg" style="border:0px solid red; width:10px; height:10px" /> -->
                             <svg id="to_unmax" style="display:none;" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="10px" height="10px"
                                 viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
@@ -158,7 +161,8 @@
                                 x="0px" y="0px" width="10px" height="10px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000"
                                 xml:space="preserve">
                                 <g>
-                                    <path d="M990,54.1l-43.3-43.4L500,456.7L53.3,10.7L10,54.1l446.6,446L10,946l43.3,43.3l446.7-446l446.7,446L990,946L543.4,500L990,54.1z" />
+                                    <path d="M990,69.8L930.2,10L500,440.2L69.8,10L10,69.8L438.5,500L10,930.2L69.8,990L500,559.8L930.2,990l59.8-59.8L561.5,500L990,69.8z" />
+                                    <!-- <path d="M990,54.1l-43.3-43.4L500,456.7L53.3,10.7L10,54.1l446.6,446L10,946l43.3,43.3l446.7-446l446.7,446L990,946L543.4,500L990,54.1z" /> -->
                                 </g>
                             </svg>
                         </a>
@@ -203,11 +207,11 @@
                 <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'sys_config_panel')" data-options="plain:true, size:'large', iconCls:'icon-large-sysconfig', iconAlign:'left'">系统参数</a>
             </div>
 
-            <div title="我的账户" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+            <!-- <div title="我的账户" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:6px;">
                 <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'password_set_panel')" data-options="plain:true, iconCls:'icon-large-passwordmanage', size:'large',iconAlign:'left'">密码设置</a>
                 <a class="easyui-linkbutton tool_button" onclick="logout()" data-options="plain:true, size:'large', iconCls:'icon-large-logout', iconAlign:'left'">注销登录</a>
-            </div>
+            </div> -->
         </div>
 
         <div style="width:70px; position: absolute;top:24px; right:0px; border:none; background:transparent; height:84px; line-height:84px;-webkit-app-region: no-drag;">
@@ -251,9 +255,9 @@
                                 出货单</span></div>
                         <table class="bill_customer_table">
                             <tr>
-                                <td>客户名称：<input id="new_order_customer_name" class="easyui-textbox customer_name" />
+                                <td>客户名称：<input id="new_order_customer_name" data-options="height:30" class="easyui-textbox customer_name" />
                                 </td>
-                                <td>送货日期：<input id="new_order_sale_date" class="easyui-datebox sale_date" data-options="editable:false, formatter:myDateFormatter"
+                                <td>送货日期：<input id="new_order_sale_date" class="easyui-datebox sale_date" data-options="editable:false, height:30, formatter:myDateFormatter"
                                         value="new Date()" labelPosition="top" />
                                 </td>
                                 <td>出货单号：<span id="new_order_sale_No" style="font-weight:bold;"></span>
@@ -261,16 +265,21 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>送货地址：<input id="new_order_customer_address" class="customer_address easyui-textbox" />
+                                <td>送货地址：<input id="new_order_customer_address" data-options="height:30" class="customer_address easyui-textbox" />
                                 </td>
-                                <td>联&ensp;系&ensp;人：<input id="new_order_customer_principal" class="principal easyui-textbox" />
+                                <td>联&ensp;系&ensp;人：<input id="new_order_customer_principal" data-options="height:30" class="principal easyui-textbox" />
                                 </td>
-                                <td>联系电话：<input id="new_order_customer_phone" class="telephone easyui-textbox" /></td>
+                                <td>联系电话：<input id="new_order_customer_phone" data-options="height:30" class="telephone easyui-textbox" /></td>
                             </tr>
                         </table>
 
-                        <div style="width:808px; height:230px; border:1px solid #aaa; margin:10px 0 0; padding:0 ">
-                            <table id="order_products_grid" class="easyui-datagrid" data-options="width:'100%', height:202, data:[], border:false,
+                        <div id="order_products_grid_wrapper" style="width:808px;  border:1px solid #aaa; margin:10px 0 0; padding:0 ">
+                            <table id="order_products_grid" class="easyui-datagrid" 
+                            data-options="width:'100%', height:202, data:[], border:false, autoRowHeight:false,
+                            rowStyler: function(index,row){
+                                    return 'height:30px';
+                    	
+                            },
                            singleSelect:true, onLoadSuccess:onLoadSuccess, onClickCell: onClickCell">
                                 <thead>
                                     <tr>
@@ -310,7 +319,7 @@
                             </table>
 
 
-                            <table style="border-collapse: collapse; width:100%; border:none;">
+                            <table  style="border-collapse: collapse; width:100%; border:none;" >
                                 <tr>
                                     <td style="text-align:right; width:328px; height:30px;  font-weight:bold; border:0px solid red;">合计数量：</td>
                                     <td style="text-align:left; width:110px; height:30px;  font-weight:bold;"><span id="products_num"></span></td>
@@ -318,31 +327,32 @@
                                     <td style="text-align:left;font-weight:bold;"><span id="products_sum"></span></td>
                                 </tr>
                             </table>
+
                         </div>
 
                         <table class="bill_user_table">
-                            <td>制单人：<input id="new_order_maker" class="f1 easyui-textbox"></input></td>
-                            <td>送货司机：<select class="easyui-combogrid" id="driver_select" data-options="onShowPanel:onShowDriverPanel,
-                                    panelWidth: 810,
-                                    panelMaxHeight:220,
-                                    idField: 'name',
-                                    textField: 'name',
-                                    data:[],
-                                    columns: [[
-                                        {field:'name',title:'司机',width:90, align:'left', halign:'center'},
-                                        {field:'car_type',title:'货车类型',width:110, align:'left', halign:'center', formatter: function(value,row,index){
-                                                         if (row.cartype) return row.cartype.name;} },
-                                        {field:'car_No',title:'车牌号',width:90, align:'left', halign:'center'},
-                                        {field:'driving_license_No',title:'行驶证号',width:110, align:'left', halign:'center'},
-                                        {field:'id_No',title:'身份证号',width:110, align:'left', halign:'center'},
-                                        {field:'phone',title:'电话',width:90, align:'left', halign:'center'},
-                                        {field:'address',title:'地址',width:200, align:'left', halign:'center'}
-                                    ]]"
-                                    style="width:150px;"></select>
-                            </td>
-                            <td>签收人：<input class="f1 easyui-textbox" disabled></input></td>
+                                <td>制单人：<input id="new_order_maker" data-options="height:30" class="f1 easyui-textbox"></input></td>
+                                <td>送货司机：<select class="easyui-combogrid" id="driver_select" data-options="onShowPanel:onShowDriverPanel,
+                                        panelWidth: 810,
+                                        height:30,
+                                        panelMaxHeight:220,
+                                        idField: 'name',
+                                        textField: 'name',
+                                        data:[],
+                                        columns: [[
+                                            {field:'name',title:'司机',width:90, align:'left', halign:'center'},
+                                            {field:'car_type',title:'货车类型',width:110, align:'left', halign:'center', formatter: function(value,row,index){
+                                                             if (row.cartype) return row.cartype.name;} },
+                                            {field:'car_No',title:'车牌号',width:90, align:'left', halign:'center'},
+                                            {field:'driving_license_No',title:'行驶证号',width:110, align:'left', halign:'center'},
+                                            {field:'id_No',title:'身份证号',width:110, align:'left', halign:'center'},
+                                            {field:'phone',title:'电话',width:90, align:'left', halign:'center'},
+                                            {field:'address',title:'地址',width:200, align:'left', halign:'center'}
+                                        ]]"
+                                        style="width:150px;"></select>
+                                </td>
+                                <td>签收人：<input data-options="height:30" class="f1 easyui-textbox" disabled></input></td>
                         </table>
-
                     </form>
                 </div>
 
@@ -374,7 +384,7 @@
                             <td style="padding:10px 0;">客户名称:</td>
                             <td style="width:200px;padding:10px 0;">
                                 <input id="customer_choose_for_order_list" class="easyui-textbox" data-options="icons: [{
-                                    iconCls:'icon-more',
+                                    iconCls:'icon-select',
                                     handler: function(e){
                                         open_customer_choose_for_list_order();
                                     }
@@ -385,13 +395,13 @@
                         <tr>
                             <td style="padding:10px 0;">制&ensp;单&ensp;人:</td>
                             <td style="width:200px;padding:10px 0;">
-                                <input id="order_maker_searchbox" class="easyui-textbox" style="width:100%"/>
+                                <input id="order_maker_searchbox" class="easyui-textbox" style="width:100%" />
                             </td>
                         </tr>
                         <tr>
                             <td style="padding:10px 0;">送货司机:</td>
                             <td style="width:200px;padding:10px 0;">
-                                <input id="order_dirver_searchbox" class="easyui-textbox" style="width:100%"/>
+                                <input id="order_dirver_searchbox" class="easyui-textbox" style="width:100%" />
                             </td>
                         </tr>
                         <tr>
@@ -559,8 +569,8 @@
                                     labelAlign="right" style="width:100%">
                             </div>
                             <div style="margin-bottom:10px">
-                                <input name="price" id="product_price" class="easyui-numberbox" data-options="min:0,precision:2" label="单价：" labelAlign="right"
-                                    style="width:100%">
+                                <input name="price" id="product_price" class="easyui-numberbox" data-options="min:0,precision:2"
+                                    label="单价：" labelAlign="right" style="width:100%">
                             </div>
                             <div style="margin-bottom:10px">
                                 <input id="product_memo" class="easyui-textbox" name="memo" labelAlign="right" label="描述："
@@ -730,329 +740,344 @@
         </div>
 
         <!--用户设置密码 -->
-        <div id="password_set_panel" class="easyui-panel opt_panel" data-options="fit:true, closed:true, border:true, onOpen:onOpenDriverManagePanel">
-            <div class="easyui-panel" data-options="title:'修改用户密码', width:600, style:{marginLeft:'auto', marginRight:'auto', marginTop:20}">
-                <form id="fm_for_password_set" method="post" novalidate style="margin:0;padding:20px 50px">
-                    <div style="margin-top:20px">
-                        <input id="old_pass" class="easyui-textbox" label="旧&emsp;密&emsp;码:" labelAlign="left" style="width:100%">
-                    </div>
-                    <div style="margin-top:20px">
-                        <input id="new_pass" class="easyui-textbox" label="新&emsp;密&emsp;码:" labelAlign="left" style="width:100%">
-                    </div>
-                    <div style="margin-top:20px">
-                        <input id="new_pass_again" class="easyui-textbox" label="重复新密码:" labelAlign="left" style="width:100%">
-                    </div>
-
-                    <div style="margin-top:40px;">
-                        <a onclick="set_password()" class="easyui-linkbutton" style="width:100px">确定</a>
-                    </div>
-                </form>
+        <div id="dlg_for_setpassword" class="easyui-dialog" style="width:500px" data-options="title:'修改用户密码', closed:true, modal:true, border:'thin', buttons:'#dlg-buttons_for_setpassword', onOpen:function(){$('#fm_for_setpassword').form('clear')}">
+            <form id="fm_for_setpassword" method="post" novalidate style="margin:0;padding:20px 50px">
+                <div style="margin-top:20px">
+                    <input id="old_pass" class="easyui-passwordbox" label="旧&emsp;密&emsp;码:" labelAlign="left" style="width:100%">
+                </div>
+                <div style="margin-top:20px">
+                    <input id="new_pass" class="easyui-passwordbox" label="新&emsp;密&emsp;码:" labelAlign="left" style="width:100%">
+                </div>
+                <div style="margin-top:20px">
+                    <input id="new_pass_again" class="easyui-passwordbox" label="重复新密码:" labelAlign="left" style="width:100%">
+                </div>
+            </form>
+            <div id="dlg-buttons_for_setpassword">
+                <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="set_password()"
+                    style="width:90px">确定</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#dlg_for_setpassword').dialog('close')"
+                    style="width:90px">取消</a>
             </div>
         </div>
-    </div>
 
-    <!--<div data-options="region:'south', border:false, height:40">
-<div style="text-align: center">
-    <div style="height:24px; line-height:24px; margin:6px auto; display: inline-block  ">苏州元斌塑胶科技有限公司版权所有@copyright</div>
-</div>
-</div>-->
 
-    <!-- 客户选择对话框 -->
-    <div id="dlg_for_customer_choose" title="选择客户" class="easyui-dialog" style="width:900px; height:550px;"
-        data-options="onOpen:onOpenCustomerChooseDlg, resizable:true, closed:true, modal:true, border:'thin', buttons:'#dlg_buttons_for_classification01'">
-        <div class="easyui-layout" data-options="fit:true">
-            <div data-options="region:'west'" style="width:180px; padding:4px;">
-                <ul id="classification_tree01" class="easyui-tree" data-options="lines:true,onSelect:loadCustomerGrid01,
+        <!-- 客户选择对话框 -->
+        <div id="dlg_for_customer_choose" title="选择客户" class="easyui-dialog" style="width:900px; height:550px;"
+            data-options="onOpen:onOpenCustomerChooseDlg, resizable:true, closed:true, modal:true, border:'thin', buttons:'#dlg_buttons_for_classification01'">
+            <div class="easyui-layout" data-options="fit:true">
+                <div data-options="region:'west'" style="width:180px; padding:4px;">
+                    <ul id="classification_tree01" class="easyui-tree" data-options="lines:true,onSelect:loadCustomerGrid01,
                       ">
-                </ul>
+                    </ul>
+                </div>
+                <div data-options="region:'center'" style="padding:0px;">
+                    <table id="grid_for_customer01" style="width:100%">
+                    </table>
+                    <div id="customer_grid_toolbar01" style="padding:2px 5px;">
+                        <span class="search_label">检索：</span>
+                        <input class="search_input" type="text" id="customer_search_text01" onkeyup="onSearch(this, CUSTOMER_GRID01, doSearchCustomer)" />
+                    </div>
+                </div>
             </div>
-            <div data-options="region:'center'" style="padding:0px;">
-                <table id="grid_for_customer01" style="width:100%">
-                </table>
+            <div id="dlg_buttons_for_classification01">
+                <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="chooseCustomer()"
+                    style="width:90px">确定选择</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg_for_customer_choose').dialog('close')"
+                    style="width:90px">取消</a>
             </div>
         </div>
-    </div>
-    <div id="customer_grid_toolbar01" style="padding:2px 5px;">
-        <span class="search_label">检索：</span>
-        <input class="search_input" type="text" id="customer_search_text01" onkeyup="onSearch(this, CUSTOMER_GRID01, doSearchCustomer)" />
-    </div>
-
-    <div id="dlg_buttons_for_classification01">
-        <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="chooseCustomer()" style="width:90px">确定选择</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg_for_customer_choose').dialog('close')"
-            style="width:90px">取消</a>
-    </div>
 
 
-    <!-- 产品选择对话框 -->
-    <div id="dlg_for_product_choose" title="选择产品" class="easyui-dialog" style="width:700px; height:500px;" data-options="onBeforeOpen:onOpenProductChooseDlg, resizable:true, closed:true, modal:true, border:'thin', buttons:'#dlg_buttons_for_product_choose01'">
-        <table id="grid_for_product01" style="width:100%">
-        </table>
-    </div>
-    <div id="dlg_buttons_for_product_choose01">
-        <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="chooseProduct()" style="width:90px">确定选择</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg_for_product_choose').dialog('close')"
-            style="width:90px">取消</a>
-    </div>
+        <!-- 产品选择对话框 -->
+        <div id="dlg_for_product_choose" title="选择产品" class="easyui-dialog" style="width:700px; height:500px;"
+            data-options="onBeforeOpen:onOpenProductChooseDlg, resizable:true, closed:true, modal:true, border:'thin', buttons:'#dlg_buttons_for_product_choose01'">
+            <table id="grid_for_product01" style="width:100%">
+            </table>
+            <div id="dlg_buttons_for_product_choose01">
+                    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="chooseProduct()" style="width:90px">确定选择</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg_for_product_choose').dialog('close')"
+                        style="width:90px">取消</a>
+            </div>
+        </div>
+        
 
-    <div id="win" class="easyui-window" title="" style="background-color: #95B8E7" data-options="modal:true, closed:true, height:50, width:200, border:false,  style:{textAlign:'center'}">
-        <span style="height:50px;  line-height:50px; margin:0 auto; " id="win_in"></span>
-    </div>
+        <div id="win" class="easyui-window" title="" style="background-color: #95B8E7" data-options="modal:true, closed:true, height:50, width:200, border:false,  style:{textAlign:'center'}">
+            <span style="height:50px;  line-height:50px; margin:0 auto; " id="win_in"></span>
+        </div>
 
-    <!--<div id="account_info" >-->
-    <div id="account_info" class="easyui-menu" data-options="hideOnUnhover:false,onClick:menuHandler" style="width:120px;">
-        <div name="account_info">账号信息</div>
-        <div name="set_password">密码修改</div>
-        <div name="logout">注销登录</div>
-        <div class="menu-sep"></div>
+        <!--<div id="account_info" >-->
+        <div id="account_info" class="easyui-menu" data-options="hideOnUnhover:false,onClick:menuHandler" style="width:120px;">
+            <div name="account_info">账号信息</div>
+            <div name="set_password">密码修改</div>
+            <div name="logout">注销登录</div>
+            <div class="menu-sep"></div>
 
-        <div name="exit">退出系统</div>
-        <div class="menu-sep"></div>
+            <div name="exit">退出系统</div>
+            <div class="menu-sep"></div>
 
-        <div>检查更新</div>
-        <div name="about">关于</div>
-    </div>
+            <div>检查更新</div>
+            <div name="about">关于</div>
+        </div>
 
-    <script>
-        const { BrowserWindow } = require('electron').remote
-        const { ipcRenderer } = require('electron')
-        const win = require('electron').remote.getCurrentWindow();
+        <script>
+            const { BrowserWindow } = require('electron').remote
+            const { ipcRenderer } = require('electron')
+            const win = require('electron').remote.getCurrentWindow();
 
-        function onCarTypeTreeContextMenu(e, node) {
-            e.preventDefault();
-            $(this).tree('select', node.target);
-            let root = $(this).tree('getRoot')
-            $('#mm_cartype').menu('show', {
-                left: e.pageX,
-                top: e.pageY
-            });
+            function onCarTypeTreeContextMenu(e, node) {
+                e.preventDefault();
+                $(this).tree('select', node.target);
+                let root = $(this).tree('getRoot')
+                $('#mm_cartype').menu('show', {
+                    left: e.pageX,
+                    top: e.pageY
+                });
 
-            var cartype_item_edit = $('#cartype_menu_edit')[0];
-            var cartype_item_append = $('#cartype_menu_append')[0];
-            var cartype_item_delete = $('#cartype_menu_delete')[0];
+                var cartype_item_edit = $('#cartype_menu_edit')[0];
+                var cartype_item_append = $('#cartype_menu_append')[0];
+                var cartype_item_delete = $('#cartype_menu_delete')[0];
 
-            if (root == node) {
-                $('#mm_cartype').menu('enableItem', cartype_item_append)
-                $('#mm_cartype').menu('disableItem', cartype_item_edit)
-                $('#mm_cartype').menu('disableItem', cartype_item_delete)
-            } else {
-                $('#mm_cartype').menu('disableItem', cartype_item_append)
-                $('#mm_cartype').menu('enableItem', cartype_item_edit)
-                $('#mm_cartype').menu('enableItem', cartype_item_delete)
+                if (root == node) {
+                    $('#mm_cartype').menu('enableItem', cartype_item_append)
+                    $('#mm_cartype').menu('disableItem', cartype_item_edit)
+                    $('#mm_cartype').menu('disableItem', cartype_item_delete)
+                } else {
+                    $('#mm_cartype').menu('disableItem', cartype_item_append)
+                    $('#mm_cartype').menu('enableItem', cartype_item_edit)
+                    $('#mm_cartype').menu('enableItem', cartype_item_delete)
+                }
+
             }
 
-        }
 
-
-        function menuHandler(item) {
-            switch (item.name) {
-                case 'account_info':
-                    alert(localStorage.getItem('user'))
-                    break;
-                case 'logout':
-                    logout();
-                    break;
-                case 'about':
-                    // show about
-                    let win_about = new BrowserWindow({
-                                    width: 400,
-                                    height: 300,
-                                    modal: true,
-                                    show: false,
-                                    maximizable: false,
-                                    minimizable: false,
-                                    resizable: false,
-                                    parent: win,
-                                    title: '关于系统',
-                                    autoHideMenuBar: true
-                                })
-                    win_about.loadURL('file://' + __dirname + '/about.html')
-                    win_about.on('closed', ()=>{
-                        win_about = null
-                    })
-                    win_about.show()
-                    break;
-                case 'exit':
-                    //
-                    closewin()
-                    break;
-                case 'set_password':
-                 // 改弹出框
-                    show_panel(null, 'password_set_panel')
-                    break;
-                default:
-                    ;
+            function menuHandler(item) {
+                switch (item.name) {
+                    case 'account_info':
+                        alert(localStorage.getItem('user'))
+                        break;
+                    case 'logout':
+                        logout();
+                        break;
+                    case 'about':
+                        // show about
+                        let win_about = new BrowserWindow({
+                            width: 400,
+                            height: 300,
+                            modal: true,
+                            show: false,
+                            maximizable: false,
+                            minimizable: false,
+                            resizable: false,
+                            parent: win,
+                            title: '关于系统',
+                            autoHideMenuBar: true
+                        })
+                        win_about.loadURL('file://' + __dirname + '/about.html')
+                        win_about.on('closed', () => {
+                            win_about = null
+                        })
+                        win_about.once('ready-to-show', () => {
+                            win_about.show()
+                        })
+                        break;
+                    case 'exit':
+                        //
+                        closewin()
+                        break;
+                    case 'set_password':
+                        // 改弹出框'
+                        $('#dlg_for_setpassword').dialog('open')
+                        //show_panel('密码修改', 'password_set_panel')
+                        break;
+                    default:
+                        ;
+                }
             }
-        }
 
 
 
-        win.on('maximize', function () {
-            $('#to_max').hide();
-            $('#to_unmax').show();
-            console.log('max')
-        })
-
-        win.on('unmaximize', function () {
-            $('#to_unmax').hide();
-            $('#to_max').show();
-            console.log('unmax')
-        })
-
-
-        function showMainWindow() {
-            //win.show()
-            ipcRenderer.sendSync('main-window-ready', null)
-        }
-
-
-        function showAccountMenu(e) {
-            e.preventDefault();
-            $('#account_info').menu('show', {
-                left: e.pageX,
-                top: 105
+            win.on('maximize', function () {
+                // $('#to_max').hide();
+                // $('#to_unmax').show();
+                // console.log('max')
             })
-        }
 
-
-
-        $(function () {
-            loadConfig(function (config) {
-                // localStorage只支持String值
-                console.log("load configs")
-                DOCUMENT_TITLE_PREFIX = config.company_name + KIS_VERSION
-                $('#main_title').html(DOCUMENT_TITLE_PREFIX)
-                SYS_CONFIG = config;
+            win.on('unmaximize', function () {
+                // $('#to_unmax').hide();
+                // $('#to_max').show();
+                // console.log('unmax')
             })
 
 
-            $('#new_order_sale_date').datebox().datebox('calendar').calendar({
-                validator: function (date) {
-                    var now = new Date();
-                    var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
-                    var d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 6);
-                    return d1 <= date && date <= d2;
-                }
-            });
-
-
-            $('.account_logo').bind('click', function (e) {
-                showAccountMenu(e)
-            });
-
-            $('#customer_choose_for_product_manage').textbox('addClearBtn', 'icon-clear');
-            $('#customer_choose_for_product_manage').textbox('textbox').bind('focus', function (e) {
-                open_customer_choose_for_product_manage()
-            });
-            $('#new_order_customer_name').textbox('addClearBtn', 'icon-clear');
-            $('#new_order_customer_name').textbox('textbox').bind('focus', function (e) {
-                open_customer_choose_for_new_order()
-            });
-
-            //去掉tab菜单按钮的href，防止鼠标按住拖动出现href属性
-            $('.tabs li a').removeAttr('href')
-
-        });
-
-
-        function open_customer_choose_for_product_manage() {
-            customer_choose_dlg_type = 'list_products'
-            $('#dlg_for_customer_choose').dialog('open').dialog('center')
-        }
-
-        function open_customer_choose_for_new_order() {
-            customer_choose_dlg_type = 'new_order'
-            $('#dlg_for_customer_choose').dialog('open').dialog('center')
-        }
-
-        function open_customer_choose_for_list_order() {
-            customer_choose_dlg_type = 'list_order'
-            $('#dlg_for_customer_choose').dialog('open').dialog('center')
-        }
-
-
-
-        function loadConfig(callback) {
-            ConfigModel.findOne({}, function (err, doc) {
-                if (doc) {
-                    callback(doc)
-                }
-            })
-        }
-
-        function logout() {
-            ipcRenderer.sendSync('logout')
-        }
-
-
-        function printPreview() {
-            let row = ORDER_GRID.datagrid('getSelected')
-            if (row) {
-                preview(row, 'list')
+            function showMainWindow() {
+                //win.show()
+                ipcRenderer.sendSync('main-window-ready', null)
             }
-        }
 
 
-        function maxwin() {
-
-            if (win.isMaximized()) {
-
-                win.unmaximize()
-            } else {
-
-                win.maximize()
+            function showAccountMenu(e) {
+                e.preventDefault();
+                $('#account_info').menu('show', {
+                    left: e.pageX,
+                    top: 105
+                })
             }
-        }
 
-        function minwin() {
-            win.minimize()
-        }
 
-        function closewin() {
-            $.messager.confirm('确定', '确定要关闭应用程序吗?', function (r) {
-                if (r) {
-                    win.close()
-                }
+
+            $(function () {
+                loadConfig(function (config) {
+                    // localStorage只支持String值
+                    console.log("load configs")
+                    DOCUMENT_TITLE_PREFIX = config.company_name + KIS_NAME + " " + KIS_VERSION
+                    $('#main_title').html(DOCUMENT_TITLE_PREFIX)
+                    SYS_CONFIG = config;
+                })
+
+
+                $('#new_order_sale_date').datebox().datebox('calendar').calendar({
+                    validator: function (date) {
+                        var now = new Date();
+                        var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+                        var d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 6);
+                        return d1 <= date && date <= d2;
+                    }
+                });
+
+
+                $('.account_logo').bind('click', function (e) {
+                    showAccountMenu(e)
+                });
+
+                $('#customer_choose_for_product_manage').textbox('addClearBtn', 'icon-clear');
+                $('#customer_choose_for_product_manage').textbox('textbox').bind('focus', function (e) {
+                    open_customer_choose_for_product_manage()
+                });
+                $('#new_order_customer_name').textbox('addClearBtn', 'icon-clear');
+                $('#new_order_customer_name').textbox('textbox').bind('focus', function (e) {
+                    open_customer_choose_for_new_order()
+                });
+
+                //去掉tab菜单按钮的href，防止鼠标按住拖动出现href属性
+                $('.tabs li a').removeAttr('href')
+
             });
-        }
 
 
-        function preview(order, type) {
-            type = type || 'new_order'
-            localStorage.setItem('order', JSON.stringify(order));
-            let win_print = new BrowserWindow({
-                width: 800,
-                height: 570,
-                modal: true,
-                show: false,
-                maximizable: false,
-                minimizable: false,
-                resizable: false,
-                parent: win,
-                title: '打印',
-                autoHideMenuBar: true
-            })
-            win_print.on('closed', () => {
-                win_print = null
+            function open_customer_choose_for_product_manage() {
+                customer_choose_dlg_type = 'list_products'
+                $('#dlg_for_customer_choose').dialog('open').dialog('center')
+            }
 
-                if (type == 'new_order') {
-                    $.messager.confirm('', '是否继续填写出货单?', function (r) {
-                        if (r) {
-                            resetOrder();
-                        } else {
-                            $('#order_list_menu').click()
-                        }
-                    })
+            function open_customer_choose_for_new_order() {
+                customer_choose_dlg_type = 'new_order'
+                $('#dlg_for_customer_choose').dialog('open').dialog('center')
+            }
 
-                } else if (type == 'list') {
+            function open_customer_choose_for_list_order() {
+                customer_choose_dlg_type = 'list_order'
+                $('#dlg_for_customer_choose').dialog('open').dialog('center')
+            }
+
+
+
+            function loadConfig(callback) {
+                ConfigModel.findOne({}, function (err, doc) {
+                    if (doc) {
+                        callback(doc)
+                    }
+                })
+            }
+
+            function logout() {
+                ipcRenderer.sendSync('logout')
+            }
+
+
+            function printPreview() {
+                let row = ORDER_GRID.datagrid('getSelected')
+                if (row) {
+                    preview(row, 'list')
+                }
+            }
+
+
+            function maxwin() {
+
+                if (win.isMaximized()) {
+
+                    $('#to_unmax').hide();
+                    $('#to_max').show();
+                    console.log('unmax')
+                    win.unmaximize()
+                    //win.hide()
+                    //win.show()
+                    // win.setIgnoreMouseEvents(false)
+                    // $('#to_max_a').removeClass('win_btn')
+                    // $('#to_max_a').addClass('win_btn')
+
+                    //$('#to_max_img').attr('src', '../images/to_max_SFont.CN.svg')
+                    //$('').
+                } else {
+
+                    $('#to_max').hide();
+                    $('#to_unmax').show();
+                    console.log('max')
+                    win.maximize()
+                    //$('#to_max_img').attr('src', '../images/to_unmax_SFont.CN.svg')
 
                 }
-            })
+            }
 
-            win_print.loadURL('file://' + __dirname + '/print_template.html')
-            win_print.show()
-        }
-    </script>
+            function minwin() {
+                win.minimize()
+            }
+
+            function closewin() {
+                $.messager.confirm('确定', '确定要关闭应用程序吗?', function (r) {
+                    if (r) {
+                        win.close()
+                    }
+                });
+            }
+
+
+            function preview(order, type) {
+                type = type || 'new_order'
+                localStorage.setItem('order', JSON.stringify(order));
+                let win_print = new BrowserWindow({
+                    width: 800,
+                    height: 570,
+                    modal: true,
+                    show: false,
+                    maximizable: false,
+                    minimizable: false,
+                    resizable: false,
+                    parent: win,
+                    title: '打印',
+                    autoHideMenuBar: true
+                })
+                win_print.on('closed', () => {
+                    win_print = null
+
+                    if (type == 'new_order') {
+                        $.messager.confirm('', '是否继续填写出货单?', function (r) {
+                            if (r) {
+                                resetOrder();
+                            } else {
+                                $('#order_list_menu').click()
+                            }
+                        })
+
+                    } else if (type == 'list') {
+
+                    }
+                })
+
+                win_print.loadURL('file://' + __dirname + '/print_template.html')
+                win_print.show()
+            }
+        </script>
 
 
 </body>

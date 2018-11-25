@@ -20,6 +20,8 @@ function hide_all_panel() {
 function set_tool_button_status(click_src) {
     $('.tool_button').linkbutton('enable')
    //
+   // console.log(click_src)
+
     if (click_src) {
         $(click_src).linkbutton('disable')
         $('#main_title').html(DOCUMENT_TITLE_PREFIX + '　─　' + $(click_src).linkbutton('options').text + '')

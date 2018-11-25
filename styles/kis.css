@@ -11,7 +11,7 @@ body {
     font: 12px/1.5 Tahoma, Helvetica, Arial, '宋体', sans-serif;
 
     background-color:#fff;
-
+    font-size:12pt;
 
     /*font: 12px/1 Tahoma,Helvetica,Arial,"\5b8b\4f53",sans-serif;*/
 
@@ -144,6 +144,7 @@ a.win_btn {
     display: block;
     -webkit-app-region: no-drag;
     cursor: default;
+    background-color: inherit
 
 }
 
