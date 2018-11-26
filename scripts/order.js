@@ -367,7 +367,7 @@ function doPrint() {
 
     console.log(JSON.stringify(order_data))
     $('#win_in').html('正在保存单剧...')
-    $('#win').window('open')
+    $('#win').window('open').window('center')
 
     setTimeout(function () {
         saveOrder(order_data, function (doc) {
@@ -384,7 +384,6 @@ function doPrint() {
 
 
 function onLoadSuccess() {
-    //let b = $('#order_products_grid').datagrid('getPanel').panel('body')
     let b = '#order_products_grid_wrapper'
     $(b).bind('click', function () {
         accept()

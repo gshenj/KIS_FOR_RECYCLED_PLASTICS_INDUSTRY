@@ -275,7 +275,7 @@
 
                         <div id="order_products_grid_wrapper" style="width:808px;  border:1px solid #aaa; margin:10px 0 0; padding:0 ">
                             <table id="order_products_grid" class="easyui-datagrid" 
-                            data-options="width:'100%', height:202, data:[], border:false, editorHeight:24,
+                            data-options="width:'100%', height:150, data:[], border:false, editorHeight:24,
                            singleSelect:true, onLoadSuccess:onLoadSuccess, onClickCell: onClickCell">
                                 <thead>
                                     <tr>
@@ -317,9 +317,9 @@
 
                             <table  style="border-collapse: collapse; width:100%; border:none;" >
                                 <tr>
-                                    <td style="text-align:right; width:328px; height:30px;  font-weight:bold; border:0px solid red;">合计数量：</td>
+                                    <td style="text-align:right; width:350px; height:30px;  font-weight:bold; border:0px solid red;">合计数量：</td>
                                     <td style="text-align:left; width:110px; height:30px;  font-weight:bold;"><span id="products_num"></span></td>
-                                    <td style="text-align:right; width:80px; height:30px;  font-weight:bold; border:0px solid red;">合计金额：</td>
+                                    <td style="text-align:right; width:76px; height:30px;  font-weight:bold; border:0px solid red;">合计金额：</td>
                                     <td style="text-align:left;font-weight:bold;"><span id="products_sum"></span></td>
                                 </tr>
                             </table>
@@ -863,6 +863,7 @@
                             maximizable: false,
                             minimizable: false,
                             resizable: false,
+                            frame:false,
                             parent: win,
                             title: '关于系统',
                             autoHideMenuBar: true
@@ -873,6 +874,8 @@
                         })
                         win_about.once('ready-to-show', () => {
                             win_about.show()
+                            moveChildWindowToParentCenter(win_about, win)
+
                         })
                         break;
                     case 'exit':
