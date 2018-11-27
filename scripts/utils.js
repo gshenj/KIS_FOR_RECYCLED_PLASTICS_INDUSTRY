@@ -154,6 +154,12 @@ function moveChildWindowToParentCenter(child, parent) {
     let childSize = child.getSize();
 
     let childPosition = [(parentSize[0] - childSize[0])/2 + parentPosition[0], (parentSize[1] - childSize[1])/2 + parentPosition[1]]
-    child.setPosition(childPosition[0], childPosition[1])
+   console.log(childPosition)
+    child.setPosition(Math.round(childPosition[0]), Math.round(childPosition[1]))
     //let childPosition = [(position[0] + size[0])/2, (position[1] + size[1])/2 ]
 }
+
+
+
+
+

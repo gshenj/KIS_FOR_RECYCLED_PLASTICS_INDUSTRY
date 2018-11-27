@@ -1,4 +1,4 @@
-let {app, BrowserWindow, ipcMain, dialog} = require('electron');  // Module to control application life.
+let {app, BrowserWindow, ipcMain} = require('electron');  // Module to control application life.
 //var BrowserWindow = require('electron').browser-window;  // Module to create native browser window.
 
 // Report crashes to our server.
@@ -39,7 +39,6 @@ function createMainWindow() {
     mainWindow.loadURL('file://' + __dirname + '/pages/index.html')
 
     mainWindow.once('ready-to-show', () => {
-        //mainWindow.show()
     })
 
     mainWindow.on('closed', () => {
@@ -83,7 +82,7 @@ ipcMain.on('main-window-ready', (event, arg) =>{
 
 // 登录成功消息
 ipcMain.on('login-success', (event, arg) => {
-    console.log("login-success.")
+    // console.log("login-success.")
     createMainWindow()
     //loginWindow.close()
     event.returnValue = null;

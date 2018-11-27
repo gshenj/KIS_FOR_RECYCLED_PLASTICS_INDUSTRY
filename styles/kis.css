@@ -338,3 +338,7 @@ div.toolbar1 {
 .icon-select{
 	background:url('../images/select.png') no-repeat center center;
 }
+
+.icon-export{
+    background:url('../images/export_x16.png') no-repeat center center;
+}

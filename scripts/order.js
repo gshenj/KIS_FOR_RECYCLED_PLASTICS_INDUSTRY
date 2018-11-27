@@ -289,48 +289,74 @@ function onClickCell(index, field, value) {
 }
 
 function accept() {
+    let accept_ok = false
     if (endEditing()) {
         $('#order_products_grid').datagrid('acceptChanges');
+        accept_ok = true;
     }
 
     let rows = $('#order_products_grid').datagrid('getRows')
-    if (rows.length == 0) {
-        return false;
-    }
+    if (rows.length > 0) {
 
-    //console.log("Accept rows:" +JSON.stringify(rows))
-    let totalSum = 0;
-    for (let i=0; i<rows.length; i++)  {
-        if (rows[i].product_sum) {
-            totalSum += Number(rows[i].product_sum)
-        } else{
-            totalSum = ''
-            break;
+        //console.log("Accept rows:" +JSON.stringify(rows))
+        let totalSum = 0;
+        for (let i = 0; i < rows.length; i++) {
+            if (rows[i].product_sum) {
+                totalSum += Number(rows[i].product_sum)
+            } else {
+                totalSum = ''
+                break;
+            }
         }
-    }
-    $('#products_sum').html(totalSum ? totalSum.toFixed(2) : totalSum)
+        $('#products_sum').html(totalSum ? totalSum.toFixed(2) : totalSum)
 
-    let products_num = 0;
-    for (let i=0; i<rows.length; i++)  {
-        if (rows[i].product_num) {
-            products_num += Number(rows[i].product_num)
-        } else {
-            products_num = ''
-            break;
+        let products_num = 0;
+        for (let i = 0; i < rows.length; i++) {
+            if (rows[i].product_num) {
+                products_num += Number(rows[i].product_num)
+            } else {
+                products_num = ''
+                break;
+            }
         }
+        $('#products_num').html(products_num)
     }
-    $('#products_num').html(products_num)
 
+    return accept_ok;
 }
 
 function doPrint() {
-    accept();
-
-    let products = $('#order_products_grid').datagrid('getRows')
-
-    // save orders
     let customer_id = $('#new_order_customer_name').textbox('getValue');
     let customer_name = $('#new_order_customer_name').textbox('getText');
+
+    if (customer_id && customer_name) {
+        if (!accept()) {
+            console.log("产品输入信息缺少或者有误！")
+            return false;
+        }
+
+    } else {
+        console.log("没有输入客户信息！")
+        return false;
+    }
+
+
+    let products = $('#order_products_grid').datagrid('getRows')
+    if(products.length <= 0) {
+        console.log("没有输入产品信息！")
+        return false;
+    }
+
+    /*// 处理产品信息.meiyou名称和塑料的
+    for (let i=0; i<products.length; i++) {
+        if (!(products[i].product_name) || !(products[i].product_units) || !(products[i].products_num)) {
+            console.log("产品信息缺少！")
+            return false;
+            // $.messager.alert('请输入','','info')
+        }
+    }
+*/
+    // save orders
     let order_date = $('#new_order_sale_date').textbox('getText');
     //let order_num = $('#new_order_sale_No').textbox('getValue')
     let delivery_address = $('#new_order_customer_address').textbox('getValue')

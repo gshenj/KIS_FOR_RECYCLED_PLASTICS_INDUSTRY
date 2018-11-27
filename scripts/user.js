@@ -245,9 +245,12 @@ function set_password(){
                 doc.password = new_pass;
                 doc.save(function(err, doc){
                     // update localstorage
+                    handleError(err)
                     $('#dlg_for_setpassword').dialog('close')   
                      show_msg("操作成功：设置密码成功！")
                 })
+            } else {
+                show_msg('操作失败：旧密码错误！')
             }
         })
     }

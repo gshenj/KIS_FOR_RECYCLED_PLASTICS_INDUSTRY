@@ -69,7 +69,7 @@
                             iconCls: iconCls,
                             handler: function (e) {
                                 // console.log("Before clear:" + $(e.data.target).textbox('getText') + "-" + $(e.data.target).textbox('getValue'))
-                                $(e.data.target).textbox('clear').textbox('setText', '')//.textbox('textbox').focus();
+                                $(e.data.target).textbox('setValue','').textbox('setText', '')//.textbox('textbox').focus();
                                 $(this).css('visibility', 'hidden');
                                 // console.log("After clear:" + $(e.data.target).textbox('getText') + "-" + $(e.data.target).textbox('getValue'))
 
@@ -156,7 +156,7 @@
                         </a>
                     </td>
                     <td>
-                        <a class="win_btn" href="#" id="close_btn" onclick="closewin()">
+                        <a class="win_btn" href="#" id="close_btn" onclick="closewin(false)">
                             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 x="0px" y="0px" width="10px" height="10px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000"
                                 xml:space="preserve">
@@ -255,7 +255,7 @@
                                 出货单</span></div>
                         <table class="bill_customer_table">
                             <tr>
-                                <td>客户名称：<input id="new_order_customer_name"  class="easyui-textbox customer_name" />
+                                <td>客户名称：<input id="new_order_customer_name"  class="easyui-textbox customer_name" /><input type="hidden" id="new_order_customer_id" />
                                 </td>
                                 <td>送货日期：<input id="new_order_sale_date" class="easyui-datebox sale_date" data-options="editable:false, formatter:myDateFormatter"
                                         value="new Date()" labelPosition="top" />
@@ -286,6 +286,7 @@
                                 editable: false,
                                 cls:'product_choose_textbox',
                                 iconWidth: 22,
+                                required:true,
                                 icons: [{
                                     iconCls:'icon-select',
                                     handler: function(e){
@@ -295,10 +296,10 @@
                             }
                         }">品名规格
                                         </th>
-                                        <th data-options="field:'product_units', align:'center', halign:'center', width:80, editor:'textbox'">
+                                        <th data-options="field:'product_units', align:'center', halign:'center',required:true, width:80, editor:{type:'textbox', options:{required:true}}">
                                             单位
                                         </th>
-                                        <th data-options="field:'product_num', align:'center', halign:'center', width:100, editor:{type:'textbox', options:{onChange:onChangeNum}}">
+                                        <th data-options="field:'product_num', align:'center', halign:'center',  width:100, editor:{type:'textbox', options:{onChange:onChangeNum,required:true}}">
                                             数量
                                         </th>
                                         <th data-options="field:'product_price', align:'center', halign:'center', width:80, editor:{type:'numberbox',options:{precision:2, onChange:onChangePrice}}">
@@ -423,8 +424,7 @@
                     <div id="order_grid_toolbar" style="padding:2px 5px;">
                         <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="cancelOrder()">作废</a>
                         <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="printPreview()">打印</a>
-                        <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="destroyCustomer()">删除</a>
-                        <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="exportExcel(ORDER_GRID, '出货单列表.xls')">导出到excel</a>
+                        <a href="#" class="easyui-linkbutton" iconCls="icon-export" plain="true" onclick="exportExcel(ORDER_GRID, '出货单列表.xls')">导出XLS</a>
                         <span style="margin-left:20px" class="search_label">检索：</span>
                         <input type="text" id="order_search_text" class="search_input" onkeyup="onSearch(this, ORDER_GRID, doSearchOrder)">
                     </div>
@@ -473,8 +473,8 @@
                     <div id="customer_grid_toolbar" style="padding:2px 5px;">
                         <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newCustomer()">添加</a>
                         <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editCustomer()">编辑</a>
-                        <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="destroyCustomer()">删除</a>
-                        <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="exportExcel(CUSTOMER_GRID, '客户列表.xls')">导出到excel</a>
+                        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyCustomer()">删除</a>
+                        <a href="#" class="easyui-linkbutton" iconCls="icon-export" plain="true" onclick="exportExcel(CUSTOMER_GRID, '客户列表.xls')">导出XLS</a>
                         <span style="margin-left:20px" class="search_label">检索：</span>
                         <input type="text" id="customer_search_text" class="search_input" onkeyup="onSearch(this, CUSTOMER_GRID, doSearchCustomer)">
                     </div>
@@ -726,7 +726,7 @@
                     <div style="margin-top:20px">
                         <input id="company_logo" class="easyui-textbox" labelAlign="right" label="公司logo：" style="width:100%">
                     </div>
-                    <div style="margin-top:40px;">
+                    <div style="margin-top:40px; text-align:right;">
                         <a onclick="set_company()" class="easyui-linkbutton" style="width:100px">确定</a>
                     </div>
                 </form>
@@ -735,16 +735,16 @@
         </div>
 
         <!--用户设置密码 -->
-        <div id="dlg_for_setpassword" class="easyui-dialog" style="width:500px" data-options="title:'修改用户密码', closed:true, modal:true, border:'thin', buttons:'#dlg-buttons_for_setpassword', onOpen:function(){$('#fm_for_setpassword').form('clear')}">
-            <form id="fm_for_setpassword" method="post" novalidate style="margin:0;padding:20px 50px">
-                <div style="margin-top:20px">
-                    <input id="old_pass" class="easyui-passwordbox" label="旧&emsp;密&emsp;码:" labelAlign="left" style="width:100%">
+        <div id="dlg_for_setpassword" class="easyui-dialog" style="width:400px" data-options="title:'修改用户密码', closed:true, modal:true, border:'thin', buttons:'#dlg-buttons_for_setpassword', onOpen:function(){$('#fm_for_setpassword').form('clear')}">
+            <form id="fm_for_setpassword" method="post" novalidate style="margin:0; padding:20px 50px">
+                <div style="margin-top:0px">
+                    <input id="old_pass" class="easyui-passwordbox" showEye="false" label="旧&emsp;密&emsp;码:" labelAlign="left" style="width:100%">
                 </div>
                 <div style="margin-top:20px">
-                    <input id="new_pass" class="easyui-passwordbox" label="新&emsp;密&emsp;码:" labelAlign="left" style="width:100%">
+                    <input id="new_pass" class="easyui-passwordbox" showEye="false" label="新&emsp;密&emsp;码:" labelAlign="left" style="width:100%">
                 </div>
                 <div style="margin-top:20px">
-                    <input id="new_pass_again" class="easyui-passwordbox" label="重复新密码:" labelAlign="left" style="width:100%">
+                    <input id="new_pass_again" class="easyui-passwordbox" showEye="false" label="重复新密码:" labelAlign="left" style="width:100%">
                 </div>
             </form>
             <div id="dlg-buttons_for_setpassword">
@@ -802,7 +802,8 @@
 
         <!--<div id="account_info" >-->
         <div id="account_info" class="easyui-menu" data-options="hideOnUnhover:false,onClick:menuHandler" style="width:120px;">
-            <div name="account_info">账号信息</div>
+            <div name="account_info">沈锦（管理员）
+            </div>
             <div name="set_password">密码修改</div>
             <div name="logout">注销登录</div>
             <div class="menu-sep"></div>
@@ -848,7 +849,8 @@
             function menuHandler(item) {
                 switch (item.name) {
                     case 'account_info':
-                        alert(localStorage.getItem('user'))
+                        let u = JSON.parse(localStorage.getItem('user'))
+                        $.messager.alert("用户信息", '用户：' + u.name + "<br/>角色：" +u.role, 'info')
                         break;
                     case 'logout':
                         logout();
@@ -856,8 +858,8 @@
                     case 'about':
                         // show about
                         let win_about = new BrowserWindow({
-                            width: 400,
-                            height: 300,
+                            width:  300,
+                            height: 200,
                             modal: true,
                             show: false,
                             maximizable: false,
@@ -873,19 +875,19 @@
                             win_about = null
                         })
                         win_about.once('ready-to-show', () => {
-                            win_about.show()
                             moveChildWindowToParentCenter(win_about, win)
+                            win_about.show()
 
                         })
                         break;
                     case 'exit':
                         //
-                        closewin()
+                        closewin(true)
                         break;
                     case 'set_password':
                         // 改弹出框'
+                        $('#fm_for_setpassword').form('clear')
                         $('#dlg_for_setpassword').dialog('open')
-                        //show_panel('密码修改', 'password_set_panel')
                         break;
                     default:
                         ;
@@ -1031,12 +1033,17 @@
                 win.minimize()
             }
 
-            function closewin() {
-                $.messager.confirm('确定', '确定要关闭应用程序吗?', function (r) {
-                    if (r) {
-                        win.close()
-                    }
-                });
+            function closewin(slience) {
+                if (slience) {
+                    win.close()
+
+                } else {
+                    $.messager.confirm('确定', '确定要关闭应用程序吗?', function (r) {
+                        if (r) {
+                            win.close()
+                        }
+                    });
+                }
             }
 
 

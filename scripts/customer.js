@@ -297,6 +297,9 @@ function chooseCustomer(callback) {
 
         } else if (customer_choose_dlg_type == 'new_order') {
             $('#new_order_customer_name').textbox("setValue", row._id).textbox("setText", row.name)
+
+            //$('#new_order_customer_id').val(row._id);
+
             $('#new_order_customer_name').textbox('textbox').keyup()
 
             // fill new order
