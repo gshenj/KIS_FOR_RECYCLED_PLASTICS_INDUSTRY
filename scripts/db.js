@@ -83,7 +83,13 @@ function loadSysRoles() {
     })
 }
 
-
+function loadConfig(callback) {
+    ConfigModel.findOne({}, function (err, doc) {
+        if (doc) {
+            callback(doc)
+        }
+    })
+}
 
 /*module.exports = mongoose;
 module.exports.loadSysRoles = loadSysRoles

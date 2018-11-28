@@ -17,12 +17,9 @@
         if (window.module)
             module = window.module;
 
-
         const KIS_NAME = 'KIS系统'
         const KIS_VERSION = 'v1.0'
-        let DOCUMENT_TITLE_PREFIX = '';
-        let SYS_CONFIG = null;
-
+        let SYS_CONFIG = {}
     </script>
 
 
@@ -887,7 +884,7 @@
                     case 'set_password':
                         // 改弹出框'
                         $('#fm_for_setpassword').form('clear')
-                        $('#dlg_for_setpassword').dialog('open')
+                        $('#dlg_for_setpassword').dialog('open').dialog('center')
                         break;
                     default:
                         ;
@@ -926,14 +923,9 @@
 
 
             $(function () {
-                loadConfig(function (config) {
-                    // localStorage只支持String值
-                    console.log("load configs")
-                    DOCUMENT_TITLE_PREFIX = config.company_name + KIS_NAME + " " + KIS_VERSION
-                    $('#main_title').html(DOCUMENT_TITLE_PREFIX)
-                    SYS_CONFIG = config;
-                })
 
+                SYS_CONFIG = JSON.parse(localStorage.getItem('sys_config'))
+                $('#main_title').html(SYS_CONFIG.company_name + KIS_NAME + " " + KIS_VERSION)
 
                 $('#new_order_sale_date').datebox().datebox('calendar').calendar({
                     validator: function (date) {
@@ -981,13 +973,7 @@
 
 
 
-            function loadConfig(callback) {
-                ConfigModel.findOne({}, function (err, doc) {
-                    if (doc) {
-                        callback(doc)
-                    }
-                })
-            }
+
 
             function logout() {
                 ipcRenderer.sendSync('logout')
@@ -1008,24 +994,15 @@
 
                     $('#to_unmax').hide();
                     $('#to_max').show();
-                    console.log('unmax')
+                    //console.log('unmax')
                     win.unmaximize()
-                    //win.hide()
-                    //win.show()
-                    // win.setIgnoreMouseEvents(false)
-                    // $('#to_max_a').removeClass('win_btn')
-                    // $('#to_max_a').addClass('win_btn')
 
-                    //$('#to_max_img').attr('src', '../images/to_max_SFont.CN.svg')
-                    //$('').
                 } else {
 
                     $('#to_max').hide();
                     $('#to_unmax').show();
-                    console.log('max')
+                    //console.log('max')
                     win.maximize()
-                    //$('#to_max_img').attr('src', '../images/to_unmax_SFont.CN.svg')
-
                 }
             }
 

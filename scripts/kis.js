@@ -19,15 +19,17 @@ function hide_all_panel() {
 
 function set_tool_button_status(click_src) {
     $('.tool_button').linkbutton('enable')
-   //
-   // console.log(click_src)
 
     if (click_src) {
         $(click_src).linkbutton('disable')
-        $('#main_title').html(DOCUMENT_TITLE_PREFIX + '　─　' + $(click_src).linkbutton('options').text + '')
+        updateTitle($(click_src).linkbutton('options').text + '')
     }
 }
 
+
+function updateTitle(menu) {
+    $('#main_title').html(SYS_CONFIG.company_name + KIS_NAME + " " + KIS_VERSION + '　─　' + menu)
+}
 
 
 ORDER_GRID = null;
@@ -231,7 +233,7 @@ function loadDriverGridByParams(params){
                 {title: "身份证号", field: 'id_No',width:140},
                 {title: "行驶证号", field: 'driving_license_No',width:140},
                 {title: "联系电话", field: 'phone', width:100},
-                {title: "家庭住址", field: "address",width:250}
+                {title: "联系地址", field: "address",width:250}
             ]]
         })
     }

@@ -77,6 +77,7 @@ function set_company() {
 
             if (!err) {
                 localStorage.setItem("sys_config", JSON.stringify(doc))
+                SYS_CONFIG = doc
                 show_msg("操作成功：信息保存成功！")
             }
         })

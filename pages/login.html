@@ -121,6 +121,18 @@
         .combo-arrow:hover {
             background-color: #fff;
         }
+
+        .icon-loading{
+            background:url('../scripts/jquery-easyui/themes/default/images/loading.gif') no-repeat left center;
+        }
+        .login_loading {
+            padding:10px 20px;
+            height:30px;
+            line-height:30px;
+            cursor:wait;
+            text-align: left;
+            background:#f3f8ff;opacity:1;filter:alpha(opacity=80);
+        }
     </style>
 </head>
 
@@ -239,6 +251,10 @@
         </div>
     </div>
 
+    <div id="win" class="easyui-window" data-options=" title:'', maximizable:false, minimizable:false, closable:false, collapsible:false, border:false, closed:true, modal:true,bodyCls:'login_loading'">
+        <div class="icon-loading" style="padding-left:24px; ">正在登录...</div>
+    </div>
+
     <script>
         function changeUser(newvalue, oldvalue) {
             let data = $('#username').combobox('getData')
@@ -306,7 +322,9 @@
                 return false
             }
 
-            $('#login_btn').linkbutton('disable').linkbutton({'text':'登录中...',iconCls:'icon-loading'})
+            //$('#login_btn').linkbutton('disable').linkbutton({'text':'登录中...',iconCls:'icon-loading'})
+            // $('#win').html('正在登录...')
+            $('#win').window('open')
 
             let user = $('#username').combobox('getValue')
             let password = $('#password').passwordbox('getValue')
@@ -324,10 +342,18 @@
                     console.log('set local_users ' + local_users)
                     localStorage.setItem("local_users", JSON.stringify(local_users))
 
-                    
-                    ipcRenderer.sendSync('login-success', null) // prints "pong"
+                    loadConfig(function (config) {
+                        // localStorage只支持String值
+                        console.log("load configs")
+                        localStorage.setItem("sys_config", JSON.stringify(config))
+
+                        ipcRenderer.sendSync('login-success', null) // prints "pong"
+                    })
 
                 } else {
+
+
+                    $('#win').window('close')
                     // show login error.
                     $('#login_form_panel').panel('close')
                     $('#setting_btn').css("visibility", "hidden")
@@ -355,7 +381,7 @@
         function returnToLogin() {
             $('#login_failed_panel').panel('close')
             $('#login_form_panel').panel('open')
-            $('#login_btn').linkbutton({'text':'登录', iconCls:'icon-ok'}).linkbutton('enable')
+          //  $('#login_btn').linkbutton({'text':'登录', iconCls:'icon-ok'}).linkbutton('enable')
 
             $('#setting_btn').css("visibility", "visible")
         }

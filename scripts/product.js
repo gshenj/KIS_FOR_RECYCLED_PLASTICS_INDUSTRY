@@ -185,7 +185,7 @@ function chooseProduct(){
     if (row) {
         let selectedRow = $('#order_products_grid').datagrid('getSelected');
         if (selectedRow) {
-            console.log(JSON.stringify(selectedRow))
+            //console.log(JSON.stringify(selectedRow))
             let selectedIndex = $('#order_products_grid').datagrid('getRowIndex', selectedRow);
             let ed = $('#order_products_grid').datagrid('getEditor', {index:selectedIndex, field:'product_name'})
             $(ed.target).textbox('setValue', row.name + '  (' + row.model + ')');
