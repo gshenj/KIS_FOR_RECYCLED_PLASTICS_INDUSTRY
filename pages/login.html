@@ -256,6 +256,28 @@
     </div>
 
     <script>
+
+        var no;
+        const { ipcRenderer } = require('electron')
+        const win = require('electron').remote.getCurrentWindow();
+
+        win.on('show', () => {
+            loadLocalStorageUsers()
+        })
+
+        $.parser.onComplete = function () {
+            if (no) clearTimeout(no);
+            no = setTimeout(completeLoading, 0);
+        }
+
+        $(document).ready(function(){
+            $('#password').textbox('textbox').bind('keydown', function(e){
+                if (e.keyCode == 13){	// when press ENTER key, accept the inputed value.
+                  login()
+                }
+            });
+        })
+
         function changeUser(newvalue, oldvalue) {
             let data = $('#username').combobox('getData')
             let find = false;
@@ -273,14 +295,6 @@
         }
 
 
-        var no;
-        const { ipcRenderer } = require('electron')
-        const win = require('electron').remote.getCurrentWindow();
-
-        win.on('show', () => {
-
-            loadLocalStorageUsers()
-        })
 
 
         function closewin() {
@@ -303,10 +317,7 @@
         }
 
 
-        $.parser.onComplete = function () {
-            if (no) clearTimeout(no);
-            no = setTimeout(completeLoading, 0);
-        }
+
 
         function completeLoading() {
             win.show()

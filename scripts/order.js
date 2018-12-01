@@ -409,11 +409,50 @@ function doPrint() {
 }
 
 
+
+$.extend($.fn.datagrid.methods, {
+    keyCtr : function (jq) {
+        return jq.each(function () {
+            var grid = $(this);
+            grid.datagrid('getPanel').panel('panel').attr('tabindex', 1).bind('keydown', function (e) {
+                switch (e.keyCode) {
+                    case 38: // up
+                        var selected = grid.datagrid('getSelected');
+
+                        if (selected) {
+                            var index = grid.datagrid('getRowIndex', selected);
+                            if (index > 0) {
+                                onClickCell(index - 1, 'product_name', null)
+                            }
+                        }
+                        break;
+                    case 40: // down
+                        var selected = grid.datagrid('getSelected');
+                        var rows = grid.datagrid('getRows')
+                        if (selected) {
+                            var index = grid.datagrid('getRowIndex', selected);
+                            if (index < rows.length - 1) {
+                                onClickCell(index + 1, 'product_name', null)
+                            } else {
+                                addOrderRow()
+                            }
+                        }
+                        break;
+                }
+            });
+        });
+    }
+});
+
+
+
 function onLoadSuccess() {
     let b = '#order_products_grid_wrapper'
     $(b).bind('click', function () {
         accept()
     })
+
+    $("#order_products_grid").datagrid("keyCtr");
 }
 
 

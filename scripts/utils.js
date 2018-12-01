@@ -113,6 +113,10 @@ Date.prototype.dtFormat = function (fmt) { //author: meizz
 }
 
 
+
+
+
+
 function getCurrentSeq(seq_name, callback) {
     SequenceModel.findOne({ "seq_name": seq_name }, function (err, doc) {
         if (doc) {
