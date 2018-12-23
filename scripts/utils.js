@@ -57,8 +57,7 @@ function load_company() {
 const {dialog} = require('electron').remote
 function loadLogo(src){
     dialog.showOpenDialog({filters: [{name: 'Images/png', extensions: ['png']}], properties: ['openFile']}, function(filePaths){
-        //console.log(filePaths)
-        if (filePaths.length > 0) {
+        if (filePaths && filePaths.length > 0) {
             let base64_src = "data:image/png;base64,"+ base64_encode(filePaths[0])
             $(src).attr('src', base64_src)
         }

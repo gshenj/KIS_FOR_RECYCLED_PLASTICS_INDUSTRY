@@ -127,7 +127,6 @@ function onOpenProductManagePanel() {
  * 打开系统设置页面触发函数
  */
 function onOpenSysConfigPanel(){
-
     // can load form localstorge
     // load configs
     ConfigModel.findOne({}, function(err,doc){
@@ -137,6 +136,8 @@ function onOpenSysConfigPanel(){
         $('#company_fax').textbox('setValue', doc.company_fax)
         $('#company_address').textbox('setValue', doc.company_address)
         $('#company_logo').attr('src', doc.company_logo)
+
+      //  $('#system_info_panel').panel('open')
     })
 }
 

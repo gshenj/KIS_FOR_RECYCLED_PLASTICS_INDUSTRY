@@ -30,9 +30,9 @@ let order_grid_columns = [[
     {field: 'delivery_address', title: '送货地址', width: 220, align: 'center'},
     {field: 'order_maker', title: '制单人', width: 60, align: 'center'},
     {field: 'order_driver', title: '送货司机', width: 60, align: 'center'},
-    {field: 'products_num', title: '产品总数量', width: 80, align: 'right'},
-    {field: 'products_sum', title: '产品总金额', width: 80, align: 'right'},
-    {field: 'create_date', title: '录入时间', width: 140, align: 'right'}
+    {field: 'products_num', title: '产品总数量', width: 80, align: 'right',halign:'center'},
+    {field: 'products_sum', title: '产品总金额', width: 80, align: 'right',halign:'center'},
+    {field: 'create_date', title: '录入时间', width: 140, align: 'right',halign:'center'}
 ]]
 
 
@@ -168,7 +168,7 @@ function cancelOrder(callback) {
         return false;
     }
 
-    $.messager.confirm('', '确定作废选中的出库单?', function (r) {
+    $.messager.confirm('作废出库单', '确定作废单号'+ row.order_num + '的出库单?', function (r) {
         if (r) {
             OrderModel.findByIdAndUpdate(row._id, {cancelled: true, cancel_by: ''}, function (err, doc) {
                 //callback(doc);

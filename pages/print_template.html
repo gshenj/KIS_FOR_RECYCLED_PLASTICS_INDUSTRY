@@ -48,6 +48,7 @@
             font-size: 18pt;
             color: #000;
             /*font-weight: bold;*/
+            -webkit-app-region: drag;
         }
 
         .bill_table {
@@ -261,12 +262,12 @@
     </table>
 </div>
 
-<div class="noprint" style="padding:0px 0px; border:0px solid red; margin:10px auto 10px; text-align:center;">
+<div class="noprint" style="padding:0px 0px; border:0px solid red; margin:10px auto 10px; text-align:center;-webkit-app-region: drag;">
     <div id="order_input_toolbar"
          style="  margin:0px auto 1px;  padding:0px 0px; border:0px solid #bbb; ">
-        <a class="easyui-linkbutton" style="" onclick="print_order()"
+        <a class="easyui-linkbutton" style="-webkit-app-region: no-drag;" onclick="print_order()"
            data-options="iconCls:'icon-print',iconAlign:'left'">打印</a>
-        <a class="easyui-linkbutton" style="margin-left:100px;" onclick="closeWin()"
+        <a class="easyui-linkbutton" style="margin-left:100px;-webkit-app-region: no-drag;" onclick="closeWin()"
            data-options="iconCls:'icon-undo',iconAlign:'left'">关闭</a>
     </div>
 </div>

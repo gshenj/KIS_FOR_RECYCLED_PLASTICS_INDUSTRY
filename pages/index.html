@@ -702,9 +702,9 @@
 
 
         <!--系统设置-->
-        <div id="sys_config_panel" class="easyui-panel opt_panel" data-options="fit:true, closed:true, border:true, onOpen:onOpenSysConfigPanel">
-            <div class="easyui-panel" data-options="title:'系统设置', width:600, style:{marginLeft:'auto', marginRight:'auto', marginTop:20}">
-                <form id="fm_for_system" method="post" novalidate style="margin:0;padding:20px 50px">
+        <div id="sys_config_panel" class="easyui-panel opt_panel" data-options="fit:true, closed:true, border:true, onBeforeOpen:onOpenSysConfigPanel">
+            <div id="system_info_panel" class="easyui-panel" data-options="title:'系统设置', width:600, style:{marginLeft:'auto', marginRight:'auto', marginTop:20}">
+                <form id="fm_for_system" method="post" novalidate style="margin:0;padding:20px 50px;">
                     <div style="margin-top:20px">
                         <input id="company_name" class="easyui-textbox" required="true" label="公司名称：" labelAlign="right"
                             style="width:100%">
@@ -722,7 +722,7 @@
                     <div style="margin-top:20px">
                         <table>
                             <tr><td style="width:68px; padding-left:16px">公司Logo：</td>
-                            <td><img id="company_logo" src="" width="64" height="64" onclick="loadLogo(this)" /></td></tr>
+                            <td><img id="company_logo" style="width:64px; height:64px; border:1px solid #444; cursor: pointer" onclick="loadLogo(this)" /></td></tr>
                         </table>
                     </div>
                     <div style="margin-top:40px; text-align:right;">
@@ -1072,13 +1072,14 @@
                 localStorage.setItem('order', JSON.stringify(order));
                 let win_print = new BrowserWindow({
                     width: 800,
-                    height: 570,
+                    height: 540,
                     modal: true,
                     show: false,
                     maximizable: false,
                     minimizable: false,
                     resizable: false,
                     parent: win,
+                    frame:false,
                     title: '打印',
                     autoHideMenuBar: true
                 })
