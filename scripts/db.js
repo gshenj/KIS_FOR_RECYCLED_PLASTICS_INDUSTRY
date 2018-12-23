@@ -12,7 +12,7 @@ const UNITS = [{ units: "千克" }, { units: "公斤" }, { units: "包" }]
 let cartypeSchema = new Schema({ name: String })
 let unitSchema = new Schema({ unit: String })
 let sequenceSchema = new Schema({ seq_name: String, value: Number })
-let configSchema = new Schema({ company_name: String, company_address: String, company_phone: String, company_fax: String, company_logo: Buffer, db_version: String })
+let configSchema = new Schema({ company_name: String, company_address: String, company_phone: String, company_fax: String, company_logo: String, db_version: String })
 let roleSchema = new Schema({ role: String })
 let provinceSchema = new Schema({ province: String, cities: [String] })
 let regionSchema = new Schema({ region: String, provinces: [provinceSchema] })
@@ -33,6 +33,7 @@ let _order = {
     order_num: String,
     create_date: String,
     create_user: String,
+    created_by: {type:Schema.Types.ObjectId, ref:'user'},
     customer_id: String,
     customer_name: String,
     customer_principal: String,

@@ -1,3 +1,11 @@
+const ROLE_ADMIN = '管理员'
+const ROLE_OPERATOR = '操作员'
+
+function isAdmin(role) {
+    return (role == ROLE_ADMIN);
+}
+
+
 function onShowDriverPanel(){
     DriverModel.find({}).populate('cartype').exec(function(err, docs) {
         //console.log(JSON.stringify(docs))
@@ -128,6 +136,7 @@ function onOpenSysConfigPanel(){
         $('#company_phone').textbox('setValue', doc.company_phone)
         $('#company_fax').textbox('setValue', doc.company_fax)
         $('#company_address').textbox('setValue', doc.company_address)
+        $('#company_logo').attr('src', doc.company_logo)
     })
 }
 

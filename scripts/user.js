@@ -131,8 +131,6 @@ function saveUser(){
     let role = $('#role_combobox').combobox('getText')
     let disabled = $('#disabled_checkbox').checkbox('options').checked
 
-
-
     let user = {name: name, role: role, disabled:disabled}
     console.log("New user is: "+JSON.stringify(user))
     if (url == 'new') {
@@ -255,4 +253,15 @@ function set_password(){
         })
     }
 
+}
+
+function loadRolesData() {
+    RoleModel.find({}, function(err,docs) {
+        $('#role_combobox').combobox('loadData', docs)
+    })
+}
+
+
+function getCurrentUser () {
+    return JSON.parse(localStorage.getItem('user'))
 }

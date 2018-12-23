@@ -195,7 +195,7 @@
         <div style="height:110px; background-image:url('../images/login_bg.jpg'); line-height:110px; font-size:38px; color:#fff; -webkit-user-select: none;  -webkit-app-region: drag;">
             KIS销售管理系统
         </div>
-        <table style="width:300px; margin:10px auto 0px ; border:0px solid red; ">
+        <table id="login_table" style="width:300px; margin:10px auto 0px ; border:0px solid red; ">
             <tr>
                 <td rowspan="2" style="width:64px; padding:5px 10px 0px 0px; border:0px solid red; -webkit-user-select: none;">
                     <div style="width:64px; height:64px;-webkit-user-select: none; background-image:url('../images/login.png')"></div>
@@ -224,6 +224,13 @@
                 </td>
             </tr>
         </table>
+
+        <table id="login_waiting_table" style="width:300px; height:100px; margin:10px auto 0px; border:0px solid red; display: none;">
+            <tr><td><span id="login_waiting_text" style="font-size:18px; color: #0088CC; letter-spacing: 2px">
+                <img src="../scripts/jquery-easyui/themes/default/images/loading.gif" /> 登录中...
+            </span></td></tr>
+        </table>
+
     </div>
 
     <div id="login_setting_panel" class="easyui-panel" data-options="border:false, fit:true, closed:true" style="width:100%;padding:10px 60px; margin-top:0px; text-align: center">
@@ -335,7 +342,10 @@
 
             //$('#login_btn').linkbutton('disable').linkbutton({'text':'登录中...',iconCls:'icon-loading'})
             // $('#win').html('正在登录...')
-            $('#win').window('open')
+            //$('#win').window('open')
+
+            $('#login_table').hide()
+            $('#login_waiting_table').show()
 
             let user = $('#username').combobox('getValue')
             let password = $('#password').passwordbox('getValue')
@@ -364,7 +374,10 @@
                 } else {
 
 
-                    $('#win').window('close')
+                    //$('#win').window('close')
+                    $('#login_waiting_table').hide()
+                    $('#login_table').show()
+
                     // show login error.
                     $('#login_form_panel').panel('close')
                     $('#setting_btn').css("visibility", "hidden")

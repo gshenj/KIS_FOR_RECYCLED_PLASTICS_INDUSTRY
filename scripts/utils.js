@@ -54,12 +54,24 @@ function load_company() {
     })
 }
 
+const {dialog} = require('electron').remote
+function loadLogo(src){
+    dialog.showOpenDialog({filters: [{name: 'Images/png', extensions: ['png']}], properties: ['openFile']}, function(filePaths){
+        //console.log(filePaths)
+        if (filePaths.length > 0) {
+            let base64_src = "data:image/png;base64,"+ base64_encode(filePaths[0])
+            $(src).attr('src', base64_src)
+        }
+    })
+}
+
+
 function set_company() {
     let company_name = $('#company_name').textbox('getValue')
     let company_phone = $('#company_phone').textbox('getValue')
     let company_fax = $('#company_fax').textbox('getValue')
     let company_address = $('#company_address').textbox('getValue')
-    let company_logo_path = $('#company_logo').textbox('getValue')
+    let company_logo = $('#company_logo').attr('src')
     ConfigModel.findOne({}, function (err, doc) {
         let update = true
         if (!doc) {
@@ -71,6 +83,8 @@ function set_company() {
         doc.company_phone = company_phone
         doc.company_fax = company_fax
         doc.company_address = company_address
+        doc.company_logo = company_logo
+
 
         doc.save(function (err) {
             handleError(err)
@@ -164,6 +178,15 @@ function moveChildWindowToParentCenter(child, parent) {
     //let childPosition = [(position[0] + size[0])/2, (position[1] + size[1])/2 ]
 }
 
+
+
+let fs = require('fs');
+function base64_encode(file) {
+    // read binary data
+    let bitmap = fs.readFileSync(file);
+    // convert binary data to base64 encoded string
+    return new Buffer(bitmap).toString('base64');
+}
 
 
 

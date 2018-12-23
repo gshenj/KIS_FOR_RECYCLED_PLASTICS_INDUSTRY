@@ -52,7 +52,16 @@ body {
 }
 
 .no_border {
-    border-color: #000
+    border-color: #000;
+    border:none;
+}
+
+.center_align {
+    text-align:center;
+}
+
+.right_align {
+    text-align:right;
 }
 
 input.search_input {
@@ -72,18 +81,21 @@ input.search_input {
 .product_detail_table {
     width: 700px;
     border-collapse: collapse;
-    border: 1px dashed steelblue;
+    border: 0px dashed steelblue;
     margin: 0px 0px 0px 0px;
 }
 
 .product_detail_table th {
-
+    padding: 6px 4px;
+    font-weight: bold;
+    text-align:center;
+    border: 1px solid steelblue;
 }
 
-.product_detail_table th, .product_detail_table td {
+.product_detail_table td {
     padding: 6px 4px;
     font-weight: normal;
-    border: 1px dashed steelblue;
+    border: 1px solid steelblue;
 }
 
 .tabs {
@@ -341,4 +353,8 @@ div.toolbar1 {
 
 .icon-export{
     background:url('../images/export_x16.png') no-repeat center center;
+}
+
+.icon-cancel_order{
+    background:url('../images/cancel_x16.png') no-repeat center center;
 }

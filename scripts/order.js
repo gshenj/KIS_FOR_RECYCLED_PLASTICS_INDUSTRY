@@ -19,32 +19,34 @@ let ORDER_GRID = null;
 let order_grid_columns = [[
     {field: 'order_num', title: '出库单号', width: 60, align: 'center'},
     {field: 'order_date', title: '出库日期', width: 80, align: 'center'},
-    {field: 'cancelled', title: '单据状态', width: 60, align: 'center',formatter: function(value,row,index){
-            return row.cancelled? '<span style="color:red">作废</span>' : '正常'
-        }},
+    {
+        field: 'cancelled', title: '单据状态', width: 60, align: 'center', formatter: function (value, row, index) {
+            return row.cancelled ? '<span style="color:red">作废</span>' : '正常'
+        }
+    },
     {field: 'customer_name', title: '客户名称', width: 220, align: 'center'},
     {field: 'customer_principal', title: '联系人', width: 60, align: 'center'},
     {field: 'contact_number', title: '联系电话', width: 80, align: 'center'},
     {field: 'delivery_address', title: '送货地址', width: 220, align: 'center'},
     {field: 'order_maker', title: '制单人', width: 60, align: 'center'},
     {field: 'order_driver', title: '送货司机', width: 60, align: 'center'},
-    {field: 'products_num', title: '产品总数量', width: 80, align: 'center'},
-    {field: 'products_sum', title: '产品总金额', width: 80, align: 'center'},
-    {field: 'create_date', title: '录入时间', width: 140, align: 'center'}
+    {field: 'products_num', title: '产品总数量', width: 80, align: 'right'},
+    {field: 'products_sum', title: '产品总金额', width: 80, align: 'right'},
+    {field: 'create_date', title: '录入时间', width: 140, align: 'right'}
 ]]
 
 
 function productDetailFormatter(rowIndex, rowData) {
     let products = rowData.products;
     let len = products.length
-    let html = '<div style="width:100%; background-color:#fff"><table class="product_detail_table">'
-    html += '<tr><th style="font-size:24px; vertical-align: top;" rowspan="' + (len + 1) + '">产品信息</th><th>产品名称</th><th>单位</th><th>数量</th><th>价格</th><th>金额</th><th>备注</th></tr>'
+    let html = '<div style="width:100%; background-color:#fff; padding:5px 0px;"><table class="product_detail_table">'
+    html += '<tr><th  style="font-size:24px; border:none; vertical-align: top;" rowspan="' + (len + 1) + '">产品信息</th><th>产品名称</th><th>单位</th><th>数量</th><th>价格</th><th>金额</th><th>备注</th></tr>'
     for (let i = 0; i < products.length; i++) {
-        html += '<tr><td>' + products[i].product_name + '</td><td>'
+        html += '<tr><td>' + products[i].product_name + '</td><td class="center_align">'
             //+products[i].product_model+'</td><td>'
-            + products[i].product_units + '</td><td>'
-            + products[i].product_num + '</td><td>'
-            + products[i].product_price + '</td><td>'
+            + products[i].product_units + '</td><td class="right_align">'
+            + products[i].product_num + '</td><td class="right_align">'
+            + products[i].product_price + '</td><td class="right_align">'
             + products[i].product_sum + '</td><td>'
             + products[i].product_memo + '</td></tr>'
     }
@@ -60,7 +62,7 @@ function loadOrderGrid() {
             fit: true,
             singleSelect: true,
             border: false,
-            width: 800,
+            width: 1400,
             showFilterBar: false,
             rownumbers: true,
             toolbar: '#order_grid_toolbar',
@@ -96,7 +98,7 @@ function findOrders(callback) {
     // }
     let customer_name = $.trim($('#customer_choose_for_order_list').textbox('getText'))
     if (customer_name) {
-        params.customer_name = {$regex:new RegExp(customer_name)}
+        params.customer_name = {$regex: new RegExp(customer_name)}
     }
 
     // if (params.customer_id && params.customer_name) {
@@ -109,8 +111,8 @@ function findOrders(callback) {
     }
 
     let order_driver = $.trim($('#order_dirver_searchbox').textbox('getValue'))
-    if(order_driver) {
-        params.order_driver = {$regex:new RegExp(order_driver)}
+    if (order_driver) {
+        params.order_driver = {$regex: new RegExp(order_driver)}
     }
 
     let orderState = $('#order_state').combobox('getValue')
@@ -119,8 +121,9 @@ function findOrders(callback) {
         params.cancelled = orderState
     }
 
-    console.log("Find orders ->" +JSON.stringify(params))
-    OrderModel.find(params).sort({'order_num': -1}).exec(function (err, docs) {
+    console.log("Find orders ->" + JSON.stringify(params))
+    OrderModel.find(params).populate('created_by').sort({'order_num': -1}).exec(function (err, docs) {
+        //console.log(docs)
         callback(docs)
     })
 
@@ -148,16 +151,32 @@ function doSearchOrder(input, datagrid) {
 function cancelOrder(callback) {
 
     let row = ORDER_GRID.datagrid('getSelected')
-    if(row && !row.cancelled) {
-        $.messager.confirm('', '确定作废选中的出库单?', function (r) {
-            if (r) {
-                OrderModel.findByIdAndUpdate(row._id, {cancelled: true, cancel_by: ''}, function (err, doc) {
-                    //callback(doc);
-                    loadOrderGrid()
-                })
-            }
-        })
+    if (!row) {
+        $.messager.alert('操作失败', '请选择单据')
+        return;
     }
+    if (row.cancelled) {
+        $.messager.alert('操作失败', '单据已经作废，无法重复操作')
+        return;
+    }
+
+    // 用户只能作废自己开的单据，管理员可以作废所有人开的单据
+    let user = getCurrentUser()
+    if (user.role == ROLE_OPERATOR && (row.created_by) && row.created_by._id != user._id) {
+        console.log('Not allow to cancel order created by other users.')
+        $.messager.alert('操作失败', '无法作废其他账号生成的单据')
+        return false;
+    }
+
+    $.messager.confirm('', '确定作废选中的出库单?', function (r) {
+        if (r) {
+            OrderModel.findByIdAndUpdate(row._id, {cancelled: true, cancel_by: ''}, function (err, doc) {
+                //callback(doc);
+                loadOrderGrid()
+            })
+        }
+    })
+
 
 }
 
@@ -181,7 +200,7 @@ function resetOrder() {
 
     //
     $('#new_order_sale_date').datebox('setValue', myDateFormatter(new Date()))
-    
+
     //
     resetOrderProductGrid(false)
 }
@@ -232,7 +251,7 @@ function addOrderRow() {
                 } else {
                     // 否则在选中行之前插入一行
                     console.log("selectedINdex" + selectedIndex)
-                    $('#order_products_grid').datagrid("insertRow", { index: selectedIndex, row: {} })
+                    $('#order_products_grid').datagrid("insertRow", {index: selectedIndex, row: {}})
                     editIndex = selectedIndex;
                 }
 
@@ -273,7 +292,7 @@ function onClickCell(index, field, value) {
         if (endEditing()) {
             $('#order_products_grid').datagrid('selectRow', index)
                 .datagrid('beginEdit', index);
-            var ed = $('#order_products_grid').datagrid('getEditor', { index: index, field: field });
+            var ed = $('#order_products_grid').datagrid('getEditor', {index: index, field: field});
             if (ed) {
                 ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
             }
@@ -342,7 +361,7 @@ function doPrint() {
 
 
     let products = $('#order_products_grid').datagrid('getRows')
-    if(products.length <= 0) {
+    if (products.length <= 0) {
         console.log("没有输入产品信息！")
         return false;
     }
@@ -371,7 +390,9 @@ function doPrint() {
     let products_num = $('#products_num').html()
     let products_sum = $('#products_sum').html()
 
-    let create_user = JSON.parse(localStorage.getItem('user')).name
+    let user = getCurrentUser();
+    let create_user = user.name
+    let created_by = user._id
 
     let order_data = {
         order_num: 0,//order_num,
@@ -381,14 +402,15 @@ function doPrint() {
         contact_number: contact_number,
         delivery_address: delivery_address,
         order_date: order_date,
-        create_date: (new Date()).dtFormat("yyyy-MM-dd hh:mm:ss.S"),
+        create_date: (new Date()).dtFormat("yyyy-MM-dd hh:mm:ss"),
         order_maker: maker,
         order_driver: driver,
         cancelled: cancelled,
         products: products,
         products_num: products_num,
         products_sum: products_sum,
-        create_user:  create_user
+        create_user: create_user,
+        created_by: created_by
     }
 
     console.log(JSON.stringify(order_data))
@@ -409,6 +431,7 @@ function doPrint() {
 }
 
 
+/*
 
 $.extend($.fn.datagrid.methods, {
     keyCtr : function (jq) {
@@ -444,6 +467,7 @@ $.extend($.fn.datagrid.methods, {
     }
 });
 
+*/
 
 
 function onLoadSuccess() {
@@ -452,13 +476,13 @@ function onLoadSuccess() {
         accept()
     })
 
-    $("#order_products_grid").datagrid("keyCtr");
+    // $("#order_products_grid").datagrid("keyCtr");
 }
 
 
 function onChangePrice(newValue, oldValue) {
-    var ed = $('#order_products_grid').datagrid('getEditor', { index: editIndex, field: 'product_num' });
-    var ed1 = $('#order_products_grid').datagrid('getEditor', { index: editIndex, field: 'product_sum' });
+    var ed = $('#order_products_grid').datagrid('getEditor', {index: editIndex, field: 'product_num'});
+    var ed1 = $('#order_products_grid').datagrid('getEditor', {index: editIndex, field: 'product_sum'});
 
     if (ed) {
         let sumValue = ''
@@ -473,13 +497,13 @@ function onChangePrice(newValue, oldValue) {
         //$(ed1.target).numberbox('clear')
         $(ed1.target).numberbox('setValue', '')
     }
-       
+
 
 }
 
 function onChangeNum(newValue, oldValue) {
-    var ed = $('#order_products_grid').datagrid('getEditor', { index: editIndex, field: 'product_price' });
-    var ed1 = $('#order_products_grid').datagrid('getEditor', { index: editIndex, field: 'product_sum' });
+    var ed = $('#order_products_grid').datagrid('getEditor', {index: editIndex, field: 'product_price'});
+    var ed1 = $('#order_products_grid').datagrid('getEditor', {index: editIndex, field: 'product_sum'});
 
     if (ed) {
         let sumValue = ''
