@@ -522,3 +522,9 @@ function onChangeNum(newValue, oldValue) {
     }
 
 }
+
+
+
+function onOpenOrderReportPanel() {
+
+}

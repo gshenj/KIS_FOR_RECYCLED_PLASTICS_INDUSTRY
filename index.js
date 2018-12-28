@@ -3,7 +3,7 @@ let {app, BrowserWindow, ipcMain} = require('electron');  // Module to control a
 
 // Report crashes to our server.
 //require('crash-reporter').start();
-
+if(require('electron-squirrel-startup')) return;
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is GCed.
 let mainWindow = null;
@@ -39,6 +39,7 @@ function createMainWindow() {
     mainWindow.loadURL('file://' + __dirname + '/pages/index.html')
 
     mainWindow.once('ready-to-show', () => {
+        //mainWindow.show()
     })
 
     mainWindow.on('closed', () => {
@@ -50,12 +51,12 @@ function createLoginWindow() {
     loginWindow = new BrowserWindow({
         width: 410,
         height: 280,
-       // maximizable: false,
-       // resizable: false,
+        maximizable: false,
+        resizable: false,
         minimizable: false,
         frame:false,
-        show: false,
-        autoHideMenuBar: true
+        autoHideMenuBar: true,
+        show: false
     })
 
 
