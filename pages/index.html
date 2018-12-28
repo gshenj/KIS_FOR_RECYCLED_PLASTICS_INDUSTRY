@@ -431,10 +431,85 @@
             </div>
         </div>
 
-        <script>
 
+        <div id="orders_report_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; " data-options="fit:true, closed:true, border:false, onOpen:onOpenOrderReportPanel">
+            <div class="easyui-layout" data-options="fit:true">
+                <div data-options="region:'west'" style="width:280px; padding:4px 8px;">
+                    <table style="width:100%; border-collapse: collapse">
+                        <tr>
+                            <th COLSPAN="2">
+                                <h4>查询条件：</h4>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px 0 5px 0;">起始日期:
+                            <td style="width:200px;padding:10px 0 5px 0;"><input id="dd_begin" type="text" class="easyui-datebox"
+                                                                                 style="width:100%" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:5px 0 10px 0;">结束日期:
+                            <td style="width:200px;padding:5px 0 10px 0;"><input id="dd_end" type="text" style="width:100%"
+                                                                                 class="easyui-datebox" /></td>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px 0;">客户名称:</td>
+                            <td style="width:200px;padding:10px 0;">
+                                <input id="customer_choose_for_order_list" class="easyui-textbox" data-options="icons: [{
+                                    iconCls:'icon-select',
+                                    handler: function(e){
+                                        open_customer_choose_for_list_order();
+                                    }
+                                }] "
+                                       style="width:100%;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px 0;">制&ensp;单&ensp;人:</td>
+                            <td style="width:200px;padding:10px 0;">
+                                <input id="order_maker_searchbox" class="easyui-textbox" style="width:100%" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px 0;">送货司机:</td>
+                            <td style="width:200px;padding:10px 0;">
+                                <input id="order_dirver_searchbox" class="easyui-textbox" style="width:100%" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px 0;">单据状态:</td>
+                            <td style="width:200px;padding:10px 0;">
+                                <select id="order_state" class="easyui-combobox" data-options="panelHeight:100" style="width:100%;">
+                                    <option value="">全部</option>
+                                    <option value="false" selected>正常</option>
+                                    <option value="true">作废</option>
+                                </select>
+                            </td>
+                        </tr>
 
-        </script>
+                        <tr>
+                            <td style=""></td>
+                            <td style="text-align: center; padding:15px 0;"><a class="easyui-linkbutton" style="width:100%;"
+                                                                               data-options="iconCls:'icon-search',iconAlign:'left'" onclick="loadOrderGrid()">查询</a></td>
+                        </tr>
+
+                    </table>
+                </div>
+                <div data-options="region:'center'" style="padding:0px;">
+                    <table id="order_grid" class="easyui-datagrid " style="width:100%"></table>
+                    <div id="order_grid_toolbar" style="padding:2px 5px;">
+                        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel_order" plain="true" onclick="cancelOrder()">作废</a>
+                        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="printPreview()">打印</a>
+                        <a href="#" class="easyui-linkbutton" iconCls="icon-sum" plain="true" onclick="calcSum()">统计</a>
+                        <a href="#" class="easyui-linkbutton" iconCls="icon-export" plain="true" onclick="exportExcel(ORDER_GRID, '出货单列表.xls')">导出XLS</a>
+                        <span style="margin-left:20px" class="search_label">检索：</span>
+                        <input type="text" id="order_search_text" class="search_input" onkeyup="onSearch(this, ORDER_GRID, doSearchOrder)">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!--客户管理-->
         <div id="customer_manage_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; " data-options="fit:true, closed:true, border:false, onOpen:onOpenCustomerManagePanel">
@@ -882,6 +957,7 @@
 
 
             function menuHandler(item) {
+
                 switch (item.name) {
                     case 'account_info':
                         let u = JSON.parse(localStorage.getItem('user'))

@@ -4,12 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "packager": "electron-packager . electron-quick-start --overwrite --win=x32 --out  ./HelloWorldApp --arch=x64 --app-version=1.0.0 --electron-version=2.0.0"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^3.0.6",
+    "electron": "^2.0.16",
+    "electron-packager": "^13.0.1",
+    "electron-winstaller": "^2.7.0",
     "mongodb": "^3.1.8",
     "mongoose": "^5.3.7"
   }
