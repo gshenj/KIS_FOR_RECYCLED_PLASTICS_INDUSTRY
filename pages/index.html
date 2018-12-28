@@ -402,7 +402,7 @@
                             <td style="width:200px;padding:10px 0;">
                                 <select id="order_state" class="easyui-combobox" data-options="panelHeight:100" style="width:100%;">
                                     <option value="">全部</option>
-                                    <option value="false">正常</option>
+                                    <option value="false" selected>正常</option>
                                     <option value="true">作废</option>
                                 </select>
                             </td>
@@ -421,9 +421,11 @@
                     <div id="order_grid_toolbar" style="padding:2px 5px;">
                         <a href="#" class="easyui-linkbutton" iconCls="icon-cancel_order" plain="true" onclick="cancelOrder()">作废</a>
                         <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="printPreview()">打印</a>
+                        <a href="#" class="easyui-linkbutton" iconCls="icon-sum" plain="true" onclick="calcSum()">统计</a>
                         <a href="#" class="easyui-linkbutton" iconCls="icon-export" plain="true" onclick="exportExcel(ORDER_GRID, '出货单列表.xls')">导出XLS</a>
                         <span style="margin-left:20px" class="search_label">检索：</span>
                         <input type="text" id="order_search_text" class="search_input" onkeyup="onSearch(this, ORDER_GRID, doSearchOrder)">
+
                     </div>
                 </div>
             </div>
@@ -497,7 +499,7 @@
                             <div style="margin-bottom:10px">
 
                                 <input id="customer_principal" class="easyui-textbox" name="principal" labelAlign="right"
-                                    required="true" label="联&nbsp;&nbsp;系&nbsp;&nbsp;人：" style="width:100%">
+                                    required="true" label="联&ensp;系&ensp;人：" style="width:100%">
                             </div>
                             <div style="margin-bottom:10px">
 

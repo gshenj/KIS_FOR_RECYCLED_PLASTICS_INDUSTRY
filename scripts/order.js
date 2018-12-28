@@ -168,7 +168,7 @@ function cancelOrder(callback) {
         return false;
     }
 
-    $.messager.confirm('作废出库单', '确定作废单号'+ row.order_num + '的出库单?', function (r) {
+    $.messager.confirm('作废', '确定作废单号'+ row.order_num + '的出库单?', function (r) {
         if (r) {
             OrderModel.findByIdAndUpdate(row._id, {cancelled: true, cancel_by: ''}, function (err, doc) {
                 //callback(doc);
