@@ -225,7 +225,7 @@
     </div>
 
 
-    <div data-options="region:'center', border:false" style="margin:0;padding:0px;background:#eee;overflow-y: hidden;overflow-x: hidden; -webkit-app-region: no-drag">
+    <div data-options="region:'center', border:false" style="margin:0; padding:0px;  background:#eee;overflow-y: hidden;overflow-x: hidden; -webkit-app-region: no-drag">
 
         <!--新开送货单-->
         <div id="order_input_panel" class="easyui-panel opt_panel" 　 style="width:100%; height:100%; padding:0px 0px; background-color:#999; text-align:center; "
@@ -1008,21 +1008,20 @@
 
 
             win.on('maximize', function () {
-                // $('#to_max').hide();
-                // $('#to_unmax').show();
-                // console.log('max')
+                $('#to_max').hide();
+                $('#to_unmax').show();
             })
 
             win.on('unmaximize', function () {
-                // $('#to_unmax').hide();
-                // $('#to_max').show();
-                // console.log('unmax')
+                $('#to_unmax').hide();
+                $('#to_max').show();
             })
 
 
-            function showMainWindow() {
-                //win.show()
+            function afterCompleteLoading() {
                 ipcRenderer.sendSync('main-window-ready', null)
+                //默认最大化窗口
+                maxwin()
             }
 
 
@@ -1092,10 +1091,6 @@
                 $('#dlg_for_customer_choose').dialog('open').dialog('center')
             }
 
-
-
-
-
             function logout() {
                 ipcRenderer.sendSync('logout')
             }
@@ -1110,21 +1105,10 @@
 
 
             function maxwin() {
-
-                if (win.isMaximized()) {
-
-                    $('#to_unmax').hide();
-                    $('#to_max').show();
-                    //console.log('unmax')
+                if (win.isMaximized())
                     win.unmaximize()
-
-                } else {
-
-                    $('#to_max').hide();
-                    $('#to_unmax').show();
-                    //console.log('max')
+                else
                     win.maximize()
-                }
             }
 
             function minwin() {

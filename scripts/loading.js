@@ -15,9 +15,15 @@ var _LoadingHtml = '<div id="loadingDiv" style="cursor:wait; position:absolute;l
 //呈现loading效果
 document.write(_LoadingHtml);
 
+var firstLoad = true;
 //监听加载状态改变
 var no
 $.parser.onComplete = function () {
+    if (firstLoad) {
+        firstLoad = false
+    } else {
+        return;
+    }
     if (no) clearTimeout(no);
     no = setTimeout(completeLoading, 0);
 }
@@ -34,6 +40,8 @@ function completeLoading() {
     if (loadingMask)
         loadingMask.parentNode.removeChild(loadingMask);
 
-    showMainWindow()
+    afterCompleteLoading()
     // }
 }
+
+

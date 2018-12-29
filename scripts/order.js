@@ -62,7 +62,7 @@ function loadOrderGrid() {
             fit: true,
             singleSelect: true,
             border: false,
-            width: 1400,
+            //width: 1400,
             showFilterBar: false,
             rownumbers: true,
             toolbar: '#order_grid_toolbar',

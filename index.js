@@ -3,7 +3,8 @@ let {app, BrowserWindow, ipcMain} = require('electron');  // Module to control a
 
 // Report crashes to our server.
 //require('crash-reporter').start();
-if(require('electron-squirrel-startup')) return;
+if(require('electron-squirrel-startup')) app.quit()//return;
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is GCed.
 let mainWindow = null;
@@ -63,7 +64,7 @@ function createLoginWindow() {
     loginWindow.loadURL('file://' + __dirname + '/pages/login.html')
 
     loginWindow.once('ready-to-show', () => {
-        loginWindow.show()
+        //loginWindow.show()
     })
 
     loginWindow.on('closed', () => {
@@ -74,11 +75,12 @@ function createLoginWindow() {
 
 ipcMain.on('main-window-ready', (event, arg) =>{
     if(loginWindow) {
-    loginWindow.close()
+        loginWindow.close()
     }
+    //mainWindow.maximize()
     mainWindow.show()
     event.returnValue = null;
-
+    console.log("on main-window-ready")
 })
 
 // 登录成功消息
