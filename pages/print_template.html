@@ -112,6 +112,10 @@
             if (config)
                 config = JSON.parse(config)
 
+            if (order.cancelled) {
+                $('#cancel_text').show()
+            }
+
             $('#order_number').html(order.order_num)
             $('#customer_name').html(order.customer_name)
             $('#delivery_address').html(order.delivery_address)
@@ -264,14 +268,20 @@
     </table>
 </div>
 
-<div class="noprint" style="padding:0px 0px; border:0px solid red; margin:10px auto 10px; text-align:center;-webkit-app-region: drag;">
+<div class="noprint" style="padding:0px 0px; border:0px solid red; margin:20px auto 10px; text-align:center; -webkit-app-region: drag;">
     <div id="order_input_toolbar"
          style="  margin:0px auto 1px;  padding:0px 0px; border:0px solid #bbb; ">
         <a class="easyui-linkbutton" style="-webkit-app-region: no-drag;" onclick="print_order()"
            data-options="iconCls:'icon-print',iconAlign:'left'">打印</a>
         <a class="easyui-linkbutton" style="margin-left:100px;-webkit-app-region: no-drag;" onclick="closeWin()"
-           data-options="iconCls:'icon-undo',iconAlign:'left'">关闭</a>
+           data-options="iconCls:'icon-cancel',iconAlign:'left'">关闭</a>
     </div>
+
 </div>
+
+<div id="cancel_text" style="display:none; position:absolute; top:60px; right:180px; padding:4px 8px; letter-spacing: 8px; height:40px; font-size:36px; line-height:40px; color:red; border:2px solid red; transform:rotate(-25deg);">
+    作废
+</div>
+
 </body>
 </html>

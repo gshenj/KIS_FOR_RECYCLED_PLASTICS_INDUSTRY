@@ -348,7 +348,7 @@ div.toolbar1 {
 }
 
 .icon-select{
-	background:url('../images/select.png') no-repeat center center;
+	background:url('../images/select_x16.png') no-repeat center center;
 }
 
 .icon-export{
@@ -357,4 +357,20 @@ div.toolbar1 {
 
 .icon-cancel_order{
     background:url('../images/cancel_x16.png') no-repeat center center;
+}
+
+.icon-remove{
+    background:url('../images/delete_x16.png') no-repeat center center;
+}
+
+.icon-edit{
+    background:url('../images/edit_x16.png') no-repeat center center;
+}
+
+.icon-add{
+    background:url('../images/add_x16.png') no-repeat center center;
+}
+
+.icon-lock{
+    background:url('../images/lock_x16.png') no-repeat center center;
 }
