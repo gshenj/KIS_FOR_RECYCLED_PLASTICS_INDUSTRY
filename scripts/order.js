@@ -529,3 +529,19 @@ function onChangeNum(newValue, oldValue) {
 function onOpenOrderReportPanel() {
 
 }
+
+
+function calcSum() {
+    let totalNum = 0;
+    let totalSum = 0;
+    let rows = ORDER_GRID.datagrid('getRows')
+    for (let i=0; i<rows.length; i++) {
+        if (rows[i].products_num)
+            totalNum += rows[i].products_num;
+        if (rows[i].products_sum)
+            totalSum += Number(rows[i].products_sum);
+    }
+
+    //OSREC.CurrencyFormatter.format(totalSum, { currency: 'CNY' })
+    $.messager.alert("统计", '产品总数量：' + totalNum+ "<br/>产品总金额：" +Number(totalSum).toFixed(2), 'info')
+}
