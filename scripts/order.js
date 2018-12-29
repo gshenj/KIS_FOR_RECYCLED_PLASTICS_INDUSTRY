@@ -62,6 +62,7 @@ function loadOrderGrid() {
             fit: true,
             singleSelect: true,
             border: false,
+            //fitColumns:true,
             //width: 1400,
             showFilterBar: false,
             rownumbers: true,
