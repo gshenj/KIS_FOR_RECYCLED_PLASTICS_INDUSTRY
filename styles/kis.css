@@ -374,3 +374,11 @@ div.toolbar1 {
 .icon-lock{
     background:url('../images/lock_x16.png') no-repeat center center;
 }
+
+.icon-add-line {
+    background:url('../scripts/jquery-easyui/themes/icons/edit_add.png') no-repeat center center;
+}
+
+.icon-remove-line {
+    background:url('../scripts/jquery-easyui/themes/icons/edit_remove.png') no-repeat center center;
+}

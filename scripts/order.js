@@ -177,8 +177,6 @@ function cancelOrder(callback) {
             })
         }
     })
-
-
 }
 
 
@@ -204,6 +202,9 @@ function resetOrder() {
 
     //
     resetOrderProductGrid(false)
+
+    $('#products_num').html("")
+    $('#products_sum').html("")
 }
 
 function resetOrderProductGrid(addFirstRow) {
@@ -383,7 +384,7 @@ function doPrint() {
     let principal = $('#new_order_customer_principal').textbox('getValue')
     let contact_number = $('#new_order_customer_phone').textbox('getValue')
     let maker = $('#new_order_maker').textbox('getValue')
-    let driver = $('#driver_select').textbox('getValue')
+    let driver = $('#driver_select').combobox('getText')
     //let total_sum = $('#total_sum').html()
 
     let cancelled = false;
@@ -414,7 +415,7 @@ function doPrint() {
         created_by: created_by
     }
 
-    console.log(JSON.stringify(order_data))
+    //console.log(JSON.stringify(order_data))
     $('#win_in').html('正在保存单剧...')
     $('#win').window('open').window('center')
 

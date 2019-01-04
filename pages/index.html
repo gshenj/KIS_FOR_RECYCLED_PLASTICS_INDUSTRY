@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh_CN">
-
 <head>
     <meta charset="UTF-8">
     <script>if (typeof module === 'object') {
@@ -22,7 +21,6 @@
         let SYS_CONFIG = {}
     </script>
 
-
     <!--<link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/material-teal/easyui.css">-->
     <link rel="stylesheet" type="text/css" href="../scripts/jquery-easyui/themes/ui-cupertino/easyui.css">
     <link rel="stylesheet" type="text/css" href="../scripts/jquery-easyui/themes/icon.css">
@@ -31,11 +29,9 @@
 
     <script type="text/javascript" src="../scripts/db.js"></script>
 
-
     <script type="text/javascript" src="../scripts/jquery-easyui/jquery.easyui.min.js"></script>
     <!--<script type="text/javascript" src="../scripts/currencyFormatter.min.js"></script>-->
     <script type="text/javascript" src="../scripts/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
-
 
     <script type="text/javascript" src="../scripts/kis.js"></script>
     <script type="text/javascript" src="../scripts/user.js"></script>
@@ -96,8 +92,7 @@
     </script>
 </head>
 
-<body class="easyui-layout" id="main_layout" data-options="border:false"
-      style=" padding:0; margin:0;overflow-y: hidden;overflow-x: hidden; height:100%">
+<body class="easyui-layout" id="main_layout" data-options="border:false" style=" padding:0; margin:0;overflow-y: hidden;overflow-x: hidden; height:100%">
 
 <div data-options="region:'north',split:false, border:false"
      style="height:106px;width:100%; -webkit-user-select: none;  margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
@@ -233,9 +228,7 @@ padding:6px;">
 
 </div>
 
-
-<div data-options="region:'center', border:false"
-     style="margin:0; padding:0px;  background:#eee;overflow-y: hidden;overflow-x: hidden; -webkit-app-region: no-drag">
+<div data-options="region:'center', border:false" style="margin:0; padding:0px;  background:#eee;overflow-y: hidden;overflow-x: hidden; -webkit-app-region: no-drag">
 
     <!--新开送货单-->
     <div id="order_input_panel" class="easyui-panel opt_panel" 　
@@ -250,10 +243,10 @@ padding:6px;">
                            data-options="plain:true,iconCls:'icon-undo',iconAlign:'left'">重填</a>
 
                         <a class="easyui-linkbutton" onclick="addOrderRow()"
-                           data-options="plain:true,iconCls:'icon-add',iconAlign:'left'">增行</a>
+                           data-options="plain:true,iconCls:'icon-add-line',iconAlign:'left'">增行</a>
 
                         <a class="easyui-linkbutton" onclick="deleteOrderRow()"
-                           data-options="plain:true,iconCls:'icon-remove',iconAlign:'left'">减行</a>
+                           data-options="plain:true,iconCls:'icon-remove-line',iconAlign:'left'">减行</a>
 
                         <a class="easyui-linkbutton" onclick="doPrint()"
                            data-options="plain:true,iconCls:'icon-print',iconAlign:'left'">打印</a>
@@ -369,7 +362,7 @@ padding:6px;">
                                         ]]"
                                          style="width:150px;"></select>
                         </td>
-                        <td>签收人：<input class="f1 easyui-textbox" disabled></input></td>
+                        <td>签收人：<input class="f1 easyui-textbox" data-options="editable:false"></input></td>
                     </table>
                 </form>
             </div>
@@ -465,7 +458,7 @@ padding:6px;">
         </div>
     </div>
 
-
+    <!--统计报表-->
     <div id="orders_report_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
          data-options="fit:true, closed:true, border:false, onOpen:onOpenOrderReportPanel">
         <div class="easyui-layout" data-options="fit:true">
@@ -576,7 +569,6 @@ padding:6px;">
         </div>
     </div>
 
-
     <!--客户管理-->
     <div id="customer_manage_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
          data-options="fit:true, closed:true, border:false, onOpen:onOpenCustomerManagePanel">
@@ -619,12 +611,12 @@ padding:6px;">
                 <table id="grid_for_customer" style="width:100%"></table>
 
                 <div id="customer_grid_toolbar" style="padding:2px 5px;">
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newCustomer()">添加</a>
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true"
+                    <a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newCustomer()">添加</a>
+                    <a class="easyui-linkbutton" iconCls="icon-edit" plain="true"
                        onclick="editCustomer()">编辑</a>
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true"
+                    <a class="easyui-linkbutton" iconCls="icon-remove" plain="true"
                        onclick="destroyCustomer()">删除</a>
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-export" plain="true"
+                    <a class="easyui-linkbutton" iconCls="icon-export" plain="true"
                        onclick="exportExcel(CUSTOMER_GRID, '客户列表.xls')">导出XLS</a>
                     <span style="margin-left:20px" class="search_label">检索：</span>
                     <input type="text" id="customer_search_text" class="search_input"
@@ -797,7 +789,7 @@ padding:6px;">
                         </div>
 
                         <div style="margin-bottom:10px">
-                            <select name="cartype" id="driver_car_type" class="easyui-combobox" required="true"
+                            <select name="cartype" id="driver_car_type" class="easyui-combobox"
                                     data-options="data:[], valueField:'_id', textField:'name'" editable="false"
                                     label="货车分类："
                                     labelAlign="right" style="width:100%">
@@ -805,17 +797,17 @@ padding:6px;">
                         </div>
 
                         <div style="margin-bottom:10px">
-                            <input name="car_No" id="driver_car_No" class="easyui-textbox" required="true" label="车牌号码："
+                            <input name="car_No" id="driver_car_No" class="easyui-textbox" label="车牌号码："
                                    labelAlign="right" style="width:100%">
                         </div>
 
                         <div style="margin-bottom:10px">
-                            <input name="id_No" id="driver_id_No" class="easyui-textbox" required="true" label="身份证号："
+                            <input name="id_No" id="driver_id_No" class="easyui-textbox" label="身份证号："
                                    labelAlign="right" style="width:100%">
                         </div>
                         <div style="margin-bottom:10px">
                             <input name="driving_license_No" id="driver_driving_license_No" class="easyui-textbox"
-                                   required="true" label="行驶证号：" labelAlign="right" style="width:100%">
+                                   label="行驶证号：" labelAlign="right" style="width:100%">
                         </div>
                         <div style="margin-bottom:10px">
                             <input id="driver_phone" class="easyui-textbox" name="phone" labelAlign="right"
@@ -885,7 +877,6 @@ padding:6px;">
         </div>
     </div>
 
-
     <!--系统设置-->
     <div id="sys_config_panel" class="easyui-panel opt_panel"
          data-options="fit:true, closed:true, border:true, onBeforeOpen:onOpenSysConfigPanel">
@@ -926,6 +917,8 @@ padding:6px;">
 
     </div>
 
+
+    <!--------------------------------------------------- 对话框 ------------------------------------------------------>
     <!--用户设置密码 -->
     <div id="dlg_for_setpassword" class="easyui-dialog" style="width:400px"
          data-options="title:'修改用户密码', closed:true, modal:true, border:'thin', buttons:'#dlg-buttons_for_setpassword', onOpen:function(){$('#fm_for_setpassword').form('clear')}">
@@ -944,22 +937,20 @@ padding:6px;">
             </div>
         </form>
         <div id="dlg-buttons_for_setpassword">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="set_password()"
+            <a class="easyui-linkbutton c6" iconCls="icon-ok" onclick="set_password()"
                style="width:90px">确定</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+            <a class="easyui-linkbutton" iconCls="icon-cancel"
                onclick="$('#dlg_for_setpassword').dialog('close')"
                style="width:90px">取消</a>
         </div>
     </div>
-
 
     <!-- 客户选择对话框 -->
     <div id="dlg_for_customer_choose" title="选择客户" class="easyui-dialog" style="width:900px; height:550px;"
          data-options="onOpen:onOpenCustomerChooseDlg, resizable:true, closed:true, modal:true, border:'thin', buttons:'#dlg_buttons_for_classification01'">
         <div class="easyui-layout" data-options="fit:true">
             <div data-options="region:'west'" style="width:180px; padding:4px;">
-                <ul id="classification_tree01" class="easyui-tree" data-options="lines:true,onSelect:loadCustomerGrid01,
-                      ">
+                <ul id="classification_tree01" class="easyui-tree" data-options="lines:true,onSelect:loadCustomerGrid01">
                 </ul>
             </div>
             <div data-options="region:'center'" style="padding:0px;">
@@ -973,14 +964,13 @@ padding:6px;">
             </div>
         </div>
         <div id="dlg_buttons_for_classification01">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="chooseCustomer()"
+            <a class="easyui-linkbutton c6" iconCls="icon-ok" onclick="chooseCustomer()"
                style="width:90px">确定选择</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+            <a class="easyui-linkbutton" iconCls="icon-cancel"
                onclick="javascript:$('#dlg_for_customer_choose').dialog('close')"
                style="width:90px">取消</a>
         </div>
     </div>
-
 
     <!-- 产品选择对话框 -->
     <div id="dlg_for_product_choose" title="选择产品" class="easyui-dialog" style="width:700px; height:500px;"
@@ -988,19 +978,21 @@ padding:6px;">
         <table id="grid_for_product01" style="width:100%">
         </table>
         <div id="dlg_buttons_for_product_choose01">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="chooseProduct()"
+            <a class="easyui-linkbutton c6" iconCls="icon-ok" onclick="chooseProduct()"
                style="width:90px">确定选择</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+            <a class="easyui-linkbutton" iconCls="icon-cancel"
                onclick="javascript:$('#dlg_for_product_choose').dialog('close')"
                style="width:90px">取消</a>
         </div>
     </div>
 
 
+    <!------------------------------------------------------ 窗口 ----------------------------------------------------->
     <div id="win" class="easyui-window" title="" style="background-color: #95B8E7"
          data-options="modal:true, closed:true, height:50, width:200, border:false,  style:{textAlign:'center'}">
         <span style="height:50px;  line-height:50px; margin:0 auto; " id="win_in"></span>
     </div>
+
 
     <!--<div id="account_info" >-->
     <div id="account_info" class="easyui-menu" data-options="hideOnUnhover:false,onClick:menuHandler"
@@ -1018,287 +1010,287 @@ padding:6px;">
         <div name="about">关于</div>
     </div>
 
-    <script>
-        const {BrowserWindow} = require('electron').remote
-        const {ipcRenderer} = require('electron')
-        const win = require('electron').remote.getCurrentWindow();
+</div>
 
-        function onCarTypeTreeContextMenu(e, node) {
-            e.preventDefault();
-            $(this).tree('select', node.target);
-            let root = $(this).tree('getRoot')
-            let mm = $('#mm_cartype')
-            mm.menu('show', {
-                left: e.pageX,
-                top: e.pageY
-            });
+<script>
+    const {BrowserWindow} = require('electron').remote
+    const {ipcRenderer} = require('electron')
+    const win = require('electron').remote.getCurrentWindow();
 
-            let item_edit = $('#cartype_edit')[0];
-            let item_append = $('#cartype_append')[0];
-            let item_delete = $('#cartype_delete')[0];
+    function onCarTypeTreeContextMenu(e, node) {
+        e.preventDefault();
+        $(this).tree('select', node.target);
+        let root = $(this).tree('getRoot')
+        let mm = $('#mm_cartype')
+        mm.menu('show', {
+            left: e.pageX,
+            top: e.pageY
+        });
 
-            if (root == node) {
-                mm.menu('enableItem', item_append)
-                mm.menu('disableItem', item_edit)
-                mm.menu('disableItem', item_delete)
-            } else {
-                mm.menu('disableItem', item_append)
-                mm.menu('enableItem', item_edit)
+        let item_edit = $('#cartype_edit')[0];
+        let item_append = $('#cartype_append')[0];
+        let item_delete = $('#cartype_delete')[0];
+
+        if (root == node) {
+            mm.menu('enableItem', item_append)
+            mm.menu('disableItem', item_edit)
+            mm.menu('disableItem', item_delete)
+        } else {
+            mm.menu('disableItem', item_append)
+            mm.menu('enableItem', item_edit)
+            mm.menu('enableItem', item_delete)
+        }
+    }
+
+
+    function onClassificationTreeContextMenu(e, node) {
+        e.preventDefault();
+        $(this).tree('select', node.target);
+        let root = $(this).tree('getRoot')
+
+        let mm = $('#mm_classification');
+        mm.menu('show', {
+            left: e.pageX,
+            top: e.pageY
+        });
+
+        let item_edit = $('#classification_edit')[0];
+        let item_append = $('#classification_append')[0];
+        let item_delete = $('#classification_delete')[0];
+
+        if (root == node) {
+            mm.menu('enableItem', item_append)
+            mm.menu('disableItem', item_edit)
+            mm.menu('disableItem', item_delete)
+
+        } else {
+            mm.menu('disableItem', item_append)
+            mm.menu('enableItem', item_edit)
+            if ($(this).tree('isLeaf', node.target)) {
                 mm.menu('enableItem', item_delete)
-            }
-        }
-
-
-        function onClassificationTreeContextMenu(e, node) {
-            e.preventDefault();
-            $(this).tree('select', node.target);
-            let root = $(this).tree('getRoot')
-
-            let mm = $('#mm_classification');
-            mm.menu('show', {
-                left: e.pageX,
-                top: e.pageY
-            });
-
-            let item_edit = $('#classification_edit')[0];
-            let item_append = $('#classification_append')[0];
-            let item_delete = $('#classification_delete')[0];
-
-            if (root == node) {
-                mm.menu('enableItem', item_append)
-                mm.menu('disableItem', item_edit)
-                mm.menu('disableItem', item_delete)
-
             } else {
-                mm.menu('disableItem', item_append)
-                mm.menu('enableItem', item_edit)
-                if ($(this).tree('isLeaf', node.target)) {
-                    mm.menu('enableItem', item_delete)
-                } else {
-                    mm.menu('disableItem', item_delete)
-                }
-
-
+                mm.menu('disableItem', item_delete)
             }
+
+
         }
+    }
 
 
-        function menuHandler(item) {
+    function menuHandler(item) {
 
-            switch (item.name) {
-                case 'account_info':
-                    let u = JSON.parse(localStorage.getItem('user'))
-                    $.messager.alert("用户信息", '用户：' + u.name + "<br/>角色：" + u.role, 'info')
-                    break;
-                case 'logout':
-                    logout();
-                    break;
-                case 'check-update':
-                    setTimeout(function () {
-                        $.messager.alert("更新", '当前版本为最新版', 'info')
-                    }, 3000)
-                    break;
-                case 'about':
-                    // show about
-                    let win_about = new BrowserWindow({
-                        width: 300,
-                        height: 200,
-                        modal: true,
-                        show: false,
-                        maximizable: false,
-                        minimizable: false,
-                        resizable: false,
-                        frame: false,
-                        parent: win,
-                        title: '关于系统',
-                        autoHideMenuBar: true
-                    })
-                    win_about.loadURL('file://' + __dirname + '/about.html')
-                    win_about.on('closed', () => {
-                        win_about = null
-                    })
-                    win_about.once('ready-to-show', () => {
-                        moveChildWindowToParentCenter(win_about, win)
-                        win_about.show()
+        switch (item.name) {
+            case 'account_info':
+                let u = JSON.parse(localStorage.getItem('user'))
+                $.messager.alert("用户信息", '用户：' + u.name + "<br/>角色：" + u.role, 'info')
+                break;
+            case 'logout':
+                logout();
+                break;
+            case 'check-update':
+                setTimeout(function () {
+                    $.messager.alert("更新", '当前版本为最新版', 'info')
+                }, 3000)
+                break;
+            case 'about':
+                // show about
+                let win_about = new BrowserWindow({
+                    width: 300,
+                    height: 200,
+                    modal: true,
+                    show: false,
+                    maximizable: false,
+                    minimizable: false,
+                    resizable: false,
+                    frame: false,
+                    parent: win,
+                    title: '关于系统',
+                    autoHideMenuBar: true
+                })
+                win_about.loadURL('file://' + __dirname + '/about.html')
+                win_about.on('closed', () => {
+                    win_about = null
+                })
+                win_about.once('ready-to-show', () => {
+                    moveChildWindowToParentCenter(win_about, win)
+                    win_about.show()
 
-                    })
-                    break;
-                case 'exit':
-                    //
-                    closewin(true)
-                    break;
-                case 'set_password':
-                    // 改弹出框'
-                    $('#fm_for_setpassword').form('clear')
-                    $('#dlg_for_setpassword').dialog('open').dialog('center')
-                    break;
-                default:
-                    ;
-            }
+                })
+                break;
+            case 'exit':
+                //
+                closewin(true)
+                break;
+            case 'set_password':
+                // 改弹出框'
+                $('#fm_for_setpassword').form('clear')
+                $('#dlg_for_setpassword').dialog('open').dialog('center')
+                break;
+            default:
+                ;
         }
+    }
 
 
-        win.on('maximize', function () {
-            $('#to_max').hide();
-            $('#to_unmax').show();
+    win.on('maximize', function () {
+        $('#to_max').hide();
+        $('#to_unmax').show();
+    })
+
+    win.on('unmaximize', function () {
+        $('#to_unmax').hide();
+        $('#to_max').show();
+    })
+
+
+    function afterCompleteLoading() {
+        ipcRenderer.sendSync('main-window-ready', null)
+        //默认最大化窗口
+        maxwin()
+    }
+
+
+    function showAccountMenu(e) {
+        e.preventDefault();
+        $('#account_info').menu('show', {
+            left: e.pageX,
+            top: 105
         })
-
-        win.on('unmaximize', function () {
-            $('#to_unmax').hide();
-            $('#to_max').show();
-        })
+    }
 
 
-        function afterCompleteLoading() {
-            ipcRenderer.sendSync('main-window-ready', null)
-            //默认最大化窗口
-            maxwin()
-        }
+    $(function () {
 
+        SYS_CONFIG = JSON.parse(localStorage.getItem('sys_config'))
+        $('#main_title').html(SYS_CONFIG.company_name + KIS_NAME + " " + KIS_VERSION)
 
-        function showAccountMenu(e) {
-            e.preventDefault();
-            $('#account_info').menu('show', {
-                left: e.pageX,
-                top: 105
-            })
-        }
-
-
-        $(function () {
-
-            SYS_CONFIG = JSON.parse(localStorage.getItem('sys_config'))
-            $('#main_title').html(SYS_CONFIG.company_name + KIS_NAME + " " + KIS_VERSION)
-
-            $('#new_order_sale_date').datebox().datebox('calendar').calendar({
-                validator: function (date) {
-                    var now = new Date();
-                    var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
-                    var d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 6);
-                    return d1 <= date && date <= d2;
-                }
-            });
-
-
-            $('.account_logo').bind('click', function (e) {
-                showAccountMenu(e)
-            });
-
-            $('#customer_choose_for_product_manage').textbox('addClearBtn', 'icon-clear');
-            $('#customer_choose_for_product_manage').textbox('textbox').bind('focus', function (e) {
-                open_customer_choose_for_product_manage()
-            });
-            $('#new_order_customer_name').textbox('addClearBtn', 'icon-clear');
-            $('#new_order_customer_name').textbox('textbox').bind('focus', function (e) {
-                open_customer_choose_for_new_order()
-            });
-
-            //去掉tab菜单按钮的href，防止鼠标按住拖动出现href属性
-            $('.tabs li a').removeAttr('href')
-
-
-            let user = JSON.parse(localStorage.getItem('user'))
-            if (!isAdmin(user.role)) {
-                $('#main_tabs').tabs('close', '资料管理')
-                $('#main_tabs').tabs('close', '系统设置')
+        $('#new_order_sale_date').datebox().datebox('calendar').calendar({
+            validator: function (date) {
+                var now = new Date();
+                var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+                var d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 6);
+                return d1 <= date && date <= d2;
             }
-
         });
 
 
-        function open_customer_choose_for_product_manage() {
-            customer_choose_dlg_type = 'list_products'
-            $('#dlg_for_customer_choose').dialog('open').dialog('center')
+        $('.account_logo').bind('click', function (e) {
+            showAccountMenu(e)
+        });
+
+        $('#customer_choose_for_product_manage').textbox('addClearBtn', 'icon-clear');
+        $('#customer_choose_for_product_manage').textbox('textbox').bind('focus', function (e) {
+            open_customer_choose_for_product_manage()
+        });
+        $('#new_order_customer_name').textbox('addClearBtn', 'icon-clear');
+        $('#new_order_customer_name').textbox('textbox').bind('focus', function (e) {
+            open_customer_choose_for_new_order()
+        });
+
+        //去掉tab菜单按钮的href，防止鼠标按住拖动出现href属性
+        $('.tabs li a').removeAttr('href')
+
+
+        let user = JSON.parse(localStorage.getItem('user'))
+        if (!isAdmin(user.role)) {
+            $('#main_tabs').tabs('close', '资料管理')
+            $('#main_tabs').tabs('close', '系统设置')
         }
 
-        function open_customer_choose_for_new_order() {
-            customer_choose_dlg_type = 'new_order'
-            $('#dlg_for_customer_choose').dialog('open').dialog('center')
+    });
+
+
+    function open_customer_choose_for_product_manage() {
+        customer_choose_dlg_type = 'list_products'
+        $('#dlg_for_customer_choose').dialog('open').dialog('center')
+    }
+
+    function open_customer_choose_for_new_order() {
+        customer_choose_dlg_type = 'new_order'
+        $('#dlg_for_customer_choose').dialog('open').dialog('center')
+    }
+
+    function open_customer_choose_for_list_order() {
+        customer_choose_dlg_type = 'list_order'
+        $('#dlg_for_customer_choose').dialog('open').dialog('center')
+    }
+
+    function logout() {
+        ipcRenderer.sendSync('logout')
+    }
+
+
+    function printPreview() {
+        let row = ORDER_GRID.datagrid('getSelected')
+        if (row) {
+            preview(row, 'list')
         }
-
-        function open_customer_choose_for_list_order() {
-            customer_choose_dlg_type = 'list_order'
-            $('#dlg_for_customer_choose').dialog('open').dialog('center')
-        }
-
-        function logout() {
-            ipcRenderer.sendSync('logout')
-        }
+    }
 
 
-        function printPreview() {
-            let row = ORDER_GRID.datagrid('getSelected')
-            if (row) {
-                preview(row, 'list')
-            }
-        }
+    function maxwin() {
+        if (win.isMaximized())
+            win.unmaximize()
+        else
+            win.maximize()
+    }
 
+    function minwin() {
+        win.minimize()
+    }
 
-        function maxwin() {
-            if (win.isMaximized())
-                win.unmaximize()
-            else
-                win.maximize()
-        }
+    function closewin(slience) {
+        if (slience) {
+            win.close()
 
-        function minwin() {
-            win.minimize()
-        }
-
-        function closewin(slience) {
-            if (slience) {
-                win.close()
-
-            } else {
-                $.messager.confirm('确定', '确定要关闭应用程序吗?', function (r) {
-                    if (r) {
-                        win.close()
-                    }
-                });
-            }
-        }
-
-
-        function preview(order, type) {
-            type = type || 'new_order'
-            localStorage.setItem('order', JSON.stringify(order));
-            let win_print = new BrowserWindow({
-                width: 800,
-                height: 550,
-                modal: true,
-                show: false,
-                maximizable: false,
-                minimizable: false,
-                resizable: false,
-                parent: win,
-                frame: false,
-                title: '打印',
-                autoHideMenuBar: true
-            })
-            win_print.on('closed', () => {
-                win_print = null
-
-                if (type == 'new_order') {
-                    $.messager.confirm('', '是否继续填写出货单?', function (r) {
-                        if (r) {
-                            resetOrder();
-                        } else {
-                            $('#order_list_menu').click()
-                        }
-                    })
-
-                } else if (type == 'list') {
-
+        } else {
+            $.messager.confirm('确定', '确定要关闭应用程序吗?', function (r) {
+                if (r) {
+                    win.close()
                 }
-            })
-
-            win_print.loadURL('file://' + __dirname + '/print_template.html')
-            moveChildWindowToParentCenter(win_print, win)
-            win_print.show()
+            });
         }
-    </script>
+    }
 
+
+    function preview(order, type) {
+        type = type || 'new_order'
+        localStorage.setItem('order', JSON.stringify(order));
+        let win_print = new BrowserWindow({
+            width: 800,
+            height: 550,
+            modal: true,
+            show: false,
+            maximizable: false,
+            minimizable: false,
+            resizable: false,
+            parent: win,
+            frame: false,
+            title: '打印',
+            autoHideMenuBar: true
+        })
+        win_print.on('closed', () => {
+            win_print = null
+
+            if (type == 'new_order') {
+                $.messager.confirm('', '是否继续填写出货单?', function (r) {
+                    if (r) {
+                        resetOrder();
+                    } else {
+                        $('#order_list_menu').click()
+                    }
+                })
+
+            } else if (type == 'list') {
+
+            }
+        })
+
+        win_print.loadURL('file://' + __dirname + '/print_template.html')
+        moveChildWindowToParentCenter(win_print, win)
+        win_print.show()
+    }
+</script>
 
 </body>
-
 </html>

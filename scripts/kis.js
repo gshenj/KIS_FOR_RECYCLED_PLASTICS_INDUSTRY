@@ -285,12 +285,17 @@ function saveDriver() {
 
     let name = $('#driver_name').textbox('getValue')
     let car_type = $('#driver_car_type').textbox('getValue')
+    if (car_type) {
+        car_type = new mongoose.Types.ObjectId(car_type)
+    } else {
+        car_type = null;
+    }
     let car_No = $('#driver_car_No').textbox('getValue')
     let id_No = $('#driver_id_No').textbox('getValue')
     let driving_license_No = $('#driver_driving_license_No').textbox('getValue')
     let phone = $('#driver_phone').textbox('getValue')
     let address = $('#driver_address').textbox('getValue')
-    let driver = {name: name, cartype:new mongoose.Types.ObjectId(car_type), car_No: car_No ,
+    let driver = {name: name, cartype:car_type, car_No: car_No ,
         id_No:id_No, driving_license_No: driving_license_No, phone:phone, address:address}
 
     if (opt_type_for_driver == 'new') {

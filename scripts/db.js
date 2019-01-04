@@ -54,8 +54,15 @@ let ip_address = localStorage.getItem("db_address") || 'localhost'
 let db_address = 'mongodb://' + ip_address + ':27017'
 console.log(db_address)
 
+
+let process = require('electron').remote.process
+let argv = process.argv
+let dbName = 'kis'
+if (argv.length>=3 && argv[2]=='dev') {
+    dbName = 'kis-dev'
+}
 /**DB utils **/
-mongoose.connect(db_address, { dbName: 'kis', useNewUrlParser: true });
+mongoose.connect(db_address, { dbName: dbName, useNewUrlParser: true });
 
 CartypeModel = mongoose.model('cartype', cartypeSchema, 'cartypes')
 UnitModel = mongoose.model('unit', unitSchema, 'units')

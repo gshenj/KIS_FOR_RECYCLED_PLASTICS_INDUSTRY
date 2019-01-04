@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh_CN">
 <head>
     <meta charset="UTF-8">
     <script>if (typeof module === 'object') {
@@ -27,10 +27,6 @@
     <style type="text/css">
         body {
             background-color: #fff;
-           /* padding:0;*/
-            /*margin:0;*/
-            /*padding:0;
-            margin:0;*/
         }
 
         .container {
@@ -39,15 +35,12 @@
             border: 1px dashed #0081C2;
             background-color: #fff;
             font-size: 11pt;
-            /* font-family: sans-serif; */
             font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
         }
-
 
         .company {
             font-size: 18pt;
             color: #000;
-            /*font-weight: bold;*/
             -webkit-app-region: drag;
         }
 
@@ -84,8 +77,6 @@
             height: 22pt;
             vertical-align: middle;
             border: 1px solid #000000;
-            font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
-            /*background-color:#eee;*/
         }
     </style>
 
@@ -100,11 +91,8 @@
             padding: 0 auto;
         }
     </style>
-
     <script>
-
         $(document).ready(function () {
-
             let order = localStorage.getItem('order');
             let config = localStorage.getItem('sys_config');
             if (order)
@@ -239,7 +227,7 @@
 
                 <td id="sale_date_div" colspan="2" style="text-align:right; padding-right:2px;">
                     送货日期：
-                    <span id="sale_date">2018-11-16</span>
+                    <span id="sale_date"></span>
                 </td>
             </tr>
         </table>

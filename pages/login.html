@@ -125,17 +125,8 @@
         .icon-loading{
             background:url('../scripts/jquery-easyui/themes/default/images/loading.gif') no-repeat left center;
         }
-        .login_loading {
-            padding:10px 20px;
-            height:30px;
-            line-height:30px;
-            cursor:wait;
-            text-align: left;
-            background:#f3f8ff;opacity:1;filter:alpha(opacity=50);
-        }
     </style>
 </head>
-
 <body>
     <div id="title_bar">
         <div style="height:20px; width:20px; margin:3px 2px 0px 5px; line-height: 20px; float:left; background-color:#fff;">
@@ -147,9 +138,7 @@
                 </g>
             </svg>
         </div>
-        <div style="height:24px; line-height:24px; margin:0 0 0 2px; padding:0;  display: inline-block;">系统登录
-        </div>
-
+        <div style="height:24px; line-height:24px; margin:0 0 0 2px; padding:0;  display: inline-block;">系统登录</div>
         <table class="win_btn_tb">
             <tr>
                 <td>
@@ -187,9 +176,6 @@
             </tr>
         </table>
     </div>
-
-
-
 
     <div id="login_form_panel" class="easyui-panel" data-options="border:false, fit:true" style="width:100%; padding:0px 0px; margin-top:0px; text-align: center">
         <div style="height:110px; background-image:url('../images/login_bg.jpg'); line-height:110px; font-size:38px; color:#fff; -webkit-user-select: none;  -webkit-app-region: drag;">
@@ -302,8 +288,6 @@
         }
 
 
-
-
         function closewin() {
             win.close();
         }
@@ -324,8 +308,6 @@
         }
 
 
-
-
         function completeLoading() {
             win.show()
         }
@@ -336,13 +318,8 @@
             let is_validate_username = $('#username').combobox('isValid')
             let is_validate_password = $('#password').passwordbox('isValid')
             if (!is_validate_username || !is_validate_password) {
-                //alert(false)
                 return false
             }
-
-            //$('#login_btn').linkbutton('disable').linkbutton({'text':'登录中...',iconCls:'icon-loading'})
-            // $('#win').html('正在登录...')
-            //$('#win').window('open')
 
             $('#login_table').hide()
             $('#login_waiting_table').show()
@@ -367,13 +344,10 @@
                         // localStorage只支持String值
                         console.log("load configs")
                         localStorage.setItem("sys_config", JSON.stringify(config))
-
                         ipcRenderer.sendSync('login-success', null) // prints "pong"
                     })
 
                 } else {
-
-
                     //$('#win').window('close')
                     $('#login_waiting_table').hide()
                     $('#login_table').show()
@@ -405,8 +379,6 @@
         function returnToLogin() {
             $('#login_failed_panel').panel('close')
             $('#login_form_panel').panel('open')
-          //  $('#login_btn').linkbutton({'text':'登录', iconCls:'icon-ok'}).linkbutton('enable')
-
             $('#setting_btn').css("visibility", "visible")
         }
 
@@ -440,10 +412,8 @@
 
 
         function afterCompleteLoading() {
-
         }
 
     </script>
 </body>
-
 </html>

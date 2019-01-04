@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh_CN">
 <head>
     <meta charset="UTF-8">
     <script>
@@ -15,9 +15,7 @@
         if (window.module)
             module = window.module;
 
-
         let sys_config = JSON.parse(localStorage.getItem('sys_config'))
-
     </script>
     <style type="text/css">
         * {
@@ -61,7 +59,6 @@
             display: block;
             -webkit-app-region: no-drag;
             cursor: default;
-
         }
 
         win_btn_tb td {
@@ -70,7 +67,6 @@
 
         .win_btn_tb a:hover {
             background-color: #eee;
-
         }
 
         .win_btn_tb a:hover#close_btn {
@@ -126,8 +122,7 @@
     </div>
 
     <div id="company_name">KIS销售管理系统&ensp;(version&nbsp;1.0.0)</div>
-    <div id="copyright">版权所有&copy;<script>document.write(sys_config.company_name)</script>
-    </div>
+    <div id="copyright">版权所有&copy;<script>document.write(sys_config.company_name)</script></div>
     <div id="powerd_by">Powerd by jim.shen<br/>shenjin@foxmail.com</div>
 </div>
 </body>
