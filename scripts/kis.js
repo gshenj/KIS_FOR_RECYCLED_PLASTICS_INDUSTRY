@@ -49,6 +49,13 @@ function onOpenOrderListPanel(){
     $('#dd_begin').datebox('setValue', myDateFormatter(begin))
     $('#dd_end').datebox('setValue', myDateFormatter(end))
 
+    let orderGridType = localStorage.getItem("order_grid_type")
+    if (orderGridType) {
+        $('#order_grid_type').combobox('setValue', orderGridType+"")
+        console.log("orderGridType = " +orderGridType)
+
+    }
+
     loadOrderGrid()
 }
 

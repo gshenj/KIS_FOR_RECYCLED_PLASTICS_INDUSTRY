@@ -1,3 +1,9 @@
+const STATE_CANCELLED = '作废'
+const STATE_OK = '正常'
+
+const ORDER_GRID_TYPE_BRIEF = 1;
+const ORDER_GRID_TYPE_DETAIL = 2;
+
 function saveOrder(order, callback) {
 
     nextSeq("order_seq", function (orderNum) {
@@ -20,10 +26,39 @@ let order_grid_columns = [[
     {field: 'order_num', title: '出库单号', width: 60, align: 'center'},
     {field: 'order_date', title: '出库日期', width: 80, align: 'center'},
     {
-        field: 'cancelled', title: '单据状态', width: 60, align: 'center', formatter: function (value, row, index) {
-            return row.cancelled ? '<span style="color:red">作废</span>' : '正常'
+        field: 'state', title: '单据状态', width: 60, align: 'center', formatter: function (value, row, index) {
+            return row.state==STATE_CANCELLED ? '<span style="color:red">'+row.state+'</span>' : row.state
         }
     },
+    {field: 'customer_name', title: '客户名称', width: 220, align: 'center'},
+    {field: 'customer_principal', title: '联系人', width: 60, align: 'center'},
+    {field: 'contact_number', title: '联系电话', width: 80, align: 'center'},
+    {field: 'delivery_address', title: '送货地址', width: 220, align: 'center'},
+    {field: 'order_maker', title: '制单人', width: 60, align: 'center'},
+    {field: 'order_driver', title: '送货司机', width: 60, align: 'center'},
+    {field: 'products_num', title: '产品总数量', width: 80, align: 'right',halign:'center'},
+    {field: 'products_sum', title: '产品总金额', width: 80, align: 'right',halign:'center'},
+    {field: 'create_date', title: '录入时间', width: 140, align: 'right',halign:'center'},
+    {field: 'products', title:'产品列表', width:80, align:'center', halign:'center', formatter:function (value, row, index) {
+            return  '<a href="#" onclick="showDetail()" >产品...</a>'
+        }
+    }
+]]
+
+let order_grid_columns2 = [[
+    {field: 'order_num', title: '出库单号', width: 60, align: 'center'},
+    {field: 'order_date', title: '出库日期', width: 80, align: 'center'},
+    {
+        field: 'state', title: '单据状态', width: 60, align: 'center', formatter: function (value, row, index) {
+            return row.state==STATE_CANCELLED ? '<span style="color:red">'+row.state+'</span>' : row.state
+        }
+    },
+    {field: 'product_name', title:'产品', width:150, align:'center', halign:'center'},
+    {field: 'product_units', title:'单位', width:40, align:'center', halign:'center'},
+    {field: 'product_num', title:'数量', width:60, align:'center', halign:'center'},
+    {field: 'product_price', title:'价格', width:60, align:'center', halign:'center'},
+    {field: 'product_sum', title:'金额', width:80, align:'center', halign:'center'},
+    {field: 'product_memo', title:'产品备注', width:80, align:'center', halign:'center'},
     {field: 'customer_name', title: '客户名称', width: 220, align: 'center'},
     {field: 'customer_principal', title: '联系人', width: 60, align: 'center'},
     {field: 'contact_number', title: '联系电话', width: 80, align: 'center'},
@@ -54,8 +89,19 @@ function productDetailFormatter(rowIndex, rowData) {
     return html += '</table></div>'
 }
 
+
+let LAST_GRID_TYPE = 0;
+
+function getGridType() {
+    return $('#order_grid_type').combo('getValue');
+}
+
 function loadOrderGrid() {
 
+    let gridType = getGridType()
+    if (LAST_GRID_TYPE != gridType) {
+        ORDER_GRID = null;
+    }
     // load order grid
     if (ORDER_GRID == null) {
         ORDER_GRID = $('#order_grid').datagrid({
@@ -69,15 +115,34 @@ function loadOrderGrid() {
             toolbar: '#order_grid_toolbar',
             title: '出库单列表',
             data: [],
-            columns: order_grid_columns,
-            view: detailview,
-            detailFormatter: productDetailFormatter
+            columns: getGridType()==1 ? order_grid_columns : order_grid_columns2
+            //view: detailview,
+            //detailFormatter: productDetailFormatter
         })
+
+        LAST_GRID_TYPE = gridType
+        localStorage.setItem("order_grid_type", gridType)
     }
 
 
     findOrders(function (docs) {
-        ORDER_GRID.datagrid('loadData', docs)
+        let docsRows = null;
+        let gridType = getGridType()
+        if (gridType == ORDER_GRID_TYPE_BRIEF) {
+            docsRows = docs
+
+        } else {
+            docsRows = []
+            for (let i=0; i<docs.length; i++) {
+                let products = docs[i].products
+                delete docs[i].products
+                for (let j=0; j<products.length; j++) {
+                    let newDoc = jQuery.extend({}, docs[i], products[j]);
+                    docsRows.push(newDoc)
+                }
+            }
+        }
+        ORDER_GRID.datagrid('loadData', docsRows)
         ORDER_GRID.datagrid('enableFilter', {filterMatchingType: 'any'})
     })
 
@@ -93,18 +158,10 @@ function findOrders(callback) {
         params.order_date = {$gte: begin, $lte: end}
     }
 
-    // let customer = $('#customer_choose_for_order_list').textbox('getValue')
-    // if (customer) {
-    //     params.customer_id = customer
-    // }
     let customer_name = $.trim($('#customer_choose_for_order_list').textbox('getText'))
     if (customer_name) {
         params.customer_name = {$regex: new RegExp(customer_name)}
     }
-
-    // if (params.customer_id && params.customer_name) {
-    //     params['$or'] = [{customer_id: customer_id}, {customer_name:}]
-    // }
 
     let order_maker = $.trim($('#order_maker_searchbox').textbox('getValue'))
     if (order_maker) {
@@ -119,12 +176,11 @@ function findOrders(callback) {
     let orderState = $('#order_state').combobox('getValue')
     if (orderState != '') {
         // orderState为''，就不做查询条件
-        params.cancelled = orderState
+        params.state = orderState
     }
 
-    console.log("Find orders ->" + JSON.stringify(params))
+    //console.log("Find orders ->" + JSON.stringify(params))
     OrderModel.find(params).populate('created_by').sort({'order_num': -1}).exec(function (err, docs) {
-        //console.log(docs)
         callback(docs)
     })
 
@@ -145,9 +201,25 @@ function doSearchOrder(input, datagrid) {
         field: 'customer_name',
         op: 'contains',
         value: searchText
-    }).datagrid('doFilter')
+    })
+
+    if (getGridType() == ORDER_GRID_TYPE_DETAIL) {
+        datagrid.datagrid('addFilterRule', {
+            field: 'product_name',
+            op: 'contains',
+            value: searchText
+        })
+    }
+
+    datagrid.datagrid('doFilter')
 }
 
+
+function findOrderById(id, callback) {
+    OrderModel.findById(id, function(err, doc) {
+        callback(doc)
+    })
+}
 
 function cancelOrder(callback) {
 
@@ -156,7 +228,7 @@ function cancelOrder(callback) {
         $.messager.alert('操作失败', '请选择单据')
         return;
     }
-    if (row.cancelled) {
+    if (row.state==STATE_CANCELLED) {
         $.messager.alert('操作失败', '单据已经作废，无法重复操作')
         return;
     }
@@ -171,8 +243,7 @@ function cancelOrder(callback) {
 
     $.messager.confirm('作废', '确定作废单号'+ row.order_num + '的出库单?', function (r) {
         if (r) {
-            OrderModel.findByIdAndUpdate(row._id, {cancelled: true, cancel_by: ''}, function (err, doc) {
-                //callback(doc);
+            OrderModel.findByIdAndUpdate(row._id, {state: STATE_CANCELLED, cancel_by: user.name+'('+user._id+')'}, function (err, doc) {
                 loadOrderGrid()
             })
         }
@@ -368,15 +439,6 @@ function doPrint() {
         return false;
     }
 
-    /*// 处理产品信息.meiyou名称和塑料的
-    for (let i=0; i<products.length; i++) {
-        if (!(products[i].product_name) || !(products[i].product_units) || !(products[i].products_num)) {
-            console.log("产品信息缺少！")
-            return false;
-            // $.messager.alert('请输入','','info')
-        }
-    }
-*/
     // save orders
     let order_date = $('#new_order_sale_date').textbox('getText');
     //let order_num = $('#new_order_sale_No').textbox('getValue')
@@ -386,8 +448,6 @@ function doPrint() {
     let maker = $('#new_order_maker').textbox('getValue')
     let driver = $('#driver_select').combobox('getText')
     //let total_sum = $('#total_sum').html()
-
-    let cancelled = false;
 
     let products_num = $('#products_num').html()
     let products_sum = $('#products_sum').html()
@@ -407,7 +467,7 @@ function doPrint() {
         create_date: (new Date()).dtFormat("yyyy-MM-dd hh:mm:ss"),
         order_maker: maker,
         order_driver: driver,
-        cancelled: cancelled,
+        state: STATE_OK,
         products: products,
         products_num: products_num,
         products_sum: products_sum,

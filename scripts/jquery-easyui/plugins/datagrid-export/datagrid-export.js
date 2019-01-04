@@ -1,11 +1,15 @@
 (function($){
     function getRows(target){
         var state = $(target).data('datagrid');
-        if (state.filterSource){
+        /*if (state.filterSource){
+            //console.log(JSON.stringify(state.filterSource))
+            //console.log(JSON.stringify(state.data))
             return state.filterSource.rows;
         } else {
             return state.data.rows;
-        }
+        }*/
+        //fixed
+        return state.data.rows
     }
     function toHtml(target, rows){
         rows = rows || getRows(target);

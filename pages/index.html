@@ -43,9 +43,8 @@
     <script type="text/javascript" src="../scripts/loading.js"></script>
     <script type="text/javascript" src="../scripts/order.js"></script>
 
-
-    <script type="text/javascript" src="../scripts/jquery-easyui/plugins/datagrid-export/datagrid-export.js"></script>
     <script type="text/javascript" src="../scripts/jquery-easyui/plugins/datagrid-filter/datagrid-filter.js"></script>
+    <script type="text/javascript" src="../scripts/jquery-easyui/plugins/datagrid-export/datagrid-export.js"></script>
     <script type="text/javascript" src="../scripts/jquery-easyui/plugins/datagrid-detailview.js"></script>
     <script type="text/javascript" src="../scripts/jquery-easyui/plugins/datagrid-groupview.js"></script>
 
@@ -423,8 +422,19 @@ padding:6px;">
                             <select id="order_state" class="easyui-combobox" data-options="panelHeight:100"
                                     style="width:100%;">
                                 <option value="">全部</option>
-                                <option value="false" selected>正常</option>
-                                <option value="true">作废</option>
+                                <option value="正常" selected>正常</option>
+                                <option value="作废">作废</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding:10px 0;">列表方式:</td>
+                        <td style="width:200px;padding:10px 0;">
+                            <select id="order_grid_type" class="easyui-combobox" data-options="panelHeight:100"
+                                    style="width:100%;">
+                                <option value="1" >销售单剧列表</option>
+                                <option value="2" >销售产品列表</option>
                             </select>
                         </td>
                     </tr>
@@ -451,6 +461,11 @@ padding:6px;">
                     <span style="margin-left:20px" class="search_label">检索：</span>
                     <input type="text" id="order_search_text" class="search_input"
                            onkeyup="onSearch(this, ORDER_GRID, doSearchOrder)">
+
+                    <!--<select id="grid_type1" class="easyui-combobox" data-options="panelHeight:60, label:'', width:120" style="margin-left:40px;">
+                        <option value="1" selected>订单总览列表</option>
+                        <option value="2">产品明细列表</option>
+                    </select>-->
                 </div>
             </div>
             <div data-options="region:'south', border:false" style="height:30px;">
@@ -1222,9 +1237,16 @@ padding:6px;">
 
     function printPreview() {
         let row = ORDER_GRID.datagrid('getSelected')
-        if (row) {
+        //todo
+        findOrderById(row._id, function(doc){
+            if (doc) {
+                preview(doc, 'list')
+            }
+        })
+
+        /*if (row) {
             preview(row, 'list')
-        }
+        }*/
     }
 
 

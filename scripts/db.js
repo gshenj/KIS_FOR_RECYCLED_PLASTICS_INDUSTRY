@@ -29,7 +29,8 @@ let customerSchema = new Schema(_customer);
 let orderProductSchema = new Schema({ product_name: String, product_model: String, product_price: String, product_units: String, product_memo: String, product_num: Number, product_sum: String }, { _id: false });
 
 let _order = {
-    cancelled: Boolean,
+    state: String,    /*正常、作废、null*/
+    cancel_by:String, /*作废人*/
     order_num: String,
     create_date: String,
     create_user: String,
