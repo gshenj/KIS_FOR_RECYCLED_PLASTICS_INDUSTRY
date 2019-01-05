@@ -1,5 +1,4 @@
 let {app, BrowserWindow, ipcMain} = require('electron');  // Module to control application life.
-//var BrowserWindow = require('electron').browser-window;  // Module to create native browser window.
 
 // Report crashes to our server.
 //require('crash-reporter').start();
@@ -9,6 +8,7 @@ if(require('electron-squirrel-startup')) app.quit()//return;
 // be closed automatically when the JavaScript object is GCed.
 let mainWindow = null;
 let loginWindow = null;
+const DEBUG = true
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -23,7 +23,6 @@ app.on('window-all-closed', function () {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function () {
-    // Create the browser window.
     createLoginWindow()
 })
 
@@ -38,7 +37,6 @@ function createMainWindow() {
     })
 
     mainWindow.loadURL('file://' + __dirname + '/pages/index.html')
-
     mainWindow.once('ready-to-show', () => {
         //mainWindow.show()
     })
@@ -60,9 +58,7 @@ function createLoginWindow() {
         show: false
     })
 
-
     loginWindow.loadURL('file://' + __dirname + '/pages/login.html')
-
     loginWindow.once('ready-to-show', () => {
         //loginWindow.show()
     })
@@ -99,7 +95,6 @@ ipcMain.on('logout', (event, arg) => {
 })
 
 
-const DEBUG = true
 ipcMain.on('debug', (event, arg) => {
     if (DEBUG)
         console.log(arg)
