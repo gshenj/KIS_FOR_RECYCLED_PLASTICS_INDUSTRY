@@ -27,11 +27,13 @@
     <link rel="stylesheet" type="text/css" href="../scripts/jquery-easyui/themes/color.css">
     <link rel="stylesheet" type="text/css" href="../styles/kis.css">
 
+    <script type="text/javascript" src="../scripts/consts.js"></script>
     <script type="text/javascript" src="../scripts/db.js"></script>
 
     <script type="text/javascript" src="../scripts/jquery-easyui/jquery.easyui.min.js"></script>
-    <!--<script type="text/javascript" src="../scripts/currencyFormatter.min.js"></script>-->
     <script type="text/javascript" src="../scripts/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+
+    <!--<script type="text/javascript" src="../scripts/jquery.number.min.js"></script>-->
 
     <script type="text/javascript" src="../scripts/kis.js"></script>
     <script type="text/javascript" src="../scripts/user.js"></script>
@@ -39,6 +41,7 @@
     <script type="text/javascript" src="../scripts/product.js"></script>
     <script type="text/javascript" src="../scripts/classification.js"></script>
     <script type="text/javascript" src="../scripts/cartype.js"></script>
+    <script type="text/javascript" src="../scripts/driver.js"></script>
     <script type="text/javascript" src="../scripts/utils.js"></script>
     <script type="text/javascript" src="../scripts/loading.js"></script>
     <script type="text/javascript" src="../scripts/order.js"></script>
@@ -49,45 +52,7 @@
     <script type="text/javascript" src="../scripts/jquery-easyui/plugins/datagrid-groupview.js"></script>
 
     <script>
-        $.extend($.fn.textbox.methods, {
-            addClearBtn: function (jq, iconCls) {
-                return jq.each(
-                    function () {
-                        var t = $(this);
-                        //console.log("t======" + JSON.stringify(t))
-                        var opts = t.textbox('options');
-                        opts.icons = []//opts.icons || [];  fixed
-                        opts.icons.unshift({
-                            iconCls: iconCls,
-                            handler: function (e) {
-                                // console.log("Before clear:" + $(e.data.target).textbox('getText') + "-" + $(e.data.target).textbox('getValue'))
-                                $(e.data.target).textbox('setValue', '').textbox('setText', '')//.textbox('textbox').focus();
-                                $(this).css('visibility', 'hidden');
-                                // console.log("After clear:" + $(e.data.target).textbox('getText') + "-" + $(e.data.target).textbox('getValue'))
 
-                                if (customer_choose_dlg_type == 'list_products') {
-                                    loadProducts()
-                                } else if (customer_choose_dlg_type == 'new_order') {
-                                    resetOrder()
-                                }
-                            }
-                        });
-                        t.textbox();
-                        if (!t.textbox('getText')) {
-                            t.textbox('getIcon', 0).css('visibility', 'hidden');
-                        }
-                        t.textbox('textbox').bind('keyup', function () {
-                            var icon = t.textbox('getIcon', 0);
-                            if ($(this).val()) {
-                                icon.css('visibility', 'visible');
-                            } else {
-                                icon.css('visibility', 'hidden');
-                            }
-                        });
-                    }
-                );
-            }
-        });
     </script>
 </head>
 
@@ -174,13 +139,13 @@
 	padding:6px;  -webkit-user-select: none; ">
             <div style="float:left; width:60%; padding:0px;">
                 <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
-                   onclick="show_panel(this, 'order_input_panel')"
+                   onclick="showPanel(this, 'order_input_panel')"
                    data-options="plain:true, iconCls:'icon-large-neworder', size:'large', iconAlign:'left'">单据填开</a>
                 <a id="order_list_menu" class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
-                   onclick="show_panel(this, 'orders_grid_panel')"
+                   onclick="showPanel(this, 'orders_grid_panel')"
                    data-options="plain:true, iconCls:'icon-large-orderlist', size:'large', iconAlign:'left'">单据查询</a>
                 <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
-                   onclick="show_panel(this, 'orders_report_panel')"
+                   onclick="showPanel(this, 'orders_report_panel')"
                    data-options="plain:true, iconCls:'icon-large-orderreport', size:'large', iconAlign:'left'">统计报表</a>
             </div>
         </div>
@@ -188,28 +153,28 @@
         <div title="资料管理" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:6px;">
             <div style="float:left; width:60%; padding:0px;">
-                <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'customer_manage_panel')"
+                <a class="easyui-linkbutton tool_button" onclick="showPanel(this, 'customer_manage_panel')"
                    data-options="plain:true, iconCls:'icon-large-customerconfig', size:'large', iconAlign:'left'">客户管理</a>
 
-                <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'product_manage_panel')"
+                <a class="easyui-linkbutton tool_button" onclick="showPanel(this, 'product_manage_panel')"
                    data-options="plain:true, iconCls:'icon-large-productmanage',size:'large', iconAlign:'left'">产品管理</a>
 
-                <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'driver_manage_panel')"
+                <a class="easyui-linkbutton tool_button" onclick="showPanel(this, 'driver_manage_panel')"
                    data-options="plain:true, iconCls:'icon-large-drivermanage',size:'large',iconAlign:'left'">司机管理</a>
             </div>
         </div>
 
         <div title="系统设置" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 	padding:6px;">
-            <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'user_manage_panel')"
+            <a class="easyui-linkbutton tool_button" onclick="showPanel(this, 'user_manage_panel')"
                data-options="plain:true,  size:'large', iconCls:'icon-large-usermanage', iconAlign:'left'">用户管理</a>
-            <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'sys_config_panel')"
+            <a class="easyui-linkbutton tool_button" onclick="showPanel(this, 'sys_config_panel')"
                data-options="plain:true, size:'large', iconCls:'icon-large-sysconfig', iconAlign:'left'">系统参数</a>
         </div>
 
         <!-- <div title="我的账户" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
 padding:6px;">
-            <a class="easyui-linkbutton tool_button" onclick="show_panel(this, 'password_set_panel')" data-options="plain:true, iconCls:'icon-large-passwordmanage', size:'large',iconAlign:'left'">密码设置</a>
+            <a class="easyui-linkbutton tool_button" onclick="showPanel(this, 'password_set_panel')" data-options="plain:true, iconCls:'icon-large-passwordmanage', size:'large',iconAlign:'left'">密码设置</a>
             <a class="easyui-linkbutton tool_button" onclick="logout()" data-options="plain:true, size:'large', iconCls:'icon-large-logout', iconAlign:'left'">注销登录</a>
         </div> -->
     </div>
@@ -373,7 +338,7 @@ padding:6px;">
     <div id="orders_grid_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
          data-options="fit:true, closed:true, border:false, onOpen:onOpenOrderListPanel">
         <div class="easyui-layout" data-options="fit:true, border:false">
-            <div data-options="region:'west'" style="width:280px; padding:4px 8px;">
+            <div data-options="region:'west'" style="width:260px; padding:4px 8px;">
                 <table style="width:100%; border-collapse: collapse">
                     <tr>
                         <th COLSPAN="2">
@@ -382,19 +347,19 @@ padding:6px;">
                     </tr>
                     <tr>
                         <td style="padding:10px 0 5px 0;">起始日期:
-                        <td style="width:200px;padding:10px 0 5px 0;"><input id="dd_begin" type="text"
+                        <td style="width:140px;padding:10px 0 5px 0;"><input id="dd_begin" type="text"
                                                                              class="easyui-datebox"
                                                                              style="width:100%"/>
                         </td>
                     </tr>
                     <tr>
                         <td style="padding:5px 0 10px 0;">结束日期:
-                        <td style="width:200px;padding:5px 0 10px 0;"><input id="dd_end" type="text" style="width:100%"
+                        <td style="width:140px;padding:5px 0 10px 0;"><input id="dd_end" type="text" style="width:100%"
                                                                              class="easyui-datebox"/></td>
                     </tr>
                     <tr>
                         <td style="padding:10px 0;">客户名称:</td>
-                        <td style="width:200px;padding:10px 0;">
+                        <td style="width:140px;padding:10px 0;">
                             <input id="customer_choose_for_order_list" class="easyui-textbox" data-options="icons: [{
                                     iconCls:'icon-select',
                                     handler: function(e){
@@ -406,19 +371,19 @@ padding:6px;">
                     </tr>
                     <tr>
                         <td style="padding:10px 0;">制&ensp;单&ensp;人:</td>
-                        <td style="width:200px;padding:10px 0;">
+                        <td style="width:140px;padding:10px 0;">
                             <input id="order_maker_searchbox" class="easyui-textbox" style="width:100%"/>
                         </td>
                     </tr>
                     <tr>
                         <td style="padding:10px 0;">送货司机:</td>
-                        <td style="width:200px;padding:10px 0;">
+                        <td style="width:140px;padding:10px 0;">
                             <input id="order_dirver_searchbox" class="easyui-textbox" style="width:100%"/>
                         </td>
                     </tr>
                     <tr>
                         <td style="padding:10px 0;">单据状态:</td>
-                        <td style="width:200px;padding:10px 0;">
+                        <td style="width:140px;padding:10px 0;">
                             <select id="order_state" class="easyui-combobox" data-options="panelHeight:100"
                                     style="width:100%;">
                                 <option value="">全部</option>
@@ -427,18 +392,6 @@ padding:6px;">
                             </select>
                         </td>
                     </tr>
-
-                    <tr>
-                        <td style="padding:10px 0;">列表方式:</td>
-                        <td style="width:200px;padding:10px 0;">
-                            <select id="order_grid_type" class="easyui-combobox" data-options="panelHeight:100"
-                                    style="width:100%;">
-                                <option value="1" >销售单剧列表</option>
-                                <option value="2" >销售产品列表</option>
-                            </select>
-                        </td>
-                    </tr>
-
                     <tr>
                         <td style=""></td>
                         <td style="text-align: center; padding:15px 0;"><a class="easyui-linkbutton" style="width:100%;"
@@ -453,8 +406,8 @@ padding:6px;">
                 <div id="order_grid_toolbar" style="padding:2px 5px;">
                     <a href="#" class="easyui-linkbutton" iconCls="icon-cancel_order" plain="true"
                        onclick="cancelOrder()">作废</a>
-                    <a href="#" class="easyui-linkbutton" iconCls="icon-print" plain="true"
-                       onclick="printPreview()">打印</a>
+                    <a href="#" class="easyui-linkbutton" iconCls="icon-detail" plain="true"
+                       onclick="printPreview()">明细</a>
                     <a href="#" class="easyui-linkbutton" iconCls="icon-sum" plain="true" onclick="calcSum()">统计</a>
                     <a href="#" class="easyui-linkbutton" iconCls="icon-export" plain="true"
                        onclick="exportExcel(ORDER_GRID, '出货单列表.xls')">导出XLS</a>
@@ -462,6 +415,12 @@ padding:6px;">
                     <input type="text" id="order_search_text" class="search_input"
                            onkeyup="onSearch(this, ORDER_GRID, doSearchOrder)">
 
+                    <span style="margin-left:20px;">列表方式：</span>
+                    <select id="order_grid_type" class="easyui-combobox" data-options="panelHeight:60, onChange:changeGridType"
+                            style="width:120px;">
+                        <option value="1" >销售单剧列表</option>
+                        <option value="2" >销售产品列表</option>
+                    </select>
                     <!--<select id="grid_type1" class="easyui-combobox" data-options="panelHeight:60, label:'', width:120" style="margin-left:40px;">
                         <option value="1" selected>订单总览列表</option>
                         <option value="2">产品明细列表</option>
@@ -925,7 +884,7 @@ padding:6px;">
                     </table>
                 </div>
                 <div style="margin-top:40px; text-align:right;">
-                    <a onclick="set_company()" class="easyui-linkbutton" style="width:100px">确定</a>
+                    <a onclick="saveCompany()" class="easyui-linkbutton" style="width:100px">确定</a>
                 </div>
             </form>
         </div>
@@ -1026,293 +985,5 @@ padding:6px;">
     </div>
 
 </div>
-
-<script>
-    const {BrowserWindow} = require('electron').remote
-    const {ipcRenderer} = require('electron')
-    const win = require('electron').remote.getCurrentWindow();
-
-    function onCarTypeTreeContextMenu(e, node) {
-        e.preventDefault();
-        $(this).tree('select', node.target);
-        let root = $(this).tree('getRoot')
-        let mm = $('#mm_cartype')
-        mm.menu('show', {
-            left: e.pageX,
-            top: e.pageY
-        });
-
-        let item_edit = $('#cartype_edit')[0];
-        let item_append = $('#cartype_append')[0];
-        let item_delete = $('#cartype_delete')[0];
-
-        if (root == node) {
-            mm.menu('enableItem', item_append)
-            mm.menu('disableItem', item_edit)
-            mm.menu('disableItem', item_delete)
-        } else {
-            mm.menu('disableItem', item_append)
-            mm.menu('enableItem', item_edit)
-            mm.menu('enableItem', item_delete)
-        }
-    }
-
-
-    function onClassificationTreeContextMenu(e, node) {
-        e.preventDefault();
-        $(this).tree('select', node.target);
-        let root = $(this).tree('getRoot')
-
-        let mm = $('#mm_classification');
-        mm.menu('show', {
-            left: e.pageX,
-            top: e.pageY
-        });
-
-        let item_edit = $('#classification_edit')[0];
-        let item_append = $('#classification_append')[0];
-        let item_delete = $('#classification_delete')[0];
-
-        if (root == node) {
-            mm.menu('enableItem', item_append)
-            mm.menu('disableItem', item_edit)
-            mm.menu('disableItem', item_delete)
-
-        } else {
-            mm.menu('disableItem', item_append)
-            mm.menu('enableItem', item_edit)
-            if ($(this).tree('isLeaf', node.target)) {
-                mm.menu('enableItem', item_delete)
-            } else {
-                mm.menu('disableItem', item_delete)
-            }
-
-
-        }
-    }
-
-
-    function menuHandler(item) {
-
-        switch (item.name) {
-            case 'account_info':
-                let u = JSON.parse(localStorage.getItem('user'))
-                $.messager.alert("用户信息", '用户：' + u.name + "<br/>角色：" + u.role, 'info')
-                break;
-            case 'logout':
-                logout();
-                break;
-            case 'check-update':
-                setTimeout(function () {
-                    $.messager.alert("更新", '当前版本为最新版', 'info')
-                }, 3000)
-                break;
-            case 'about':
-                // show about
-                let win_about = new BrowserWindow({
-                    width: 300,
-                    height: 200,
-                    modal: true,
-                    show: false,
-                    maximizable: false,
-                    minimizable: false,
-                    resizable: false,
-                    frame: false,
-                    parent: win,
-                    title: '关于系统',
-                    autoHideMenuBar: true
-                })
-                win_about.loadURL('file://' + __dirname + '/about.html')
-                win_about.on('closed', () => {
-                    win_about = null
-                })
-                win_about.once('ready-to-show', () => {
-                    moveChildWindowToParentCenter(win_about, win)
-                    win_about.show()
-
-                })
-                break;
-            case 'exit':
-                //
-                closewin(true)
-                break;
-            case 'set_password':
-                // 改弹出框'
-                $('#fm_for_setpassword').form('clear')
-                $('#dlg_for_setpassword').dialog('open').dialog('center')
-                break;
-            default:
-                ;
-        }
-    }
-
-
-    win.on('maximize', function () {
-        $('#to_max').hide();
-        $('#to_unmax').show();
-    })
-
-    win.on('unmaximize', function () {
-        $('#to_unmax').hide();
-        $('#to_max').show();
-    })
-
-
-    function afterCompleteLoading() {
-        ipcRenderer.sendSync('main-window-ready', null)
-        //默认最大化窗口
-        maxwin()
-    }
-
-
-    function showAccountMenu(e) {
-        e.preventDefault();
-        $('#account_info').menu('show', {
-            left: e.pageX,
-            top: 105
-        })
-    }
-
-
-    $(function () {
-
-        SYS_CONFIG = JSON.parse(localStorage.getItem('sys_config'))
-        $('#main_title').html(SYS_CONFIG.company_name + KIS_NAME + " " + KIS_VERSION)
-
-        $('#new_order_sale_date').datebox().datebox('calendar').calendar({
-            validator: function (date) {
-                var now = new Date();
-                var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
-                var d2 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 6);
-                return d1 <= date && date <= d2;
-            }
-        });
-
-
-        $('.account_logo').bind('click', function (e) {
-            showAccountMenu(e)
-        });
-
-        $('#customer_choose_for_product_manage').textbox('addClearBtn', 'icon-clear');
-        $('#customer_choose_for_product_manage').textbox('textbox').bind('focus', function (e) {
-            open_customer_choose_for_product_manage()
-        });
-        $('#new_order_customer_name').textbox('addClearBtn', 'icon-clear');
-        $('#new_order_customer_name').textbox('textbox').bind('focus', function (e) {
-            open_customer_choose_for_new_order()
-        });
-
-        //去掉tab菜单按钮的href，防止鼠标按住拖动出现href属性
-        $('.tabs li a').removeAttr('href')
-
-
-        let user = JSON.parse(localStorage.getItem('user'))
-        if (!isAdmin(user.role)) {
-            $('#main_tabs').tabs('close', '资料管理')
-            $('#main_tabs').tabs('close', '系统设置')
-        }
-
-    });
-
-
-    function open_customer_choose_for_product_manage() {
-        customer_choose_dlg_type = 'list_products'
-        $('#dlg_for_customer_choose').dialog('open').dialog('center')
-    }
-
-    function open_customer_choose_for_new_order() {
-        customer_choose_dlg_type = 'new_order'
-        $('#dlg_for_customer_choose').dialog('open').dialog('center')
-    }
-
-    function open_customer_choose_for_list_order() {
-        customer_choose_dlg_type = 'list_order'
-        $('#dlg_for_customer_choose').dialog('open').dialog('center')
-    }
-
-    function logout() {
-        ipcRenderer.sendSync('logout')
-    }
-
-
-    function printPreview() {
-        let row = ORDER_GRID.datagrid('getSelected')
-        //todo
-        findOrderById(row._id, function(doc){
-            if (doc) {
-                preview(doc, 'list')
-            }
-        })
-
-        /*if (row) {
-            preview(row, 'list')
-        }*/
-    }
-
-
-    function maxwin() {
-        if (win.isMaximized())
-            win.unmaximize()
-        else
-            win.maximize()
-    }
-
-    function minwin() {
-        win.minimize()
-    }
-
-    function closewin(slience) {
-        if (slience) {
-            win.close()
-
-        } else {
-            $.messager.confirm('确定', '确定要关闭应用程序吗?', function (r) {
-                if (r) {
-                    win.close()
-                }
-            });
-        }
-    }
-
-
-    function preview(order, type) {
-        type = type || 'new_order'
-        localStorage.setItem('order', JSON.stringify(order));
-        let win_print = new BrowserWindow({
-            width: 800,
-            height: 550,
-            modal: true,
-            show: false,
-            maximizable: false,
-            minimizable: false,
-            resizable: false,
-            parent: win,
-            frame: false,
-            title: '打印',
-            autoHideMenuBar: true
-        })
-        win_print.on('closed', () => {
-            win_print = null
-
-            if (type == 'new_order') {
-                $.messager.confirm('', '是否继续填写出货单?', function (r) {
-                    if (r) {
-                        resetOrder();
-                    } else {
-                        $('#order_list_menu').click()
-                    }
-                })
-
-            } else if (type == 'list') {
-
-            }
-        })
-
-        win_print.loadURL('file://' + __dirname + '/print_template.html')
-        moveChildWindowToParentCenter(win_print, win)
-        win_print.show()
-    }
-</script>
-
 </body>
 </html>

@@ -65,10 +65,10 @@ body {
 }
 
 input.search_input {
-    width: 200px;
-    height: 16px;
-    line-height: 16px;
-    font-size:11px;
+    width: 150px;
+    height: 18px;
+    line-height: 18px;
+    font-size:12px;
 }
 
 .search_label {
@@ -381,4 +381,9 @@ div.toolbar1 {
 
 .icon-remove-line {
     background:url('../scripts/jquery-easyui/themes/icons/edit_remove.png') no-repeat center center;
+}
+
+.icon-detail {
+    background:url('../images/detail_x16.png') no-repeat center center;
+
 }

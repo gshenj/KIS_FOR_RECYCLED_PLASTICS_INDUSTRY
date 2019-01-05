@@ -1,26 +1,39 @@
-const STATE_CANCELLED = '作废'
-const STATE_OK = '正常'
+let ORDER_GRID = null;
+let LAST_GRID_TYPE = 0;
 
-const ORDER_GRID_TYPE_BRIEF = 1;
-const ORDER_GRID_TYPE_DETAIL = 2;
+function getCurrentSeq(seq_name, callback) {
+    SequenceModel.findOne({ "seq_name": seq_name }, function (err, doc) {
+        if (doc) {
+            callback(doc.value)
+        } else {
+            SequenceModel.create({ 'seq_name': seq_name, value: 100000 }, function (err, doc) {
+                callback(doc.value)
+            })
+        }
+    })
+}
+
+function nextSeq(seq_name, callback) {
+    SequenceModel.findOneAndUpdate({ "seq_name": seq_name }, { $inc: { value: 1 } }, function (err, doc) {
+        if (doc) {
+            callback(doc.value)
+        }
+    })
+}
 
 function saveOrder(order, callback) {
-
     nextSeq("order_seq", function (orderNum) {
         order.order_num = orderNum
         OrderModel.create(order, function (err, doc) {
             if (err) handleError(err)
             if (doc) {
-                console.log("保存订单成功！")
-                console.log(JSON.stringify(doc))
+                debug("保存订单成功！")
+                //console.log(JSON.stringify(doc))
                 callback(doc)
             }
         })
     })
 }
-
-
-let ORDER_GRID = null;
 
 let order_grid_columns = [[
     {field: 'order_num', title: '出库单号', width: 60, align: 'center'},
@@ -38,11 +51,11 @@ let order_grid_columns = [[
     {field: 'order_driver', title: '送货司机', width: 60, align: 'center'},
     {field: 'products_num', title: '产品总数量', width: 80, align: 'right',halign:'center'},
     {field: 'products_sum', title: '产品总金额', width: 80, align: 'right',halign:'center'},
-    {field: 'create_date', title: '录入时间', width: 140, align: 'right',halign:'center'},
+    {field: 'create_date', title: '录入时间', width: 140, align: 'right',halign:'center'}/*,
     {field: 'products', title:'产品列表', width:80, align:'center', halign:'center', formatter:function (value, row, index) {
             return  '<a href="#" onclick="showDetail()" >产品...</a>'
         }
-    }
+    }*/
 ]]
 
 let order_grid_columns2 = [[
@@ -90,10 +103,12 @@ function productDetailFormatter(rowIndex, rowData) {
 }
 
 
-let LAST_GRID_TYPE = 0;
+function changeGridType(newValue, oldValue) {
+    loadOrderGrid()
+}
 
 function getGridType() {
-    return $('#order_grid_type').combo('getValue');
+    return $('#order_grid_type').combobox('getValue');
 }
 
 function loadOrderGrid() {
@@ -102,14 +117,11 @@ function loadOrderGrid() {
     if (LAST_GRID_TYPE != gridType) {
         ORDER_GRID = null;
     }
-    // load order grid
     if (ORDER_GRID == null) {
         ORDER_GRID = $('#order_grid').datagrid({
             fit: true,
             singleSelect: true,
             border: false,
-            //fitColumns:true,
-            //width: 1400,
             showFilterBar: false,
             rownumbers: true,
             toolbar: '#order_grid_toolbar',
@@ -123,7 +135,6 @@ function loadOrderGrid() {
         LAST_GRID_TYPE = gridType
         localStorage.setItem("order_grid_type", gridType)
     }
-
 
     findOrders(function (docs) {
         let docsRows = null;
@@ -179,7 +190,6 @@ function findOrders(callback) {
         params.state = orderState
     }
 
-    //console.log("Find orders ->" + JSON.stringify(params))
     OrderModel.find(params).populate('created_by').sort({'order_num': -1}).exec(function (err, docs) {
         callback(docs)
     })
@@ -253,11 +263,9 @@ function cancelOrder(callback) {
 
 function resetOrder() {
     $('#new_order_form').form('clear')
-    // set order maker
     let current_user = localStorage.getItem('user')
     current_user = JSON.parse(current_user)
     $('#new_order_maker').textbox('setValue', current_user.name)
-    // set order No.
     getCurrentSeq("order_seq", function (value) {
         $('#new_order_sale_No').html(value + 1)
     })
@@ -302,7 +310,6 @@ function endEditing() {
 function deleteOrderRow() {
     removeit()
 }
-
 
 function addOrderRow() {
     if (endEditing()) {
@@ -360,7 +367,6 @@ function deleteAllRows() {
 
 function onClickCell(index, field, value) {
 
-    console.log("onClickCell")
     if (editIndex != index) {
         if (endEditing()) {
             $('#order_products_grid').datagrid('selectRow', index)
@@ -492,55 +498,12 @@ function doPrint() {
     }, 1000)
 }
 
-
-/*
-
-$.extend($.fn.datagrid.methods, {
-    keyCtr : function (jq) {
-        return jq.each(function () {
-            var grid = $(this);
-            grid.datagrid('getPanel').panel('panel').attr('tabindex', 1).bind('keydown', function (e) {
-                switch (e.keyCode) {
-                    case 38: // up
-                        var selected = grid.datagrid('getSelected');
-
-                        if (selected) {
-                            var index = grid.datagrid('getRowIndex', selected);
-                            if (index > 0) {
-                                onClickCell(index - 1, 'product_name', null)
-                            }
-                        }
-                        break;
-                    case 40: // down
-                        var selected = grid.datagrid('getSelected');
-                        var rows = grid.datagrid('getRows')
-                        if (selected) {
-                            var index = grid.datagrid('getRowIndex', selected);
-                            if (index < rows.length - 1) {
-                                onClickCell(index + 1, 'product_name', null)
-                            } else {
-                                addOrderRow()
-                            }
-                        }
-                        break;
-                }
-            });
-        });
-    }
-});
-
-*/
-
-
 function onLoadSuccess() {
     let b = '#order_products_grid_wrapper'
     $(b).bind('click', function () {
         accept()
     })
-
-    // $("#order_products_grid").datagrid("keyCtr");
 }
-
 
 function onChangePrice(newValue, oldValue) {
     var ed = $('#order_products_grid').datagrid('getEditor', {index: editIndex, field: 'product_num'});
@@ -559,13 +522,11 @@ function onChangePrice(newValue, oldValue) {
         //$(ed1.target).numberbox('clear')
         $(ed1.target).numberbox('setValue', '')
     }
-
-
 }
 
 function onChangeNum(newValue, oldValue) {
-    var ed = $('#order_products_grid').datagrid('getEditor', {index: editIndex, field: 'product_price'});
-    var ed1 = $('#order_products_grid').datagrid('getEditor', {index: editIndex, field: 'product_sum'});
+    let ed = $('#order_products_grid').datagrid('getEditor', {index: editIndex, field: 'product_price'});
+    let ed1 = $('#order_products_grid').datagrid('getEditor', {index: editIndex, field: 'product_sum'});
 
     if (ed) {
         let sumValue = ''
@@ -577,10 +538,7 @@ function onChangeNum(newValue, oldValue) {
         }
     }
     if (ed1) {
-        //$(ed1.target).numberbox('clear')
         $(ed1.target).numberbox('setValue', '')
-
-
     }
 
 }
@@ -588,7 +546,6 @@ function onChangeNum(newValue, oldValue) {
 
 
 function onOpenOrderReportPanel() {
-
 }
 
 
@@ -602,7 +559,5 @@ function calcSum() {
         if (rows[i].products_sum)
             totalSum += Number(rows[i].products_sum);
     }
-
-    //OSREC.CurrencyFormatter.format(totalSum, { currency: 'CNY' })
     $.messager.alert("统计", '产品总数量：' + totalNum+ "<br/>产品总金额：" +Number(totalSum).toFixed(2), 'info')
 }

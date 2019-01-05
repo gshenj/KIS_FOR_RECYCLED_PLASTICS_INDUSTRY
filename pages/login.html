@@ -127,7 +127,7 @@
         }
     </style>
 </head>
-<body>
+<body style="border:0px solid blue;">
     <div id="title_bar">
         <div style="height:20px; width:20px; margin:3px 2px 0px 5px; line-height: 20px; float:left; background-color:#fff;">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
@@ -331,10 +331,9 @@
                     localStorage.setItem('user', JSON.stringify(u))
                     let local_users = localStorage.getItem("local_users") || '[]'
                     local_users = JSON.parse(local_users)
-
                     local_users = $.grep(local_users, function (n, i) {
                         return n != user
-                    });
+                    })
 
                     local_users.unshift(user);
                     console.log('set local_users ' + local_users)
@@ -342,7 +341,6 @@
 
                     loadConfig(function (config) {
                         // localStorage只支持String值
-                        console.log("load configs")
                         localStorage.setItem("sys_config", JSON.stringify(config))
                         ipcRenderer.sendSync('login-success', null) // prints "pong"
                     })
@@ -382,9 +380,7 @@
             $('#setting_btn').css("visibility", "visible")
         }
 
-
         let isShowSetting = false;
-
         function showSetting() {
             if (isShowSetting) {
                 isShowSetting = false;

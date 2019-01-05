@@ -1,6 +1,4 @@
-
 let opt_type_for_classification
-
 
 /**
  * 编辑选中分类节点
@@ -118,11 +116,8 @@ function saveClassifications(tree, callback) {
     // save data to db
 }
 
-
-
 function treeToClassification(obj) {
     if (typeof(obj.text) == 'undefined') {
-        //console.log("obj is :"+obj+ ", obj.text is undefined")
         return null
     }
 
@@ -131,17 +126,8 @@ function treeToClassification(obj) {
         console.log("children is" + JSON.stringify(children))
         let treeChildren = []
         for (let i = 0; i < children.length; i++) {
-            //let child = {"text": children[i].name}  //
-            //console.log("will revers "+JSON.stringify(children[i]))
-
             let childChildren = treeToClassification(children[i]);
-            //console.log("revers result "+JSON.stringify(childChildren))
-
-            if (childChildren == null) {
-                // break;
-                //treeChildren.push(childChildren)
-            } else {
-                //child.children = childChildren;
+            if (childChildren) {
                 treeChildren.push(childChildren)
             }
         }

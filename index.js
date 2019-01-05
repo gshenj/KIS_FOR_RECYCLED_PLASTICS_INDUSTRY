@@ -97,3 +97,10 @@ ipcMain.on('logout', (event, arg) => {
     mainWindow.close()
     event.returnValue = null
 })
+
+
+const DEBUG = true
+ipcMain.on('debug', (event, arg) => {
+    if (DEBUG)
+        console.log(arg)
+})

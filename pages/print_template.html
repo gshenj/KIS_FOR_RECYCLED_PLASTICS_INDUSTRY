@@ -22,6 +22,8 @@
     </script>
     <link rel="stylesheet" type="text/css" href="../scripts/jquery-easyui/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="../scripts/jquery-easyui/themes/icon.css">
+
+    <script type="text/javascript" src="../scripts/consts.js"></script>
     <script type="text/javascript" src="../scripts/jquery-easyui/jquery.easyui.min.js"></script>
 
     <style type="text/css">
@@ -100,7 +102,7 @@
             if (config)
                 config = JSON.parse(config)
 
-            if (order.cancelled) {
+            if (order.state==STATE_CANCELLED) {
                 $('#cancel_text').show()
             }
 
@@ -227,7 +229,7 @@
 
                 <td id="sale_date_div" colspan="2" style="text-align:right; padding-right:2px;">
                     送货日期：
-                    <span id="sale_date"></span>
+                    <span id="order_date"></span>
                 </td>
             </tr>
         </table>
@@ -249,7 +251,7 @@
     <table class="print_sign_table" style="width:100%;margin:20px 0 10px;">
         <tr>
             <td style="width:33.3%; text-align: center;padding-right:15%;">制单人：<span id="order_maker"></span></td>
-            <td style="width:33.3%; text-align: center;padding-right:15%;">送货司机：<span id="order_driver"></span>
+            <td style="width:33.3%; text-align: center;">送货司机：<span id="order_driver"></span>
             </td>
             <td style="width:33.3%; text-align: center; padding-right:15%;">签收人：</td>
         </tr>
@@ -262,7 +264,7 @@
         <a class="easyui-linkbutton" style="-webkit-app-region: no-drag;" onclick="print_order()"
            data-options="iconCls:'icon-print',iconAlign:'left'">打印</a>
         <a class="easyui-linkbutton" style="margin-left:100px;-webkit-app-region: no-drag;" onclick="closeWin()"
-           data-options="iconCls:'icon-cancel',iconAlign:'left'">关闭</a>
+           data-options="iconCls:'icon-cancel',iconAlign:'left'">取消</a>
     </div>
 
 </div>

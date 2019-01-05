@@ -1,5 +1,7 @@
 ///////////////////////////////////////////产品数据表格////////////////////////////////////////////
 let PRODUCT_GRID = null;
+let opt_type_for_product;
+let PRODUCT_GRID_FOR_CHOOSE
 
 function loadProducts() {
     let title = '客户产品管理'
@@ -15,8 +17,6 @@ function loadProducts() {
     load_product_grid(customer_id, title)
 
 }
-
-
 
 let product_grid_toolbar = [{
     text: '添加',
@@ -41,9 +41,7 @@ let product_grid_columns = [[
     {field: 'customer', title: '所属客户', hidden:true, width: 160, align: 'center'}
 ]]
 
-
 function load_product_grid(customerId, title) {
-
     if (PRODUCT_GRID == null) {
         PRODUCT_GRID = $('#product_grid').datagrid({
             fit:true,
@@ -56,8 +54,6 @@ function load_product_grid(customerId, title) {
             data: [],
             columns: product_grid_columns
         })
-
-
     }
 
     let params = {customer: customerId}
@@ -70,18 +66,14 @@ function load_product_grid(customerId, title) {
     }
 }
 
-
-
-let opt_type_for_product;
 function newProduct(){
     $('#dlg_for_product').dialog('open').dialog('center').dialog('setTitle','添加产品信息');
     $('#fm_for_product').form('clear');
     opt_type_for_product = 'new'
 }
 
-
 function editProduct(){
-    var row = PRODUCT_GRID.datagrid('getSelected');
+    let row = PRODUCT_GRID.datagrid('getSelected');
     if (row){
         $('#dlg_for_product').dialog('open').dialog('center').dialog('setTitle','编辑产品信息');
         $('#fm_for_product').form('load',row);
@@ -139,7 +131,6 @@ function destroyProduct(){
     }
 }
 
-let PRODUCT_GRID_FOR_CHOOSE
 function onOpenProductChooseDlg(){
     let customerId = $('#new_order_customer_name').textbox('getValue')
     if (!customerId) {
@@ -167,14 +158,10 @@ function onOpenProductChooseDlg(){
             columns: product_grid_columns
         })
     }
-
-
     let params = { $or: [ {customer: customerId}, { customer: null } ] }
     ProductModel.find(params).sort({'customer':-1}).exec(function(err, docs){
-        //console.log(JSON.stringify(docs))
         PRODUCT_GRID_FOR_CHOOSE.datagrid('loadData', docs)
     })
-
     return true
 }
 
@@ -198,8 +185,6 @@ function chooseProduct(){
 
             ed = $('#order_products_grid').datagrid('getEditor', {index:selectedIndex, field:'product_memo'})
             $(ed.target).textbox('setValue', row.memo)
-
-
         }
     }
 }

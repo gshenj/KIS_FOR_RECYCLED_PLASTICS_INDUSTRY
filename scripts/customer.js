@@ -1,13 +1,10 @@
-
-
 let CUSTOMER_GRID = null
 let enable_customer_filter = false
-
+let customer_choose_dlg_type = null;
+let opt_type_for_customer;
 let editIndex = undefined;
 
 function loadCustomerGrid(node) {
-
-
     let t = $('#classification_tree')
     if (node == null) {
         node = t.tree('getSelected')
@@ -31,11 +28,7 @@ function loadCustomerGrid(node) {
         params.classification = {$in: arr}
     }
 
-    console.log("Classification params is "+JSON.stringify(params))
-
-
     if (CUSTOMER_GRID == null) {
-        console.log("First time load customer grid.")
         CUSTOMER_GRID = $('#grid_for_customer').datagrid({
             fit: true,
             singleSelect: true,
@@ -70,8 +63,6 @@ function loadCustomerGrid(node) {
     })
 }
 
-
-let opt_type_for_customer;
 function newCustomer(){
     $('#dlg_for_customer').dialog('open').dialog('center').dialog('setTitle','添加客户');
     $('#fm_for_customer').form('clear');
@@ -82,9 +73,6 @@ function newCustomer(){
             $('#customer_classification').combotree('setValue', {id:node.text, text:node.text})
         }
     }
-
-    //load_product_grid(null)
-
     opt_type_for_customer = 'new'
 }
 
@@ -96,14 +84,10 @@ function editCustomer(){
         console.log("ROw"+JSON.stringify(row))
         $('#fm_for_customer').form('load',row);
 
-        // 加载客户产品表格
-        //load_product_grid(row)
-        // url = 'update_user.php?id='+row.id;
         opt_type_for_customer = 'edit'
     }
 }
 
-//todo
 function saveCustomer() {
 
     let name = $('#customer_name').textbox('getValue')
@@ -112,19 +96,15 @@ function saveCustomer() {
     let phone = $('#customer_phone').textbox('getValue')
     let address = $('#customer_address').textbox('getValue')
     let index_code = $('#customer_index_code').textbox('getValue')
-   // let products = PRODUCT_GRID.datagrid('getData').rows
 
     let customer = {name: name, classification: classification ,
         index_code:index_code, principal: principal, phone:phone, address:address}
 
     if (opt_type_for_customer == 'new') {
-        //customer.products = []
         console.log("New customer is: " + JSON.stringify(customer))
         CustomerModel.create(customer, function () {
-
             $('#dlg_for_customer').dialog('close');
             loadCustomerGrid(null)
-
         })
 
     } else if (opt_type_for_customer == 'edit') {
@@ -159,7 +139,7 @@ function destroyCustomer(){
 function showClassificationCombotree(){
     loadClassifications(function (data) {
         $('#customer_classification').combotree('loadData', data)
-    });
+    })
 }
 
 
@@ -234,8 +214,6 @@ function loadCustomerGrid01(node) {
         params.classification = {$in: arr}
     }
 
-    //console.log("Classification params is " + JSON.stringify(params))
-
     if (CUSTOMER_GRID01 == null) {
         CUSTOMER_GRID01 = $('#grid_for_customer01').datagrid({
             fit: true,
@@ -279,12 +257,8 @@ function onOpenCustomerChooseDlg() {
         // 加载客户列表
         loadCustomerGrid01(null)
     })
-
-
 }
 
-
-let customer_choose_dlg_type = null;
 function chooseCustomer(callback) {
     $('#dlg_for_customer_choose').dialog('close')
     let row = CUSTOMER_GRID01.datagrid('getSelected')
@@ -297,9 +271,6 @@ function chooseCustomer(callback) {
 
         } else if (customer_choose_dlg_type == 'new_order') {
             $('#new_order_customer_name').textbox("setValue", row._id).textbox("setText", row.name)
-
-            //$('#new_order_customer_id').val(row._id);
-
             $('#new_order_customer_name').textbox('textbox').keyup()
 
             // fill new order
