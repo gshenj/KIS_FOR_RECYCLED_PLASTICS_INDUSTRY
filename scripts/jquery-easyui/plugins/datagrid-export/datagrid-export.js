@@ -21,7 +21,7 @@
         data.push('<tr style="'+trStyle+'">');
         for(var i=0; i<fields.length; i++){
             var col = dg.datagrid('getColumnOption', fields[i]);
-            var tdStyle = tdStyle0 + ';width:'+col.boxWidth+'px;';
+            var tdStyle = tdStyle0 + ';width:'+(col.boxWidth+40)+'px;';    // fixed width
             data.push('<th style="'+tdStyle+'">'+col.title+'</th>');
         }
         data.push('</tr>');

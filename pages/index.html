@@ -21,13 +21,13 @@
     <link rel="stylesheet" type="text/css" href="../scripts/jquery-easyui/themes/color.css">
     <link rel="stylesheet" type="text/css" href="../styles/kis.css">
 
-    <script type="text/javascript" src="../scripts/loading.js"></script>
-
     <script type="text/javascript" src="../scripts/constants.js"></script>
     <script type="text/javascript" src="../scripts/db.js"></script>
 
     <script type="text/javascript" src="../scripts/jquery-easyui/jquery.easyui.min.js"></script>
     <script type="text/javascript" src="../scripts/jquery-easyui/locale/easyui-lang-zh_CN.js"></script>
+
+    <script type="text/javascript" src="../scripts/loading.js"></script>
 
     <script type="text/javascript" src="../scripts/kis.js"></script>
     <script type="text/javascript" src="../scripts/user.js"></script>
@@ -46,10 +46,8 @@
 </head>
 
 <body class="easyui-layout" id="main_layout" data-options="border:false" style=" padding:0; margin:0;overflow-y: hidden;overflow-x: hidden; height:100%">
-
 <div data-options="region:'north',split:false, border:false"
      style="height:106px;width:100%; -webkit-user-select: none;  margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
-
     <div id="title_bar">
         <div style="height:20px; width:20px; margin:3px 2px 0px 5px; line-height: 20px; float:left; background-color:#fff;">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
@@ -62,15 +60,12 @@
         </div>
         <div id="main_title"
              style="height:24px; line-height:24px; margin:0 0 0 2px; padding:0;  float:left; display: inline-block; ">
-            <!-- 苏州元斌塑胶科技有限公司
-            KIS系统 v1.0 -->
         </div>
 
         <table class="win_btn_tb">
-
             <tr>
                 <td>
-                    <a class="win_btn" onclick="minwin()">
+                    <a class="win_btn" onclick="minWin()">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 x="0px" y="0px" width="10px" height="10px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000"
                                 xml:space="preserve">
@@ -82,7 +77,7 @@
                     </a>
 
                 <td>
-                    <a id="to_max_a" class="win_btn" onclick="maxwin()">
+                    <a id="to_max_a" class="win_btn" onclick="maxWin()">
                         <!-- <img id="to_max_img" src="../images/to_max_SFont.CN.svg" style="border:0px solid red; width:10px; height:10px" /> -->
                         <svg id="to_unmax" style="display:none;" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="10px" height="10px"
@@ -104,7 +99,7 @@
                     </a>
                 </td>
                 <td>
-                    <a class="win_btn" href="#" id="close_btn" onclick="closewin(false)">
+                    <a class="win_btn" href="#" id="close_btn" onclick="closeWin(false)">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 x="0px" y="0px" width="10px" height="10px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000"
                                 xml:space="preserve">
@@ -136,6 +131,18 @@
                 <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
                    onclick="showPanel(this, 'orders_report_panel')"
                    data-options="plain:true, iconCls:'icon-large-orderreport', size:'large', iconAlign:'left'">统计报表</a>
+            </div>
+        </div>
+
+        <div title="财务管理" data-options="border:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
+	padding:6px;  -webkit-user-select: none; ">
+            <div style="float:left; width:60%; padding:0px;">
+                <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
+                   onclick="showPanel(this, 'tax_invoice_panel')"
+                   data-options="plain:true, iconCls:'icon-large-tax-invoice', size:'large', iconAlign:'left'">开票管理</a>
+                <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
+                   onclick="showPanel(this, 'received_payments_panel')"
+                   data-options="plain:true, iconCls:'icon-large-received-payments', size:'large', iconAlign:'left'">回款管理</a>
             </div>
         </div>
 
@@ -182,6 +189,11 @@ padding:6px;">
 </div>
 
 <div data-options="region:'center', border:false" style="margin:0; padding:0px;  background:#eee;overflow-y: hidden;overflow-x: hidden; -webkit-app-region: no-drag">
+
+ <!--   <div id="welcome" class="easyui-panel opt_panel" style="width:100%; height:100%; padding:0px 0px; text-align:center; "
+         data-options="fit:true, border:false">
+        <div style="margin-top:50px; font-size:48px; color:blue">欢迎使用苏州元斌塑胶科技有限公司KIS销售管理系统！</div>
+    </div>-->
 
     <!--新开送货单-->
     <div id="order_input_panel" class="easyui-panel opt_panel" 　
@@ -399,7 +411,7 @@ padding:6px;">
                        onclick="printPreview()">明细</a>
                     <a href="#" class="easyui-linkbutton" iconCls="icon-sum" plain="true" onclick="calcSum()">统计</a>
                     <a href="#" class="easyui-linkbutton" iconCls="icon-export" plain="true"
-                       onclick="exportExcel(ORDER_GRID, '出货单列表.xls')">导出XLS</a>
+                       onclick="exportExcel(ORDER_GRID, '出货单列表')">导出XLS</a>
                     <span style="margin-left:20px" class="search_label">检索：</span>
                     <input type="text" id="order_search_text" class="search_input"
                            onkeyup="onSearch(this, ORDER_GRID, doSearchOrder)">
@@ -532,9 +544,118 @@ padding:6px;">
         </div>
     </div>
 
-    <!--客户管理-->
-    <div id="customer_manage_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
-         data-options="fit:true, closed:true, border:false, onOpen:onOpenCustomerManagePanel">
+
+    <!--发票管理-->
+    <div id="tax_invoice_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
+         data-options="fit:true, closed:true, border:false, onOpen:function(){}">
+        <div class="easyui-layout" data-options="fit:true, border:false">
+           <!-- <div data-options="region:'west'" style="width:180px; padding:4px;">
+                <ul id="classification_tree" class="easyui-tree" data-options="lines:true,onSelect:loadCustomerGrid,
+                        onContextMenu:onClassificationTreeContextMenu">
+                </ul>
+                <div id="mm_classification" class="easyui-menu" style="width:120px;" data-options="">
+                    <div id="classification_edit" onclick="edit_classification_tree_node()"
+                         data-options="iconCls:'icon-add'">编辑此编码
+                    </div>
+                    <div id="classification_add" onclick="append_classification_tree_node()"
+                         data-options="iconCls:'icon-add'">添加子编码
+                    </div>
+                    <div id="classification_delete" onclick="delete_classification_tree_node()"
+                         data-options="iconCls:'icon-remove'">删除此编码
+                    </div>
+                </div>
+
+                <div id="dlg_for_classification" class="easyui-dialog" style="width:400px"
+                     data-options="closed:true,modal:true,border:'thin',buttons:'#dlg_buttons_for_classification'">
+                    <form id="fm_for_classification" method="post" novalidate style="margin:0;padding:20px 50px">
+                        <div style="margin-bottom:10px">
+                            <input name="text" id="classification_name_textbox" class="easyui-textbox" required="true"
+                                   label="编码名称：" labelAlign="right" style="width:100%">
+                        </div>
+                    </form>
+                </div>
+                <div id="dlg_buttons_for_classification">
+                    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok"
+                       onclick="saveClassification()"
+                       style="width:90px">保存</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+                       onclick="javascript:$('#dlg_for_classification').dialog('close')"
+                       style="width:90px">取消</a>
+                </div>
+            </div>
+            <div data-options="region:'center'" style="padding:0px;">
+                <table id="grid_for_customer" style="width:100%"></table>
+
+                <div id="customer_grid_toolbar" style="padding:2px 5px;">
+                    <a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newCustomer()">添加</a>
+                    <a class="easyui-linkbutton" iconCls="icon-edit" plain="true"
+                       onclick="editCustomer()">编辑</a>
+                    <a class="easyui-linkbutton" iconCls="icon-remove" plain="true"
+                       onclick="destroyCustomer()">删除</a>
+                    <a class="easyui-linkbutton" iconCls="icon-export" plain="true"
+                       onclick="exportExcel(CUSTOMER_GRID, '客户列表.xls')">导出XLS</a>
+                    <span style="margin-left:20px" class="search_label">检索：</span>
+                    <input type="text" id="customer_search_text" class="search_input"
+                           onkeyup="onSearch(this, CUSTOMER_GRID, doSearchCustomer)">
+                </div>
+
+                <div id="dlg_for_customer" class="easyui-dialog" style="width:500px"
+                     data-options="closed:true,modal:true,border:'thin',buttons:'#dlg_buttons_for_customer'">
+                    <form id="fm_for_customer" method="post" novalidate style="margin:0;padding:20px 50px">
+                        <div style="margin-bottom:10px">
+
+                            <input name="name" id="customer_name" class="easyui-textbox" required="true" label="客户名称："
+                                   labelAlign="right" style="width:100%">
+                            <input name="_id" id="customer_id" type="hidden"/>
+                        </div>
+                        <div style="margin-bottom:10px">
+
+                            <input name="index_code" id="customer_index_code" class="easyui-textbox" label="客户简码："
+                                   labelAlign="right" style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+
+                            <input name="classification" id="customer_classification" class="easyui-combotree"
+                                   data-options="data:[], editable:false, required:true, lines:true, onShowPanel:showClassificationCombotree, onBeforeSelect:beforeSelectClassificationCombotree"
+                                   label="编码分类：" labelAlign="right" style="width:100%">
+                        </div>
+
+                        <div style="margin-bottom:10px">
+
+                            <input id="customer_principal" class="easyui-textbox" name="principal" labelAlign="right"
+                                   required="true" label="联&ensp;系&ensp;人：" style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+
+                            <input id="customer_phone" class="easyui-textbox" name="phone" labelAlign="right"
+                                   required="true" label="联系电话：" style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+
+                            <input id="customer_address" class="easyui-textbox" name="address" labelAlign="right"
+                                   required="true" label="联系地址：" style="width:100%">
+                        </div>
+                    </form>
+                </div>
+                <div id="dlg_buttons_for_customer">
+                    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveCustomer()"
+                       style="width:90px">保存</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+                       onclick="javascript:$('#dlg_for_customer').dialog('close')"
+                       style="width:90px">取消</a>
+                </div>
+            </div>
+
+            <div data-options="region:'south', border:false" style="height:30px;">
+            </div>-->
+        </div>
+
+    </div>
+
+    <!--回款管理-->
+    <div id="received_payments_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
+         data-options="fit:true, closed:true, border:false, onOpen:function(){}">
+<!--
         <div class="easyui-layout" data-options="fit:true, border:false">
             <div data-options="region:'west'" style="width:180px; padding:4px;">
                 <ul id="classification_tree" class="easyui-tree" data-options="lines:true,onSelect:loadCustomerGrid,
@@ -604,6 +725,114 @@ padding:6px;">
 
                             <input name="classification" id="customer_classification" class="easyui-combotree"
                                    data-options="data:[], editable:false, required:true, lines:true, onShowPanel:showClassificationCombotree, onBeforeSelect:beforeSelectClassificationCombotree"
+                                   label="编码分类：" labelAlign="right" style="width:100%">
+                        </div>
+
+                        <div style="margin-bottom:10px">
+
+                            <input id="customer_principal" class="easyui-textbox" name="principal" labelAlign="right"
+                                   required="true" label="联&ensp;系&ensp;人：" style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+
+                            <input id="customer_phone" class="easyui-textbox" name="phone" labelAlign="right"
+                                   required="true" label="联系电话：" style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+
+                            <input id="customer_address" class="easyui-textbox" name="address" labelAlign="right"
+                                   required="true" label="联系地址：" style="width:100%">
+                        </div>
+                    </form>
+                </div>
+                <div id="dlg_buttons_for_customer">
+                    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveCustomer()"
+                       style="width:90px">保存</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+                       onclick="javascript:$('#dlg_for_customer').dialog('close')"
+                       style="width:90px">取消</a>
+                </div>
+            </div>
+
+            <div data-options="region:'south', border:false" style="height:30px;">
+            </div>
+        </div>
+-->
+
+    </div>
+
+    <!--客户管理-->
+    <div id="customer_manage_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
+         data-options="fit:true, closed:true, border:false, onOpen:onOpenCustomerManagePanel">
+        <div class="easyui-layout" data-options="fit:true, border:false">
+            <div data-options="region:'west'" style="width:180px; padding:4px;">
+                <ul id="classification_tree" class="easyui-tree" data-options="lines:false,onSelect:loadCustomerGrid,
+                        onContextMenu:onClassificationTreeContextMenu">
+                </ul>
+                <div id="mm_classification" class="easyui-menu" style="width:120px;" data-options="">
+                    <div id="classification_edit" onclick="edit_classification_tree_node()"
+                         data-options="iconCls:'icon-add'">编辑此编码
+                    </div>
+                    <div id="classification_add" onclick="append_classification_tree_node()"
+                         data-options="iconCls:'icon-add'">添加子编码
+                    </div>
+                    <div id="classification_delete" onclick="delete_classification_tree_node()"
+                         data-options="iconCls:'icon-remove'">删除此编码
+                    </div>
+                </div>
+
+                <div id="dlg_for_classification" class="easyui-dialog" style="width:400px"
+                     data-options="closed:true,modal:true,border:'thin',buttons:'#dlg_buttons_for_classification'">
+                    <form id="fm_for_classification" method="post" novalidate style="margin:0;padding:20px 50px">
+                        <div style="margin-bottom:10px">
+                            <input name="text" id="classification_name_textbox" class="easyui-textbox" required="true"
+                                   label="编码名称：" labelAlign="right" style="width:100%">
+                        </div>
+                    </form>
+                </div>
+                <div id="dlg_buttons_for_classification">
+                    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok"
+                       onclick="saveClassification()"
+                       style="width:90px">保存</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel"
+                       onclick="javascript:$('#dlg_for_classification').dialog('close')"
+                       style="width:90px">取消</a>
+                </div>
+            </div>
+            <div data-options="region:'center'" style="padding:0px;">
+                <table id="grid_for_customer" style="width:100%"></table>
+
+                <div id="customer_grid_toolbar" style="padding:2px 5px;">
+                    <a class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newCustomer()">添加</a>
+                    <a class="easyui-linkbutton" iconCls="icon-edit" plain="true"
+                       onclick="editCustomer()">编辑</a>
+                    <a class="easyui-linkbutton" iconCls="icon-remove" plain="true"
+                       onclick="destroyCustomer()">删除</a>
+                    <a class="easyui-linkbutton" iconCls="icon-export" plain="true"
+                       onclick="exportExcel(CUSTOMER_GRID, '客户列表')">导出XLS</a>
+                    <span style="margin-left:20px" class="search_label">检索：</span>
+                    <input type="text" id="customer_search_text" class="search_input"
+                           onkeyup="onSearch(this, CUSTOMER_GRID, doSearchCustomer)">
+                </div>
+
+                <div id="dlg_for_customer" class="easyui-dialog" style="width:500px"
+                     data-options="closed:true,modal:true,border:'thin',buttons:'#dlg_buttons_for_customer'">
+                    <form id="fm_for_customer" method="post" novalidate style="margin:0;padding:20px 50px">
+                        <div style="margin-bottom:10px">
+
+                            <input name="name" id="customer_name" class="easyui-textbox" required="true" label="客户名称："
+                                   labelAlign="right" style="width:100%">
+                            <input name="_id" id="customer_id" type="hidden"/>
+                        </div>
+                        <div style="margin-bottom:10px">
+
+                            <input name="index_code" id="customer_index_code" class="easyui-textbox" label="客户简码："
+                                   labelAlign="right" style="width:100%">
+                        </div>
+                        <div style="margin-bottom:10px">
+
+                            <input name="classification" id="customer_classification" class="easyui-combotree"
+                                   data-options="data:[], editable:false, required:true, lines:false, onShowPanel:showClassificationCombotree, onBeforeSelect:beforeSelectClassificationCombotree"
                                    label="编码分类：" labelAlign="right" style="width:100%">
                         </div>
 
@@ -709,7 +938,7 @@ padding:6px;">
         <div class="easyui-layout" data-options="fit:true, border:false">
             <div data-options="region:'west'" style="width:180px; padding:4px;">
                 <ul id="cartype_tree" class="easyui-tree"
-                    data-options="lines:true, onContextMenu: onCarTypeTreeContextMenu,onSelect:loadDriverGrid">
+                    data-options="lines:false, onContextMenu: onCarTypeTreeContextMenu,onSelect:loadDriverGrid">
                 </ul>
                 <div id="mm_cartype" class="easyui-menu" style="width:120px;" data-options="">
                     <div id="cartype_edit" onclick="edit_cartype_tree_node()" data-options="iconCls:'icon-add'">
@@ -801,7 +1030,7 @@ padding:6px;">
          data-options="fit:true, border:false, closed:true, onOpen:onOpenUserManagePanel">
         <div class="easyui-layout" data-options="fit:true, border:false">
             <div data-options="region:'west'" style="width:180px; padding:4px;">
-                <ul id="role_tree" class="easyui-tree" data-options="lines:true,onSelect:loadSysUsers">
+                <ul id="role_tree" class="easyui-tree" data-options="lines:false,onSelect:loadSysUsers">
                 </ul>
             </div>
             <div data-options="region:'center'" style="padding:0px;">
@@ -913,7 +1142,7 @@ padding:6px;">
          data-options="onOpen:onOpenCustomerChooseDlg, resizable:true, closed:true, modal:true, border:'thin', buttons:'#dlg_buttons_for_classification01'">
         <div class="easyui-layout" data-options="fit:true">
             <div data-options="region:'west'" style="width:180px; padding:4px;">
-                <ul id="classification_tree01" class="easyui-tree" data-options="lines:true,onSelect:loadCustomerGrid01">
+                <ul id="classification_tree01" class="easyui-tree" data-options="lines:false,onSelect:loadCustomerGrid01">
                 </ul>
             </div>
             <div data-options="region:'center'" style="padding:0px;">

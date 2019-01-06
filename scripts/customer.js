@@ -31,7 +31,7 @@ function loadCustomerGrid(node) {
     if (CUSTOMER_GRID == null) {
         CUSTOMER_GRID = $('#grid_for_customer').datagrid({
             fit: true,
-            singleSelect: true,
+            ctrlSelect: true,
             collapsible: false,
             data: [],
             border:false,

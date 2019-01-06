@@ -347,6 +347,46 @@ div.toolbar1 {
     cursor: default;
 }
 
+
+
+/************************************************/
+.icon-large-sysconfig{
+    background:url('../images/large_sysconfig.png') no-repeat center center;
+}
+.icon-large-usermanage{
+    /*background:url('../images/large_usermanage.png') no-repeat center center;*/
+    background:url('../images/user_manage.svg') no-repeat center center;
+    background-size: 32px 32px;
+}
+.icon-large-logout{
+    background:url('../images/large_logout.png') no-repeat center center;
+}
+.icon-large-neworder{
+    background:url('../images/large_neworder.png') no-repeat center center;
+}
+.icon-large-orderlist{
+    background:url('../images/large_orderlist.png') no-repeat center center;
+}
+.icon-large-orderreport{
+    background:url('../images/large_orderreport.png') no-repeat center center;
+}
+.icon-large-customerconfig{
+    background:url('../images/large_customerconfig.png') no-repeat center center;
+}
+.icon-large-drivermanage{
+    background:url('../images/large_drivermanage.png') no-repeat center center;
+}
+.icon-large-passwordmanage{
+    background:url('../images/large_passwordmanage.png') no-repeat center center;
+}
+.icon-large-productmanage{
+    background:url('../images/large_productmanage.png') no-repeat center center;
+}
+.icon-loading{
+    background:url('../images/loading.gif') no-repeat center center;
+}
+
+
 .icon-select{
 	background:url('../images/select_x16.png') no-repeat center center;
 }
@@ -386,4 +426,28 @@ div.toolbar1 {
 .icon-detail {
     background:url('../images/detail_x16.png') no-repeat center center;
 
+}
+
+.icon-large-tax-invoice {
+    background:url('../images/tax_invoice.svg') no-repeat center center;
+    background-size:32px 32px;
+
+}
+
+.icon-large-received-payments {
+    background:url('../images/cny.svg') no-repeat center center;
+    background-size:32px 32px;
+
+}
+
+
+/*fix tree size.*/
+.tree-node {
+    height:22px;
+}
+
+.tree-title {
+    font-size:12px;
+    height:22px;
+    line-height:22px;
 }

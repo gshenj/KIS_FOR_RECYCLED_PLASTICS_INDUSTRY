@@ -1,3 +1,4 @@
+let loggerInDb = require('electron-timber')
 var mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false)
 
@@ -51,10 +52,16 @@ let _order = {
 let orderSchema = new Schema(_order);
 
 
-let ip_address = localStorage.getItem("db_address") || 'localhost'
-let db_address = 'mongodb://' + ip_address + ':27017'
-console.log(db_address)
+let ip_address = localStorage.getItem("db_address") || 'localhost:27017'
+if (ip_address.indexOf(":") == -1) {
+    ip_address += ":27017"
+}
+let db_address = 'mongodb://' + ip_address
 
+let strUrl=location.href;
+let arrUrl=strUrl.split("/");
+let strPage=arrUrl[arrUrl.length-1];
+loggerInDb.log(strPage +" * " + db_address)
 
 let process = require('electron').remote.process
 let argv = process.argv
@@ -80,7 +87,7 @@ DriverModel = mongoose.model("driver", driverSchema, "drivers")
 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Connection error:'));
-db.on('open', function () { console.log("Open database connection.") })
+db.on('open', function () { loggerInDb.log("Open database connection.") })
 
 function loadSysRoles() {
     RoleModel.find({}, function (err, roles) {

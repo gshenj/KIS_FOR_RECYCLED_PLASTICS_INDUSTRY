@@ -36,21 +36,21 @@ function saveOrder(order, callback) {
 }
 
 let order_grid_columns = [[
-    {field: 'order_num', title: '出库单号', width: 60, align: 'center'},
-    {field: 'order_date', title: '出库日期', width: 80, align: 'center'},
+    {field: 'order_num', title: '销售单号', width: 60, align: 'center'},
+    {field: 'order_date', title: '销售日期', width: 80, align: 'center'},
     {
         field: 'state', title: '单据状态', width: 60, align: 'center', formatter: function (value, row, index) {
             return row.state==STATE_CANCELLED ? '<span style="color:red">'+row.state+'</span>' : row.state
         }
     },
-    {field: 'customer_name', title: '客户名称', width: 220, align: 'center'},
-    {field: 'customer_principal', title: '联系人', width: 60, align: 'center'},
-    {field: 'contact_number', title: '联系电话', width: 80, align: 'center'},
-    {field: 'delivery_address', title: '送货地址', width: 220, align: 'center'},
-    {field: 'order_maker', title: '制单人', width: 60, align: 'center'},
-    {field: 'order_driver', title: '送货司机', width: 60, align: 'center'},
-    {field: 'products_num', title: '产品总数量', width: 80, align: 'right',halign:'center'},
-    {field: 'products_sum', title: '产品总金额', width: 80, align: 'right',halign:'center'},
+    {field: 'customer_name', title: '客户名称', width: 160, align: 'left', halign:'center'},
+    {field: 'customer_principal', title: '联系人', width: 60, align: 'left', halign:'center'},
+    {field: 'contact_number', title: '联系电话', width: 80, align: 'right', halign:'center'},
+    {field: 'delivery_address', title: '送货地址', width: 180, align: 'left', halign:'center'},
+    {field: 'order_maker', title: '制单人', width: 60, align: 'left', halign:'center'},
+    {field: 'order_driver', title: '送货司机', width: 80, align: 'left', halign:'center'},
+    {field: 'products_num', title: '单据总数量', width: 80, align: 'right',halign:'center'},
+    {field: 'products_sum', title: '单据总金额', width: 80, align: 'right',halign:'center'},
     {field: 'create_date', title: '录入时间', width: 140, align: 'right',halign:'center'}/*,
     {field: 'products', title:'产品列表', width:80, align:'center', halign:'center', formatter:function (value, row, index) {
             return  '<a href="#" onclick="showDetail()" >产品...</a>'
@@ -59,27 +59,27 @@ let order_grid_columns = [[
 ]]
 
 let order_grid_columns2 = [[
-    {field: 'order_num', title: '出库单号', width: 60, align: 'center'},
-    {field: 'order_date', title: '出库日期', width: 80, align: 'center'},
+    {field: 'order_num', title: '销售单号', width: 60, align: 'center'},
+    {field: 'order_date', title: '销售日期', width: 80, align: 'center'},
     {
         field: 'state', title: '单据状态', width: 60, align: 'center', formatter: function (value, row, index) {
             return row.state==STATE_CANCELLED ? '<span style="color:red">'+row.state+'</span>' : row.state
         }
     },
-    {field: 'product_name', title:'产品', width:150, align:'center', halign:'center'},
-    {field: 'product_units', title:'单位', width:40, align:'center', halign:'center'},
-    {field: 'product_num', title:'数量', width:60, align:'center', halign:'center'},
-    {field: 'product_price', title:'价格', width:60, align:'center', halign:'center'},
-    {field: 'product_sum', title:'金额', width:80, align:'center', halign:'center'},
-    {field: 'product_memo', title:'产品备注', width:80, align:'center', halign:'center'},
-    {field: 'customer_name', title: '客户名称', width: 220, align: 'center'},
-    {field: 'customer_principal', title: '联系人', width: 60, align: 'center'},
-    {field: 'contact_number', title: '联系电话', width: 80, align: 'center'},
-    {field: 'delivery_address', title: '送货地址', width: 220, align: 'center'},
-    {field: 'order_maker', title: '制单人', width: 60, align: 'center'},
-    {field: 'order_driver', title: '送货司机', width: 60, align: 'center'},
-    {field: 'products_num', title: '产品总数量', width: 80, align: 'right',halign:'center'},
-    {field: 'products_sum', title: '产品总金额', width: 80, align: 'right',halign:'center'},
+    {field: 'product_name', title:'产品&型号', width:150, align:'left', halign:'center'},
+    {field: 'product_units', title:'单位', width:60, align:'right', halign:'center'},
+    {field: 'product_num', title:'数量', width:60, align:'right', halign:'center'},
+    {field: 'product_price', title:'价格', width:60, align:'right', halign:'center'},
+    {field: 'product_sum', title:'金额', width:70, align:'right', halign:'center'},
+    {field: 'product_memo', title:'产品备注', width:100, align:'left', halign:'center'},
+    {field: 'customer_name', title: '客户名称', width: 160, align: 'left', halign:'center'},
+    {field: 'customer_principal', title: '联系人', width: 60, align: 'left', halign:'center'},
+    {field: 'contact_number', title: '联系电话', width: 80, align:'right', halign: 'center'},
+    {field: 'delivery_address', title: '送货地址', width: 180, align: 'left',halign:'center'},
+    {field: 'order_maker', title: '制单人', width: 60, align: 'left', halign:'center'},
+    {field: 'order_driver', title: '送货司机', width: 60, align: 'left',halign:'center'},
+    {field: 'products_num', title: '单据总数量', width: 80, align: 'right',halign:'center'},
+    {field: 'products_sum', title: '单据总金额', width: 80, align: 'right',halign:'center'},
     {field: 'create_date', title: '录入时间', width: 140, align: 'right',halign:'center'}
 ]]
 
@@ -114,13 +114,16 @@ function getGridType() {
 function loadOrderGrid() {
 
     let gridType = getGridType()
+    logger.log("* orderGridType is " + gridType)
+
     if (LAST_GRID_TYPE != gridType) {
         ORDER_GRID = null;
     }
     if (ORDER_GRID == null) {
         ORDER_GRID = $('#order_grid').datagrid({
             fit: true,
-            singleSelect: true,
+            //singleSelect: true,
+            ctrlSelect:true,
             border: false,
             showFilterBar: false,
             rownumbers: true,
@@ -552,12 +555,35 @@ function onOpenOrderReportPanel() {
 function calcSum() {
     let totalNum = 0;
     let totalSum = 0;
-    let rows = ORDER_GRID.datagrid('getRows')
-    for (let i=0; i<rows.length; i++) {
-        if (rows[i].products_num)
-            totalNum += rows[i].products_num;
-        if (rows[i].products_sum)
-            totalSum += Number(rows[i].products_sum);
+    let rows = ORDER_GRID.datagrid('getSelections');
+    if (rows && rows.length > 0) {
+        ;
+    } else {
+        rows = ORDER_GRID.datagrid('getRows')
     }
-    $.messager.alert("统计", '产品总数量：' + totalNum+ "<br/>产品总金额：" +Number(totalSum).toFixed(2), 'info')
+
+    let gridType = getGridType()
+    if (gridType == ORDER_GRID_TYPE_DETAIL) {
+        for (let i=0; i<rows.length; i++) {
+            if (rows[i].product_num)
+                totalNum += rows[i].product_num;
+            if (rows[i].product_sum)
+                totalSum += Number(rows[i].product_sum);
+        }
+
+        $.messager.alert("统计", '产品数量：' + totalNum+ "<br/>产品金额：" +Number(totalSum).toFixed(2), 'info')
+
+    } else {
+        for (let i=0; i<rows.length; i++) {
+            if (rows[i].products_num)
+                totalNum += rows[i].products_num;
+            if (rows[i].products_sum)
+                totalSum += Number(rows[i].products_sum);
+        }
+        $.messager.alert("统计", '单据总数量：' + totalNum+ "<br/>单据总金额：" +Number(totalSum).toFixed(2), 'info')
+
+    }
+
+
 }
+

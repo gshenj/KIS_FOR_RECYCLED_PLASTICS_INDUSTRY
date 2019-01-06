@@ -1,4 +1,5 @@
 let {app, BrowserWindow, ipcMain} = require('electron');  // Module to control application life.
+const logger = require('electron-timber');
 
 // Report crashes to our server.
 //require('crash-reporter').start();
@@ -8,7 +9,6 @@ if(require('electron-squirrel-startup')) app.quit()//return;
 // be closed automatically when the JavaScript object is GCed.
 let mainWindow = null;
 let loginWindow = null;
-const DEBUG = true
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -73,18 +73,17 @@ ipcMain.on('main-window-ready', (event, arg) =>{
     if(loginWindow) {
         loginWindow.close()
     }
-    //mainWindow.maximize()
+    mainWindow.maximize()
     mainWindow.show()
     event.returnValue = null;
-    console.log("on main-window-ready")
+    logger.log("on main-window-ready")
 })
 
 // 登录成功消息
 ipcMain.on('login-success', (event, arg) => {
-    // console.log("login-success.")
     createMainWindow()
-    //loginWindow.close()
     event.returnValue = null;
+    logger.log("login-success.")
 })
 
 // 退出登录消息
@@ -94,8 +93,3 @@ ipcMain.on('logout', (event, arg) => {
     event.returnValue = null
 })
 
-
-ipcMain.on('debug', (event, arg) => {
-    if (DEBUG)
-        console.log(arg)
-})

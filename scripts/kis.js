@@ -7,6 +7,7 @@ const ORDER_GRID_TYPE_DETAIL = 2;
 const {BrowserWindow, dialog} = require('electron').remote
 const {ipcRenderer} = require('electron')
 const fs = require('fs');
+let logger = require('electron-timber');
 
 
 let win = require('electron').remote.getCurrentWindow();
@@ -96,15 +97,15 @@ function showPanel(src, manage_panel_id) {
 function onShowDriverPanel(){
     DriverModel.find({}).populate('cartype').exec(function(err, docs) {
         //console.log(JSON.stringify(docs))
-        var g = $('#driver_select').combogrid('grid');
+        let g = $('#driver_select').combogrid('grid');
         g.datagrid('loadData', docs);
     })
 }
 
 function onOpenOrderListPanel(){
-    var now = new Date();
-    var begin = new Date(now.getFullYear(), 0, 1);
-    var end = new Date(now.getFullYear(), 11, 31);
+    let now = new Date();
+    let begin = new Date(now.getFullYear(), 0, 1);
+    let end = new Date(now.getFullYear(), 11, 31);
 
     $('#dd_begin').datebox('setValue', myDateFormatter(begin))
     $('#dd_end').datebox('setValue', myDateFormatter(end))
@@ -112,8 +113,6 @@ function onOpenOrderListPanel(){
     let orderGridType = localStorage.getItem("order_grid_type")
     if (orderGridType) {
         $('#order_grid_type').combobox('setValue', orderGridType+"")
-        console.log("orderGridType = " +orderGridType)
-
     }
 
     loadOrderGrid()
@@ -326,7 +325,7 @@ function menuHandler(item) {
             break;
         case 'exit':
             //
-            closewin(true)
+            closeWin(true)
             break;
         case 'set_password':
             // 改弹出框'
@@ -420,7 +419,7 @@ function open_customer_choose_for_list_order() {
 function afterCompleteLoading() {
     ipcRenderer.sendSync('main-window-ready', null)
     //默认最大化窗口
-    maxwin()
+    //maxWin()
 }
 
 function printPreview() {
@@ -432,7 +431,7 @@ function printPreview() {
     })
 }
 
-function maxwin() {
+function maxWin() {
     if (win.isMaximized()) {
         win.unmaximize()
     }else {
@@ -440,11 +439,11 @@ function maxwin() {
     }
 }
 
-function minwin() {
+function minWin() {
     win.minimize()
 }
 
-function closewin(slience) {
+function closeWin(slience) {
     if (slience) {
         win.close()
     } else {
@@ -492,10 +491,6 @@ function preview(order, type) {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function debug(arg) {
-    ipcRenderer.send("debug", arg)
-}
-
 function logout() {
     ipcRenderer.sendSync('logout')
 }
@@ -598,4 +593,26 @@ function myDateFormatter(date) {
     var m = date.getMonth() + 1;
     var d = date.getDate();
     return y + '-' + (m < 10 ? ('0' + m) : m) + '-' + (d < 10 ? ('0' + d) : d)
+}
+
+
+
+function exportExcel(dg, fileName) {
+    let selectRows = dg.datagrid('getSelections')
+    fileName += '-'
+    fileName += (new Date().toLocaleString())
+    fileName += '.xls'
+    if (selectRows && selectRows.length>0) {
+        dg.datagrid('toExcel', {
+            filename: fileName,
+            rows: selectRows
+        });
+    } else {
+        dg.datagrid('toExcel', {
+            filename: fileName
+        });
+    }
+
+
+
 }

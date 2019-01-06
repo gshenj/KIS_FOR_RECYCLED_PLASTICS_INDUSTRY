@@ -1,6 +1,4 @@
-
-
-Date.prototype.dtFormat = function (fmt) { //author: meizz 
+Date.prototype.dtFormat = function (fmt) { //author: meizz
     var o = {
         "M+": this.getMonth() + 1, //月份 
         "d+": this.getDate(), //日 
@@ -29,7 +27,5 @@ function base64_encode(file) {
     let bitmap = fs.readFileSync(file);
     return new Buffer(bitmap).toString('base64');
 }
-
-
 
 
