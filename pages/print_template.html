@@ -94,6 +94,14 @@
         }
     </style>
     <script>
+        window.addEventListener('keyup', function(event){
+                if (event.keyCode == 27) {
+                    //alert("执行退出全屏操作...");
+                    closeWin()
+                }
+        }, true)
+
+
         $(document).ready(function () {
             let order = localStorage.getItem('order');
             let config = localStorage.getItem('sys_config');
@@ -157,7 +165,7 @@
             let blank = true
             for (let j=0; j<leftRows; j++) {
                 if (blank) {
-                    $('#order_product_table').append('<tr><td colspan="7" style="border:none;">以下空白</td></tr>')
+                    $('#order_product_table').append('<tr><td colspan="7" style="border:none; font-style:italic;">***以下空白***</td></tr>')
                     blank = false;
                 } else {
                     $('#order_product_table').append('<tr><td colspan="7" style="border:none;"></td></tr>')
@@ -188,7 +196,7 @@
         <div class="company">
             <div id="company_logo" style="position:absolute; top:5px; left:190px; width:64px; height:64px;"></div>
             <div id="company_name"></div>
-            <div style="font-size:16pt; word-spacing: 2pt;">出货单</div>
+            <div style="font-size:16pt; word-spacing: 2pt;">销售单</div>
         </div>
 
         <table style="width:100%; text-align:left; border-bottom:1px solid black;">
@@ -200,7 +208,7 @@
             <tr>
                 <td style="width:35%">电话：<span id="company_phone"></span></td>
                 <td style="width:35%">传真：<span id="company_fax"></span></td>
-                <td style=" width:30%; text-align: right; padding-right:2px;">出货单号： <span id="order_number"></span></td>
+                <td style=" width:30%; text-align: right; padding-right:2px;">销售单号： <span id="order_number"></span></td>
             </tr>
         </table>
 
@@ -236,7 +244,7 @@
     </div>
     <table id="order_product_table" class="bill_product_table" style="width:100%; height:150px;" cellpadding="0" cellspacing="0">
         <tr class="tbh" id="tbh">
-            <th width="30%" colspan="2">规格型号</th>
+            <th width="30%" colspan="2">规格&型号</th>
             <!--<th width="14%">货物名称</th>-->
             <th width="7%">单位</th>
             <th width="10%">数量</th>
@@ -250,10 +258,10 @@
     </table>
     <table class="print_sign_table" style="width:100%;margin:20px 0 10px;">
         <tr>
-            <td style="width:33.3%; text-align: center;padding-right:15%;">制单人：<span id="order_maker"></span></td>
-            <td style="width:33.3%; text-align: center;">送货司机：<span id="order_driver"></span>
+            <td style="width:30%; text-align: center;">制单人：<span id="order_maker"></span></td>
+            <td style="width:30%; text-align: center;">送货司机：<span id="order_driver"></span>
             </td>
-            <td style="width:33.3%; text-align: center; padding-right:15%;">签收人：</td>
+            <td style="width:30%; text-align: center;">签收人：</td>
         </tr>
     </table>
 </div>

@@ -43,12 +43,12 @@ function loadCustomerGrid(node) {
             width:720,
             toolbar: '#customer_grid_toolbar',
             columns:[[
-                {title: "客户编码", field: 'classification',width:100, sortable: true,sortOrder: 'asc'},
-                {title: "客户名称", field: 'name', width:250, sortable:true, sortOrder: 'asc'},
-                {title: "客户简码", field: 'index_code', width:80, sortable:true, sortOrder: 'asc'},
-                {title: "联系人", field: "principal",width:100},
-                {title: "联系电话", field: 'phone',width:100},
-                {title: "联系地址", field: 'address',width:250}
+                {title: "客户编码", field: 'classification',width:100, sortable: true,sortOrder: 'asc', align:'left', halign:'center'},
+                {title: "客户名称", field: 'name', width:250, sortable:true, sortOrder: 'asc', align:'left', halign:'center'},
+                {title: "客户简码", field: 'index_code', width:80, sortable:true, sortOrder: 'asc', align:'left', halign:'center'},
+                {title: "联系人", field: "principal",width:100, align:'left', halign:'center'},
+                {title: "联系电话", field: 'phone',width:100, align:'left', halign:'center'},
+                {title: "联系地址", field: 'address',width:250, align:'left', halign:'center'}
             ]]
         })
         enable_customer_filter = false;

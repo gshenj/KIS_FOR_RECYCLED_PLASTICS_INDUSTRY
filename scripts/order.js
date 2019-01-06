@@ -1,6 +1,51 @@
 let ORDER_GRID = null;
 let LAST_GRID_TYPE = 0;
 
+
+//键盘上下键选中行
+$.extend($.fn.datagrid.methods, {
+    keyCtr : function (jq) {
+        return jq.each(function () {
+            var grid = $(this);
+            grid.datagrid('getPanel').panel('panel').attr('tabindex', 1).bind('keydown', function (e) {
+                switch (e.keyCode) {
+                    case 38: // up
+                        var selected = grid.datagrid('getSelected');
+                        if (selected) {
+                            var index = grid.datagrid('getRowIndex', selected);
+                            grid.datagrid("unselectAll")
+                            grid.datagrid('selectRow', index - 1);
+                        } else {
+                            var rows = grid.datagrid('getRows');
+                            grid.datagrid('selectRow', rows.length -1 );
+                        }
+                        break;
+                    case 40: // down
+                        var selected = grid.datagrid('getSelected');
+                        if (selected) {
+                            var index = grid.datagrid('getRowIndex', selected);
+                            grid.datagrid("unselectAll")
+                            grid.datagrid('selectRow', index + 1);
+                        } else {
+                            grid.datagrid('selectRow', 0);
+                        }
+                        break;
+                    case 13:
+                        printPreview()
+                        break;
+                }
+            });
+        });
+    },
+    unKeyCtr: function(jq) {
+        return jq.each(function () {
+            var grid = $(this);
+            grid.datagrid('getPanel').panel('panel').attr('tabindex', 1).unbind('keydown')
+        });
+    }
+});
+
+
 function getCurrentSeq(seq_name, callback) {
     SequenceModel.findOne({ "seq_name": seq_name }, function (err, doc) {
         if (doc) {
@@ -45,7 +90,7 @@ let order_grid_columns = [[
     },
     {field: 'customer_name', title: '客户名称', width: 160, align: 'left', halign:'center'},
     {field: 'customer_principal', title: '联系人', width: 60, align: 'left', halign:'center'},
-    {field: 'contact_number', title: '联系电话', width: 80, align: 'right', halign:'center'},
+    {field: 'contact_number', title: '联系电话', width: 80, align: 'left', halign:'center'},
     {field: 'delivery_address', title: '送货地址', width: 180, align: 'left', halign:'center'},
     {field: 'order_maker', title: '制单人', width: 60, align: 'left', halign:'center'},
     {field: 'order_driver', title: '送货司机', width: 80, align: 'left', halign:'center'},
@@ -67,14 +112,14 @@ let order_grid_columns2 = [[
         }
     },
     {field: 'product_name', title:'产品&型号', width:150, align:'left', halign:'center'},
-    {field: 'product_units', title:'单位', width:60, align:'right', halign:'center'},
+    {field: 'product_units', title:'单位', width:60, align:'left', halign:'center'},
     {field: 'product_num', title:'数量', width:60, align:'right', halign:'center'},
     {field: 'product_price', title:'价格', width:60, align:'right', halign:'center'},
     {field: 'product_sum', title:'金额', width:70, align:'right', halign:'center'},
     {field: 'product_memo', title:'产品备注', width:100, align:'left', halign:'center'},
     {field: 'customer_name', title: '客户名称', width: 160, align: 'left', halign:'center'},
     {field: 'customer_principal', title: '联系人', width: 60, align: 'left', halign:'center'},
-    {field: 'contact_number', title: '联系电话', width: 80, align:'right', halign: 'center'},
+    {field: 'contact_number', title: '联系电话', width: 80, align:'left', halign: 'center'},
     {field: 'delivery_address', title: '送货地址', width: 180, align: 'left',halign:'center'},
     {field: 'order_maker', title: '制单人', width: 60, align: 'left', halign:'center'},
     {field: 'order_driver', title: '送货司机', width: 60, align: 'left',halign:'center'},
@@ -117,8 +162,12 @@ function loadOrderGrid() {
     logger.log("* orderGridType is " + gridType)
 
     if (LAST_GRID_TYPE != gridType) {
+        if (ORDER_GRID)
+            ORDER_GRID.datagrid('unKeyCtr')
+
         ORDER_GRID = null;
     }
+
     if (ORDER_GRID == null) {
         ORDER_GRID = $('#order_grid').datagrid({
             fit: true,
@@ -130,10 +179,13 @@ function loadOrderGrid() {
             toolbar: '#order_grid_toolbar',
             title: '出库单列表',
             data: [],
+            onDblClickRow: onDblClickOrderGridRow,
             columns: getGridType()==1 ? order_grid_columns : order_grid_columns2
             //view: detailview,
             //detailFormatter: productDetailFormatter
         })
+
+        ORDER_GRID.datagrid("keyCtr");
 
         LAST_GRID_TYPE = gridType
         localStorage.setItem("order_grid_type", gridType)
@@ -158,6 +210,7 @@ function loadOrderGrid() {
         }
         ORDER_GRID.datagrid('loadData', docsRows)
         ORDER_GRID.datagrid('enableFilter', {filterMatchingType: 'any'})
+
     })
 
 }
@@ -199,6 +252,9 @@ function findOrders(callback) {
 
 }
 
+function onDblClickOrderGridRow(index, row) {
+    printPreview();
+}
 
 function doSearchOrder(input, datagrid) {
     let searchText = input.value

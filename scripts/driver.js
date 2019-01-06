@@ -131,15 +131,15 @@ function loadDriverGridByParams(params){
                 handler: destroyDriver
             }],
             columns:[[
-                {title: "姓名", field: 'name',width:70, sortable: true,sortOrder: 'asc'},
-                {title: "车型载重", field: 'cartype_name',width:120, sortable: true,sortOrder: 'asc', formatter: function(value,row,index){
+                {title: "姓名", field: 'name',width:70, sortable: true,sortOrder: 'asc', align:'left', halign:'center'},
+                {title: "车型载重", field: 'cartype_name',width:120, sortable: true,sortOrder: 'asc', align:'left', halign:'center', formatter: function(value,row,index){
                         if (row.cartype) return row.cartype.name;
                     }},
-                {title: "车牌号码", field: 'car_No', width:80, sortable:true, sortOrder: 'asc'},
-                {title: "身份证号", field: 'id_No',width:140},
-                {title: "行驶证号", field: 'driving_license_No',width:140},
-                {title: "联系电话", field: 'phone', width:100},
-                {title: "联系地址", field: "address",width:250}
+                {title: "车牌号码", field: 'car_No', width:80, sortable:true, sortOrder: 'asc', align:'left', halign:'center'},
+                {title: "身份证号", field: 'id_No',width:140, align:'left', halign:'center'},
+                {title: "行驶证号", field: 'driving_license_No',width:140, align:'left', halign:'center'},
+                {title: "联系电话", field: 'phone', width:100, align:'left', halign:'center'},
+                {title: "联系地址", field: "address",width:250, align:'left', halign:'center'}
             ]]
         })
     }
