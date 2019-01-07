@@ -246,7 +246,7 @@ function findOrders(callback) {
         params.state = orderState
     }
 
-    OrderModel.find(params).populate('created_by').sort({'order_num': -1}).exec(function (err, docs) {
+    OrderModel.find(params).populate('created_by', "name" /*只显示用户的name属性*/).sort({'order_num': -1}).exec(function (err, docs) {
         callback(docs)
     })
 
@@ -254,6 +254,7 @@ function findOrders(callback) {
 
 function onDblClickOrderGridRow(index, row) {
     printPreview();
+    //logger.log(JSON.stringify(row))
 }
 
 function doSearchOrder(input, datagrid) {
