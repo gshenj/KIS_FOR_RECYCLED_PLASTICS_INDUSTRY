@@ -83,7 +83,7 @@ function loadClassifications(callback) {
     let data = {text: "客户编码"}
     ClassificationModel.findOne({}, function (err, classification) {
 
-        if (classification == null) {
+        if (!classification) {
             console.log("classification is null")
             callback([data]);
             return;
@@ -108,7 +108,7 @@ function saveClassifications(tree, callback) {
         model.classifications.push(treeToClassification(children[i]))
     }
 
-    ClassificationModel.updateOne({}, model, function (err, doc) {
+    ClassificationModel.findOneAndUpdate({}, model,{upsert:true /*if not find one, insert it.*/}, function (err, doc) {
         handleError(err)
         // 成功后调用
         callback()

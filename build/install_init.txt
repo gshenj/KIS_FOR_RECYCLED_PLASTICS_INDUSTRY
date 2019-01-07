@@ -1,19 +1,22 @@
 #准备数据库mongodb4.0
 #开发主机安装node.js和npm并且添加到path
 #westrom创建空项目工程，cmd 切换到工程目录下
+#cd 工程目录
 npm init
+
 #安装并加入生成包
-npm install  mongodb
-npm install  mongoose
-npm install  electron-squirrel-startup
+npm install mongodb
+npm install mongoose
+npm install electron-timber
+npm install electron-squirrel-startup
 
 #安装开发时依赖包
 npm install --save-dev electron@2.0.16
 npm install --save-dev electron-winstaller
 npm install --save-dev electron-packager
+
 #调试webstrom工程,see Run_configuration.png
 
-#
-#cd 工程目录
+#编译&打包
 npm run packager
 node build/build.js
