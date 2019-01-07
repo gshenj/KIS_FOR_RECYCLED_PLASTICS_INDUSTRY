@@ -159,7 +159,6 @@ function getGridType() {
 function loadOrderGrid() {
 
     let gridType = getGridType()
-    logger.log("* orderGridType is " + gridType)
 
     if (LAST_GRID_TYPE != gridType) {
         if (ORDER_GRID)
@@ -169,6 +168,7 @@ function loadOrderGrid() {
     }
 
     if (ORDER_GRID == null) {
+        logger.log("* orderGridType is " + gridType)
         ORDER_GRID = $('#order_grid').datagrid({
             fit: true,
             //singleSelect: true,
