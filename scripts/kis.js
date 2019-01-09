@@ -132,7 +132,7 @@ function onOpenUserManagePanel() {
 
 
 function getSysRoleTree(callback) {
-    let tree_root = { text: "系统角色", children: [] };
+    let tree_root = { text: "所有角色", children: [] };
     RoleModel.find({}, function (err, roles) {
         for (let i = 0; i < roles.length; i++) {
             tree_root.children.push({ "text": roles[i].role })
@@ -147,19 +147,19 @@ function getSysRoleTree(callback) {
  */
 function onOpenCustomerManagePanel() {
     // 加载分类树
-    loadClassificationTree(function (data) {
-        $('#classification_tree').tree('loadData', data)
-    })
+    loadClassifications(function (data) {
+            $('#classification_tree').tree('loadData', data)
+        })
 
     // 加载客户列表
-    console.log("Load customers")
     loadCustomerGrid(null)
 }
 
 
+/*
 function loadClassificationTree(callback) {
 
-    let data = {text: "客户编码"}
+    let data = {text: "所有编码"}
     ClassificationModel.findOne({}, function (err, classification) {
 
         if (classification == null) {
@@ -178,6 +178,7 @@ function loadClassificationTree(callback) {
     })
 }
 
+*/
 
 
 /**

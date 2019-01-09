@@ -80,7 +80,7 @@ function delete_classification_tree_node() {
 
 function loadClassifications(callback) {
 
-    let data = {text: "客户编码"}
+    let data = {text: "所有编码"}
     ClassificationModel.findOne({}, function (err, classification) {
 
         if (!classification) {

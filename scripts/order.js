@@ -111,13 +111,13 @@ let order_grid_columns2 = [[
             return row.state==STATE_CANCELLED ? '<span style="color:red">'+row.state+'</span>' : row.state
         }
     },
+    {field: 'customer_name', title: '客户名称', width: 160, align: 'left', halign:'center'},
     {field: 'product_name', title:'产品&型号', width:150, align:'left', halign:'center'},
     {field: 'product_units', title:'单位', width:60, align:'left', halign:'center'},
     {field: 'product_num', title:'数量', width:60, align:'right', halign:'center'},
     {field: 'product_price', title:'价格', width:60, align:'right', halign:'center'},
     {field: 'product_sum', title:'金额', width:70, align:'right', halign:'center'},
     {field: 'product_memo', title:'产品备注', width:100, align:'left', halign:'center'},
-    {field: 'customer_name', title: '客户名称', width: 160, align: 'left', halign:'center'},
     {field: 'customer_principal', title: '联系人', width: 60, align: 'left', halign:'center'},
     {field: 'contact_number', title: '联系电话', width: 80, align:'left', halign: 'center'},
     {field: 'delivery_address', title: '送货地址', width: 180, align: 'left',halign:'center'},

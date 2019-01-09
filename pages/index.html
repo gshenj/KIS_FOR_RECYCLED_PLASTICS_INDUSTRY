@@ -339,54 +339,40 @@ padding:6px;">
     <div id="orders_grid_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
          data-options="fit:true, closed:true, border:false, onOpen:onOpenOrderListPanel">
         <div class="easyui-layout" data-options="fit:true, border:false">
-            <div data-options="region:'west'" style="width:260px; padding:4px 8px;">
-                <table style="width:100%; border-collapse: collapse">
+            <div id="orders_cond_div" data-options="region:'west',title:'查询条件'" style="width:220px; padding:4px 10px;">
+                <table>
                     <tr>
-                        <th COLSPAN="2">
-                            <h4>查询条件：</h4>
-                        </th>
-                    </tr>
-                    <tr>
-                        <td style="padding:10px 0 5px 0;">起始日期:
-                        <td style="width:140px;padding:10px 0 5px 0;"><input id="dd_begin" type="text"
-                                                                             class="easyui-datebox"
-                                                                             style="width:100%"/>
+                        <td style="padding:5px 0;">起始日期:<br/>
+                        <input id="dd_begin" class="easyui-datebox orders_cond"/>
                         </td>
                     </tr>
                     <tr>
-                        <td style="padding:5px 0 10px 0;">结束日期:
-                        <td style="width:140px;padding:5px 0 10px 0;"><input id="dd_end" type="text" style="width:100%"
-                                                                             class="easyui-datebox"/></td>
+                        <td style="padding:5px 0;">结束日期:<br/>
+                        <input id="dd_end"  class="easyui-datebox orders_cond"/></td>
                     </tr>
                     <tr>
-                        <td style="padding:10px 0;">客户名称:</td>
-                        <td style="width:140px;padding:10px 0;">
-                            <input id="customer_choose_for_order_list" class="easyui-textbox" data-options="icons: [{
+                        <td style="padding:5px 0;">客户名称:<br/>
+                            <input id="customer_choose_for_order_list" class="easyui-textbox orders_cond" data-options="icons: [{
                                     iconCls:'icon-select',
                                     handler: function(e){
                                         open_customer_choose_for_list_order();
                                     }
-                                }] "
-                                   style="width:100%;">
+                                }] ">
                         </td>
                     </tr>
                     <tr>
-                        <td style="padding:10px 0;">制&ensp;单&ensp;人:</td>
-                        <td style="width:140px;padding:10px 0;">
-                            <input id="order_maker_searchbox" class="easyui-textbox" style="width:100%"/>
+                        <td style="padding:5px 0;">制&ensp;单&ensp;人:<br/>
+                            <input id="order_maker_searchbox" class="easyui-textbox orders_cond"/>
                         </td>
                     </tr>
                     <tr>
-                        <td style="padding:10px 0;">送货司机:</td>
-                        <td style="width:140px;padding:10px 0;">
-                            <input id="order_dirver_searchbox" class="easyui-textbox" style="width:100%"/>
+                        <td style="padding:5px 0;">送货司机:<br/>
+                            <input id="order_dirver_searchbox" class="easyui-textbox orders_cond"/>
                         </td>
                     </tr>
                     <tr>
-                        <td style="padding:10px 0;">单据状态:</td>
-                        <td style="width:140px;padding:10px 0;">
-                            <select id="order_state" class="easyui-combobox" data-options="panelHeight:100"
-                                    style="width:100%;">
+                        <td style="padding:5px 0;">单据状态:<br/>
+                            <select id="order_state" class="easyui-combobox" data-options="panelHeight:100,editable:false" style="width:198px;">
                                 <option value="">全部</option>
                                 <option value="正常" selected>正常</option>
                                 <option value="作废">作废</option>
@@ -394,8 +380,7 @@ padding:6px;">
                         </td>
                     </tr>
                     <tr>
-                        <td style=""></td>
-                        <td style="text-align: center; padding:15px 0;"><a class="easyui-linkbutton" style="width:100%;"
+                        <td style=" padding:40px 0;"><a class="easyui-linkbutton" style="width:198px;"
                                                                            data-options="iconCls:'icon-search',iconAlign:'left'"
                                                                            onclick="loadOrderGrid()">查询</a></td>
                     </tr>
@@ -437,7 +422,7 @@ padding:6px;">
     <div id="orders_report_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
          data-options="fit:true, closed:true, border:false, onOpen:onOpenOrderReportPanel">
         <div class="easyui-layout" data-options="fit:true">
-            <div data-options="region:'west'" style="width:202px; padding:0px 0px;">
+            <div data-options="region:'west'" title="报表类型" style="width:220px; padding:4px;">
                 <div id="sm" class="easyui-sidemenu"
                      data-options="data:data, border:false, onSelect:selectSideMenu"></div>
                 <script type="text/javascript">
@@ -765,7 +750,7 @@ padding:6px;">
     <div id="customer_manage_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
          data-options="fit:true, closed:true, border:false, onOpen:onOpenCustomerManagePanel">
         <div class="easyui-layout" data-options="fit:true, border:false">
-            <div data-options="region:'west'" style="width:180px; padding:4px;">
+            <div data-options="region:'west', title:'编码管理'" style="width:220px; padding:4px;">
                 <ul id="classification_tree" class="easyui-tree" data-options="lines:false,onSelect:loadCustomerGrid,
                         onContextMenu:onClassificationTreeContextMenu">
                 </ul>
@@ -874,13 +859,12 @@ padding:6px;">
          data-options="fit:true, closed:true, border:false, onOpen:onOpenProductManagePanel">
 
         <div class="easyui-layout" data-options="fit:true, border:false">
-            <div data-options="region:'west'" style="width:300px; padding:4px;">
-
+            <div data-options="region:'west'" title="选择客户" style="width:220px; padding:4px;">
                 <div style="color:red; margin-top:10px; width:100%;">
                     说明：未选择客户，则为管理通用产品信息。
                 </div>
                 <input id="customer_choose_for_product_manage" class="easyui-textbox"
-                       data-options="buttonText:'选择客户',prompt:'选择客户',onClickButton:open_customer_choose_for_product_manage"
+                       data-options="prompt:'选择客户',onClickButton:open_customer_choose_for_product_manage"
                        style="width:100%;">
 
 
@@ -936,7 +920,7 @@ padding:6px;">
     <div id="driver_manage_panel" class="easyui-panel opt_panel"
          data-options="fit:true, closed:true, border:false, onOpen:onOpenDriverManagePanel">
         <div class="easyui-layout" data-options="fit:true, border:false">
-            <div data-options="region:'west'" style="width:180px; padding:4px;">
+            <div data-options="region:'west'"  title='货车分类' style="width:220px; padding:4px;">
                 <ul id="cartype_tree" class="easyui-tree"
                     data-options="lines:false, onContextMenu: onCarTypeTreeContextMenu,onSelect:loadDriverGrid">
                 </ul>
@@ -1029,7 +1013,7 @@ padding:6px;">
     <div id="user_manage_panel" class="easyui-panel opt_panel"
          data-options="fit:true, border:false, closed:true, onOpen:onOpenUserManagePanel">
         <div class="easyui-layout" data-options="fit:true, border:false">
-            <div data-options="region:'west'" style="width:180px; padding:4px;">
+            <div data-options="region:'west'" title="系统角色" style="width:220px; padding:4px;">
                 <ul id="role_tree" class="easyui-tree" data-options="lines:false,onSelect:loadSysUsers">
                 </ul>
             </div>

@@ -256,6 +256,16 @@ a.win_btn {
     border: 1px solid #aaa;
 }
 
+
+#orders_cond_div table {
+    width:100%;
+    border-collapse: collapse
+}
+#orders_cond_div .orders_cond {
+    width:194px;
+}
+
+
 .customer_name {
     width: 300px;
 }
@@ -451,3 +461,26 @@ div.toolbar1 {
     height:22px;
     line-height:22px;
 }
+
+/*
+.layout-split-proxy-h {
+    width: 1px;
+    cursor: e-resize;
+}
+.layout-split-proxy-v {
+    height: 1px;
+    cursor: n-resize;
+}
+
+.layout-split-north {
+    border-bottom: 0px solid #f2f5f7;
+}
+.layout-split-south {
+    border-top: 0px solid #f2f5f7;
+}
+.layout-split-east {
+    border-left: 0px solid #f2f5f7;
+}
+.layout-split-west {
+    border-right: 0px solid #f2f5f7;
+}*/

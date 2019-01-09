@@ -73,7 +73,7 @@ ipcMain.on('main-window-ready', (event, arg) =>{
     if(loginWindow) {
         loginWindow.close()
     }
-    mainWindow.maximize()
+    //mainWindow.maximize()
     mainWindow.show()
     event.returnValue = null;
     logger.log("on main-window-ready")

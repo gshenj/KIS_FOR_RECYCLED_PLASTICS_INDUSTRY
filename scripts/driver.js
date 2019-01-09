@@ -79,7 +79,7 @@ function loadCartypeTree(){
 
 function loadCartypes(callback) {
     CartypeModel.find({}, function (err, types) {
-        let carTypesData =  { text: "货车分类", children: [] }
+        let carTypesData =  { text: "所有分类", children: [] }
         for (let i = 0; i < types.length; i++) {
             carTypesData.children.push({ "text": types[i].name, "_id": types[i]._id })
         }
