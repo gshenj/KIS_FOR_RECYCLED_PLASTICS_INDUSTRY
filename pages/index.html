@@ -15,7 +15,8 @@
             module = window.module;
     </script>
 
-    <!--<link rel="stylesheet" type="text/css" href="./scripts/jquery-easyui/themes/material-teal/easyui.css">-->
+    <!--<link rel="stylesheet" type="text/css" href="../scripts/jquery-easyui/themes/material-teal/easyui.css">-->
+    <!--<link rel="stylesheet" type="text/css" href="../scripts/jquery-easyui/themes/bootstrap/easyui.css">-->
     <link rel="stylesheet" type="text/css" href="../scripts/jquery-easyui/themes/ui-cupertino/easyui.css">
     <link rel="stylesheet" type="text/css" href="../scripts/jquery-easyui/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="../scripts/jquery-easyui/themes/color.css">
@@ -45,10 +46,10 @@
 
 </head>
 
-<body class="easyui-layout" id="main_layout" data-options="border:false" style=" padding:0; margin:0;overflow-y: hidden;overflow-x: hidden; height:100%">
+<body class="easyui-layout" id="main_layout" data-options="border:false" style="padding:0; margin:0;overflow-y: hidden;overflow-x: hidden; height:100%">
 <div data-options="region:'north',split:false, border:false"
-     style="height:106px;width:100%; -webkit-user-select: none;  margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
-    <div id="title_bar">
+     style="height:86px;width:100%; -webkit-user-select: none;  margin:0; padding:0;overflow-y: hidden;overflow-x: hidden">
+    <!--<div id="title_bar">
         <div style="height:20px; width:20px; margin:3px 2px 0px 5px; line-height: 20px; float:left; background-color:#fff;">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
                     width="18px" height="18px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000"
@@ -70,7 +71,7 @@
                                 x="0px" y="0px" width="10px" height="10px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000"
                                 xml:space="preserve">
                                 <g>
-                                    <!-- <path d="M10,475.5h980v49H10V475.5z" /> -->
+                                    &lt;!&ndash; <path d="M10,475.5h980v49H10V475.5z" /> &ndash;&gt;
                                     <path d="M990,549.5c0,6.5-5.3,11.8-11.8,11.8H21.8c-6.5,0-11.8-5.3-11.8-11.8v-99c0-6.5,5.3-11.8,11.8-11.8h956.5c6.5,0,11.8,5.3,11.8,11.8V549.5z" />
                                 </g>
                             </svg>
@@ -78,7 +79,7 @@
 
                 <td>
                     <a id="to_max_a" class="win_btn" onclick="maxWin()">
-                        <!-- <img id="to_max_img" src="../images/to_max_SFont.CN.svg" style="border:0px solid red; width:10px; height:10px" /> -->
+                        &lt;!&ndash; <img id="to_max_img" src="../images/to_max_SFont.CN.svg" style="border:0px solid red; width:10px; height:10px" /> &ndash;&gt;
                         <svg id="to_unmax" style="display:none;" version="1.1" xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="10px" height="10px"
                                 viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
@@ -105,23 +106,22 @@
                                 xml:space="preserve">
                                 <g>
                                     <path d="M990,69.8L930.2,10L500,440.2L69.8,10L10,69.8L438.5,500L10,930.2L69.8,990L500,559.8L930.2,990l59.8-59.8L561.5,500L990,69.8z" />
-                                    <!-- <path d="M990,54.1l-43.3-43.4L500,456.7L53.3,10.7L10,54.1l446.6,446L10,946l43.3,43.3l446.7-446l446.7,446L990,946L543.4,500L990,54.1z" /> -->
+                                    &lt;!&ndash; <path d="M990,54.1l-43.3-43.4L500,456.7L53.3,10.7L10,54.1l446.6,446L10,946l43.3,43.3l446.7-446l446.7,446L990,946L543.4,500L990,54.1z" /> &ndash;&gt;
                                 </g>
                             </svg>
                     </a>
                 </td>
             </tr>
         </table>
-    </div>
-
+    </div>-->
 
     <div id="main_tabs" class="easyui-tabs"
-         data-options="border:false, tabWidth:120, tabHeight:26, height:86, plain:true,tools:'#tab-tools'"
-         style="width:100%;  margin:0;">
+         data-options="border:false, tabWidth:120, tabHeight:28, height:86, plain:true, tools:'#tab-tools'"
+         style="width:100%;  margin:0; padding:0;">
 
         <div title="出货单管理" data-options="border:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
-	padding:6px;  -webkit-user-select: none; ">
-            <div style="float:left; width:60%; padding:0px;">
+	padding:6px;  -webkit-user-select: none;overflow-y: hidden;overflow-x: hidden ">
+            <div style=" width:60%; padding:0px;">
                 <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
                    onclick="showPanel(this, 'order_input_panel')"
                    data-options="plain:true, iconCls:'icon-large-neworder', size:'large', iconAlign:'left'">单据填开</a>
@@ -135,8 +135,8 @@
         </div>
 
         <div title="财务管理" data-options="border:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
-	padding:6px;  -webkit-user-select: none; ">
-            <div style="float:left; width:60%; padding:0px;">
+	padding:6px;  -webkit-user-select: none;overflow-y: hidden;overflow-x: hidden ">
+            <div style=" width:60%; padding:0px;">
                 <a class="easyui-linkbutton tool_button" style="-webkit-user-select: none;"
                    onclick="showPanel(this, 'tax_invoice_panel')"
                    data-options="plain:true, iconCls:'icon-large-tax-invoice', size:'large', iconAlign:'left'">开票管理</a>
@@ -147,8 +147,8 @@
         </div>
 
         <div title="资料管理" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
-	padding:6px;">
-            <div style="float:left; width:60%; padding:0px;">
+	padding:6px;overflow-y: hidden;overflow-x: hidden">
+            <div style=" width:60%; padding:0px;">
                 <a class="easyui-linkbutton tool_button" onclick="showPanel(this, 'customer_manage_panel')"
                    data-options="plain:true, iconCls:'icon-large-customerconfig', size:'large', iconAlign:'left'">客户管理</a>
 
@@ -161,31 +161,19 @@
         </div>
 
         <div title="系统设置" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
-	padding:6px;">
+	padding:6px;overflow-y: hidden;overflow-x: hidden">
+            <div style=" width:60%; padding:0px;">
             <a class="easyui-linkbutton tool_button" onclick="showPanel(this, 'user_manage_panel')"
                data-options="plain:true,  size:'large', iconCls:'icon-large-usermanage', iconAlign:'left'">用户管理</a>
             <a class="easyui-linkbutton tool_button" onclick="showPanel(this, 'sys_config_panel')"
                data-options="plain:true, size:'large', iconCls:'icon-large-sysconfig', iconAlign:'left'">系统参数</a>
+            </div>
         </div>
 
-        <!-- <div title="我的账户" data-options="closable:false" style="background:-webkit-gradient(linear, 0 0, 0 bottom, from(#ffffff), to(#eaedf1));
-padding:6px;">
-            <a class="easyui-linkbutton tool_button" onclick="showPanel(this, 'password_set_panel')" data-options="plain:true, iconCls:'icon-large-passwordmanage', size:'large',iconAlign:'left'">密码设置</a>
-            <a class="easyui-linkbutton tool_button" onclick="logout()" data-options="plain:true, size:'large', iconCls:'icon-large-logout', iconAlign:'left'">注销登录</a>
-        </div> -->
     </div>
-
-    <div style="width:70px; position: absolute;top:24px; right:0px; border:none; background:transparent; height:84px; line-height:84px;-webkit-app-region: no-drag;">
+    <div style="width:70px; position: absolute;top:1px; right:0px; border:none; background:transparent; height:84px; line-height:84px;-webkit-app-region: no-drag;">
         <a class="account_logo"></a>
     </div>
-    <!--
-<div id="tab-tools" style="background-color:transparent; border-left:none; border-top:none; border-right:none; -webkit-app-region: no-drag">
-    <a class="menu_a" style="margin-right:10px; margin-top:2px; display:block; background-color:transparent; border:none;" onclick="showAccountMenu(e)">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20px" height="20px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
-<g><path fill="blue" d="M850,45H150C72.6,45,10,107.7,10,185v630c0,77.3,62.6,140,140,140h700c77.3,0,140-62.7,140-140V185C990,107.7,927.3,45,850,45z M920,815c0,38.6-31.4,70-70,70H150c-38.6,0-70-31.4-70-70V185c0-38.6,31.4-70,70-70h700c38.6,0,70,31.4,70,70V815z"/><path d="M220,257.9h70v70h-70V257.9z"/><path d="M360,255h420v70H360V255z"/><path d="M220,467.9h70v70h-70V467.9z"/><path d="M360,465h420v70H360V465z"/><path d="M220,677.9h70v70h-70V677.9z"/><path d="M360,675h420v70H360V675z"/></g>
-</svg></a>
-</div>-->
-
 </div>
 
 <div data-options="region:'center', border:false" style="margin:0; padding:0px;  background:#eee;overflow-y: hidden;overflow-x: hidden; -webkit-app-region: no-drag">
@@ -339,7 +327,7 @@ padding:6px;">
     <div id="orders_grid_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
          data-options="fit:true, closed:true, border:false, onOpen:onOpenOrderListPanel">
         <div class="easyui-layout" data-options="fit:true, border:false">
-            <div id="orders_cond_div" data-options="region:'west',title:'查询条件'" style="width:220px; padding:4px 10px;">
+            <div id="orders_cond_div" title="查询条件" data-options="region:'west', headerCls:'no_left_border'" style="width:220px; padding:4px 10px; border-left:none;">
                 <table>
                     <tr>
                         <td style="padding:5px 0;">起始日期:<br/>
@@ -387,7 +375,7 @@ padding:6px;">
 
                 </table>
             </div>
-            <div data-options="region:'center'" style="padding:0px;">
+            <div data-options="region:'center'" style="padding:0px; border-right:none;">
                 <table id="order_grid" class="easyui-datagrid "></table>
                 <div id="order_grid_toolbar" style="padding:2px 5px;">
                     <a href="#" class="easyui-linkbutton" iconCls="icon-detail" plain="true"
@@ -402,7 +390,7 @@ padding:6px;">
                            onkeyup="onSearch(this, ORDER_GRID, doSearchOrder)">
 
                     <span style="margin-left:20px;">列表方式：</span>
-                    <select id="order_grid_type" class="easyui-combobox" data-options="panelHeight:60, onChange:changeGridType"
+                    <select id="order_grid_type" class="easyui-combobox" data-options="panelHeight:80, onChange:changeGridType"
                             style="width:120px;">
                         <option value="1" >销售单剧列表</option>
                         <option value="2" >销售产品列表</option>
@@ -750,7 +738,7 @@ padding:6px;">
     <div id="customer_manage_panel" class="easyui-panel opt_panel" style="width:100%; height:100%; "
          data-options="fit:true, closed:true, border:false, onOpen:onOpenCustomerManagePanel">
         <div class="easyui-layout" data-options="fit:true, border:false">
-            <div data-options="region:'west', title:'编码管理'" style="width:220px; padding:4px;">
+            <div data-options="region:'west', title:'编码管理', headerCls:'no_left_border'" style="width:220px; padding:4px; border-left:none;">
                 <ul id="classification_tree" class="easyui-tree" data-options="lines:false,onSelect:loadCustomerGrid,
                         onContextMenu:onClassificationTreeContextMenu">
                 </ul>
@@ -784,7 +772,7 @@ padding:6px;">
                        style="width:90px">取消</a>
                 </div>
             </div>
-            <div data-options="region:'center'" style="padding:0px;">
+            <div data-options="region:'center'" style="padding:0px; border-right:none;">
                 <table id="grid_for_customer" style="width:100%"></table>
 
                 <div id="customer_grid_toolbar" style="padding:2px 5px;">
@@ -859,7 +847,7 @@ padding:6px;">
          data-options="fit:true, closed:true, border:false, onOpen:onOpenProductManagePanel">
 
         <div class="easyui-layout" data-options="fit:true, border:false">
-            <div data-options="region:'west'" title="选择客户" style="width:220px; padding:4px;">
+            <div data-options="region:'west', headerCls:'no_left_border'" title="选择客户" style="width:220px; padding:4px; border-left:none;">
                 <div style="color:red; margin-top:10px; width:100%;">
                     说明：未选择客户，则为管理通用产品信息。
                 </div>
@@ -871,7 +859,7 @@ padding:6px;">
                 <div id="selected_customer_info" style="width:100%; height:300px;"></div>
 
             </div>
-            <div data-options="region:'center'" style="padding:0px;">
+            <div data-options="region:'center'" style="padding:0px; border-right:none;">
                 <table id="product_grid" style="width:100%"></table>
 
                 <div id="dlg_for_product" class="easyui-dialog" style="width:500px"
@@ -920,7 +908,7 @@ padding:6px;">
     <div id="driver_manage_panel" class="easyui-panel opt_panel"
          data-options="fit:true, closed:true, border:false, onOpen:onOpenDriverManagePanel">
         <div class="easyui-layout" data-options="fit:true, border:false">
-            <div data-options="region:'west'"  title='货车分类' style="width:220px; padding:4px;">
+            <div data-options="region:'west', headerCls:'no_left_border'"  title='货车分类' style="width:220px; padding:4px; border-left:none;">
                 <ul id="cartype_tree" class="easyui-tree"
                     data-options="lines:false, onContextMenu: onCarTypeTreeContextMenu,onSelect:loadDriverGrid">
                 </ul>
@@ -953,7 +941,7 @@ padding:6px;">
                 </div>
 
             </div>
-            <div data-options="region:'center'" style="padding:0px;">
+            <div data-options="region:'center'" style="padding:0px;border-right:none;">
                 <table id="driver_grid"></table>
                 <div id="dlg_for_driver" class="easyui-dialog" style="width:500px"
                      data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons_for_driver', onOpen:loadCartypeSelectData">
@@ -1013,11 +1001,11 @@ padding:6px;">
     <div id="user_manage_panel" class="easyui-panel opt_panel"
          data-options="fit:true, border:false, closed:true, onOpen:onOpenUserManagePanel">
         <div class="easyui-layout" data-options="fit:true, border:false">
-            <div data-options="region:'west'" title="系统角色" style="width:220px; padding:4px;">
+            <div data-options="region:'west', headerCls:'no_left_border'" title="系统角色" style="width:220px; padding:4px; border-left:none;">
                 <ul id="role_tree" class="easyui-tree" data-options="lines:false,onSelect:loadSysUsers">
                 </ul>
             </div>
-            <div data-options="region:'center'" style="padding:0px;">
+            <div data-options="region:'center'" style="padding:0px; border-right:none;">
                 <table id="sys_user_datagrid"></table>
                 <div id="dlg" class="easyui-dialog" style="width:400px"
                      data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">

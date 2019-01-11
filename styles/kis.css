@@ -10,7 +10,7 @@ body {
     /*font-family:  "Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu;*/
     font: 12px/1.5 Tahoma, Helvetica, Arial, '宋体', sans-serif;
 
-    background-color:#fff;
+    background-color:#eee;
     font-size:12pt;
 
     /*font: 12px/1 Tahoma,Helvetica,Arial,"\5b8b\4f53",sans-serif;*/
@@ -131,7 +131,7 @@ a:hover.menu_a {
 #title_bar {
     -webkit-app-region: drag;
     border: 0px solid red;
-    background-color: #ffffff;
+    background-color: #fdfdfd;
     width: 100%;
     height: 24px;
     line-height: 24px;
@@ -484,3 +484,12 @@ div.toolbar1 {
 .layout-split-west {
     border-right: 0px solid #f2f5f7;
 }*/
+
+
+.no_left_border {
+    border-left:none;
+}
+
+.no_right_border {
+    border-right:none;
+}

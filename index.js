@@ -31,7 +31,7 @@ function createMainWindow() {
         width: 1000,
         height: 700,
         show: false,
-        frame:false,
+        //frame:false,
         backgroundColor: '#2e2c29',
         autoHideMenuBar: true
     })
@@ -41,10 +41,34 @@ function createMainWindow() {
         //mainWindow.show()
     })
 
+    mainWindow.on('maximize', function (e) {
+        mainWindow.webContents.executeJavaScript('afterMax()', true)
+            .then((result) => {
+                console.log(result) // Will be the JSON object from the fetch call
+            })
+    })
+    mainWindow.on('unmaximize', function () {
+        mainWindow.webContents.executeJavaScript('afterUnMax()', true)
+            .then((result) => {
+                console.log(result) // Will be the JSON object from the fetch call
+            })
+    })
+
+    mainWindow.on('close', function(){
+        logger.log('close stop')
+        //event.preventDefault()
+    })
+
     mainWindow.on('closed', () => {
         mainWindow = null;
     })
 }
+
+
+
+
+
+
 
 function createLoginWindow() {
     loginWindow = new BrowserWindow({

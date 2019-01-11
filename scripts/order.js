@@ -168,10 +168,9 @@ function loadOrderGrid() {
     }
 
     if (ORDER_GRID == null) {
-        logger.log("* orderGridType is " + gridType)
+        //logger.log("* orderGridType is " + gridType)
         ORDER_GRID = $('#order_grid').datagrid({
             fit: true,
-            //singleSelect: true,
             ctrlSelect:true,
             border: false,
             showFilterBar: false,

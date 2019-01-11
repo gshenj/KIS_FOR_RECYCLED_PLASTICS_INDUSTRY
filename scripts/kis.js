@@ -11,14 +11,18 @@ let logger = require('electron-timber');
 
 
 let win = require('electron').remote.getCurrentWindow();
-win.on('maximize', function () {
+
+ function afterMax(){
     $('#to_max').hide();
     $('#to_unmax').show();
-})
-win.on('unmaximize', function () {
+    return "Done maximize window!"
+}
+
+function  afterUnMax() {
     $('#to_unmax').hide();
     $('#to_max').show();
-})
+    return "Done unmaximize window!"
+}
 
 
 $.extend($.fn.textbox.methods, {
@@ -69,7 +73,8 @@ function isAdmin(role) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function updateTitle(menu) {
-    $('#main_title').html(SYS_CONFIG.company_name + KIS_NAME + " " + KIS_VERSION + '　─　' + menu)
+    //$('#main_title').html(SYS_CONFIG.company_name + KIS_NAME + " " + KIS_VERSION + '　─　' + menu)
+    document.title = (SYS_CONFIG.company_name + KIS_NAME + " " + KIS_VERSION + '　─　' + menu)
 }
 
 function hide_all_panel() {
@@ -154,32 +159,6 @@ function onOpenCustomerManagePanel() {
     // 加载客户列表
     loadCustomerGrid(null)
 }
-
-
-/*
-function loadClassificationTree(callback) {
-
-    let data = {text: "所有编码"}
-    ClassificationModel.findOne({}, function (err, classification) {
-
-        if (classification == null) {
-            console.log("classification is null")
-            callback([data]);
-            return;
-        }
-
-        let arr = classification.classifications     //{classifications:[{name:"江苏",children:[]}]}
-        let children = []
-        for (let i = 0; i < arr.length; i++) {
-            children.push(classificationToTree(arr[i]))
-        }
-        data.children = children
-        callback([data])
-    })
-}
-
-*/
-
 
 /**
  * 打开产品管理页面触发函数
@@ -346,17 +325,15 @@ function showAccountMenu(e) {
     e.preventDefault();
     $('#account_info').menu('show', {
         left: e.pageX,
-        top: 105
+        top: 84
     })
 }
 
 
 $(function () {
 
-
-
     SYS_CONFIG = JSON.parse(localStorage.getItem('sys_config'))
-    $('#main_title').html(SYS_CONFIG.company_name + KIS_NAME + " " + KIS_VERSION)
+    document.title = (SYS_CONFIG.company_name + KIS_NAME + " " + KIS_VERSION)
 
     $('#new_order_sale_date').datebox().datebox('calendar').calendar({
         validator: function (date) {
@@ -452,6 +429,7 @@ function closeWin(slience) {
     }
 }
 
+
 function preview(order, type) {
     type = type || 'new_order'
     localStorage.setItem('order', JSON.stringify(order));
@@ -464,7 +442,7 @@ function preview(order, type) {
         minimizable: false,
         resizable: false,
         parent: win,
-        frame: false,
+        //frame: false,
         title: '打印',
         autoHideMenuBar: true
     })
