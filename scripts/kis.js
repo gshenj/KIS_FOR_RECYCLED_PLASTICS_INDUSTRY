@@ -188,6 +188,7 @@ function onOpenSysConfigPanel(){
 let timer
 // datagrid filter的触发过滤操作
 function onSearch(src, datagrid, doSearch) {
+    logger.log("onSearch...")
     let e=arguments.callee.caller.arguments[0]||window.event
     if (timer) {
         clearTimeout(timer);
@@ -198,6 +199,7 @@ function onSearch(src, datagrid, doSearch) {
         timer = setTimeout(function () {
             //doSearch(src, datagrid)
             doSearch(src, datagrid)
+            logger.log("doSearch...")
         }, 400);
     }
 }
@@ -402,11 +404,13 @@ function afterCompleteLoading() {
 
 function printPreview() {
     let row = ORDER_GRID.datagrid('getSelected')
-    findOrderById(row._id, function(doc){
-        if (doc) {
-            preview(doc, 'list')
-        }
-    })
+    if (row) {
+        findOrderById(row._id, function (doc) {
+            if (doc) {
+                preview(doc, 'list')
+            }
+        })
+    }
 }
 
 function maxWin() {

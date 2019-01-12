@@ -72,7 +72,7 @@ function saveOrder(order, callback) {
         OrderModel.create(order, function (err, doc) {
             if (err) handleError(err)
             if (doc) {
-                debug("保存订单成功！")
+                logger.log("保存订单成功！")
                 //console.log(JSON.stringify(doc))
                 callback(doc)
             }
@@ -94,13 +94,13 @@ let order_grid_columns = [[
     {field: 'delivery_address', title: '送货地址', width: 180, align: 'left', halign:'center'},
     {field: 'order_maker', title: '制单人', width: 60, align: 'left', halign:'center'},
     {field: 'order_driver', title: '送货司机', width: 80, align: 'left', halign:'center'},
-    {field: 'products_num', title: '单据总数量', width: 80, align: 'right',halign:'center'},
-    {field: 'products_sum', title: '单据总金额', width: 80, align: 'right',halign:'center'},
-    {field: 'create_date', title: '录入时间', width: 140, align: 'right',halign:'center'}/*,
-    {field: 'products', title:'产品列表', width:80, align:'center', halign:'center', formatter:function (value, row, index) {
-            return  '<a href="#" onclick="showDetail()" >产品...</a>'
-        }
-    }*/
+    {field: 'products_num', title: '单据总数量', width: 80, align: 'right',halign:'center', formatter: function (value, row, index) {
+            return negativeNumberFormatter(row.products_num)
+        }},
+    {field: 'products_sum', title: '单据总金额', width: 80, align: 'right',halign:'center', formatter: function (value, row, index) {
+            return negativeNumberFormatter(row.products_sum)
+        }},
+    {field: 'create_date', title: '录入时间', width: 140, align: 'right',halign:'center'}
 ]]
 
 let order_grid_columns2 = [[
@@ -112,20 +112,28 @@ let order_grid_columns2 = [[
         }
     },
     {field: 'customer_name', title: '客户名称', width: 160, align: 'left', halign:'center'},
-    {field: 'product_name', title:'产品&型号', width:150, align:'left', halign:'center'},
-    {field: 'product_units', title:'单位', width:60, align:'left', halign:'center'},
-    {field: 'product_num', title:'数量', width:60, align:'right', halign:'center'},
-    {field: 'product_price', title:'价格', width:60, align:'right', halign:'center'},
-    {field: 'product_sum', title:'金额', width:70, align:'right', halign:'center'},
-    {field: 'product_memo', title:'产品备注', width:100, align:'left', halign:'center'},
+    {field: 'product_name', title:'产品&型号', width:140, align:'left', halign:'center'},
+    {field: 'product_units', title:'单位', width:45, align:'center', halign:'center'},
+    {field: 'product_num', title:'数量', width:50, align:'right', halign:'center', formatter: function (value, row, index) {
+            return negativeNumberFormatter(row.product_num)
+    }},
+    {field: 'product_price', title:'价格', width:40, align:'right', halign:'center'},
+    {field: 'product_sum', title:'金额', width:70, align:'right', halign:'center',formatter: function (value, row, index) {    // use method with param
+            return negativeNumberFormatter(row.product_sum)
+        }},
+    {field: 'product_memo', title:'产品备注', width:80, align:'left', halign:'center'},
     {field: 'customer_principal', title: '联系人', width: 60, align: 'left', halign:'center'},
     {field: 'contact_number', title: '联系电话', width: 80, align:'left', halign: 'center'},
     {field: 'delivery_address', title: '送货地址', width: 180, align: 'left',halign:'center'},
-    {field: 'order_maker', title: '制单人', width: 60, align: 'left', halign:'center'},
+    {field: 'order_maker', title: '制单人', width: 50, align: 'left', halign:'center'},
     {field: 'order_driver', title: '送货司机', width: 60, align: 'left',halign:'center'},
-    {field: 'products_num', title: '单据总数量', width: 80, align: 'right',halign:'center'},
-    {field: 'products_sum', title: '单据总金额', width: 80, align: 'right',halign:'center'},
-    {field: 'create_date', title: '录入时间', width: 140, align: 'right',halign:'center'}
+    {field: 'products_num', title: '单据总数量', width: 80, align: 'right',halign:'center', formatter: function (value, row, index) {
+            return negativeNumberFormatter(row.products_num)
+        }},
+    {field: 'products_sum', title: '单据总金额', width: 80, align: 'right',halign:'center', formatter: function (value, row, index) {
+            return negativeNumberFormatter(row.products_sum)
+        }},
+    {field: 'create_date', title: '录入时间', width: 130, align: 'right',halign:'center'}
 ]]
 
 
@@ -147,6 +155,13 @@ function productDetailFormatter(rowIndex, rowData) {
     return html += '</table></div>'
 }
 
+
+function negativeNumberFormatter (value) {
+    if (value && value < 0)
+        return '<span style="color:red">'+value+'</span>'
+    else
+        return value
+}
 
 function changeGridType(newValue, oldValue) {
     loadOrderGrid()
