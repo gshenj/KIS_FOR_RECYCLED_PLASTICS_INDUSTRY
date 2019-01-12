@@ -33,8 +33,8 @@ let product_grid_toolbar = [{
 }]
 
 let product_grid_columns = [[
-    {field: 'name', title: '品名', width: 140, align: 'left', halign:'center'},
-    {field: 'model', title: '型号', width: 140, align: 'left', halign:'center'},
+    {field: 'name', title: '品名', width: 140,sortable: true, align: 'left', halign:'center'},
+    {field: 'model', title: '型号', width: 140,sortable: true, align: 'left', halign:'center'},
     {field: 'units', title: '单位', width: 80, align: 'left', halign:'center'},
     {field: 'price', title: '价格', width: 60, align: 'right', halign:'center'},
     {field: 'memo', title: '备注', width: 160, align: 'left', halign:'center'}
@@ -47,6 +47,7 @@ function load_product_grid(customerId, title) {
             singleSelect: true,
             border:false,
             width: 580,
+            multiSort:true,
             showFilterBar:false,
             toolbar: product_grid_toolbar,
             title:'通用产品管理',

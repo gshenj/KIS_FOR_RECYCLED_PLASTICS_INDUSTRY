@@ -32,7 +32,7 @@ function createMainWindow() {
         height: 700,
         show: false,
         //frame:false,
-        backgroundColor: '#2e2c29',
+        //backgroundColor: '#2e2c29',
         autoHideMenuBar: true
     })
 

@@ -54,14 +54,15 @@ function loadSysUserGrid(params) {
             collapsible: false,
             data: [],
             border:false,
+            multiSort:true,
             rownumbers:true,
             title:'<span style="font-weight: bold">系统用户列表</span>',
             width:700,
             height:500,
             toolbar: toolbarForSysUserGrid,
             columns:[[
-                {field:'name',title:'用户名',width:100},
-                {field:'role',title:'角色',width:100},
+                {field:'name',title:'用户名', sortable: true, width:100},
+                {field:'role',title:'角色', sortable: true, width:100},
                 {field:'disabled',title:'状态',width:100,align:'right', formatter: function(value,row,index){
                         if (row.disabled){
                             return "<span style='color:red'>禁用</span>";
