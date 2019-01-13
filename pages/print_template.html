@@ -202,10 +202,8 @@
                 '                合计数量：\n' +
                 '                </td>\n' +
                 '                <td style="text-align:left; border-left:none; border-right:none;padding-left:0; font-size:12pt;"><span id="product_total_num">' + order.products_num + '</span></td>\n' +
-                '                <td style="text-align: right;border-left:none; border-right:none;padding-right:0; font-size:12pt;">\n' +
-                '                合计金额：\n' +
-                '                </td>\n' +
-                '                <td colspan="2" style="text-align:left; border-left:none;padding-left:0; font-size:12pt;"><span id="product_total_sum">' + order.products_sum + '</span></td>\n' +
+                '                <td colspan="3" style="text-align: left;border-left:none; border-right:none;padding-right:0; font-size:12pt;">\n' +
+                '                合计金额：<span id="product_total_sum">' + order.products_sum + '</span></td>\n' +
                 '            </tr>')
         }
 
@@ -235,36 +233,30 @@
             <tr>
                 <td style="width:35%">电话：<span id="company_phone"></span></td>
                 <td style="width:35%">传真：<span id="company_fax"></span></td>
-                <td style=" width:30%; text-align: right; padding-right:2px;">销售单号： <span id="order_number"></span></td>
+                <td style=" width:30%; text-align: right; padding-right:2px;">销售单号：<span id="order_number"></span></td>
             </tr>
         </table>
 
         <table class="bill_table" cellpadding="0" cellspacing="0">
             <tr>
                 <td colspan="7">
-                    客户名称：
-                    <span id="customer_name"></span>
+                    客户名称：<span id="customer_name"></span>
                 </td>
             </tr>
             <tr>
                 <td colspan="7">
-                    送货地址：
-                    <span id="delivery_address"></span>
+                    送货地址：<span id="delivery_address"></span>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
-                    客户电话：
-                    <span id="contact_number"></span>
+                    客户电话：<span id="contact_number"></span>
                 </td>
                 <td colspan="3">
-                    联系人：
-                    <span id="customer_principal"></span>
+                    联系人：<span id="customer_principal"></span>
                 </td>
-
                 <td id="sale_date_div" colspan="2" style="text-align:right; padding-right:2px;">
-                    送货日期：
-                    <span id="order_date"></span>
+                    送货日期：<span id="order_date"></span>
                 </td>
             </tr>
         </table>

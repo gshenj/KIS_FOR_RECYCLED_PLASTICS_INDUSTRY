@@ -37,7 +37,8 @@ function createMainWindow() {
         autoHideMenuBar: true
     })
 
-    mainWindow.loadURL('file://' + __dirname + '/pages/index.html')
+    mainWindow.loadFile(__dirname + '/pages/index.html')
+    //mainWindow.loadFile('./pages/index.html')
     mainWindow.once('ready-to-show', () => {
         //mainWindow.show()
     })
@@ -83,7 +84,8 @@ function createLoginWindow() {
         show: false
     })
 
-    loginWindow.loadURL('file://' + __dirname + '/pages/login.html')
+    // loginWindow.loadURL('file://' + __dirname + '/pages/login.html')
+    loginWindow.loadFile(__dirname + '/pages/login.html')
     loginWindow.once('ready-to-show', () => {
         //loginWindow.show()
     })

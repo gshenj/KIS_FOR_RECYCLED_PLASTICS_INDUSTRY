@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "packager": "electron-packager . kis --out=./build --ignore=\".idea|.vscode\" --platform=win32 --arch=ia32 --app-version=1.0.0 --electron-version=2.0.16 --overwrite && node build/build.js"
+    "packager": "electron-packager . kis --out=./build --ignore=\".idea|.vscode\" --platform=win32 --arch=ia32 --icon=./images/icon_64px.ico --app-version=1.0.0 --electron-version=4.0.1 --overwrite && node build/build.js"
   },
   "author": "Shenjin",
   "license": "ISC",

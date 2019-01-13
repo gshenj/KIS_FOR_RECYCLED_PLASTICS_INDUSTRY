@@ -467,7 +467,8 @@ function preview(order, type) {
         }
     })
 
-    win_print.loadURL('file://' + __dirname + '/print_template.html')
+    // win_print.loadURL('file://' + __dirname + '/print_template.html')
+    win_print.loadFile(__dirname + '/print_template.html')
     moveChildWindowToParentCenter(win_print, win)
     win_print.show()
 }
