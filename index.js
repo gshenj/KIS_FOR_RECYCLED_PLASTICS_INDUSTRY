@@ -3,6 +3,7 @@ const logger = require('electron-timber');
 
 // Report crashes to our server.
 //require('crash-reporter').start();
+
 if(require('electron-squirrel-startup')) app.quit()//return;
 
 // Keep a global reference of the window object, if you don't, the window will

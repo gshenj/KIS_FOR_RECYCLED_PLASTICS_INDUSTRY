@@ -61,7 +61,6 @@ let db_address = 'mongodb://' + ip_address
 let strUrl=location.href;
 let arrUrl=strUrl.split("/");
 let strPage=arrUrl[arrUrl.length-1];
-loggerInDb.log(strPage +" * " + db_address)
 
 let process = require('electron').remote.process
 let argv = process.argv
@@ -69,6 +68,9 @@ let dbName = 'kis'
 if (argv.length>=3 && argv[2]=='dev') {
     dbName = 'kis-dev'
 }
+
+loggerInDb.log(strPage +": Connect to " + db_address +"/"+dbName)
+
 /**DB utils **/
 mongoose.connect(db_address, { dbName: dbName, useNewUrlParser: true });
 
@@ -86,8 +88,8 @@ ClassificationModel = mongoose.model("classification", classificationSchema, "cl
 DriverModel = mongoose.model("driver", driverSchema, "drivers")
 
 let db = mongoose.connection;
-db.on('error', console.error.bind(console, 'Connection error:'));
-db.on('open', function () { loggerInDb.log("Open database connection.") })
+db.on('error', function(){ loggerInDb.error("Connect to database failed."); alert('无法连接到数据库，请检查网络！')})
+db.on('open', function () { loggerInDb.log("Connect to database OK.")})
 
 function loadSysRoles() {
     RoleModel.find({}, function (err, roles) {
