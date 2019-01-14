@@ -3,7 +3,7 @@ let options = require('./config.js').config
 //loggerInDb.log(JSON.stringify(options));
 
 let mongoose = require('mongoose');
-mongoose.set('useFindAndModify', false)
+//mongoose.set('useFindAndModify', false)
 
 
 let Schema = mongoose.Schema;

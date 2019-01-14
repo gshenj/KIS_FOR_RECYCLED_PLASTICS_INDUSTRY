@@ -6,7 +6,7 @@ const ORDER_GRID_TYPE_DETAIL = 2;
 
 const {BrowserWindow, dialog} = require('electron').remote
 const {ipcRenderer} = require('electron')
-const fs = require('fs');
+//const fs = require('fs');
 let logger = require('electron-timber');
 const { mongoose,
     SequenceModel,
