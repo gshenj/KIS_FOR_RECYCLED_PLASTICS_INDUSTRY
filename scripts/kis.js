@@ -8,6 +8,17 @@ const {BrowserWindow, dialog} = require('electron').remote
 const {ipcRenderer} = require('electron')
 const fs = require('fs');
 let logger = require('electron-timber');
+const { mongoose,
+    SequenceModel,
+    ConfigModel,
+    ClassificationModel,
+    UserModel,
+    RoleModel,
+    CustomerModel,
+    ProductModel,
+    DriverModel,
+    OrderModel,
+    CartypeModel} = require("../scripts/DBUtil")
 
 
 let win = require('electron').remote.getCurrentWindow();

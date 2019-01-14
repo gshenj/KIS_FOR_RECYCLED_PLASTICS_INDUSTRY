@@ -21,7 +21,7 @@
     <link rel="stylesheet" type="text/css" href="../scripts/jquery-easyui/themes/ui-cupertino/easyui.css">
     <link rel="stylesheet" type="text/css" href="../scripts/jquery-easyui/themes/icon.css">
     <script type="text/javascript" src="../scripts/jquery-easyui/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="../scripts/db.js"></script>
+    <!--<script type="text/javascript" src="../scripts/db.js"></script>-->
 
     <style type="text/css">
         * {
@@ -253,6 +253,8 @@
         var no;
         const { ipcRenderer } = require('electron')
         const win = require('electron').remote.getCurrentWindow();
+        const {UserModel} = require("../scripts/DBUtil")
+        const  db = require("../scripts/DBUtil")
 
         win.on('show', () => {
             loadLocalStorageUsers()
@@ -326,6 +328,8 @@
 
             let user = $('#username').combobox('getValue')
             let password = $('#password').passwordbox('getValue')
+
+            //
             loginToDb(user, password, function (u) {
                 if (u) {
                     localStorage.setItem('user', JSON.stringify(u))
@@ -339,7 +343,7 @@
                     console.log('set local_users ' + local_users)
                     localStorage.setItem("local_users", JSON.stringify(local_users))
 
-                    loadConfig(function (config) {
+                    db.loadConfig(function (config) {
                         // localStorage只支持String值
                         localStorage.setItem("sys_config", JSON.stringify(config))
                         ipcRenderer.sendSync('login-success', null) // prints "pong"
