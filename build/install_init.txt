@@ -12,14 +12,13 @@ npm install electron-squirrel-startup
 
 #安装开发时依赖包
 npm install --save-dev electron@2.0.16
+npm install --save-dev electron-packager
 #npm install --save-dev electron-winstaller
 npm install electron-packager -g
-npm install --save-dev electron-packager
 
 #调试webstrom工程,see Run_configuration.png
 
 #编译&打包
 npm run packager
-node build/build.js
 
-electron-packager . kis --out=../build --ignore=build --platform=win32 --arch=ia32
+#electron-packager . kis --out=../build --ignore=build --platform=win32 --arch=ia32
