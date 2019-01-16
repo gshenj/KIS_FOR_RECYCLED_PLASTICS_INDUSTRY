@@ -4,7 +4,7 @@ let customer_choose_dlg_type = null;
 let opt_type_for_customer;
 let editIndex = undefined;
 
-function loadCustomerGrid(node) {
+async function loadCustomerGrid(node) {
     let t = $('#classification_tree')
     if (node == null) {
         node = t.tree('getSelected')
@@ -15,14 +15,14 @@ function loadCustomerGrid(node) {
     let params = {}
     if (node == null || node == rootNode) {
 
-    } else if (t.tree('isLeaf', node.target)){
+    } else if (t.tree('isLeaf', node.target)) {
         console.log("Select classification node is a leaf.")
         params.classification = node.text;
     } else {
         let arr = [node.text]
         let children = t.tree('getChildren', node.target)
         // children包含所有子节点
-        for (let i=0; i<children.length; i++) {
+        for (let i = 0; i < children.length; i++) {
             arr.push(children[i].text)
         }
         params.classification = {$in: arr}
@@ -34,21 +34,45 @@ function loadCustomerGrid(node) {
             ctrlSelect: true,
             collapsible: false,
             data: [],
-            border:false,
-            remoteSort:false,
-            multiSort:true,
-            showFilterBar:false,
-            rownumbers:true,
-            title:'<span style="font-weight: bold">客户列表</span>',
-            width:720,
+            border: false,
+            remoteSort: false,
+            multiSort: true,
+            showFilterBar: false,
+            rownumbers: true,
+            title: '<span style="font-weight: bold">客户列表</span>',
+            width: 720,
             toolbar: '#customer_grid_toolbar',
-            columns:[[
-                {title: "客户编码", field: 'classification',width:100, sortable: true,sortOrder: 'asc', align:'left', halign:'center'},
-                {title: "客户名称", field: 'name', width:250, sortable:true, sortOrder: 'asc', align:'left', halign:'center'},
-                {title: "客户简码", field: 'index_code', width:80, sortable:true, sortOrder: 'asc', align:'left', halign:'center'},
-                {title: "联系人", field: "principal",width:100, align:'left', halign:'center'},
-                {title: "联系电话", field: 'phone',width:100, align:'left', halign:'center'},
-                {title: "联系地址", field: 'address',width:250, align:'left', halign:'center'}
+            columns: [[
+                {
+                    title: "客户编码",
+                    field: 'classification',
+                    width: 100,
+                    sortable: true,
+                    sortOrder: 'asc',
+                    align: 'left',
+                    halign: 'center'
+                },
+                {
+                    title: "客户名称",
+                    field: 'name',
+                    width: 250,
+                    sortable: true,
+                    sortOrder: 'asc',
+                    align: 'left',
+                    halign: 'center'
+                },
+                {
+                    title: "客户简码",
+                    field: 'index_code',
+                    width: 80,
+                    sortable: true,
+                    sortOrder: 'asc',
+                    align: 'left',
+                    halign: 'center'
+                },
+                {title: "联系人", field: "principal", width: 100, align: 'left', halign: 'center'},
+                {title: "联系电话", field: 'phone', width: 100, align: 'left', halign: 'center'},
+                {title: "联系地址", field: 'address', width: 250, align: 'left', halign: 'center'}
             ]]
         })
         enable_customer_filter = false;
@@ -57,38 +81,35 @@ function loadCustomerGrid(node) {
     if (params == null) {
         params = {}
     }
-    CustomerModel.find(params, function (err, docs) {
-        CUSTOMER_GRID.datagrid('loadData', docs)
-        CUSTOMER_GRID.datagrid('enableFilter', {filterMatchingType:'any'})
-    })
+    let docs = await CustomerModel.find(params).exec()
+    CUSTOMER_GRID.datagrid('loadData', docs)
+    CUSTOMER_GRID.datagrid('enableFilter', {filterMatchingType: 'any'})
 }
 
-function newCustomer(){
-    $('#dlg_for_customer').dialog('open').dialog('center').dialog('setTitle','添加客户');
+function newCustomer() {
+    $('#dlg_for_customer').dialog('open').dialog('center').dialog('setTitle', '添加客户');
     $('#fm_for_customer').form('clear');
     let node = $('#classification_tree').tree('getSelected')
     if (node != null) {
         let rootNode = $('#classification_tree').tree('getRoot')
         if (node != rootNode) {
-            $('#customer_classification').combotree('setValue', {id:node.text, text:node.text})
+            $('#customer_classification').combotree('setValue', {id: node.text, text: node.text})
         }
     }
     opt_type_for_customer = 'new'
 }
 
 
-function editCustomer(){
-    var row = CUSTOMER_GRID.datagrid('getSelected');
-    if (row){
-        $('#dlg_for_customer').dialog('open').dialog('center').dialog('setTitle','修改客户');
-        console.log("ROw"+JSON.stringify(row))
-        $('#fm_for_customer').form('load',row);
-
+function editCustomer() {
+    let row = CUSTOMER_GRID.datagrid('getSelected');
+    if (row) {
+        $('#dlg_for_customer').dialog('open').dialog('center').dialog('setTitle', '修改客户');
+        $('#fm_for_customer').form('load', row);
         opt_type_for_customer = 'edit'
     }
 }
 
-function saveCustomer() {
+async function saveCustomer() {
 
     let name = $('#customer_name').textbox('getValue')
     let classification = $('#customer_classification').combotree('getValue')
@@ -97,53 +118,48 @@ function saveCustomer() {
     let address = $('#customer_address').textbox('getValue')
     let index_code = $('#customer_index_code').textbox('getValue')
 
-    let customer = {name: name, classification: classification ,
-        index_code:index_code, principal: principal, phone:phone, address:address}
+    let customer = {
+        name: name, classification: classification,
+        index_code: index_code, principal: principal, phone: phone, address: address
+    }
 
     if (opt_type_for_customer == 'new') {
         console.log("New customer is: " + JSON.stringify(customer))
-        CustomerModel.create(customer, function () {
-            $('#dlg_for_customer').dialog('close');
-            loadCustomerGrid(null)
-        })
+        await CustomerModel.create(customer).exec()
 
     } else if (opt_type_for_customer == 'edit') {
         let customerId = $('#customer_id').val();
-        //customer._id = customer_id;
         console.log("Edit customer is: " + JSON.stringify(customer))
         // customer不能包含products字段，否则会更新.update是局部字段更新的.
-        CustomerModel.findByIdAndUpdate(customerId, customer, function () {
-
-            $('#dlg_for_customer').dialog('close');
-            loadCustomerGrid(null)
-        })
+        await CustomerModel.findByIdAndUpdate(customerId, customer).exec()
     }
+
+    $('#dlg_for_customer').dialog('close');
+    loadCustomerGrid(null)
 }
 
-function destroyCustomer(){
-    var row = CUSTOMER_GRID.datagrid('getSelected');
-    if (row){
-        $.messager.confirm('确定','是否确定删除选中的用户?',function(r){
-            if (r){
-                CustomerModel.findByIdAndDelete(row._id, function(){
-                    $('#dlg_for_customer').dialog('close');
-                    loadCustomerGrid(null)
-                })
-
+function destroyCustomer() {
+    let row = CUSTOMER_GRID.datagrid('getSelected');
+    if (row) {
+        $.messager.confirm('确定', '是否确定删除选中的用户?', async function (r) {
+            if (r) {
+                await CustomerModel.findByIdAndDelete(row._id).exec()
+                $('#dlg_for_customer').dialog('close');
+                loadCustomerGrid(null)
             }
         });
     }
 }
 
 
-function showClassificationCombotree(){
+function showClassificationCombotree() {
     loadClassifications(function (data) {
         $('#customer_classification').combotree('loadData', data)
     })
 }
 
 
-function beforeSelectClassificationCombotree(node){
+function beforeSelectClassificationCombotree(node) {
     if (typeof(node.id) == 'undefined') {
         console.log("选中编码分类根节点")
         return false;
@@ -163,7 +179,7 @@ function doSearchCustomer(input, datagrid) {
         field: 'index_code',
         op: 'contains',
         value: searchText
-    }).datagrid('addFilterRule',{
+    }).datagrid('addFilterRule', {
         field: 'name',
         op: 'contains',
         value: searchText
@@ -189,7 +205,8 @@ function doSearchCustomer(input, datagrid) {
 
 /***********************************************客户选择对话框****************************************************/
 let CUSTOMER_GRID01 = null;
-function loadCustomerGrid01(node) {
+
+async function loadCustomerGrid01(node) {
 
     let t = $('#classification_tree01')
     if (node == null) {
@@ -243,10 +260,10 @@ function loadCustomerGrid01(node) {
     if (params == null) {
         params = {}
     }
-    CustomerModel.find(params, function (err, docs) {
-        CUSTOMER_GRID01.datagrid('loadData', docs)
-        CUSTOMER_GRID01.datagrid('enableFilter', {filterMatchingType: 'any'})
-    })
+    let docs = await CustomerModel.find(params).exec()
+    CUSTOMER_GRID01.datagrid('loadData', docs)
+    CUSTOMER_GRID01.datagrid('enableFilter', {filterMatchingType: 'any'})
+
 }
 
 function onOpenCustomerChooseDlg() {
@@ -263,7 +280,6 @@ function chooseCustomer(callback) {
     $('#dlg_for_customer_choose').dialog('close')
     let row = CUSTOMER_GRID01.datagrid('getSelected')
     if (row) {
-
         if (customer_choose_dlg_type == 'list_products') {
             $('#customer_choose_for_product_manage').textbox("setValue", row._id).textbox("setText", row.name)
             $('#customer_choose_for_product_manage').textbox('textbox').keyup()

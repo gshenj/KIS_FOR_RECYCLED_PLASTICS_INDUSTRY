@@ -46,38 +46,43 @@ $.extend($.fn.datagrid.methods, {
 });
 
 
-function getCurrentSeq(seq_name, callback) {
-    SequenceModel.findOne({ "seq_name": seq_name }, function (err, doc) {
-        if (doc) {
-            callback(doc.value)
-        } else {
-            SequenceModel.create({ 'seq_name': seq_name, value: 100000 }, function (err, doc) {
-                callback(doc.value)
-            })
-        }
-    })
+async function getCurrentSeq(seq_name) {
+    let doc = await SequenceModel.findOne({ "seq_name": seq_name }).exec()
+    if (!doc) {
+        doc = await SequenceModel.create({ 'seq_name': seq_name, value: 100000 }).exec()
+    }
+
+    return doc.value;
 }
 
-function nextSeq(seq_name, callback) {
-    SequenceModel.findOneAndUpdate({ "seq_name": seq_name }, { $inc: { value: 1 } }, function (err, doc) {
-        if (doc) {
-            callback(doc.value)
-        }
-    })
+async function nextSeq(seq_name) {
+    let doc = await SequenceModel.findOneAndUpdate({ "seq_name": seq_name }, { $inc: { value: 1 } }).exec()
+    return doc.value;
 }
 
-function saveOrder(order, callback) {
+async function saveOrder(order) {
+    let orderNum = nextSeq("order_seq");
+    order.order_num = orderNum
+
+    let doc = OrderModel.create(order).exec()
+    if (doc) {
+        logger.log("保存订单成功！")
+    }
+
+    return doc;
+
+   /* OrderModel.create(order, function (err, doc) {
+        if (err) handleError(err)
+        if (doc) {
+            logger.log("保存订单成功！")
+            //console.log(JSON.stringify(doc))
+            callback(doc)
+        }
+    })
+
     nextSeq("order_seq", function (orderNum) {
-        order.order_num = orderNum
-        OrderModel.create(order, function (err, doc) {
-            if (err) handleError(err)
-            if (doc) {
-                logger.log("保存订单成功！")
-                //console.log(JSON.stringify(doc))
-                callback(doc)
-            }
-        })
-    })
+
+    })*/
 }
 
 let order_grid_columns = [[
@@ -171,10 +176,8 @@ function getGridType() {
     return $('#order_grid_type').combobox('getValue');
 }
 
-function loadOrderGrid() {
-
+async function loadOrderGrid() {
     let gridType = getGridType()
-
     if (LAST_GRID_TYPE != gridType) {
         if (ORDER_GRID)
             ORDER_GRID.datagrid('unKeyCtr')
@@ -200,36 +203,10 @@ function loadOrderGrid() {
         })
 
         ORDER_GRID.datagrid("keyCtr");
-
         LAST_GRID_TYPE = gridType
         localStorage.setItem("order_grid_type", gridType)
     }
 
-    findOrders(function (docs) {
-        let docsRows = null;
-        let gridType = getGridType()
-        if (gridType == ORDER_GRID_TYPE_BRIEF) {
-            docsRows = docs
-
-        } else {
-            docsRows = []
-            for (let i=0; i<docs.length; i++) {
-                let products = docs[i].products
-                delete docs[i].products
-                for (let j=0; j<products.length; j++) {
-                    let newDoc = jQuery.extend({}, docs[i], products[j]);
-                    docsRows.push(newDoc)
-                }
-            }
-        }
-        ORDER_GRID.datagrid('loadData', docsRows)
-        ORDER_GRID.datagrid('enableFilter', {filterMatchingType: 'any'})
-
-    })
-
-}
-
-function findOrders(callback) {
 
     let params = {};
     let begin = $('#dd_begin').datebox('getValue')
@@ -260,15 +237,30 @@ function findOrders(callback) {
         params.state = orderState
     }
 
-    OrderModel.find(params).populate('created_by', "name" /*只显示用户的name属性*/).sort({'order_num': -1}).exec(function (err, docs) {
-        callback(docs)
-    })
+    let docs = await  OrderModel.find(params).populate('created_by', "name" /*只显示用户的name属性*/).sort({'order_num': -1}).exec()
 
+    let docsRows = null;
+    if (gridType == ORDER_GRID_TYPE_BRIEF) {
+        docsRows = docs
+
+    } else {
+        docsRows = []
+        for (let i=0; i<docs.length; i++) {
+            let products = docs[i].products
+            delete docs[i].products
+            for (let j=0; j<products.length; j++) {
+                let newDoc = jQuery.extend({}, docs[i], products[j]);
+                docsRows.push(newDoc)
+            }
+        }
+    }
+    ORDER_GRID.datagrid('loadData', docsRows)
+    ORDER_GRID.datagrid('enableFilter', {filterMatchingType: 'any'})
 }
+
 
 function onDblClickOrderGridRow(index, row) {
     printPreview();
-    //logger.log(JSON.stringify(row))
 }
 
 function doSearchOrder(input, datagrid) {
@@ -305,7 +297,7 @@ function findOrderById(id, callback) {
     })
 }
 
-function cancelOrder(callback) {
+function cancelOrder() {
 
     let row = ORDER_GRID.datagrid('getSelected')
     if (!row) {
@@ -325,25 +317,22 @@ function cancelOrder(callback) {
         return false;
     }
 
-    $.messager.confirm('作废', '确定作废单号'+ row.order_num + '的出库单?', function (r) {
+    $.messager.confirm('作废', '确定作废单号'+ row.order_num + '的出库单?', async function (r) {
         if (r) {
-            OrderModel.findByIdAndUpdate(row._id, {state: STATE_CANCELLED, cancel_by: user.name+'('+user._id+')'}, function (err, doc) {
-                loadOrderGrid()
-            })
+            let doc = await OrderModel.findByIdAndUpdate(row._id, {state: STATE_CANCELLED, cancel_by: user.name+'('+user._id+')'}).exec()
+            loadOrderGrid()
         }
     })
 }
 
 
-function resetOrder() {
+async function resetOrder() {
     $('#new_order_form').form('clear')
     let current_user = localStorage.getItem('user')
     current_user = JSON.parse(current_user)
     $('#new_order_maker').textbox('setValue', current_user.name)
-    getCurrentSeq("order_seq", function (value) {
-        $('#new_order_sale_No').html(value + 1)
-    })
-
+    let value = await getCurrentSeq("order_seq")
+    $('#new_order_sale_No').html(value + 1)
     //
     let t = $('#new_order_customer_name')
     if (!t.textbox('getText')) {
@@ -497,7 +486,7 @@ function accept() {
     return accept_ok;
 }
 
-function doPrint() {
+async function doPrint() {
     let customer_id = $('#new_order_customer_name').textbox('getValue');
     let customer_name = $('#new_order_customer_name').textbox('getText');
 
@@ -558,8 +547,16 @@ function doPrint() {
     //console.log(JSON.stringify(order_data))
     $('#win_in').html('正在保存单剧...')
     $('#win').window('open').window('center')
-
+    let doc = await saveOrder(order_data);
+    $('#win_in').html('开始打印...')
     setTimeout(function () {
+        $('#win').window('close')
+        preview(doc)
+        //$('#win').window('close')
+        //关闭打印页面，window消失
+    }, 1000)
+
+/*    setTimeout(function () {
         saveOrder(order_data, function (doc) {
             $('#win_in').html('开始打印...')
             setTimeout(function () {
@@ -569,7 +566,7 @@ function doPrint() {
                 //关闭打印页面，window消失
             }, 1000)
         })
-    }, 1000)
+    }, 1000)*/
 }
 
 function onLoadSuccess() {
@@ -624,37 +621,37 @@ function onOpenOrderReportPanel() {
 
 
 function calcSum() {
-    let totalNum = 0;
-    let totalSum = 0;
-    let rows = ORDER_GRID.datagrid('getSelections');
-    if (rows && rows.length > 0) {
-        ;
-    } else {
-        rows = ORDER_GRID.datagrid('getRows')
-    }
-
-    let gridType = getGridType()
-    if (gridType == ORDER_GRID_TYPE_DETAIL) {
-        for (let i=0; i<rows.length; i++) {
-            if (rows[i].product_num)
-                totalNum += rows[i].product_num;
-            if (rows[i].product_sum)
-                totalSum += Number(rows[i].product_sum);
+    setTimeout(function() {
+        let totalNum = 0;
+        let totalSum = 0;
+        let rows = ORDER_GRID.datagrid('getSelections');
+        if (rows && rows.length > 0) {
+            ;
+        } else {
+            rows = ORDER_GRID.datagrid('getRows')
         }
 
-        $.messager.alert("统计", '产品数量：' + totalNum+ "<br/>产品金额：" +Number(totalSum).toFixed(2), 'info')
+        let gridType = getGridType()
+        if (gridType == ORDER_GRID_TYPE_DETAIL) {
+            for (let i = 0; i < rows.length; i++) {
+                if (rows[i].product_num)
+                    totalNum += rows[i].product_num;
+                if (rows[i].product_sum)
+                    totalSum += Number(rows[i].product_sum);
+            }
 
-    } else {
-        for (let i=0; i<rows.length; i++) {
-            if (rows[i].products_num)
-                totalNum += rows[i].products_num;
-            if (rows[i].products_sum)
-                totalSum += Number(rows[i].products_sum);
+            $.messager.alert("统计", '产品数量：' + totalNum + "<br/>产品金额：" + Number(totalSum).toFixed(2), 'info')
+
+        } else {
+            for (let i = 0; i < rows.length; i++) {
+                if (rows[i].products_num)
+                    totalNum += rows[i].products_num;
+                if (rows[i].products_sum)
+                    totalSum += Number(rows[i].products_sum);
+            }
+            $.messager.alert("统计", '单据总数量：' + totalNum + "<br/>单据总金额：" + Number(totalSum).toFixed(2), 'info')
+
         }
-        $.messager.alert("统计", '单据总数量：' + totalNum+ "<br/>单据总金额：" +Number(totalSum).toFixed(2), 'info')
-
-    }
-
-
+    }, 0)
 }
 

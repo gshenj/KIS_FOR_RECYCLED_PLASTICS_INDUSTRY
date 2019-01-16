@@ -1,4 +1,4 @@
-let {app, BrowserWindow, ipcMain} = require('electron');  // Module to control application life.
+let {app, BrowserWindow, ipcMain, dialog} = require('electron');  // Module to control application life.
 const logger = require('electron-timber');
 
 // Report crashes to our server.
@@ -38,17 +38,17 @@ function createMainWindow() {
     })
 
     mainWindow.loadFile(__dirname + '/pages/index.html')
-    //mainWindow.loadFile('./pages/index.html')
     mainWindow.once('ready-to-show', () => {
         //mainWindow.show()
     })
 
-    mainWindow.on('maximize', function (e) {
+   /* mainWindow.on('maximize', function (e) {
         mainWindow.webContents.executeJavaScript('afterMax()', true)
             .then((result) => {
                 console.log(result) // Will be the JSON object from the fetch call
             })
     })
+
     mainWindow.on('unmaximize', function () {
         mainWindow.webContents.executeJavaScript('afterUnMax()', true)
             .then((result) => {
@@ -57,20 +57,15 @@ function createMainWindow() {
     })
 
     mainWindow.on('close', function(){
-        logger.log('close stop')
+        logger.log('close ')
         //event.preventDefault()
-    })
+    })*/
 
     mainWindow.on('closed', () => {
         mainWindow = null;
+        logger.log("Main window closed.")
     })
 }
-
-
-
-
-
-
 
 function createLoginWindow() {
     loginWindow = new BrowserWindow({
@@ -84,10 +79,8 @@ function createLoginWindow() {
         show: false
     })
 
-    // loginWindow.loadURL('file://' + __dirname + '/pages/login.html')
     loginWindow.loadFile(__dirname + '/pages/login.html')
     loginWindow.once('ready-to-show', () => {
-        //loginWindow.show()
     })
 
     loginWindow.on('closed', () => {
@@ -99,24 +92,22 @@ function createLoginWindow() {
 ipcMain.on('main-window-ready', (event, arg) =>{
     if(loginWindow) {
         loginWindow.close()
+        loginWindow = null;
     }
-    //mainWindow.maximize()
     mainWindow.show()
-    event.returnValue = null;
-    logger.log("on main-window-ready")
 })
 
 // 登录成功消息
 ipcMain.on('login-success', (event, arg) => {
     createMainWindow()
-    event.returnValue = null;
-    logger.log("login-success.")
+    //event.returnValue = null;
+    logger.log("Login success ("+arg+").")
 })
 
 // 退出登录消息
 ipcMain.on('logout', (event, arg) => {
     createLoginWindow()
     mainWindow.close()
-    event.returnValue = null
 })
+
 

@@ -9,5 +9,6 @@ exports.config = {
   "bufferMaxEntries": 0,
   "connectTimeoutMS": 5000,
   "socketTimeoutMS": 45000,
-  "family": 4
+  "family": 4,
+    "dbName":"kis"
 }

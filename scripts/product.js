@@ -40,7 +40,7 @@ let product_grid_columns = [[
     {field: 'memo', title: '备注', width: 160, align: 'left', halign:'center'}
 ]]
 
-function load_product_grid(customerId, title) {
+async function load_product_grid(customerId, title) {
     if (PRODUCT_GRID == null) {
         PRODUCT_GRID = $('#product_grid').datagrid({
             fit:true,
@@ -57,9 +57,8 @@ function load_product_grid(customerId, title) {
     }
 
     let params = {customer: customerId}
-    ProductModel.find(params, function(err, docs){
-        PRODUCT_GRID.datagrid('loadData', docs)
-    })
+    let docs = await ProductModel.find(params).exec()
+    PRODUCT_GRID.datagrid('loadData', docs)
 
     if (title) {
         PRODUCT_GRID.datagrid("getPanel").panel('setTitle', title);
@@ -81,7 +80,7 @@ function editProduct(){
     }
 }
 
-function saveProduct() {
+async function saveProduct() {
 
     let name = $('#product_name').textbox('getValue')
     let model = $('#product_model').textbox('getValue')
@@ -99,39 +98,35 @@ function saveProduct() {
     }
 
     if (opt_type_for_product == 'new') {
-        console.log("New product is: " + JSON.stringify(product))
-        ProductModel.create(product, function () {
-            $('#dlg_for_product').dialog('close');
-            loadProducts()
-        })
+        //console.log("New product is: " + JSON.stringify(product))
+        await ProductModel.create(product).exec()
+
 
     } else if (opt_type_for_product == 'edit') {
         let id = $('#product_id').val();
-        console.log("Edit product is: " + JSON.stringify(product))
+        //console.log("Edit product is: " + JSON.stringify(product))
         // customer不能包含products字段，否则会更新.update是局部字段更新的.
-        ProductModel.findByIdAndUpdate(id, product, function () {
-
-            $('#dlg_for_product').dialog('close');
-            loadProducts()
-        })
+        await ProductModel.findByIdAndUpdate(id, product).exec()
     }
+
+    $('#dlg_for_product').dialog('close');
+    loadProducts()
 }
 
-function destroyProduct(){
-    var row = PRODUCT_GRID.datagrid('getSelected');
+async function destroyProduct(){
+    let row = PRODUCT_GRID.datagrid('getSelected');
     if (row){
-        $.messager.confirm('确定','是否确定删除选中的产品?',function(r){
+        $.messager.confirm('确定','是否确定删除选中的产品?',async function(r){
             if (r){
-                ProductModel.findByIdAndDelete(row._id, function(){
-                    $('#dlg_for_product').dialog('close');
-                    loadProducts()
-                })
+                let doc = await  ProductModel.findByIdAndDelete(row._id).exec()
+                $('#dlg_for_product').dialog('close');
+                loadProducts()
             }
         });
     }
 }
 
-function onOpenProductChooseDlg(){
+async function onOpenProductChooseDlg(){
     let customerId = $('#new_order_customer_name').textbox('getValue')
     if (!customerId) {
         return false
@@ -159,10 +154,8 @@ function onOpenProductChooseDlg(){
         })
     }
     let params = { $or: [ {customer: customerId}, { customer: null } ] }
-    ProductModel.find(params).sort({'customer':-1}).exec(function(err, docs){
-        PRODUCT_GRID_FOR_CHOOSE.datagrid('loadData', docs)
-    })
-    return true
+    let docs = await ProductModel.find(params).sort({'customer':-1}).exec()
+    PRODUCT_GRID_FOR_CHOOSE.datagrid('loadData', docs)
 }
 
 

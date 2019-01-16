@@ -235,7 +235,7 @@
     <div id="login_failed_panel" class="easyui-panel" data-options="border:false, fit:true, closed:true" style="width:100%;padding:10px 60px; margin-top:0px; text-align: center">
 
         <div>
-            <div style="margin-top:30px; font-size:18px;">
+            <div id="faield_msg" style="margin-top:30px; font-size:18px;">
                 你输入的账号或密码不正确，请重新登录。请注意区分大小写！
             </div>
             <div style="margin:20px auto;-webkit-app-region: no-drag;">
@@ -251,10 +251,12 @@
     <script>
 
         var no;
+        const logger = require('electron-timber');
         const { ipcRenderer } = require('electron')
         const win = require('electron').remote.getCurrentWindow();
-        const {UserModel} = require("../scripts/DBUtil")
         const  db = require("../scripts/DBUtil")
+        //const {UserModel} = require("../scripts/DBUtil")
+
 
         win.on('show', () => {
             loadLocalStorageUsers()
@@ -314,7 +316,7 @@
             win.show()
         }
 
-        function login() {
+        async function login() {
             login_sccess = true
 
             let is_validate_username = $('#username').combobox('isValid')
@@ -329,53 +331,50 @@
             let user = $('#username').combobox('getValue')
             let password = $('#password').passwordbox('getValue')
 
-            //
-            loginToDb(user, password, function (u) {
-                if (u) {
+            try {
+                //确保连接成功，后操作。
+                //确保连接成功，后操作。
+                let con = await db.connectToDb()
+                let u = await db.UserModel.findOne({name: user, disabled: false }).exec()
+                //logger.log("find User by name.")
+
+                if (u && u.password == password) {
                     localStorage.setItem('user', JSON.stringify(u))
                     let local_users = localStorage.getItem("local_users") || '[]'
                     local_users = JSON.parse(local_users)
-                    local_users = $.grep(local_users, function (n, i) {
-                        return n != user
-                    })
-
+                    local_users = $.grep(local_users, function (n, i) {return n != user})
                     local_users.unshift(user);
-                    console.log('set local_users ' + local_users)
                     localStorage.setItem("local_users", JSON.stringify(local_users))
 
-                    db.loadConfig(function (config) {
-                        // localStorage只支持String值
-                        localStorage.setItem("sys_config", JSON.stringify(config))
-                        ipcRenderer.sendSync('login-success', null) // prints "pong"
-                    })
+                    let config = await db.loadConfigs()
+                    localStorage.setItem("sys_config", JSON.stringify(config))
+                    ipcRenderer.send('login-success', user) // prints "pong"
 
                 } else {
-                    //$('#win').window('close')
-                    $('#login_waiting_table').hide()
-                    $('#login_table').show()
-
-                    // show login error.
-                    $('#login_form_panel').panel('close')
-                    $('#setting_btn').css("visibility", "hidden")
-
-                    $('#login_failed_panel').panel('open')
+                    loginFaield('你输入的账号或密码不正确，请重新登录。请注意区分大小写！')
                 }
-            })
+
+            }catch(err) {
+                logger.error(err)
+                loginFaield('数据库连接失败，请重新设置数据库服务器地址！')
+            }
         }
 
 
-        function loginToDb(username, password, callback) {
-            UserModel.findOne({name: username, disabled: false }, function (err, u) {
-                console.log(u)
-                if (u && u.password == password) {
-                    // login ok
-                    callback(u)
-                } else {
-                    callback(null)
-                }
-            })
+        function loginFaield(faieldMsg){
+            //$('#win').window('close')
+            $('#login_waiting_table').hide()
+            $('#login_table').show()
 
+            // show login error.
+            $('#login_form_panel').panel('close')
+            $('#setting_btn').css("visibility", "hidden")
+
+            $('#faield_msg').html(faieldMsg)
+            $('#login_failed_panel').panel('open')
         }
+
+
 
 
         function returnToLogin() {

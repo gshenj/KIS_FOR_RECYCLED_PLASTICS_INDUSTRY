@@ -18,12 +18,13 @@ const { mongoose,
     ProductModel,
     DriverModel,
     OrderModel,
-    CartypeModel} = require("../scripts/DBUtil")
+    CartypeModel,
+    connectToDb} = require("../scripts/DBUtil")
 
 
 let win = require('electron').remote.getCurrentWindow();
 
- function afterMax(){
+ /*function afterMax(){
     $('#to_max').hide();
     $('#to_unmax').show();
     return "Done maximize window!"
@@ -33,7 +34,7 @@ function  afterUnMax() {
     $('#to_unmax').hide();
     $('#to_max').show();
     return "Done unmaximize window!"
-}
+}*/
 
 
 $.extend($.fn.textbox.methods, {
@@ -407,8 +408,11 @@ function open_customer_choose_for_list_order() {
 
 
 
-function afterCompleteLoading() {
-    ipcRenderer.sendSync('main-window-ready', null)
+async function afterCompleteLoading() {
+
+    let con = await connectToDb()
+
+    ipcRenderer.send('main-window-ready', null)
     //默认最大化窗口
     //maxWin()
 }
@@ -487,7 +491,7 @@ function preview(order, type) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function logout() {
-    ipcRenderer.sendSync('logout')
+    ipcRenderer.send('logout')
 }
 
 function loadLogo(src){

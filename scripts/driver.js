@@ -28,11 +28,10 @@ function append_cartype_tree_node() {
 function delete_cartype_tree_node() {
     let t = $('#cartype_tree');
     let node = t.tree('getSelected');
-    $.messager.confirm('确定','是否确定删除选中的货车分类?',function(r) {
+    $.messager.confirm('确定', '是否确定删除选中的货车分类?', async function (r) {
         if (r) {
-            CartypeModel.findOneAndDelete({_id: node._id}, function (err, doc) {
-                loadCartypeTree()
-            })
+            await CartypeModel.findOneAndDelete({_id: node._id}).exec()
+            loadCartypeTree()
         }
     })
 }
@@ -44,13 +43,13 @@ function saveCartype() {
     let cartype = $('#cartype_name_textbox').textbox('getValue')
     if (opt_type_for_cartype == 'new') {
 
-        CartypeModel.create({name:cartype }, function(err, doc){
+        CartypeModel.create({name: cartype}, function (err, doc) {
             loadCartypeTree()
         })
 
     } else if (opt_type_for_cartype == 'edit') {
         let cartype_id = $('#cartype_id').val()
-        CartypeModel.findOneAndUpdate({_id:cartype_id},{name: cartype },  function(err, doc){
+        CartypeModel.findOneAndUpdate({_id: cartype_id}, {name: cartype}, function (err, doc) {
             loadCartypeTree()
         })
     }
@@ -59,7 +58,7 @@ function saveCartype() {
 
 
 function loadCartypeSelectData() {
-    CartypeModel.find({}, function(err, types) {
+    CartypeModel.find({}, function (err, types) {
         $('#driver_car_type').combobox('loadData', types)
     })
 }
@@ -69,22 +68,21 @@ function onOpenDriverManagePanel() {
     loadCartypeTree()
 }
 
-function loadCartypeTree(){
-    loadCartypes(function (data) {
-        $('#cartype_tree').tree('loadData', data)
-        loadDriverGrid(null)
-    })
+async function loadCartypeTree() {
+    let data = await loadCartypes()
+    $('#cartype_tree').tree('loadData', data)
+    loadDriverGrid(null)
 }
 
 
-function loadCartypes(callback) {
-    CartypeModel.find({}, function (err, types) {
-        let carTypesData =  { text: "所有分类", children: [] }
-        for (let i = 0; i < types.length; i++) {
-            carTypesData.children.push({ "text": types[i].name, "_id": types[i]._id })
-        }
-        callback([carTypesData])
-    })
+async function loadCartypes(callback) {
+    let types = CartypeModel.find({}).exec()
+    let carTypesData = {text: "所有分类", children: []}
+    for (let i = 0; i < types.length; i++) {
+        carTypesData.children.push({"text": types[i].name, "_id": types[i]._id})
+    }
+    return [carTypesData]
+    //callback([carTypesData])
 }
 
 
@@ -102,21 +100,21 @@ function loadDriverGrid(node) {
 
 }
 
-function loadDriverGridByParams(params){
+function loadDriverGridByParams(params) {
     if (DRIVER_GRID == null) {
         DRIVER_GRID = $('#driver_grid').datagrid({
             fit: true,
-            border:false,
-            height:'100%',
+            border: false,
+            height: '100%',
             singleSelect: true,
             collapsible: false,
             data: [],
-            remoteSort:false,
-            multiSort:true,
+            remoteSort: false,
+            multiSort: true,
             //showFilterBar:false,
-            rownumbers:true,
-            title:'<span style="font-weight: bold">司机列表</span>',
-            width:800,
+            rownumbers: true,
+            title: '<span style="font-weight: bold">司机列表</span>',
+            width: 800,
             toolbar: [{
                 text: '添加',
                 iconCls: 'icon-add',
@@ -125,21 +123,46 @@ function loadDriverGridByParams(params){
                 text: '编辑',
                 iconCls: 'icon-edit',
                 handler: editDriver
-            },{
+            }, {
                 text: '删除',
                 iconCls: 'icon-remove',
                 handler: destroyDriver
             }],
-            columns:[[
-                {title: "姓名", field: 'name',width:70, sortable: true,sortOrder: 'asc', align:'left', halign:'center'},
-                {title: "车型载重", field: 'cartype_name',width:120, sortable: true,sortOrder: 'asc', align:'left', halign:'center', formatter: function(value,row,index){
+            columns: [[
+                {
+                    title: "姓名",
+                    field: 'name',
+                    width: 70,
+                    sortable: true,
+                    sortOrder: 'asc',
+                    align: 'left',
+                    halign: 'center'
+                },
+                {
+                    title: "车型载重",
+                    field: 'cartype_name',
+                    width: 120,
+                    sortable: true,
+                    sortOrder: 'asc',
+                    align: 'left',
+                    halign: 'center',
+                    formatter: function (value, row, index) {
                         if (row.cartype) return row.cartype.name;
-                    }},
-                {title: "车牌号码", field: 'car_No', width:80, sortable:true, sortOrder: 'asc', align:'left', halign:'center'},
-                {title: "身份证号", field: 'id_No',width:140, align:'left', halign:'center'},
-                {title: "行驶证号", field: 'driving_license_No',width:140, align:'left', halign:'center'},
-                {title: "联系电话", field: 'phone', width:100, align:'left', halign:'center'},
-                {title: "联系地址", field: "address",width:250, align:'left', halign:'center'}
+                    }
+                },
+                {
+                    title: "车牌号码",
+                    field: 'car_No',
+                    width: 80,
+                    sortable: true,
+                    sortOrder: 'asc',
+                    align: 'left',
+                    halign: 'center'
+                },
+                {title: "身份证号", field: 'id_No', width: 140, align: 'left', halign: 'center'},
+                {title: "行驶证号", field: 'driving_license_No', width: 140, align: 'left', halign: 'center'},
+                {title: "联系电话", field: 'phone', width: 100, align: 'left', halign: 'center'},
+                {title: "联系地址", field: "address", width: 250, align: 'left', halign: 'center'}
             ]]
         })
     }
@@ -152,8 +175,8 @@ function loadDriverGridByParams(params){
     })
 }
 
-function newDriver(){
-    $('#dlg_for_driver').dialog('open').dialog('center').dialog('setTitle','添加司机信息');
+function newDriver() {
+    $('#dlg_for_driver').dialog('open').dialog('center').dialog('setTitle', '添加司机信息');
     $('#fm_for_driver').form('clear');
     let selectedNode = $('#cartype_tree').tree('getSelected')
     if (selectedNode) {
@@ -163,12 +186,12 @@ function newDriver(){
 }
 
 
-function editDriver(){
+function editDriver() {
     let row = DRIVER_GRID.datagrid('getSelected');
-    if (row){
-        $('#dlg_for_driver').dialog('open').dialog('center').dialog('setTitle','编辑司机信息');
-        $('#fm_for_driver').form('load',row);
-        if(row.cartype) {
+    if (row) {
+        $('#dlg_for_driver').dialog('open').dialog('center').dialog('setTitle', '编辑司机信息');
+        $('#fm_for_driver').form('load', row);
+        if (row.cartype) {
             $('#driver_car_type').combobox('setValue', row.cartype._id)
         }
         opt_type_for_driver = 'edit'
@@ -188,8 +211,10 @@ function saveDriver() {
     let driving_license_No = $('#driver_driving_license_No').textbox('getValue')
     let phone = $('#driver_phone').textbox('getValue')
     let address = $('#driver_address').textbox('getValue')
-    let driver = {name: name, cartype:car_type, car_No: car_No ,
-        id_No:id_No, driving_license_No: driving_license_No, phone:phone, address:address}
+    let driver = {
+        name: name, cartype: car_type, car_No: car_No,
+        id_No: id_No, driving_license_No: driving_license_No, phone: phone, address: address
+    }
 
     if (opt_type_for_driver == 'new') {
         DriverModel.create(driver, function () {
@@ -209,12 +234,12 @@ function saveDriver() {
     }
 }
 
-function destroyDriver(){
+function destroyDriver() {
     let row = DRIVER_GRID.datagrid('getSelected');
-    if (row){
-        $.messager.confirm('确定','是否确定删除选中的司机?',function(r){
-            if (r){
-                DriverModel.findByIdAndDelete(row._id, function(){
+    if (row) {
+        $.messager.confirm('确定', '是否确定删除选中的司机?', function (r) {
+            if (r) {
+                DriverModel.findByIdAndDelete(row._id, function () {
                     $('#dlg_for_driver').dialog('close');
                     loadDriverGrid(null)
                 })
